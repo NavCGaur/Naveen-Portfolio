@@ -1,26 +1,41 @@
 @import "tailwindcss";
 
-:root {
-  --font-dm-serif: "DM Serif Display", Georgia, serif;
-  --font-dm-sans: "DM Sans", system-ui, sans-serif;
+@theme {
+  --color-ink: #0D0D0D;
+  --color-ink-muted: #4A4A4A;
+  --color-ink-faint: #9A9A9A;
+  --color-gold: #C4A35A;
+  --color-gold-light: #F5EDD8;
+  --color-gold-dark: #8C6E2F;
+  --color-surface: #FAFAF8;
+
+  --font-serif: var(--font-dm-serif);
+  --font-sans: var(--font-dm-sans);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@layer base {
+  :root {
+    --font-dm-serif: "DM Serif Display", Georgia, serif;
+    --font-dm-sans: "DM Sans", system-ui, sans-serif;
+  }
 
-html {
-  scroll-behavior: smooth;
-}
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-body {
-  font-family: var(--font-dm-sans);
-  background-color: #FAFAF8;
-  color: #0D0D0D;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-dm-sans);
+    background-color: #FAFAF8;
+    color: #0D0D0D;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 /* Smooth anchor scroll offset for fixed nav */

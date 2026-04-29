@@ -67,7 +67,7 @@ export default function Services() {
           >
             One-Time Work
           </motion.span>
-          <div className="grid md:grid-cols-2 gap-16 items-end mb-[60px]">
+          <div className="grid md:grid-cols-2 gap-4 md:gap-16 items-start md:items-end mb-[60px]">
             <motion.h2
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -93,12 +93,12 @@ export default function Services() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.15 }}
-            className="border border-black/[0.09] rounded-lg overflow-hidden"
+            className="border border-black/[0.09] rounded-lg overflow-hidden flex flex-col"
           >
             {oneTimeServices.map((s, i) => (
               <li
                 key={s.id}
-                className={`grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-center px-8 py-7 bg-white hover:bg-gold-light transition-colors ${i < oneTimeServices.length - 1 ? "border-b border-black/[0.09]" : ""}`}
+                className={`grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-12 items-start md:items-center px-6 md:px-8 py-6 md:py-7 bg-white hover:bg-gold-light transition-colors ${i < oneTimeServices.length - 1 ? "border-b border-black/[0.09]" : ""}`}
               >
                 <div>
                   <div className="text-[16px] font-medium text-ink mb-1">{s.name}</div>
@@ -124,7 +124,7 @@ export default function Services() {
           >
             Monthly Retainers
           </motion.span>
-          <div className="grid md:grid-cols-2 gap-16 items-end mb-[60px]">
+          <div className="grid md:grid-cols-2 gap-4 md:gap-16 items-start md:items-end mb-[60px]">
             <motion.h2
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}

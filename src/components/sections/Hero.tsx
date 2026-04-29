@@ -91,7 +91,7 @@ export default function Hero() {
             animate="visible"
             custom={0.4}
             variants={fadeUp}
-            className="flex gap-12 mt-18 pt-10 border-t border-black/[0.09] flex-wrap mt-[72px]"
+            className="flex gap-12 pt-10 border-t border-black/[0.09] flex-wrap mt-[72px]"
           >
             {stats.map((s) => (
               <div key={s.num}>
