@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+:root {
+  --font-dm-serif: "DM Serif Display", Georgia, serif;
+  --font-dm-sans: "DM Sans", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-dm-sans);
+  background-color: #FAFAF8;
+  color: #0D0D0D;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth anchor scroll offset for fixed nav */
+[id] {
+  scroll-margin-top: 70px;
+}
