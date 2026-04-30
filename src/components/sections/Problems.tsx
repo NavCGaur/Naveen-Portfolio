@@ -100,7 +100,7 @@ export default function Problems() {
           If any of these keep you up at night, you&apos;re in the right place.
         </motion.p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.08] border border-white/[0.08] rounded-lg overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           {problems.map((p, i) => (
             <motion.div
               key={p.id}
@@ -108,15 +108,15 @@ export default function Problems() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.06 }}
-              className="bg-[#141414] hover:bg-[#1a1a1a] transition-colors p-9"
+              className="bg-[#141414] hover:bg-[#1a1a1a] border border-white/[0.06] rounded-xl transition-all p-10 py-16 min-h-[360px] flex flex-col justify-center group"
             >
-              <div className="w-10 h-10 rounded-sm bg-gold/[0.12] flex items-center justify-center mb-5">
+              <div className="w-12 h-12 rounded-lg bg-gold/[0.12] flex items-center justify-center mb-8 group-hover:bg-gold/20 transition-colors">
                 {p.icon}
               </div>
-              <div className="text-[15px] font-medium text-white mb-2.5">
+              <div className="text-[17px] font-medium text-white mb-4">
                 {p.title}
               </div>
-              <div className="text-[15px] text-white/45 leading-[1.65]">
+              <div className="text-[15px] text-white/45 leading-[1.7]">
                 {p.desc}
               </div>
             </motion.div>
