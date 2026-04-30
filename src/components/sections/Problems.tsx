@@ -95,7 +95,7 @@ export default function Problems() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="text-[17px] text-white/55 max-w-[520px] leading-[1.7] font-light mb-14"
+          className="text-[17px] text-white/75 max-w-[520px] leading-[1.7] font-light mb-14"
         >
           If any of these keep you up at night, you&apos;re in the right place.
         </motion.p>
@@ -116,7 +116,7 @@ export default function Problems() {
               <div className="text-[17px] font-medium text-white mb-4">
                 {p.title}
               </div>
-              <div className="text-[15px] text-white/45 leading-[1.7]">
+              <div className="text-[17px] text-white/75 leading-[1.7]">
                 {p.desc}
               </div>
             </motion.div>
