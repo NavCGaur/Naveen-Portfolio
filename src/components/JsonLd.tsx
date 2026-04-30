@@ -4,7 +4,7 @@ export default function JsonLd() {
     "@type": "Person",
     name: "Naveen Gaur",
     url: "https://naveengaur.com",
-    email: "naveencg070@gmail.com",
+    email: "hello@naveengaur.com",
     telephone: "+919920899845",
     jobTitle: "WordPress Developer & Full-Stack Web Developer",
     description:
@@ -129,7 +129,7 @@ export default function JsonLd() {
         name: "How do I contact you to start a project?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "You can reach me by filling out the contact form on this page, emailing me at naveencg070@gmail.com, or chatting directly on WhatsApp at +91 9920899845.",
+          text: "You can reach me by filling out the contact form on this page, emailing me at hello@naveengaur.com, or chatting directly on WhatsApp at +91 9920899845.",
         },
       },
     ],

@@ -65,12 +65,12 @@ export default function WhyMe() {
                 transition={{ duration: 0.4, delay: i * 0.07 }}
                 className="flex gap-5 mb-9"
               >
-                <div className="font-serif text-[13px] text-gold min-w-[28px] pt-0.5">
+                <div className="font-serif text-[14px] text-gold min-w-[28px] pt-0.5">
                   {d.num}
                 </div>
                 <div>
                   <div className="text-[16px] font-medium text-ink mb-2">{d.title}</div>
-                  <div className="text-[14px] text-ink-muted leading-[1.65]">{d.body}</div>
+                  <div className="text-[15px] text-ink-muted leading-[1.65]">{d.body}</div>
                 </div>
               </motion.div>
             ))}
@@ -92,11 +92,11 @@ export default function WhyMe() {
               until they&apos;re expensive. A small monthly investment in
               maintenance costs a fraction of one emergency recovery.
             </p>
-            <div className="text-[13px] text-ink-muted mb-8">
+            <div className="text-[14px] text-ink-muted mb-8">
               — Naveen Gaur, on why he offers retainers
             </div>
             <div className="pt-6 border-t border-gold">
-              <div className="text-[13px] text-ink-muted mb-3">
+              <div className="text-[14px] text-ink-muted mb-3">
                 Comfortable working with:
               </div>
               <div className="flex flex-wrap gap-2">

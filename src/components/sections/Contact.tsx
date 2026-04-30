@@ -104,10 +104,10 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div className="text-[16px] font-medium text-white mb-1">Message sent successfully!</div>
-                <div className="text-[14px] text-white/60">I&apos;ll get back to you as soon as possible.</div>
+                <div className="text-[15px] text-white/60">I&apos;ll get back to you as soon as possible.</div>
                 <button 
                   onClick={() => setSubmitStatus("idle")}
-                  className="mt-4 text-[13px] text-gold hover:text-gold-light"
+                  className="mt-4 text-[14px] text-gold hover:text-gold-light"
                 >
                   Send another message
                 </button>
@@ -115,7 +115,7 @@ export default function Contact() {
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-[13px] text-white/60 mb-1.5">Name *</label>
+                  <label htmlFor="name" className="block text-[14px] text-white/60 mb-1.5">Name *</label>
                   <input
                     id="name"
                     {...register("name")}
@@ -126,7 +126,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-[13px] text-white/60 mb-1.5">Email *</label>
+                  <label htmlFor="email" className="block text-[14px] text-white/60 mb-1.5">Email *</label>
                   <input
                     id="email"
                     type="email"
@@ -138,7 +138,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="website" className="block text-[13px] text-white/60 mb-1.5">Website (Optional)</label>
+                  <label htmlFor="website" className="block text-[14px] text-white/60 mb-1.5">Website (Optional)</label>
                   <input
                     id="website"
                     {...register("website")}
@@ -148,7 +148,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-[13px] text-white/60 mb-1.5">Message *</label>
+                  <label htmlFor="message" className="block text-[14px] text-white/60 mb-1.5">Message *</label>
                   <textarea
                     id="message"
                     {...register("message")}
@@ -160,13 +160,13 @@ export default function Contact() {
                 </div>
 
                 {submitStatus === "error" && (
-                  <p className="text-[#ff6b6b] text-[13px]">Failed to send message. Please try again or use WhatsApp.</p>
+                  <p className="text-[#ff6b6b] text-[14px]">Failed to send message. Please try again or use WhatsApp.</p>
                 )}
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gold text-ink px-6 py-3 rounded-sm text-[14px] font-medium hover:bg-gold-light transition-colors disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+                  className="w-full bg-gold text-ink px-6 py-3 rounded-sm text-[15px] font-medium hover:bg-gold-light transition-colors disabled:opacity-70 disabled:cursor-not-allowed mt-2"
                 >
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </button>
@@ -185,8 +185,8 @@ export default function Contact() {
             <div>
               <div className="text-[11px] tracking-[0.1em] uppercase text-white/30 mb-2">Email</div>
               <div className="text-[16px] text-white/80">
-                <a href="mailto:naveencg070@gmail.com" className="text-gold hover:text-white transition-colors font-medium">
-                  naveencg070@gmail.com
+                <a href="mailto:hello@naveengaur.com" className="text-gold hover:text-white transition-colors font-medium">
+                  hello@naveengaur.com
                 </a>
               </div>
             </div>

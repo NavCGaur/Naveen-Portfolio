@@ -102,11 +102,11 @@ export default function Services() {
               >
                 <div>
                   <div className="text-[16px] font-medium text-ink mb-1">{s.name}</div>
-                  <div className="text-[13px] text-ink-muted">{s.detail}</div>
+                  <div className="text-[14px] text-ink-muted">{s.detail}</div>
                 </div>
                 <div className="md:text-right">
                   <div className="font-serif text-[22px] text-ink whitespace-nowrap">{s.price}</div>
-                  <div className="text-[11px] text-ink-faint font-sans mt-0.5">{s.sub}</div>
+                  <div className="text-[12px] text-ink-faint font-sans mt-0.5">{s.sub}</div>
                 </div>
               </li>
             ))}
@@ -154,19 +154,19 @@ export default function Services() {
               transition={{ duration: 0.4, delay: 0.1 }}
               className="border border-black/[0.09] rounded-lg p-9 bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
             >
-              <div className="text-[13px] font-medium tracking-[0.06em] uppercase text-ink-faint mb-4">Essential</div>
+              <div className="text-[14px] font-medium tracking-[0.06em] uppercase text-ink-faint mb-4">Essential</div>
               <div className="font-serif text-[48px] tracking-[-0.04em] text-ink leading-none mb-1.5">$29</div>
-              <div className="text-[13px] text-ink-faint mb-7">per month</div>
+              <div className="text-[14px] text-ink-faint mb-7">per month</div>
               <div className="text-[15px] font-medium text-ink mb-2 leading-[1.4]">
                 Your site stays online, backed up, and out of trouble.
               </div>
-              <div className="text-[13px] text-ink-muted mb-7 leading-[1.6]">
+              <div className="text-[14px] text-ink-muted mb-7 leading-[1.6]">
                 The baseline every site needs — especially if you don&apos;t have time to babysit updates.
               </div>
               <div className="h-px bg-black/[0.09] mb-6" />
               <ul className="flex flex-col gap-3">
                 {essentialFeatures.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-[14px] text-ink-muted leading-[1.5]">
+                  <li key={f} className="flex items-start gap-2.5 text-[15px] text-ink-muted leading-[1.5]">
                     <CheckIcon />
                     {f}
                   </li>
@@ -185,19 +185,19 @@ export default function Services() {
               <span className="absolute -top-3 left-8 bg-gold text-ink text-[10px] font-medium tracking-[0.1em] uppercase px-3 py-1 rounded-full">
                 Most Popular
               </span>
-              <div className="text-[13px] font-medium tracking-[0.06em] uppercase text-white/40 mb-4">Growth &amp; Performance</div>
+              <div className="text-[14px] font-medium tracking-[0.06em] uppercase text-white/40 mb-4">Growth &amp; Performance</div>
               <div className="font-serif text-[48px] tracking-[-0.04em] text-gold leading-none mb-1.5">$99</div>
-              <div className="text-[13px] text-white/35 mb-7">per month</div>
+              <div className="text-[14px] text-white/35 mb-7">per month</div>
               <div className="text-[15px] font-medium text-white mb-2 leading-[1.4]">
                 Your site stays online and keeps getting better.
               </div>
-              <div className="text-[13px] text-white/50 mb-7 leading-[1.6]">
+              <div className="text-[14px] text-white/50 mb-7 leading-[1.6]">
                 Ideal if you care about speed, search rankings, and having a developer you can actually reach.
               </div>
               <div className="h-px bg-white/10 mb-6" />
               <ul className="flex flex-col gap-3">
                 {growthFeatures.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-[14px] text-white/55 leading-[1.5]">
+                  <li key={f} className="flex items-start gap-2.5 text-[15px] text-white/55 leading-[1.5]">
                     <span className="inline-block w-4 h-4 min-w-[16px] rounded-full border-[1.5px] border-gold bg-gold/15 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2210%22%20height%3D%228%22%20viewBox%3D%220%200%2010%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%204L3.5%206.5L9%201%22%20stroke%3D%22%23C4A35A%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E')] bg-no-repeat bg-center" />
                     {f}
                   </li>

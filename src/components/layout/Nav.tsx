@@ -43,7 +43,7 @@ export default function Nav() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="text-[13px] font-medium uppercase tracking-[0.04em] text-ink-muted hover:text-ink transition-colors"
+                className="text-[14px] font-medium uppercase tracking-[0.04em] text-ink-muted hover:text-ink transition-colors"
               >
                 {link.label}
               </a>
@@ -52,7 +52,7 @@ export default function Nav() {
           <li>
             <a
               href="#contact"
-              className="text-[13px] font-medium bg-ink text-white px-[18px] py-2 rounded-sm hover:bg-gold-dark transition-colors"
+              className="text-[14px] font-medium bg-ink text-white px-[18px] py-2 rounded-sm hover:bg-gold-dark transition-colors"
             >
               Get in Touch
             </a>

@@ -116,7 +116,7 @@ export default function Problems() {
               <div className="text-[15px] font-medium text-white mb-2.5">
                 {p.title}
               </div>
-              <div className="text-[14px] text-white/45 leading-[1.65]">
+              <div className="text-[15px] text-white/45 leading-[1.65]">
                 {p.desc}
               </div>
             </motion.div>

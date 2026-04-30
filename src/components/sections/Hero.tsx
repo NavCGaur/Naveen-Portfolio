@@ -13,7 +13,7 @@ const fadeUp: Variants = {
 
 const stats = [
   { num: "5+", label: "Years building on WordPress" },
-  { num: "48hr", label: "Average emergency fix turnaround" },
+  { num: "24hr", label: "Average emergency fix turnaround" },
   { num: "Full-Stack", label: "Server, database & front-end" },
 ];
 
@@ -72,14 +72,14 @@ export default function Hero() {
             <a
               href="#contact"
               id="hero-cta-primary"
-              className="inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[14px] font-medium tracking-[0.02em] hover:bg-[#2a2a2a] hover:-translate-y-px transition-all duration-150"
+              className="inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] hover:bg-[#2a2a2a] hover:-translate-y-px transition-all duration-150"
             >
               Let&apos;s Talk →
             </a>
             <a
               href="#services"
               id="hero-cta-services"
-              className="inline-block text-ink px-7 py-3.5 rounded-sm text-[14px] font-medium border border-black/[0.18] hover:border-ink hover:-translate-y-px transition-all duration-150"
+              className="inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:-translate-y-px transition-all duration-150"
             >
               See Services
             </a>
@@ -98,7 +98,7 @@ export default function Hero() {
                 <div className="font-serif text-[38px] text-ink leading-none tracking-[-0.03em]">
                   {s.num}
                 </div>
-                <div className="text-[13px] text-ink-faint mt-1.5">
+                <div className="text-[14px] text-ink-faint mt-1.5">
                   {s.label}
                 </div>
               </div>
