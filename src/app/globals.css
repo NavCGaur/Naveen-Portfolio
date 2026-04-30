@@ -3,10 +3,10 @@
 @theme {
   --color-ink: #0D0D0D;
   --color-ink-muted: #4A4A4A;
-  --color-ink-faint: #9A9A9A;
+  --color-ink-faint: #6A6A6A;
   --color-gold: #C4A35A;
   --color-gold-light: #F5EDD8;
-  --color-gold-dark: #8C6E2F;
+  --color-gold-dark: #725921;
   --color-surface: #FAFAF8;
 
   --font-serif: var(--font-dm-serif);
