@@ -28,7 +28,7 @@ export default function Nav() {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-[1100px] mx-auto px-6 md:px-10 h-[60px] flex items-center justify-between">
+      <div className="w-full px-6 md:px-10 h-[60px] flex items-center justify-between">
         {/* Logo / Name */}
         <a
           href="#"
