@@ -82,8 +82,10 @@ export default function WhyMe() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.2 }}
-            className="bg-gold-light border border-gold rounded-lg p-10"
+            className="group relative overflow-hidden bg-gold-light border border-gold rounded-lg p-10 hover:shadow-[0_4px_24px_rgba(0,0,0,0.08)] transition-all duration-300"
           >
+            {/* Gold accent line on hover */}
+            <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-dark to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-20" />
             <span className="font-serif text-[80px] text-gold leading-[0.6] mb-6 block">
               &ldquo;
             </span>

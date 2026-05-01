@@ -108,9 +108,12 @@ export default function Problems() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.06 }}
-              className="bg-[#141414] hover:bg-[#1a1a1a] border border-white/[0.06] rounded-xl transition-all p-10 py-16 min-h-[360px] flex flex-col justify-center group"
+              className="relative overflow-hidden bg-[#141414] hover:bg-[#1a1a1a] border border-white/[0.06] hover:border-gold/30 rounded-xl transition-all duration-300 p-10 py-16 min-h-[360px] flex flex-col justify-center group"
             >
-              <div className="w-12 h-12 rounded-lg bg-gold/[0.12] flex items-center justify-center mb-8 group-hover:bg-gold/20 transition-colors">
+              {/* Gold accent line on hover */}
+              <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-10" />
+              
+              <div className="relative z-20 w-12 h-12 rounded-lg bg-gold/[0.12] flex items-center justify-center mb-8 group-hover:bg-gold/20 transition-colors">
                 {p.icon}
               </div>
               <div className="text-[17px] font-medium text-white mb-4">

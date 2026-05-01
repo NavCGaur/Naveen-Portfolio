@@ -98,8 +98,10 @@ export default function Services() {
             {oneTimeServices.map((s, i) => (
               <li
                 key={s.id}
-                className={`grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-12 items-start md:items-center px-6 md:px-8 py-6 md:py-7 bg-white hover:bg-gold-light transition-colors ${i < oneTimeServices.length - 1 ? "border-b border-black/[0.09]" : ""}`}
+                className={`group relative overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-12 items-start md:items-center px-6 md:px-8 py-6 md:py-7 bg-white hover:bg-gold-light/50 transition-colors duration-300 ${i < oneTimeServices.length - 1 ? "border-b border-black/[0.09]" : ""}`}
               >
+                {/* Gold accent line on hover */}
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-10" />
                 <div>
                   <div className="text-[16px] font-medium text-ink mb-1">{s.name}</div>
                   <div className="text-[14px] text-ink-muted">{s.detail}</div>
@@ -152,8 +154,10 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.1 }}
-              className="border border-black/[0.09] rounded-lg p-9 bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              className="group relative overflow-hidden border border-black/[0.09] rounded-lg p-9 bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
             >
+              {/* Gold accent line on hover */}
+              <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out rounded-b-lg z-10" />
               <div className="text-[14px] font-medium tracking-[0.06em] uppercase text-ink-faint mb-4">Essential</div>
               <div className="font-serif text-[48px] tracking-[-0.04em] text-ink leading-none mb-1.5">$29</div>
               <div className="text-[14px] text-ink-faint mb-7">per month</div>
@@ -180,8 +184,10 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.18 }}
-              className="relative border border-gold rounded-lg p-9 bg-ink hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
+              className="group relative border border-gold rounded-lg p-9 bg-ink hover:shadow-[0_8px_32px_rgba(0,0,0,0.15)] hover:-translate-y-0.5 transition-all duration-300"
             >
+              {/* Gold accent line on hover */}
+              <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-light to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out rounded-b-lg z-10" />
               <span className="absolute -top-3 left-8 bg-gold text-ink text-[10px] font-medium tracking-[0.1em] uppercase px-3 py-1 rounded-full">
                 Most Popular
               </span>

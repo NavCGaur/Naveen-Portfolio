@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { DM_Serif_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 import JsonLd from "@/components/JsonLd";
+import { ProjectModalProvider } from "@/hooks/use-project-modal";
+import { ProjectModal } from "@/components/project-modal";
 
 const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
@@ -90,7 +92,10 @@ export default function RootLayout({
     <html lang="en" className={`${dmSerif.variable} ${dmSans.variable} overflow-x-hidden`}>
       <body className="overflow-x-hidden antialiased bg-surface text-ink font-sans">
         <JsonLd />
-        {children}
+        <ProjectModalProvider>
+          {children}
+          <ProjectModal />
+        </ProjectModalProvider>
       </body>
     </html>
   );

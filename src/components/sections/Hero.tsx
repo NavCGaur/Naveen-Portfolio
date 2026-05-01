@@ -72,16 +72,18 @@ export default function Hero() {
             <a
               href="#contact"
               id="hero-cta-primary"
-              className="inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] hover:bg-[#2a2a2a] hover:-translate-y-px transition-all duration-150"
+              className="group relative overflow-hidden inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] transition-all duration-300"
             >
-              Let&apos;s Talk →
+              <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
+              <span className="relative z-10">Let&apos;s Talk →</span>
             </a>
             <a
               href="#services"
               id="hero-cta-services"
-              className="inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:-translate-y-px transition-all duration-150"
+              className="group relative overflow-hidden inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:bg-black/[0.02] transition-all duration-300"
             >
-              See Services
+              <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-dark to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
+              <span className="relative z-10">See Services</span>
             </a>
           </motion.div>
 
