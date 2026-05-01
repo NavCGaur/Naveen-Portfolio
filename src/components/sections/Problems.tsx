@@ -125,6 +125,28 @@ export default function Problems() {
             </motion.div>
           ))}
         </div>
+
+        {/* Mid-page CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="mt-20 pt-16 border-t border-white/[0.06] text-center"
+        >
+          <h3 className="font-serif text-[clamp(24px,3vw,32px)] text-white mb-4">
+            Let's stop losing customers to technical issues.
+          </h3>
+          <p className="text-[17px] text-white/60 max-w-[480px] mx-auto leading-[1.7] mb-8">
+            Get a clear, honest assessment of what's wrong and exactly how to fix it.
+          </p>
+          <a
+            href="#contact"
+            className="inline-block bg-gold text-ink px-8 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] hover:bg-gold-light transition-colors duration-200"
+          >
+            Get a Free Website Audit →
+          </a>
+        </motion.div>
       </div>
     </section>
   );

@@ -40,12 +40,12 @@ export default function Hero() {
             animate="visible"
             custom={0.1}
             variants={fadeUp}
-            className="font-serif text-[clamp(44px,7vw,80px)] leading-[1.05] tracking-[-0.03em] text-ink mb-7"
+            className="font-serif text-[clamp(40px,6.5vw,72px)] leading-[1.05] tracking-[-0.03em] text-ink mb-7"
           >
-            Your website should{" "}
-            <em className="italic text-gold-dark">work for you,</em>
+            Your slow website is silently{" "}
+            <em className="italic text-gold-dark">losing customers</em>
             <br />
-            not worry you.
+            every single day.
           </motion.h1>
 
           {/* Sub */}
@@ -54,11 +54,9 @@ export default function Hero() {
             animate="visible"
             custom={0.2}
             variants={fadeUp}
-            className="text-[18px] text-ink-muted max-w-[540px] leading-[1.7] mb-12 font-light"
+            className="text-[18px] text-ink-muted max-w-[580px] leading-[1.7] mb-12 font-light"
           >
-            I build, fix, and maintain WordPress sites for small businesses and
-            founders who are tired of slow pages, surprise downtime, and
-            developers who disappear.
+            I help business owners fix slow, broken, or underperforming WordPress sites so they load instantly, rank better, and convert visitors into leads.
           </motion.p>
 
           {/* CTAs */}

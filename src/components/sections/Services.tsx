@@ -213,6 +213,27 @@ export default function Services() {
           </div>
         </div>
 
+        {/* Services CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="mt-24 pt-16 border-t border-black/[0.09] text-center"
+        >
+          <h3 className="font-serif text-[clamp(24px,3vw,32px)] text-ink mb-4">
+            Not sure what you need?
+          </h3>
+          <p className="text-[17px] text-ink-muted max-w-[480px] mx-auto leading-[1.7] mb-8">
+            Let's jump on a quick call. I'll look at your site and tell you exactly what's required—no sales pressure.
+          </p>
+          <a
+            href="#contact"
+            className="inline-block bg-ink text-white px-8 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] hover:bg-ink-muted transition-colors duration-200"
+          >
+            Schedule a Free Consultation
+          </a>
+        </motion.div>
       </div>
     </section>
   );
