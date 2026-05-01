@@ -42,10 +42,9 @@ export default function Hero() {
             variants={fadeUp}
             className="font-serif text-[clamp(40px,6.5vw,72px)] leading-[1.05] tracking-[-0.03em] text-ink mb-7"
           >
-            Your slow website is silently{" "}
-            <em className="italic text-gold-dark">losing customers</em>
+            Your Website Should Bring You <em className="italic text-gold-dark">Customers</em>
             <br />
-            every single day.
+            — Not Problems
           </motion.h1>
 
           {/* Sub */}
@@ -56,7 +55,7 @@ export default function Hero() {
             variants={fadeUp}
             className="text-[18px] text-ink-muted max-w-[580px] leading-[1.7] mb-12 font-light"
           >
-            I help business owners fix slow, broken, or underperforming WordPress sites so they load instantly, rank better, and convert visitors into leads.
+            I help business owners fix slow, broken, or underperforming WordPress sites so they load faster, rank better, and convert visitors into leads.
           </motion.p>
 
           {/* CTAs */}
@@ -73,7 +72,7 @@ export default function Hero() {
               className="group relative overflow-hidden inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] transition-all duration-300"
             >
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
-              <span className="relative z-10">Let&apos;s Talk →</span>
+              <span className="relative z-10">Get Free Website Audit</span>
             </a>
             <a
               href="#services"
@@ -81,7 +80,7 @@ export default function Hero() {
               className="group relative overflow-hidden inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:bg-black/[0.02] transition-all duration-300"
             >
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-dark to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
-              <span className="relative z-10">See Services</span>
+              <span className="relative z-10">Fix My Website Now</span>
             </a>
           </motion.div>
 
