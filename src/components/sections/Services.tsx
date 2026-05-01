@@ -4,25 +4,28 @@ import { motion } from "framer-motion";
 
 const oneTimeServices = [
   {
-    id: "speed",
-    name: "Speed Optimization",
-    detail: "Turn a slow site into a fast, high-performing asset that keeps visitors engaged.",
-    price: "From $99",
-    sub: "One-time fix",
-  },
-  {
-    id: "bug-fixing",
-    name: "Bug Fixing & Recovery",
-    detail: "Fix crashes, plugin conflicts, and critical errors without breaking your site.",
+    id: "emergency-fix",
+    name: "Emergency Fix & Recovery",
+    detail:
+      "Site down, hacked, or host suspended — I find the cause, fix it, and prevent it from happening again.",
     price: "From $60",
     sub: "Rapid response",
   },
   {
-    id: "security",
-    name: "Security & Malware Removal",
-    detail: "Clean hacked websites and protect them from future attacks.",
-    price: "From $150",
-    sub: "Complete cleanup",
+    id: "audit",
+    name: "Site Growth & Performance Audit",
+    detail:
+      "I examine your speed, SEO health, security posture, and plugin architecture — then give you a specific, prioritised action plan with honest ROI estimates.",
+    price: "$150",
+    sub: "Delivered in 3–5 days",
+  },
+  {
+    id: "custom-dev",
+    name: "Custom Development",
+    detail:
+      "Features, integrations, or builds that plugins can't do cleanly. Quoted per project after a free scoping call.",
+    price: "Custom",
+    sub: "Free scoping call",
   },
 ];
 
@@ -62,7 +65,7 @@ export default function Services() {
             transition={{ duration: 0.4 }}
             className="block text-[11px] font-medium tracking-[0.14em] uppercase text-gold-dark mb-4"
           >
-            Solution
+            One-Time Work
           </motion.span>
           <div className="grid md:grid-cols-2 gap-4 md:gap-16 items-start md:items-end mb-[60px]">
             <motion.h2
@@ -72,7 +75,7 @@ export default function Services() {
               transition={{ duration: 0.4, delay: 0.05 }}
               className="font-serif text-[clamp(30px,4vw,46px)] tracking-[-0.025em] leading-[1.1] text-ink"
             >
-              I Don't Just Fix Websites — I Make Them Work for You
+              Fix the immediate problem
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 14 }}
@@ -81,7 +84,7 @@ export default function Services() {
               transition={{ duration: 0.4, delay: 0.1 }}
               className="text-[17px] text-ink-muted leading-[1.7] font-light"
             >
-              Whether your site is slow, broken, or underperforming, I identify the root cause and fix it permanently — not temporarily.
+              No retainer required. Pay for exactly what you need, get it done right.
             </motion.p>
           </div>
 
@@ -140,7 +143,7 @@ export default function Services() {
               transition={{ duration: 0.4, delay: 0.1 }}
               className="text-[17px] text-ink-muted leading-[1.7] font-light"
             >
-              Ongoing Maintenance: Keep your site updated, secure, and running smoothly — without your involvement.
+              For owners who want their website completely handled, month after month.
             </motion.p>
           </div>
 
@@ -210,27 +213,6 @@ export default function Services() {
           </div>
         </div>
 
-        {/* Services CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="mt-24 pt-16 border-t border-black/[0.09] text-center"
-        >
-          <h3 className="font-serif text-[clamp(24px,3vw,32px)] text-ink mb-4">
-            Not sure what you need?
-          </h3>
-          <p className="text-[17px] text-ink-muted max-w-[480px] mx-auto leading-[1.7] mb-8">
-            Let's jump on a quick call. I'll look at your site and tell you exactly what's required—no sales pressure.
-          </p>
-          <a
-            href="#contact"
-            className="inline-block bg-ink text-white px-8 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] hover:bg-ink-muted transition-colors duration-200"
-          >
-            Schedule a Free Consultation
-          </a>
-        </motion.div>
       </div>
     </section>
   );

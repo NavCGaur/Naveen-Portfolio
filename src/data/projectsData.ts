@@ -24,7 +24,7 @@ export const projectsData: Project[] = [
     solution:
       "Removed Jetpack, restructured the entire plugin stack with lightweight alternatives, deployed a custom child theme, and established proper SEO foundations with Schema markup and GA4 tracking.",
     results:
-      "The site remained perfectly stable with no further suspensions. CPU usage dropped by 85%, load time improved from 7.4s to 1.8s, and the client converted to an ongoing monthly retainer.",
+      "The site remained perfectly stable with no further suspensions. Server resource usage dropped significantly, and the client converted to an ongoing monthly maintenance retainer.",
   },
   {
     slug: "centered-ceo",
@@ -76,7 +76,7 @@ export const projectsData: Project[] = [
     solution:
       "Compressed images, removed redundant plugins, updated metadata for every page, and implemented an interactive Google Map. Added a testimonials carousel and optimized for Core Web Vitals.",
     results:
-      "Improved mobile PageSpeed score from 34 to 92 and desktop from 65 to 99, strengthened local search visibility in Bath, and delivered a detailed SEO growth plan.",
+      "Significantly improved mobile and desktop speed scores, strengthened local search visibility in Bath, and delivered a detailed SEO growth plan for long-term results.",
   },
   {
     slug: "ghost-cms-management",
