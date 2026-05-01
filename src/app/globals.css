@@ -42,3 +42,117 @@
 [id] {
   scroll-margin-top: 70px;
 }
+
+/* ── Blog article typography ────────────────────────────────────────────────
+   Applied via .prose-blog on the MDXRemote wrapper.
+   Dark background (#0D0D0D) — all text must be light.
+   ───────────────────────────────────────────────────────────────────────── */
+.prose-blog {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 17px;
+  line-height: 1.78;
+  font-family: var(--font-dm-sans);
+}
+
+.prose-blog h1,
+.prose-blog h2,
+.prose-blog h3,
+.prose-blog h4 {
+  font-family: var(--font-dm-serif);
+  color: #ffffff;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-top: 2.2em;
+  margin-bottom: 0.65em;
+}
+
+.prose-blog h2 { font-size: 1.65rem; }
+.prose-blog h3 { font-size: 1.3rem; }
+.prose-blog h4 { font-size: 1.1rem; }
+
+.prose-blog p {
+  margin-bottom: 1.4em;
+}
+
+.prose-blog a {
+  color: #C4A35A;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.prose-blog a:hover { color: #d4b46a; }
+
+.prose-blog strong {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.prose-blog em {
+  color: rgba(255, 255, 255, 0.75);
+  font-style: italic;
+}
+
+.prose-blog ul,
+.prose-blog ol {
+  padding-left: 1.5em;
+  margin-bottom: 1.4em;
+}
+
+.prose-blog ul { list-style-type: disc; }
+.prose-blog ol { list-style-type: decimal; }
+
+.prose-blog li {
+  margin-bottom: 0.4em;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.prose-blog li::marker {
+  color: #C4A35A;
+}
+
+.prose-blog blockquote {
+  border-left: 3px solid #C4A35A;
+  padding: 0.6em 1.2em;
+  margin: 1.8em 0;
+  background: rgba(196, 163, 90, 0.06);
+  border-radius: 0 8px 8px 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+.prose-blog code {
+  background: rgba(255, 255, 255, 0.07);
+  color: #C4A35A;
+  padding: 0.15em 0.45em;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-family: 'Fira Code', 'Courier New', monospace;
+}
+
+.prose-blog pre {
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 1.2em 1.4em;
+  overflow-x: auto;
+  margin: 1.8em 0;
+}
+
+.prose-blog pre code {
+  background: none;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0;
+  font-size: 0.9em;
+}
+
+.prose-blog hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 2.5em 0;
+}
+
+.prose-blog img {
+  border-radius: 10px;
+  margin: 1.8em 0;
+  max-width: 100%;
+}

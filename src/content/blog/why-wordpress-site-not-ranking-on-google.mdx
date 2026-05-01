@@ -1,0 +1,80 @@
+---
+title: "Why Is No One Finding My WordPress Site on Google? (A Technical SEO Audit Guide)"
+description: "If your WordPress site is invisible on Google, here are the most common technical SEO problems causing it — and how to diagnose and fix each one."
+date: "2026-04-18"
+category: "SEO"
+---
+
+You built a great WordPress site. You've published content. And yet Google isn't sending you any traffic. The problem is almost never your content — it's usually one or more technical SEO issues that are silently preventing Google from properly crawling, indexing, or ranking your site.
+
+Here is the diagnostic checklist I go through when a client's site isn't ranking.
+
+## Step 1: Check If Google Can Even Find Your Site
+
+Before assuming your content is the problem, verify Google can see your site at all.
+
+**Check 1: Is the site indexed?**
+Type `site:yourdomain.com` in Google Search. If no results appear, your site isn't indexed. This is often caused by:
+- The "Discourage search engines from indexing this site" checkbox being ticked in `wp-admin > Settings > Reading`
+- A `noindex` meta tag in your theme's `header.php` or `functions.php`
+- A misconfigured `robots.txt` file blocking Googlebot
+
+**Check 2: Is your sitemap submitted to Google Search Console?**
+Log into Google Search Console (it's free) and submit your sitemap at `yourdomain.com/sitemap.xml` or `yourdomain.com/sitemap_index.xml` (if using Yoast SEO). Without this, Google discovers your pages much more slowly.
+
+## Step 2: Core Web Vitals Are Tanking Your Rankings
+
+Google uses Core Web Vitals — Largest Contentful Paint (LCP), Cumulative Layout Shift (CLS), and Interaction to Next Paint (INP) — as a direct ranking factor.
+
+Check your scores in Google Search Console under `Experience > Core Web Vitals`. Anything rated "Poor" is actively hurting your rankings.
+
+Common Core Web Vitals issues on WordPress sites:
+- **Slow LCP:** Your hero image is too large, not preloaded, or not in WebP format
+- **High CLS:** Images without defined width/height attributes, or late-loading fonts causing layout shifts
+- **Poor INP:** Heavy JavaScript (page builders, sliders, chat widgets) blocking user interactions
+
+## Step 3: Your Meta Titles and Descriptions Are Generic or Missing
+
+Google uses your `<title>` tag as the primary signal for what your page is about. If it says "Home | My Site" — Google doesn't know what you do or who to show you to.
+
+Every page needs:
+- A unique `<title>` tag that includes the primary keyword (60 characters max)
+- A unique meta description that compels a click (150–160 characters)
+- A single `<h1>` that matches the topic of the page
+
+In WordPress, Yoast SEO or Rank Math can help you set these per-page without code.
+
+## Step 4: Your Site Has No Internal Linking Structure
+
+Google discovers pages by following links. If every page on your site is an isolated dead end — no links from other pages pointing to it — Google struggles to understand how important that page is relative to others.
+
+A blog is the most natural way to build internal linking. Each article links to your service pages ("If your site is slow, [request a performance audit here](/contact)"). Each service page links to relevant articles. This creates a web of connections that Google uses to assess authority.
+
+## Step 5: You Have No Backlinks
+
+This is the most uncomfortable truth in SEO: you can have perfect technical SEO and excellent content, and still not rank if no one is linking to you. Backlinks from other reputable sites are still one of Google's strongest ranking signals.
+
+The realistic path to backlinks for a freelance WordPress developer:
+- **Your Upwork profile** — A link from Upwork (high DA) to your site is genuinely valuable. Make sure your Upwork profile links to `naveengaur.com`.
+- **Guest posting** — Write a technical article for a WordPress or small business blog in exchange for an author link
+- **Directories** — Submit to legitimate freelancer directories that link back to your site
+- **Client sites** — Ask past clients if they can mention or link to you in their website footer or credits
+
+## Step 6: Thin or Duplicate Content
+
+If your site consists of one page with 400 words, Google has very little to rank. More content means more pages that can rank, more keywords you can appear for, and a stronger signal that you're an authority in your field.
+
+The most efficient content strategy for a WordPress developer:
+- Write one deep, useful article per service you offer
+- Answer the exact questions clients type into Google ("how to fix WordPress white screen of death")
+- Each article should be 800–2000 words with specific, actionable information
+
+## How Long Does It Take to See Results?
+
+Technical fixes (indexation, sitemap, robots.txt) can show results within 2–4 weeks. Core Web Vitals improvements take 4–8 weeks to be measured and reflected in rankings. Content and backlinks take 3–6 months of consistent effort.
+
+If you want to know exactly what is holding your site back, [I offer a detailed SEO audit](/contact) as part of my site growth and performance audit ($150), which includes a prioritized list of exactly what to fix first.
+
+---
+
+*Naveen Gaur is a freelance WordPress developer who offers SEO audits, performance optimization, and technical fixes for small business WordPress sites.*

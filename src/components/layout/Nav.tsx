@@ -6,6 +6,7 @@ const navLinks = [
   { label: "Problems I Solve", href: "#problems" },
   { label: "Services", href: "#services" },
   { label: "Why Me", href: "#why" },
+  { label: "Blog", href: "/blog" },
 ];
 
 export default function Nav() {
