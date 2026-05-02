@@ -1,0 +1,57 @@
+---
+title: "WordPress Malware Cleanup: How to Recover a Hacked Site Fast"
+description: "A step-by-step guide to WordPress malware cleanup. Learn how to diagnose the hack, clean your server, and secure your site to prevent future infections."
+date: "2026-05-02"
+category: "Security"
+readingTime: "5 min read"
+---
+
+When your WordPress site gets hacked, panic is the natural response. You might see a Google "Deceptive site ahead" warning, strange spam links on your homepage, or you might be completely locked out of your admin dashboard. 
+
+The longer malware stays on your site, the more damage it does to your SEO rankings and customer trust. This guide covers the essential steps for a complete **WordPress malware cleanup**.
+
+## Step 1: Quarantine the Site
+Before you do anything, put your site into maintenance mode if possible. If you are locked out, contact your host immediately to suspend public access while you work.
+
+> [!WARNING]
+> Do not simply delete unfamiliar files via FTP and assume the site is clean. Hackers hide "backdoors" (malicious scripts) in core WordPress files and the database that will instantly reinfect the site once you go live again.
+
+## Step 2: Backup the Hacked State
+It sounds counterintuitive to backup malware, but you need a snapshot of the current state before you start deleting things. If you accidentally delete a critical database table during the cleanup, you'll need this backup to restore from.
+
+## Step 3: Run a Malware Scanner
+If you still have access to the WP Admin dashboard, install a reputable scanner like Wordfence or Sucuri. Run a high-sensitivity scan to identify modified core files, malicious plugins, and infected themes.
+
+## Step 4: The Core Replacement (The Only Surefire Way)
+The most reliable method for a DIY **WordPress malware cleanup** is the "nuclear option" for core files:
+
+1. Download a fresh, clean copy of WordPress directly from WordPress.org.
+2. Connect to your server via SFTP or SSH.
+3. Delete the `wp-admin` and `wp-includes` folders. 
+4. Upload the fresh `wp-admin` and `wp-includes` folders.
+5. Review your `wp-config.php` and `.htaccess` files manually. Hackers frequently hide redirects in the `.htaccess` file.
+
+## Step 5: Clean the `wp-content` Folder
+This is where it gets difficult. You cannot simply replace `wp-content` because it holds your unique themes, plugins, and uploads.
+
+*   **Plugins:** Delete all plugins via FTP and reinstall fresh copies from the official repository. Do not skip this step.
+*   **Themes:** If you bought a premium theme, download a fresh copy from the developer and replace your existing folder. If you have a custom theme, you must review every PHP file manually. Look for obfuscated code (long strings of random characters, often using `eval()` or `base64_decode`).
+*   **Uploads:** Check the `wp-content/uploads` folder. This should *only* contain media files (JPG, PNG, PDF). If you see any `.php` files in your uploads folder, delete them immediately—they are almost certainly backdoors.
+
+## Step 6: Database Cleanup
+Hackers often inject spam links or create hidden admin users directly in your database. 
+1. Open phpMyAdmin.
+2. Check the `wp_users` table for unfamiliar administrator accounts.
+3. Check the `wp_options` table for altered site URLs.
+
+## When to Hire a Professional Malware Removal Service
+
+If this sounds overwhelming, or if your site keeps getting reinfected after you clean it, you need a professional. Malware is designed to hide. Missing a single backdoor script means the hackers will be back in within 24 hours.
+
+If your business relies on your website for revenue, don't risk a DIY fix. A professional **WordPress malware removal service** guarantees the infection is completely eradicated, backdoors are closed, and security hardening is applied to prevent a recurrence.
+
+---
+
+> [!IMPORTANT]
+> **Need your site fixed right now?**
+> I provide emergency [WordPress Malware Cleanup Services](/#contact) for businesses. I will find the backdoor, clean the server, restore your site, and secure it against future attacks. **Most sites are recovered within 12 hours.**

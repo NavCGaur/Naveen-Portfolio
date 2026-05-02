@@ -1,17 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { label: "Problems I Solve", href: "#problems" },
-  { label: "Services", href: "#services" },
-  { label: "Why Me", href: "#why" },
+  { label: "Problems I Solve", href: "/#problems" },
+  { label: "Services", href: "/#services" },
+  { label: "Why Me", href: "/#why" },
   { label: "Blog", href: "/blog" },
 ];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isDarkPage = pathname !== "/";
+  const isTextLight = isDarkPage && !scrolled;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -32,8 +37,10 @@ export default function Nav() {
       <div className="w-full px-6 md:px-10 h-[60px] flex items-center justify-between">
         {/* Logo / Name */}
         <a
-          href="#"
-          className="font-serif text-[18px] tracking-tight text-ink hover:text-gold-dark transition-colors"
+          href="/"
+          className={`font-serif text-[18px] tracking-tight transition-colors ${
+            isTextLight ? "text-white hover:text-[#C4A35A]" : "text-ink hover:text-gold-dark"
+          }`}
         >
           Naveen Gaur
         </a>
@@ -44,7 +51,9 @@ export default function Nav() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="text-[14px] font-medium uppercase tracking-[0.04em] text-ink-muted hover:text-ink transition-colors"
+                className={`text-[14px] font-medium uppercase tracking-[0.04em] transition-colors ${
+                  isTextLight ? "text-white/70 hover:text-white" : "text-ink-muted hover:text-ink"
+                }`}
               >
                 {link.label}
               </a>
@@ -52,10 +61,12 @@ export default function Nav() {
           ))}
           <li>
             <a
-              href="#contact"
-              className="text-[14px] font-medium bg-ink text-white px-[18px] py-2 rounded-sm hover:bg-gold-dark transition-colors"
+              href="/free-audit"
+              className={`text-[14px] font-medium px-[18px] py-2 rounded-sm transition-colors ${
+                isTextLight ? "bg-white text-ink hover:bg-[#C4A35A]" : "bg-ink text-white hover:bg-gold-dark"
+              }`}
             >
-              Get in Touch
+              Free Video Audit
             </a>
           </li>
         </ul>
@@ -69,13 +80,13 @@ export default function Nav() {
           aria-expanded={menuOpen}
         >
           <span
-            className={`block w-5 h-[2px] bg-ink transition-transform duration-200 ${menuOpen ? "translate-y-[7px] rotate-45" : ""}`}
+            className={`block w-5 h-[2px] transition-transform duration-200 ${isTextLight ? "bg-white" : "bg-ink"} ${menuOpen ? "translate-y-[7px] rotate-45" : ""}`}
           />
           <span
-            className={`block w-5 h-[2px] bg-ink transition-opacity duration-200 ${menuOpen ? "opacity-0" : ""}`}
+            className={`block w-5 h-[2px] transition-opacity duration-200 ${isTextLight ? "bg-white" : "bg-ink"} ${menuOpen ? "opacity-0" : ""}`}
           />
           <span
-            className={`block w-5 h-[2px] bg-ink transition-transform duration-200 ${menuOpen ? "-translate-y-[7px] -rotate-45" : ""}`}
+            className={`block w-5 h-[2px] transition-transform duration-200 ${isTextLight ? "bg-white" : "bg-ink"} ${menuOpen ? "-translate-y-[7px] -rotate-45" : ""}`}
           />
         </button>
       </div>
@@ -94,11 +105,11 @@ export default function Nav() {
             </a>
           ))}
           <a
-            href="#contact"
+            href="/free-audit"
             onClick={handleLinkClick}
             className="text-[14px] font-medium bg-ink text-white px-4 py-2 rounded-sm text-center hover:bg-gold-dark transition-colors"
           >
-            Get in Touch
+            Free Video Audit
           </a>
         </div>
       )}

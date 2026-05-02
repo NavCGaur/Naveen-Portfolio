@@ -78,12 +78,12 @@ export default function Hero() {
               <span className="relative z-10">Let&apos;s Talk →</span>
             </a>
             <a
-              href="#services"
+              href="/free-audit"
               id="hero-cta-services"
               className="group relative overflow-hidden inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:bg-black/[0.02] transition-all duration-300"
             >
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-dark to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
-              <span className="relative z-10">See Services</span>
+              <span className="relative z-10">Free Video Audit</span>
             </a>
           </motion.div>
 

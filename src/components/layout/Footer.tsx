@@ -8,6 +8,9 @@ export default function Footer() {
           &copy; {currentYear} Naveen Gaur. All rights reserved.
         </div>
         <div className="flex items-center gap-6">
+          <a href="/agency" className="text-[14px] text-white/60 hover:text-white transition-colors">
+            Agency Partnerships
+          </a>
           <a href="#" className="text-[14px] text-white/60 hover:text-white transition-colors">
             Terms
           </a>
