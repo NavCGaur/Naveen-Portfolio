@@ -28,6 +28,7 @@ export default function JsonLd() {
     sameAs: [
       "https://www.upwork.com/freelancers/naveengaur",
       "https://linkedin.com/in/naveengaur",
+      "https://wa.me/919920899845",
     ],
     address: {
       "@type": "PostalAddress",
@@ -249,6 +250,30 @@ export default function JsonLd() {
         acceptedAnswer: {
           "@type": "Answer",
           text: "Poor Google rankings for a WordPress site are typically caused by: missing or incorrect meta titles and descriptions, slow Core Web Vitals scores (especially LCP and CLS), lack of structured data markup, thin or duplicate content, and missing internal linking. My SEO audit identifies exactly which issues are hurting your visibility and provides a clear, prioritized fix list.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How does the Free 5-Minute Video Audit work?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "You submit your URL and biggest website frustration. I personally record a 5-minute Loom video where I look under the hood of your site, identify performance bottlenecks, and give you 3 actionable fixes. No generic automated scores, just real human expertise.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What are the benefits of a white-label Agency Partnership?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Agency partnerships allow design and marketing firms to outsource their technical WordPress heavy-lifting. I provide white-label support, 24/7 monitoring, and priority emergency fixes for your clients, allowing you to focus on design and strategy while I handle the code and servers.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Why should I hire a professional for a WordPress migration?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Automated migration plugins often fail on large sites, corrupt databases, or break SEO permalinks. I perform manual migrations with zero downtime, ensuring all data, images, and SEO rankings are preserved perfectly during the move to a new host.",
         },
       },
       {
