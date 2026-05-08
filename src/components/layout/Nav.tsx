@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
+import * as ga from "@/lib/ga";
+
 const navLinks = [
   { label: "Problems I Solve", href: "/#problems" },
   { label: "Services", href: "/#services" },
@@ -24,7 +26,10 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleLinkClick = () => setMenuOpen(false);
+  const handleLinkClick = (label: string) => {
+    ga.event({ action: "nav_click", category: "navigation", label });
+    setMenuOpen(false);
+  };
 
   return (
     <nav
@@ -38,6 +43,7 @@ export default function Nav() {
         {/* Logo / Name */}
         <a
           href="/"
+          onClick={() => ga.event({ action: "logo_click", category: "navigation", label: "Logo" })}
           className={`font-serif text-[18px] tracking-tight transition-colors ${
             isTextLight ? "text-white hover:text-[#C4A35A]" : "text-ink hover:text-gold-dark"
           }`}
@@ -51,6 +57,7 @@ export default function Nav() {
             <li key={link.href}>
               <a
                 href={link.href}
+                onClick={() => ga.event({ action: "nav_click", category: "navigation", label: link.label })}
                 className={`text-[14px] font-medium uppercase tracking-[0.04em] transition-colors ${
                   isTextLight ? "text-white/70 hover:text-white" : "text-ink-muted hover:text-ink"
                 }`}
@@ -62,6 +69,7 @@ export default function Nav() {
           <li>
             <a
               href="/free-audit"
+              onClick={() => ga.event({ action: "nav_cta_click", category: "conversion", label: "Nav - Free Video Audit" })}
               className={`text-[14px] font-medium px-[18px] py-2 rounded-sm transition-colors ${
                 isTextLight ? "bg-white text-ink hover:bg-[#C4A35A]" : "bg-ink text-white hover:bg-gold-dark"
               }`}
@@ -75,7 +83,10 @@ export default function Nav() {
         <button
           id="mobile-menu-toggle"
           className="md:hidden flex flex-col gap-[5px] p-2 cursor-pointer"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => {
+            setMenuOpen(!menuOpen);
+            ga.event({ action: "mobile_menu_toggle", category: "navigation", label: menuOpen ? "Close" : "Open" });
+          }}
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
         >
@@ -98,7 +109,7 @@ export default function Nav() {
             <a
               key={link.href}
               href={link.href}
-              onClick={handleLinkClick}
+              onClick={() => handleLinkClick(link.label)}
               className="text-[14px] font-medium text-ink-muted hover:text-ink transition-colors py-1"
             >
               {link.label}
@@ -106,7 +117,7 @@ export default function Nav() {
           ))}
           <a
             href="/free-audit"
-            onClick={handleLinkClick}
+            onClick={() => handleLinkClick("Mobile Nav - Free Video Audit")}
             className="text-[14px] font-medium bg-ink text-white px-4 py-2 rounded-sm text-center hover:bg-gold-dark transition-colors"
           >
             Free Video Audit
@@ -116,3 +127,4 @@ export default function Nav() {
     </nav>
   );
 }
+

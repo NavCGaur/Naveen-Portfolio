@@ -2,6 +2,8 @@
 
 import { motion, Variants } from "framer-motion";
 
+import * as ga from "@/lib/ga";
+
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
   visible: (delay: number = 0) => ({
@@ -72,6 +74,7 @@ export default function Hero() {
             <a
               href="#contact"
               id="hero-cta-primary"
+              onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Let's Talk" })}
               className="group relative overflow-hidden inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] transition-all duration-300"
             >
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
@@ -80,6 +83,7 @@ export default function Hero() {
             <a
               href="/free-audit"
               id="hero-cta-services"
+              onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Free Video Audit" })}
               className="group relative overflow-hidden inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:bg-black/[0.02] transition-all duration-300"
             >
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-dark to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
