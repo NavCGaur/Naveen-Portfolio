@@ -3,7 +3,7 @@ export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
 type GtagFn = (...args: unknown[]) => void;
 function gtag(...args: unknown[]) {
   if (typeof window !== "undefined" && typeof (window as { gtag?: GtagFn }).gtag === "function") {
-    (window as { gtag: GtagFn }).gtag(...args);
+    (window as unknown as { gtag: GtagFn }).gtag(...args);
   }
 }
 
