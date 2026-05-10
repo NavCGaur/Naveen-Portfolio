@@ -6,6 +6,12 @@ import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
 import type { BlogPost } from "@/lib/blog";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
+import ArticleTracker from "@/components/ArticleTracker";
+import ArticleShareButtons from "@/components/ArticleShareButtons";
+import ArticleCTALink from "@/components/ArticleCTALink";
+import CommentsList from "@/components/CommentsList";
+import CommentForm from "@/components/CommentForm";
+import CopyCodeButton from "@/components/CopyCodeButton";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -81,6 +87,11 @@ function ArticleJsonLd({ post }: { post: BlogPost }) {
   );
 }
 
+// MDX component overrides — CopyCodeButton replaces <pre> blocks
+const mdxComponents = {
+  pre: CopyCodeButton,
+};
+
 export default async function BlogPost({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
@@ -130,12 +141,42 @@ export default async function BlogPost({ params }: Props) {
           </div>
         </header>
 
-        {/* Article Body */}
+        {/* Article Body + invisible tracker */}
         <article className="py-14 px-6 md:px-10">
           <div className="max-w-[760px] mx-auto prose-blog">
-            <MDXRemote source={post.content} />
+            <ArticleTracker slug={post.slug} />
+            <MDXRemote source={post.content} components={mdxComponents} />
           </div>
         </article>
+
+        {/* Share + Comments */}
+        <section className="pb-16 px-6 md:px-10">
+          <div className="max-w-[760px] mx-auto">
+
+            {/* Share buttons */}
+            <ArticleShareButtons slug={post.slug} title={post.title} />
+
+            {/* Comments section */}
+            <div
+              style={{
+                background: "#141414",
+                border: "1px solid rgba(255,255,255,0.06)",
+                borderRadius: "12px",
+                padding: "32px",
+                marginBottom: "32px",
+              }}
+            >
+              {/* Approved comments */}
+              <CommentsList slug={post.slug} />
+
+              {/* Divider only if there are comments */}
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "28px" }}>
+                <CommentForm slug={post.slug} />
+              </div>
+            </div>
+
+          </div>
+        </section>
 
         {/* CTA Footer */}
         <section className="pb-24 px-6 md:px-10">
@@ -148,12 +189,7 @@ export default async function BlogPost({ params }: Props) {
                 I fix WordPress crashes, remove malware, and optimize performance for small
                 businesses. Fast turnaround, direct access, no agency overhead.
               </p>
-              <Link
-                href="/#contact"
-                className="inline-block bg-[#C4A35A] text-[#0D0D0D] px-8 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] hover:bg-[#d4b46a] transition-colors duration-200"
-              >
-                Get in Touch →
-              </Link>
+              <ArticleCTALink slug={post.slug} />
             </div>
           </div>
         </section>
