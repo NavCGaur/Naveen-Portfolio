@@ -17,7 +17,7 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const isDarkPage = pathname !== "/";
+  const isDarkPage = pathname !== "/" && !pathname.startsWith("/blog");
   const isTextLight = isDarkPage && !scrolled;
 
   useEffect(() => {
