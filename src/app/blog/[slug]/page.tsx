@@ -111,16 +111,18 @@ export default async function BlogPost({ params }: Props) {
             >
               ← Back to Blog
             </Link>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-[#C4A35A] px-2.5 py-1 rounded-full bg-[#C4A35A]/10 border border-[#C4A35A]/20">
+            <div className="flex items-center gap-3 mb-8">
+              <span className="text-[12px] font-bold tracking-[0.05em] uppercase text-[#725921] px-3 py-1 rounded-sm bg-[#C4A35A]/10 border border-[#C4A35A]/20">
                 {post.category}
               </span>
-              <span className="text-[13px] blog-text-faint">{post.readingTime}</span>
+              <span className="text-[13px] blog-text-faint font-medium tracking-wide">
+                {post.readingTime}
+              </span>
             </div>
-            <h1 className="font-serif text-[clamp(28px,4vw,48px)] tracking-[-0.025em] leading-[1.15] blog-heading mb-6">
+            <h1 className="font-serif font-bold text-[clamp(32px,5vw,56px)] tracking-[0.01em] leading-[1.1] blog-heading mb-8">
               {post.title}
             </h1>
-            <p className="text-[18px] blog-text-muted leading-[1.7] font-light mb-8">
+            <p className="text-[20px] blog-text-muted leading-[1.7] font-normal mb-10">
               {post.description}
             </p>
             <div className="flex items-center gap-3 pt-6 border-t blog-border">

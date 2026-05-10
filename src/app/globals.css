@@ -100,6 +100,7 @@
   font-size: 17px;
   line-height: 1.78;
   font-family: var(--font-dm-sans);
+  font-weight: 400;
 }
 
 .prose-blog h1,
@@ -109,14 +110,15 @@
   font-family: var(--font-dm-serif);
   color: var(--bt-heading);
   line-height: 1.2;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   margin-top: 2.2em;
   margin-bottom: 0.65em;
+  font-weight: 700;
 }
 
-.prose-blog h2 { font-size: 1.65rem; }
-.prose-blog h3 { font-size: 1.3rem; }
-.prose-blog h4 { font-size: 1.1rem; }
+.prose-blog h2 { font-size: 1.75rem; }
+.prose-blog h3 { font-size: 1.4rem; }
+.prose-blog h4 { font-size: 1.15rem; }
 
 .prose-blog p {
   margin-bottom: 1.4em;

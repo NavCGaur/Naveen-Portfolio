@@ -39,7 +39,7 @@ export default function WhyMe() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="block text-[11px] font-medium tracking-[0.14em] uppercase text-gold-dark mb-4"
+          className="block text-[13px] font-medium tracking-[0.08em] uppercase text-gold-dark mb-4"
         >
           Why Naveen
         </motion.span>
@@ -48,7 +48,7 @@ export default function WhyMe() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.05 }}
-          className="font-serif text-[clamp(30px,4vw,46px)] tracking-[-0.025em] leading-[1.1] text-ink mb-14"
+          className="font-serif font-bold text-[clamp(28px,4vw,40px)] tracking-[-0.01em] leading-[1.1] text-ink mb-14"
         >
           Not another plugin-pusher
         </motion.h2>
@@ -69,8 +69,8 @@ export default function WhyMe() {
                   {d.num}
                 </div>
                 <div>
-                  <div className="text-[16px] font-medium text-ink mb-2">{d.title}</div>
-                  <div className="text-[15px] text-ink-muted leading-[1.65]">{d.body}</div>
+                  <div className="text-[20px] font-medium text-ink mb-2">{d.title}</div>
+                  <div className="text-[17px] text-ink-muted leading-[1.65] font-normal">{d.body}</div>
                 </div>
               </motion.div>
             ))}
@@ -105,7 +105,7 @@ export default function WhyMe() {
                 {techBadges.map((b) => (
                   <span
                     key={b}
-                    className="text-[12px] px-3 py-1 border border-gold rounded-full text-gold-dark bg-white"
+                    className="text-[13px] px-3 py-1 border border-gold rounded-full text-gold-dark bg-white"
                   >
                     {b}
                   </span>

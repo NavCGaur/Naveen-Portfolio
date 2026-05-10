@@ -68,7 +68,7 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="block text-[11px] font-medium tracking-[0.14em] uppercase text-gold-dark mb-4 text-center"
+          className="block text-[13px] font-medium tracking-[0.08em] uppercase text-gold-dark mb-4 text-center"
         >
           Client Feedback
         </motion.span>
@@ -77,7 +77,7 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.05 }}
-          className="font-serif text-[clamp(30px,4vw,46px)] tracking-[-0.025em] leading-[1.1] text-ink mb-16 text-center"
+          className="font-serif font-bold text-[clamp(28px,4vw,40px)] tracking-[-0.01em] leading-[1.1] text-ink mb-16 text-center"
         >
           What people say about my work
         </motion.h2>
@@ -98,17 +98,17 @@ export default function Testimonials() {
               </span>
 
               {/* Quote text — white on dark for max contrast */}
-              <p className="relative z-10 text-[15px] text-white/90 leading-[1.75] mb-7 italic">
+              <p className="relative z-10 text-[17px] text-white/90 leading-[1.75] mb-7 italic font-normal">
                 {t.content}
               </p>
 
               {/* Footer divider + attribution */}
               <div className="relative z-10 pt-5 border-t border-white/[0.08]">
                 <StarRating />
-                <div className="text-[14px] font-medium text-white">
+                <div className="text-[16px] font-medium text-white">
                   {t.client}
                 </div>
-                <div className="text-[12px] text-gold mt-0.5 tracking-wide">
+                <div className="text-[13px] text-gold mt-0.5 tracking-wide">
                   {t.project}
                 </div>
               </div>

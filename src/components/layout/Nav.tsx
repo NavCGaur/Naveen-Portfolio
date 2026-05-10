@@ -57,7 +57,7 @@ export default function Nav() {
               <a
                 href={link.href}
                 onClick={() => ga.event({ action: "nav_click", category: "navigation", label: link.label })}
-                className={`text-[14px] font-medium uppercase tracking-[0.04em] transition-colors ${
+                className={`text-[16px] font-medium uppercase tracking-[0.05em] transition-colors ${
                   isTextLight ? "text-white/70 hover:text-white" : "text-ink-muted hover:text-ink"
                 }`}
               >
@@ -69,7 +69,7 @@ export default function Nav() {
             <a
               href="/free-audit"
               onClick={() => ga.event({ action: "nav_cta_click", category: "conversion", label: "Nav - Free Video Audit" })}
-              className={`text-[14px] font-medium px-[18px] py-2 rounded-sm transition-colors ${
+              className={`text-[15px] font-medium px-[20px] py-2.5 rounded-sm transition-colors ${
                 isTextLight ? "bg-white text-ink hover:bg-[#C4A35A]" : "bg-ink text-white hover:bg-gold-dark"
               }`}
             >
@@ -109,7 +109,7 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               onClick={() => handleLinkClick(link.label)}
-              className="text-[14px] font-medium text-ink-muted hover:text-ink transition-colors py-1"
+              className="text-[15px] font-medium text-ink-muted hover:text-ink transition-colors py-1.5"
             >
               {link.label}
             </a>
@@ -117,7 +117,7 @@ export default function Nav() {
           <a
             href="/free-audit"
             onClick={() => handleLinkClick("Mobile Nav - Free Video Audit")}
-            className="text-[14px] font-medium bg-ink text-white px-4 py-2 rounded-sm text-center hover:bg-gold-dark transition-colors"
+            className="text-[15px] font-medium bg-ink text-white px-4 py-2.5 rounded-sm text-center hover:bg-gold-dark transition-colors"
           >
             Free Video Audit
           </a>

@@ -20,15 +20,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Simplified category color system for a more premium, unified look
 const categoryColors: Record<string, string> = {
-  "Crash Recovery": "bg-red-500/10 text-red-400 border border-red-500/20",
-  "Speed Optimization": "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  Security: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
-  SEO: "bg-green-500/10 text-green-400 border border-green-500/20",
-  "WordPress Development": "bg-purple-500/10 text-purple-400 border border-purple-500/20",
-  Maintenance: "bg-[#C4A35A]/10 text-[#C4A35A] border border-[#C4A35A]/20",
-  Analytics: "bg-cyan-500/10 text-cyan-500 border border-cyan-500/20",
-  WordPress: "bg-[#C4A35A]/10 text-[#C4A35A] border border-[#C4A35A]/20",
+  default: "bg-[#C4A35A]/10 text-[#725921] border border-[#C4A35A]/20",
 };
 
 export default function BlogIndex() {
@@ -44,10 +38,10 @@ export default function BlogIndex() {
             <span className="block text-[11px] font-medium tracking-[0.14em] uppercase text-[#C4A35A] mb-4">
               Field Notes
             </span>
-            <h1 className="font-serif text-[clamp(36px,5vw,64px)] tracking-[-0.025em] leading-[1.1] blog-heading mb-5">
+            <h1 className="font-serif font-bold text-[clamp(36px,5vw,64px)] tracking-[0.01em] leading-[1.1] blog-heading mb-5">
               WordPress tips &amp; guides
             </h1>
-            <p className="text-[18px] blog-text-muted max-w-[540px] leading-[1.7] font-light">
+            <p className="text-[19px] blog-text-muted max-w-[540px] leading-[1.7] font-normal">
               Practical answers to the WordPress problems that keep business owners up at night.
               Written from real client work, not theory.
             </p>
@@ -65,26 +59,26 @@ export default function BlogIndex() {
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    className="group relative overflow-hidden blog-card border blog-border hover:border-[#C4A35A]/30 rounded-xl transition-all duration-300 p-8 flex flex-col"
+                    className="group relative overflow-hidden bg-white border blog-border hover:border-[#C4A35A]/40 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 p-8 flex flex-col"
                   >
                     {/* Gold accent line on hover */}
                     <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#C4A35A] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
 
                     <div className="flex items-center gap-3 mb-5">
                       <span
-                        className={`text-[11px] font-medium tracking-[0.10em] uppercase px-2.5 py-1 rounded-full ${
-                          categoryColors[post.category] || categoryColors["WordPress"]
+                        className={`text-[12px] font-bold tracking-[0.05em] uppercase px-3 py-1 rounded-sm ${
+                          categoryColors.default
                         }`}
                       >
                         {post.category}
                       </span>
                     </div>
 
-                    <h2 className="font-serif text-[20px] leading-[1.3] blog-heading group-hover:text-[#C4A35A] transition-colors duration-200 mb-3 flex-1">
+                    <h2 className="font-serif font-bold text-[22px] leading-[1.3] blog-heading group-hover:text-[#C4A35A] transition-colors duration-200 mb-4">
                       {post.title}
                     </h2>
 
-                    <p className="text-[15px] blog-text-muted leading-[1.65] mb-6 line-clamp-3">
+                    <p className="text-[16px] blog-text-muted leading-[1.65] mb-8 line-clamp-3 font-normal">
                       {post.description}
                     </p>
 

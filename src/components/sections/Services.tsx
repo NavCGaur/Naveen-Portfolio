@@ -63,7 +63,7 @@ export default function Services() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="block text-[11px] font-medium tracking-[0.14em] uppercase text-gold-dark mb-4"
+            className="block text-[13px] font-medium tracking-[0.08em] uppercase text-gold-dark mb-4"
           >
             One-Time Work
           </motion.span>
@@ -73,7 +73,7 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.05 }}
-              className="font-serif text-[clamp(30px,4vw,46px)] tracking-[-0.025em] leading-[1.1] text-ink"
+              className="font-serif font-bold text-[clamp(28px,4vw,40px)] tracking-[-0.01em] leading-[1.1] text-ink"
             >
               Fix the immediate problem
             </motion.h2>
@@ -82,7 +82,7 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.1 }}
-              className="text-[17px] text-ink-muted leading-[1.7] font-light"
+              className="text-[17px] text-ink-muted leading-[1.7] font-normal"
             >
               No retainer required. Pay for exactly what you need, get it done right.
             </motion.p>
@@ -103,8 +103,8 @@ export default function Services() {
                 {/* Gold accent line on hover */}
                 <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-10" />
                 <div>
-                  <div className="text-[16px] font-medium text-ink mb-1">{s.name}</div>
-                  <div className="text-[14px] text-ink-muted">{s.detail}</div>
+                  <div className="text-[20px] font-medium text-ink mb-1">{s.name}</div>
+                  <div className="text-[15px] text-ink-muted font-normal">{s.detail}</div>
                 </div>
                 <div className="md:text-right">
                   <div className="font-serif text-[22px] text-ink whitespace-nowrap">{s.price}</div>
@@ -122,7 +122,7 @@ export default function Services() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="block text-[11px] font-medium tracking-[0.14em] uppercase text-gold-dark mb-4"
+            className="block text-[13px] font-medium tracking-[0.08em] uppercase text-gold-dark mb-4"
           >
             Monthly Retainers
           </motion.span>
@@ -132,7 +132,7 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.05 }}
-              className="font-serif text-[clamp(30px,4vw,46px)] tracking-[-0.025em] leading-[1.1] text-ink"
+              className="font-serif font-bold text-[clamp(28px,4vw,40px)] tracking-[-0.01em] leading-[1.1] text-ink"
             >
               Never think about your site again
             </motion.h2>
@@ -141,7 +141,7 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.1 }}
-              className="text-[17px] text-ink-muted leading-[1.7] font-light"
+              className="text-[17px] text-ink-muted leading-[1.7] font-normal"
             >
               For owners who want their website completely handled, month after month.
             </motion.p>
@@ -158,9 +158,9 @@ export default function Services() {
             >
               {/* Gold accent line on hover */}
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out rounded-b-lg z-10" />
-              <div className="text-[14px] font-medium tracking-[0.06em] uppercase text-ink-faint mb-4">Essential</div>
-              <div className="font-serif text-[48px] tracking-[-0.04em] text-ink leading-none mb-1.5">$29</div>
-              <div className="text-[14px] text-ink-faint mb-7">per month</div>
+              <div className="text-[15px] font-medium tracking-[0.05em] uppercase text-ink-faint mb-4">Essential</div>
+              <div className="font-serif font-bold text-[48px] tracking-[-0.02em] text-ink leading-none mb-1.5">$29</div>
+              <div className="text-[15px] text-ink-faint mb-7">per month</div>
               <div className="text-[15px] font-medium text-ink mb-2 leading-[1.4]">
                 Your site stays online, backed up, and out of trouble.
               </div>
@@ -191,13 +191,13 @@ export default function Services() {
               <span className="absolute -top-3 left-8 bg-gold text-ink text-[10px] font-medium tracking-[0.1em] uppercase px-3 py-1 rounded-full">
                 Most Popular
               </span>
-              <div className="text-[14px] font-medium tracking-[0.06em] uppercase text-white/40 mb-4">Growth &amp; Performance</div>
-              <div className="font-serif text-[48px] tracking-[-0.04em] text-gold leading-none mb-1.5">$99</div>
-              <div className="text-[14px] text-white/35 mb-7">per month</div>
+              <div className="text-[15px] font-medium tracking-[0.05em] uppercase text-white/60 mb-4">Growth &amp; Performance</div>
+              <div className="font-serif font-bold text-[48px] tracking-[-0.02em] text-gold leading-none mb-1.5">$99</div>
+              <div className="text-[15px] text-white/60 mb-7">per month</div>
               <div className="text-[15px] font-medium text-white mb-2 leading-[1.4]">
                 Your site stays online and keeps getting better.
               </div>
-              <div className="text-[14px] text-white/50 mb-7 leading-[1.6]">
+              <div className="text-[14px] text-white/70 mb-7 leading-[1.6]">
                 Ideal if you care about speed, search rankings, and having a developer you can actually reach.
               </div>
               <div className="h-px bg-white/10 mb-6" />
