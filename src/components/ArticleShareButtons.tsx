@@ -51,9 +51,9 @@ export default function ArticleShareButtons({ slug, title }: ArticleShareButtons
     fontWeight: 500,
     cursor: "pointer",
     transition: "all 0.18s",
-    border: "1px solid rgba(255,255,255,0.10)",
-    background: "rgba(255,255,255,0.04)",
-    color: "rgba(255,255,255,0.55)",
+    border: "1px solid rgba(13,13,13,0.10)",
+    background: "rgba(13,13,13,0.04)",
+    color: "rgba(13,13,13,0.65)",
   };
 
   return (
@@ -64,12 +64,12 @@ export default function ArticleShareButtons({ slug, title }: ArticleShareButtons
         gap: "10px",
         flexWrap: "wrap",
         padding: "20px 0",
-        borderTop: "1px solid rgba(255,255,255,0.06)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        borderTop: "1px solid rgba(13,13,13,0.06)",
+        borderBottom: "1px solid rgba(13,13,13,0.06)",
         marginBottom: "48px",
       }}
     >
-      <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.28)", letterSpacing: "0.08em", textTransform: "uppercase", marginRight: "4px" }}>
+      <span style={{ fontSize: "12px", color: "rgba(13,13,13,0.4)", letterSpacing: "0.08em", textTransform: "uppercase", marginRight: "4px" }}>
         Share
       </span>
 

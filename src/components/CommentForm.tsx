@@ -61,10 +61,10 @@ export default function CommentForm({ slug }: { slug: string }) {
         }}
       >
         <div style={{ fontSize: "28px", marginBottom: "10px" }}>✅</div>
-        <div style={{ color: "#fff", fontSize: "16px", fontWeight: 500, marginBottom: "6px" }}>
+        <div style={{ color: "#0D0D0D", fontSize: "16px", fontWeight: 500, marginBottom: "6px" }}>
           Comment submitted for moderation
         </div>
-        <div style={{ color: "rgba(255,255,255,0.5)", fontSize: "14px" }}>
+        <div style={{ color: "rgba(13,13,13,0.5)", fontSize: "14px" }}>
           I&apos;ll review it shortly. Approved comments appear here after the next site build.
         </div>
         <button
@@ -86,12 +86,12 @@ export default function CommentForm({ slug }: { slug: string }) {
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
-    background: "rgba(255,255,255,0.04)",
-    border: "1px solid rgba(255,255,255,0.10)",
+    background: "rgba(13,13,13,0.02)",
+    border: "1px solid rgba(13,13,13,0.10)",
     borderRadius: "6px",
     padding: "10px 14px",
     fontSize: "15px",
-    color: "#fff",
+    color: "#0D0D0D",
     outline: "none",
     transition: "border-color 0.2s",
     fontFamily: "inherit",
@@ -101,7 +101,7 @@ export default function CommentForm({ slug }: { slug: string }) {
   const labelStyle: React.CSSProperties = {
     display: "block",
     fontSize: "13px",
-    color: "rgba(255,255,255,0.50)",
+    color: "rgba(13,13,13,0.60)",
     marginBottom: "6px",
     letterSpacing: "0.01em",
   };
@@ -118,7 +118,7 @@ export default function CommentForm({ slug }: { slug: string }) {
         style={{
           fontSize: "18px",
           fontWeight: 500,
-          color: "#fff",
+          color: "#0D0D0D",
           marginBottom: "20px",
           fontFamily: "var(--font-dm-serif)",
         }}
@@ -136,12 +136,12 @@ export default function CommentForm({ slug }: { slug: string }) {
               placeholder="Your name"
               style={inputStyle}
               onFocus={(e) => (e.target.style.borderColor = "rgba(196,163,90,0.5)")}
-              onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.10)")}
+              onBlur={(e) => (e.target.style.borderColor = "rgba(13,13,13,0.10)")}
             />
             {errors.name && <p style={errorStyle}>{errors.name.message}</p>}
           </div>
           <div>
-            <label htmlFor="comment-email" style={labelStyle}>Email * <span style={{ color: "rgba(255,255,255,0.25)", fontSize: "11px" }}>(not shown publicly)</span></label>
+            <label htmlFor="comment-email" style={labelStyle}>Email * <span style={{ color: "rgba(13,13,13,0.35)", fontSize: "11px" }}>(not shown publicly)</span></label>
             <input
               id="comment-email"
               type="email"
@@ -149,7 +149,7 @@ export default function CommentForm({ slug }: { slug: string }) {
               placeholder="you@example.com"
               style={inputStyle}
               onFocus={(e) => (e.target.style.borderColor = "rgba(196,163,90,0.5)")}
-              onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.10)")}
+              onBlur={(e) => (e.target.style.borderColor = "rgba(13,13,13,0.10)")}
             />
             {errors.email && <p style={errorStyle}>{errors.email.message}</p>}
           </div>
@@ -158,7 +158,7 @@ export default function CommentForm({ slug }: { slug: string }) {
         <div>
           <label htmlFor="comment-text" style={labelStyle}>
             Comment *{" "}
-            <span style={{ color: commentValue.length > 900 ? "#f87171" : "rgba(255,255,255,0.25)", fontSize: "11px" }}>
+            <span style={{ color: commentValue.length > 900 ? "#f87171" : "rgba(13,13,13,0.35)", fontSize: "11px" }}>
               {commentValue.length}/1000
             </span>
           </label>
@@ -169,7 +169,7 @@ export default function CommentForm({ slug }: { slug: string }) {
             placeholder="Share your thoughts..."
             style={{ ...inputStyle, resize: "vertical", minHeight: "100px" }}
             onFocus={(e) => (e.target.style.borderColor = "rgba(196,163,90,0.5)")}
-            onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.10)")}
+            onBlur={(e) => (e.target.style.borderColor = "rgba(13,13,13,0.10)")}
           />
           {errors.comment && <p style={errorStyle}>{errors.comment.message}</p>}
         </div>
@@ -181,7 +181,7 @@ export default function CommentForm({ slug }: { slug: string }) {
         )}
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
-          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.25)" }}>
+          <p style={{ fontSize: "12px", color: "rgba(13,13,13,0.4)" }}>
             Comments are moderated before appearing on the site.
           </p>
           <button
