@@ -30,7 +30,7 @@ export default function Hero() {
             animate="visible"
             custom={0}
             variants={fadeUp}
-            className="inline-flex items-center gap-2.5 text-[13px] font-medium tracking-[0.08em] uppercase text-gold-dark mb-8 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full"
+            className="inline-flex items-center gap-2.5 text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-8 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full"
           >
             <span className="w-2 h-2 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)]" />
             WordPress &amp; Full-Stack Developer
@@ -42,10 +42,10 @@ export default function Hero() {
             animate="visible"
             custom={0.1}
             variants={fadeUp}
-            className="font-serif font-bold text-[clamp(40px,7vw,64px)] leading-[1.05] tracking-[-0.01em] text-ink mb-7"
+            className="font-serif text-[clamp(44px,7vw,80px)] leading-[1.05] tracking-[-0.03em] text-ink mb-7"
           >
             Your website should{" "}
-            <em className="italic text-gold-dark font-serif">work for you,</em>
+            <em className="italic text-gold-dark">work for you,</em>
             <br />
             not worry you.
           </motion.h1>
@@ -75,7 +75,7 @@ export default function Hero() {
               href="#contact"
               id="hero-cta-primary"
               onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Let's Talk" })}
-              className="group relative overflow-hidden inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[16px] font-medium tracking-[0.05em] transition-all duration-300"
+              className="group relative overflow-hidden inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] transition-all duration-300"
             >
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
               <span className="relative z-10">Let&apos;s Talk →</span>
@@ -84,7 +84,7 @@ export default function Hero() {
               href="/free-audit"
               id="hero-cta-services"
               onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Free Video Audit" })}
-              className="group relative overflow-hidden inline-block text-ink px-7 py-3.5 rounded-sm text-[16px] font-medium border border-black/[0.18] hover:border-ink hover:bg-black/[0.02] transition-all duration-300"
+              className="group relative overflow-hidden inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:bg-black/[0.02] transition-all duration-300"
             >
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-dark to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
               <span className="relative z-10">Free Video Audit</span>
@@ -97,14 +97,14 @@ export default function Hero() {
             animate="visible"
             custom={0.4}
             variants={fadeUp}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 pt-10 border-t border-black/[0.09] mt-[72px]"
+            className="flex gap-12 pt-10 border-t border-black/[0.09] flex-wrap mt-[72px]"
           >
             {stats.map((s) => (
               <div key={s.num}>
-                <div className="font-serif font-bold text-[38px] text-ink leading-none tracking-[-0.01em]">
+                <div className="font-serif text-[38px] text-ink leading-none tracking-[-0.03em]">
                   {s.num}
                 </div>
-                <div className="text-[15px] text-ink-faint mt-1.5">
+                <div className="text-[14px] tracking-normal mt-1.5">
                   {s.label}
                 </div>
               </div>

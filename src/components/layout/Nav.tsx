@@ -43,14 +43,13 @@ export default function Nav() {
         <a
           href="/"
           onClick={() => ga.event({ action: "logo_click", category: "navigation", label: "Logo" })}
-          className={`flex items-center gap-3 font-serif text-[18px] tracking-tight transition-colors ${
-            isTextLight ? "text-white hover:text-[#C4A35A]" : "text-ink hover:text-gold-dark"
-          }`}
+          className={`flex items-center gap-3 font-serif text-[18px] tracking-[0.02em] transition-colors ${isTextLight ? "text-white hover:text-[#C4A35A]" : "text-ink hover:text-gold-dark"
+            }`}
         >
-          <div className="w-[46px] h-[46px] rounded-full overflow-hidden border-2 border-gold/40 shadow-md">
-            <img 
-              src="/images/projects/Naveen_profile_pic.jpg" 
-              alt="Naveen Gaur" 
+          <div className="w-[50px] h-[50px] rounded-full overflow-hidden border-2 border-gold/40 shadow-md">
+            <img
+              src="/images/projects/Naveen_profile_pic.jpg"
+              alt="Naveen Gaur"
               className="w-full h-full object-cover"
             />
           </div>
@@ -64,9 +63,8 @@ export default function Nav() {
               <a
                 href={link.href}
                 onClick={() => ga.event({ action: "nav_click", category: "navigation", label: link.label })}
-                className={`text-[16px] font-medium uppercase tracking-[0.05em] transition-colors ${
-                  isTextLight ? "text-white/70 hover:text-white" : "text-ink-muted hover:text-ink"
-                }`}
+                className={`text-[16px] font-medium uppercase tracking-[0.05em] transition-colors ${isTextLight ? "text-white/70 hover:text-white" : "text-ink-muted hover:text-ink"
+                  }`}
               >
                 {link.label}
               </a>
@@ -76,9 +74,8 @@ export default function Nav() {
             <a
               href="/free-audit"
               onClick={() => ga.event({ action: "nav_cta_click", category: "conversion", label: "Nav - Free Video Audit" })}
-              className={`text-[15px] font-medium px-[20px] py-2.5 rounded-sm transition-colors ${
-                isTextLight ? "bg-white text-ink hover:bg-[#C4A35A]" : "bg-ink text-white hover:bg-gold-dark"
-              }`}
+              className={`text-[15px] font-medium px-[20px] py-2.5 rounded-sm transition-colors ${isTextLight ? "bg-white text-ink hover:bg-[#C4A35A]" : "bg-ink text-white hover:bg-gold-dark"
+                }`}
             >
               Free Video Audit
             </a>
