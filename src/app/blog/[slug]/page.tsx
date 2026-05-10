@@ -126,8 +126,12 @@ export default async function BlogPost({ params }: Props) {
               {post.description}
             </p>
             <div className="flex items-center gap-3 pt-6 border-t blog-border">
-              <div className="w-8 h-8 rounded-full bg-[#C4A35A]/20 flex items-center justify-center text-[#C4A35A] text-[13px] font-medium">
-                N
+              <div className="w-8 h-8 rounded-full overflow-hidden border border-[#C4A35A]/20">
+                <img 
+                  src="/images/projects/Naveen_profile_pic.jpg" 
+                  alt="Naveen Gaur" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <div className="text-[14px] blog-heading font-medium">Naveen Gaur</div>
