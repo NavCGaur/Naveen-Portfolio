@@ -36,17 +36,17 @@ export default function BlogIndex() {
   return (
     <>
       <Nav />
-      <main className="min-h-screen bg-[#FAFAF8]">
+      <main className="min-h-screen blog-bg">
         {/* Header */}
-        <section className="pt-[140px] pb-16 px-6 md:px-10 border-b border-[#0D0D0D]/[0.06]">
+        <section className="pt-[140px] pb-16 px-6 md:px-10 border-b blog-border">
           <div className="max-w-[1100px] mx-auto">
             <span className="block text-[11px] font-medium tracking-[0.14em] uppercase text-[#C4A35A] mb-4">
               Field Notes
             </span>
-            <h1 className="font-serif text-[clamp(36px,5vw,64px)] tracking-[-0.025em] leading-[1.1] text-[#0D0D0D] mb-5">
-              WordPress tips & guides
+            <h1 className="font-serif text-[clamp(36px,5vw,64px)] tracking-[-0.025em] leading-[1.1] blog-heading mb-5">
+              WordPress tips &amp; guides
             </h1>
-            <p className="text-[18px] text-[#4A4A4A] max-w-[540px] leading-[1.7] font-light">
+            <p className="text-[18px] blog-text-muted max-w-[540px] leading-[1.7] font-light">
               Practical answers to the WordPress problems that keep business owners up at night.
               Written from real client work, not theory.
             </p>
@@ -57,14 +57,14 @@ export default function BlogIndex() {
         <section className="py-16 px-6 md:px-10">
           <div className="max-w-[1100px] mx-auto">
             {posts.length === 0 ? (
-              <p className="text-[#6A6A6A] text-center py-20">No posts yet. Check back soon.</p>
+              <p className="blog-text-faint text-center py-20">No posts yet. Check back soon.</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {posts.map((post) => (
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    className="group relative overflow-hidden bg-white hover:bg-[#FDFDFB] border border-[#0D0D0D]/[0.06] hover:border-[#C4A35A]/30 shadow-sm hover:shadow-md rounded-xl transition-all duration-300 p-8 flex flex-col"
+                    className="group relative overflow-hidden blog-card border blog-border hover:border-[#C4A35A]/30 rounded-xl transition-all duration-300 p-8 flex flex-col"
                   >
                     {/* Gold accent line on hover */}
                     <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#C4A35A] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
@@ -79,15 +79,15 @@ export default function BlogIndex() {
                       </span>
                     </div>
 
-                    <h2 className="font-serif text-[20px] leading-[1.3] text-[#0D0D0D] group-hover:text-[#C4A35A] transition-colors duration-200 mb-3 flex-1">
+                    <h2 className="font-serif text-[20px] leading-[1.3] blog-heading group-hover:text-[#C4A35A] transition-colors duration-200 mb-3 flex-1">
                       {post.title}
                     </h2>
 
-                    <p className="text-[15px] text-[#4A4A4A] leading-[1.65] mb-6 line-clamp-3">
+                    <p className="text-[15px] blog-text-muted leading-[1.65] mb-6 line-clamp-3">
                       {post.description}
                     </p>
 
-                    <div className="flex items-center justify-between text-[13px] text-[#6A6A6A] mt-auto">
+                    <div className="flex items-center justify-between text-[13px] blog-text-faint mt-auto">
                       <span>
                         {new Date(post.date).toLocaleDateString("en-US", {
                           month: "short",
@@ -107,11 +107,11 @@ export default function BlogIndex() {
         {/* CTA */}
         <section className="pb-24 px-6 md:px-10">
           <div className="max-w-[1100px] mx-auto">
-            <div className="bg-white shadow-sm border border-[#0D0D0D]/[0.06] rounded-xl p-10 md:p-14 text-center">
-              <h2 className="font-serif text-[clamp(24px,3vw,36px)] text-[#0D0D0D] mb-4">
+            <div className="blog-card border blog-border rounded-xl p-10 md:p-14 text-center">
+              <h2 className="font-serif text-[clamp(24px,3vw,36px)] blog-heading mb-4">
                 Got a WordPress problem right now?
               </h2>
-              <p className="text-[17px] text-[#4A4A4A] max-w-[480px] mx-auto leading-[1.7] mb-8">
+              <p className="text-[17px] blog-text-muted max-w-[480px] mx-auto leading-[1.7] mb-8">
                 Reading is good. Getting it fixed today is better.
               </p>
               <Link

@@ -101,13 +101,13 @@ export default async function BlogPost({ params }: Props) {
     <>
       <Nav />
       <ArticleJsonLd post={post} />
-      <main className="min-h-screen bg-[#FAFAF8]">
+      <main className="min-h-screen blog-bg">
         {/* Article Header */}
-        <header className="pt-[140px] pb-12 px-6 md:px-10 border-b border-[#0D0D0D]/[0.06]">
+        <header className="pt-[140px] pb-12 px-6 md:px-10 border-b blog-border">
           <div className="max-w-[760px] mx-auto">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-[13px] text-[#6A6A6A] hover:text-[#C4A35A] transition-colors mb-8"
+              className="inline-flex items-center gap-2 text-[13px] blog-text-faint hover:text-[#C4A35A] transition-colors mb-8"
             >
               ← Back to Blog
             </Link>
@@ -115,21 +115,21 @@ export default async function BlogPost({ params }: Props) {
               <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-[#C4A35A] px-2.5 py-1 rounded-full bg-[#C4A35A]/10 border border-[#C4A35A]/20">
                 {post.category}
               </span>
-              <span className="text-[13px] text-[#6A6A6A]">{post.readingTime}</span>
+              <span className="text-[13px] blog-text-faint">{post.readingTime}</span>
             </div>
-            <h1 className="font-serif text-[clamp(28px,4vw,48px)] tracking-[-0.025em] leading-[1.15] text-[#0D0D0D] mb-6">
+            <h1 className="font-serif text-[clamp(28px,4vw,48px)] tracking-[-0.025em] leading-[1.15] blog-heading mb-6">
               {post.title}
             </h1>
-            <p className="text-[18px] text-[#4A4A4A] leading-[1.7] font-light mb-8">
+            <p className="text-[18px] blog-text-muted leading-[1.7] font-light mb-8">
               {post.description}
             </p>
-            <div className="flex items-center gap-3 pt-6 border-t border-[#0D0D0D]/[0.06]">
+            <div className="flex items-center gap-3 pt-6 border-t blog-border">
               <div className="w-8 h-8 rounded-full bg-[#C4A35A]/20 flex items-center justify-center text-[#C4A35A] text-[13px] font-medium">
                 N
               </div>
               <div>
-                <div className="text-[14px] text-[#0D0D0D] font-medium">Naveen Gaur</div>
-                <div className="text-[12px] text-[#6A6A6A]">
+                <div className="text-[14px] blog-heading font-medium">Naveen Gaur</div>
+                <div className="text-[12px] blog-text-faint">
                   {new Date(post.date).toLocaleDateString("en-US", {
                     month: "long",
                     day: "numeric",
@@ -159,19 +159,16 @@ export default async function BlogPost({ params }: Props) {
             {/* Comments section */}
             <div
               style={{
-                background: "#ffffff",
-                border: "1px solid rgba(13,13,13,0.06)",
-                boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                background: "var(--bt-card-bg)",
+                border: "1px solid var(--bt-border)",
+                boxShadow: "var(--bt-shadow)",
                 borderRadius: "12px",
                 padding: "32px",
                 marginBottom: "32px",
               }}
             >
-              {/* Approved comments */}
               <CommentsList slug={post.slug} />
-
-              {/* Divider only if there are comments */}
-              <div style={{ borderTop: "1px solid rgba(13,13,13,0.06)", paddingTop: "28px" }}>
+              <div style={{ borderTop: "1px solid var(--bt-border)", paddingTop: "28px" }}>
                 <CommentForm slug={post.slug} />
               </div>
             </div>
@@ -182,11 +179,11 @@ export default async function BlogPost({ params }: Props) {
         {/* CTA Footer */}
         <section className="pb-24 px-6 md:px-10">
           <div className="max-w-[760px] mx-auto">
-            <div className="bg-white border border-[#0D0D0D]/[0.06] shadow-sm rounded-xl p-10 text-center">
-              <h2 className="font-serif text-[clamp(22px,3vw,32px)] text-[#0D0D0D] mb-4">
+            <div className="blog-card border blog-border rounded-xl p-10 text-center">
+              <h2 className="font-serif text-[clamp(22px,3vw,32px)] blog-heading mb-4">
                 Need help with your WordPress site?
               </h2>
-              <p className="text-[16px] text-[#4A4A4A] max-w-[420px] mx-auto leading-[1.7] mb-8">
+              <p className="text-[16px] blog-text-muted max-w-[420px] mx-auto leading-[1.7] mb-8">
                 I fix WordPress crashes, remove malware, and optimize performance for small
                 businesses. Fast turnaround, direct access, no agency overhead.
               </p>

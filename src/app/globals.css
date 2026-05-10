@@ -43,12 +43,60 @@
   scroll-margin-top: 70px;
 }
 
+/* ── Blog theme variables ────────────────────────────────────────────────── */
+[data-blog-theme] { transition: background-color 0.3s ease; }
+
+[data-blog-theme="light"] {
+  --bt-bg: #FAFAF8;
+  --bt-card-bg: #ffffff;
+  --bt-heading: #0D0D0D;
+  --bt-text: rgba(13,13,13,0.82);
+  --bt-text-muted: #4A4A4A;
+  --bt-text-faint: #6A6A6A;
+  --bt-border: rgba(13,13,13,0.06);
+  --bt-border-md: rgba(13,13,13,0.10);
+  --bt-gold: #C4A35A;
+  --bt-gold-text: #725921;
+  --bt-gold-hover: #d4b46a;
+  --bt-code-bg: #F4F4F2;
+  --bt-blockquote-bg: #F5EDD8;
+  --bt-input-bg: rgba(13,13,13,0.02);
+  --bt-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+[data-blog-theme="dark"] {
+  --bt-bg: #0D0D0D;
+  --bt-card-bg: #141414;
+  --bt-heading: #ffffff;
+  --bt-text: rgba(255,255,255,0.82);
+  --bt-text-muted: rgba(255,255,255,0.60);
+  --bt-text-faint: rgba(255,255,255,0.35);
+  --bt-border: rgba(255,255,255,0.06);
+  --bt-border-md: rgba(255,255,255,0.10);
+  --bt-gold: #C4A35A;
+  --bt-gold-text: #C4A35A;
+  --bt-gold-hover: #d4b46a;
+  --bt-code-bg: #141414;
+  --bt-blockquote-bg: rgba(196,163,90,0.06);
+  --bt-input-bg: rgba(255,255,255,0.04);
+  --bt-shadow: none;
+}
+
+/* Blog utility classes */
+.blog-bg { background: var(--bt-bg); }
+.blog-card { background: var(--bt-card-bg); box-shadow: var(--bt-shadow); }
+.blog-heading { color: var(--bt-heading); }
+.blog-text-muted { color: var(--bt-text-muted); }
+.blog-text-faint { color: var(--bt-text-faint); }
+.blog-border { border-color: var(--bt-border) !important; }
+.blog-border-md { border-color: var(--bt-border-md) !important; }
+
 /* ── Blog article typography ────────────────────────────────────────────────
    Applied via .prose-blog on the MDXRemote wrapper.
-   Light background (#FAFAF8) — all text must be dark.
+   Colors driven by CSS variables — responds to light/dark toggle.
    ───────────────────────────────────────────────────────────────────────── */
 .prose-blog {
-  color: var(--color-ink-muted);
+  color: var(--bt-text);
   font-size: 17px;
   line-height: 1.78;
   font-family: var(--font-dm-sans);
@@ -59,7 +107,7 @@
 .prose-blog h3,
 .prose-blog h4 {
   font-family: var(--font-dm-serif);
-  color: var(--color-ink);
+  color: var(--bt-heading);
   line-height: 1.2;
   letter-spacing: -0.02em;
   margin-top: 2.2em;
@@ -75,20 +123,20 @@
 }
 
 .prose-blog a {
-  color: var(--color-gold-dark);
+  color: var(--bt-gold-text);
   text-decoration: underline;
   text-underline-offset: 3px;
   transition: color 0.2s;
 }
-.prose-blog a:hover { color: var(--color-gold); }
+.prose-blog a:hover { color: var(--bt-gold-hover); }
 
 .prose-blog strong {
-  color: var(--color-ink);
+  color: var(--bt-heading);
   font-weight: 500;
 }
 
 .prose-blog em {
-  color: var(--color-ink-faint);
+  color: var(--bt-text-muted);
   font-style: italic;
 }
 
@@ -103,26 +151,26 @@
 
 .prose-blog li {
   margin-bottom: 0.4em;
-  color: var(--color-ink-muted);
+  color: var(--bt-text);
 }
 
 .prose-blog li::marker {
-  color: var(--color-gold-dark);
+  color: var(--bt-gold);
 }
 
 .prose-blog blockquote {
-  border-left: 3px solid var(--color-gold);
+  border-left: 3px solid var(--bt-gold);
   padding: 0.6em 1.2em;
   margin: 1.8em 0;
-  background: var(--color-gold-light);
+  background: var(--bt-blockquote-bg);
   border-radius: 0 8px 8px 0;
-  color: var(--color-ink-muted);
+  color: var(--bt-text-muted);
   font-style: italic;
 }
 
 .prose-blog code {
-  background: rgba(13, 13, 13, 0.04);
-  color: var(--color-gold-dark);
+  background: var(--bt-input-bg);
+  color: var(--bt-gold-text);
   padding: 0.15em 0.45em;
   border-radius: 4px;
   font-size: 0.88em;
@@ -130,8 +178,8 @@
 }
 
 .prose-blog pre {
-  background: #F4F4F2;
-  border: 1px solid rgba(13, 13, 13, 0.08);
+  background: var(--bt-code-bg);
+  border: 1px solid var(--bt-border-md);
   border-radius: 10px;
   padding: 1.2em 1.4em;
   overflow-x: auto;
@@ -140,14 +188,14 @@
 
 .prose-blog pre code {
   background: none;
-  color: var(--color-ink);
+  color: var(--bt-text);
   padding: 0;
   font-size: 0.9em;
 }
 
 .prose-blog hr {
   border: none;
-  border-top: 1px solid rgba(13, 13, 13, 0.08);
+  border-top: 1px solid var(--bt-border-md);
   margin: 2.5em 0;
 }
 

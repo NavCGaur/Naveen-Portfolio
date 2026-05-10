@@ -25,8 +25,8 @@ export default function CommentsList({ slug }: { slug: string }) {
             <div
               key={c.id}
               style={{
-                background: "rgba(13,13,13,0.02)",
-                border: "1px solid rgba(13,13,13,0.07)",
+                background: "var(--bt-input-bg)",
+                border: "1px solid var(--bt-border)",
                 borderRadius: "10px",
                 padding: "18px 20px",
               }}
@@ -59,10 +59,10 @@ export default function CommentsList({ slug }: { slug: string }) {
                   {c.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <div style={{ fontSize: "14px", fontWeight: 500, color: "#0D0D0D" }}>
+                  <div style={{ fontSize: "14px", fontWeight: 500, color: "var(--bt-heading)" }}>
                     {c.name}
                   </div>
-                  <div style={{ fontSize: "12px", color: "rgba(13,13,13,0.40)" }}>
+                  <div style={{ fontSize: "12px", color: "var(--bt-text-faint)" }}>
                     {new Date(c.date).toLocaleDateString("en-US", {
                       month: "long",
                       day: "numeric",
@@ -71,15 +71,7 @@ export default function CommentsList({ slug }: { slug: string }) {
                   </div>
                 </div>
               </div>
-              <p
-                style={{
-                  fontSize: "15px",
-                  color: "rgba(13,13,13,0.75)",
-                  lineHeight: "1.65",
-                  margin: 0,
-                  whiteSpace: "pre-wrap",
-                }}
-              >
+              <p style={{ fontSize: "15px", color: "var(--bt-text)", lineHeight: "1.65", margin: 0, whiteSpace: "pre-wrap" }}>
                 {c.comment}
               </p>
             </div>
