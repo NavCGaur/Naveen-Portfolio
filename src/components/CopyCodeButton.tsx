@@ -27,7 +27,14 @@ export default function CopyCodeButton({ children, ...props }: CopyCodeButtonPro
 
   return (
     <div style={{ position: "relative" }}>
-      <pre ref={preRef} {...props}>
+      <pre 
+        ref={preRef} 
+        {...props}
+        style={{ 
+          ...((props.style as React.CSSProperties) || {}),
+          paddingRight: "80px" 
+        }}
+      >
         {children}
       </pre>
       <button
@@ -42,8 +49,10 @@ export default function CopyCodeButton({ children, ...props }: CopyCodeButtonPro
           color: copied ? "#22c55e" : "var(--bt-text-faint)",
           fontSize: "12px",
           fontFamily: "inherit",
-          padding: "4px 10px",
-          borderRadius: "5px",
+          padding: "4px 8px",
+          borderRadius: "4px",
+          backdropFilter: "blur(8px)",
+          zIndex: 10,
           cursor: "pointer",
           transition: "all 0.2s",
           letterSpacing: "0.02em",

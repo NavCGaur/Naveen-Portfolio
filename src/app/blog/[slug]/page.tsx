@@ -119,7 +119,7 @@ export default async function BlogPost({ params }: Props) {
                 {post.readingTime}
               </span>
             </div>
-            <h1 className="font-serif font-bold text-[clamp(32px,5vw,56px)] tracking-[0.01em] leading-[1.1] blog-heading mb-8">
+            <h1 className="font-serif font-bold text-[clamp(30px,4vw,44px)] tracking-[0.01em] leading-[1.1] blog-heading mb-8">
               {post.title}
             </h1>
             <p className="text-[20px] blog-text-muted leading-[1.7] font-normal mb-10">

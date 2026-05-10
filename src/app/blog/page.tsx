@@ -38,7 +38,7 @@ export default function BlogIndex() {
             <span className="block text-[11px] font-medium tracking-[0.14em] uppercase text-[#C4A35A] mb-4">
               Field Notes
             </span>
-            <h1 className="font-serif font-bold text-[clamp(36px,5vw,64px)] tracking-[0.01em] leading-[1.1] blog-heading mb-5">
+            <h1 className="font-serif font-bold text-[clamp(36px,5vw,64px)] tracking-[0.02em] leading-[1.1] blog-heading mb-5">
               WordPress tips &amp; guides
             </h1>
             <p className="text-[19px] blog-text-muted max-w-[540px] leading-[1.7] font-normal">
@@ -59,22 +59,21 @@ export default function BlogIndex() {
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    className="group relative overflow-hidden bg-white border blog-border hover:border-[#C4A35A]/40 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 p-8 flex flex-col"
+                    className="group relative overflow-hidden blog-card border blog-border hover:border-[#C4A35A]/40 rounded-xl hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] dark:hover:shadow-none transition-all duration-300 p-8 flex flex-col"
                   >
                     {/* Gold accent line on hover */}
                     <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#C4A35A] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
 
                     <div className="flex items-center gap-3 mb-5">
                       <span
-                        className={`text-[12px] font-bold tracking-[0.05em] uppercase px-3 py-1 rounded-sm ${
-                          categoryColors.default
-                        }`}
+                        className={`text-[12px] font-bold tracking-[0.05em] uppercase px-3 py-1 rounded-sm ${categoryColors.default
+                          }`}
                       >
                         {post.category}
                       </span>
                     </div>
 
-                    <h2 className="font-serif font-bold text-[22px] leading-[1.3] blog-heading group-hover:text-[#C4A35A] transition-colors duration-200 mb-4">
+                    <h2 className="font-serif font-bold text-[22px] tracking-[0.03em] leading-[1.3] blog-heading group-hover:text-[#C4A35A] transition-colors duration-200 mb-4">
                       {post.title}
                     </h2>
 

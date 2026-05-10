@@ -89,27 +89,29 @@ Admin → Property Settings → numeric Property ID. Wrong ID means wrong data.
 Both are required. Enabling only the Data API leaves your agent partially blind — it can run reports but can't read full property context. A partial setup that appears functional is worse than a failed one because it creates false confidence in incomplete analysis.
 
 **Step 3 — Authenticate securely**  
-Use Application Default Credentials (ADC):
+Use Application Default Credentials (ADC). Run this exact command to ensure both Analytics and Search Console scopes are requested:
 ```bash
-gcloud auth application-default login
+gcloud auth application-default login --scopes="https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/webmasters,https://www.googleapis.com/auth/analytics.readonly"
 ```
 Keeps credentials out of your codebase and is the cleanest option for local development.
 
 **Security note:** Create a dedicated service account with only the Analytics Data and Admin scopes required — avoid using your personal Google account credentials for client projects. Audit service account access regularly and never commit credentials to your repository.
 
 **Step 4 — Install and configure the MCP server**  
-Install the GA4 MCP server and configure it in your IDE's MCP settings, pointing it at your Google Cloud Project ID and the correct property.
+Install the GA4 MCP server and configure it in your IDE's MCP settings. **Crucial:** You must also include `GOOGLE_CLOUD_PROJECT` in your environment variables for the connection to handshake correctly.
 
 **Step 5 — Stay actively involved**  
 This is what most guides underplay. Your agent will make mistakes — wrong fixes, misread documentation, assumptions that don't fit your property. Treat it as a capable junior developer: fast and useful, but requiring direction. The quality of analysis you get out is directly proportional to how actively you guide it.
 
-## Three Gotchas Before You Start
+## Four Gotchas Before You Start
 
 **Silent hangs — Python buffering.** If the server connects but the agent sits thinking indefinitely with no error, add the `-u` flag to your Python command in `mcp_config.json`: `python -u -m analytics_mcp`. Python buffers stdout by default; MCP needs unbuffered output. No error message, just an infinite wait — now you know why.
 
 **Metric format mismatch.** If you see `Input validation error: {'name': 'conversions'} is not of type 'string'` — pass metrics as plain strings `["sessions", "conversions"]`, not as objects. Older GA4 API documentation shows the object format; the MCP server expects strings.
 
 **Missing Admin API.** Enable both APIs from the start. Without the Admin API, the agent can run reports but lacks property-level context — and incomplete analysis can produce misleading conclusions.
+
+**The "Quota Project" 403 error.** If you see `SERVICE_DISABLED` or `Quota Project not set`, run this command: `gcloud auth application-default set-quota-project [YOUR_PROJECT_ID]`. Google needs to know which project to "bill" the free API usage to, otherwise it refuses the connection entirely.
 
 ## What Permanently Changed
 
@@ -123,7 +125,7 @@ For client work, this creates a different category of service. An audit that con
 
 ## Should You Do This?
 
-If you build or optimise client sites: yes. The setup takes an afternoon the first time. Twenty minutes the second. What you get is a permanently tighter loop between what your code does and what your data shows.
+If you build or optimise client sites: yes. What you get is a permanently tighter loop between what your code does and what your data shows.
 
 If you run a business: find a developer who can set this up. The questions this workflow answers — what's affecting your conversion rate, whether your traffic quality is sound, whether your tracking is telling the truth — are worth answering on real data, not dashboard snapshots.
 

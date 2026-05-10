@@ -73,7 +73,7 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.05 }}
-              className="font-serif font-bold text-[clamp(28px,4vw,40px)] tracking-[-0.01em] leading-[1.1] text-ink"
+              className="font-serif font-bold text-[clamp(28px,4vw,40px)] tracking-[0.01em] leading-[1.1] text-ink"
             >
               Fix the immediate problem
             </motion.h2>
@@ -108,7 +108,7 @@ export default function Services() {
                 </div>
                 <div className="md:text-right">
                   <div className="font-serif text-[22px] text-ink whitespace-nowrap">{s.price}</div>
-                  <div className="text-[12px] text-ink-faint font-sans mt-0.5">{s.sub}</div>
+                  <div className="text-[14px] text-ink-faint font-sans mt-0.5">{s.sub}</div>
                 </div>
               </li>
             ))}
