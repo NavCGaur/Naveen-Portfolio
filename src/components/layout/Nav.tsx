@@ -17,7 +17,8 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const isDarkPage = pathname !== "/" && !pathname.startsWith("/blog");
+  const isBlogPage = pathname.startsWith("/blog");
+  const isDarkPage = pathname !== "/" && !isBlogPage;
   const isTextLight = isDarkPage && !scrolled;
 
   useEffect(() => {
@@ -31,14 +32,12 @@ export default function Nav() {
     setMenuOpen(false);
   };
 
+  const navBackground = (scrolled || isBlogPage)
+    ? "bg-surface/95 backdrop-blur-md border-b border-black/[0.08] shadow-sm"
+    : "bg-transparent";
+
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-surface/95 backdrop-blur-md border-b border-black/[0.08] shadow-sm"
-          : "bg-transparent"
-      }`}
-    >
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBackground}`}>
       <div className="w-full px-6 md:px-10 h-[60px] flex items-center justify-between">
         {/* Logo / Name */}
         <a

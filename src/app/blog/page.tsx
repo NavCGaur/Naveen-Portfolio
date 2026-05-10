@@ -27,6 +27,7 @@ const categoryColors: Record<string, string> = {
   SEO: "bg-green-500/10 text-green-400 border border-green-500/20",
   "WordPress Development": "bg-purple-500/10 text-purple-400 border border-purple-500/20",
   Maintenance: "bg-[#C4A35A]/10 text-[#C4A35A] border border-[#C4A35A]/20",
+  Analytics: "bg-cyan-500/10 text-cyan-500 border border-cyan-500/20",
   WordPress: "bg-[#C4A35A]/10 text-[#C4A35A] border border-[#C4A35A]/20",
 };
 
