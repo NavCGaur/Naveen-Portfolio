@@ -2,6 +2,31 @@ import { Project } from "@/hooks/use-project-modal"
 
 export const projectsData: Project[] = [
   {
+    slug: "looplearnx",
+    title: "LoopLearnX — AI-Powered Adaptive Learning Platform",
+    date: "2026-05-11",
+    description:
+      "An intelligent educational platform using Next.js 16 and Gemini 2.5 Flash to master subjects through Spaced Repetition (SRS), Vision AI grading, and PWA support.",
+    cover: "/images/projects/looplearnx.png",
+    client: "LoopLearnX",
+    industry: "EdTech / AI",
+    liveUrl: "https://looplearnx.vercel.app/",
+    repoUrl: "",
+    role: "Full Stack Developer",
+    techStack: ["Next.js 16", "React 19", "Tailwind CSS 4", "Supabase", "Google Gemini 2.5 Flash", "PWA", "Vitest"],
+    images: [
+      "/images/projects/looplearnx.png"
+    ],
+    overview:
+      "LoopLearnX is a modern educational application built to help students master subjects efficiently. It leverages algorithmic question scheduling (SRS) and multimodal AI to provide personalized feedback and automated content generation.",
+    challenge:
+      "Implementing complex Spaced Repetition logic with offline support (PWA) and building high-precision AI features like handwritten answer grading and PDF-based question grounding.",
+    solution:
+      "Developed a cutting-edge stack using Next.js 16 App Router and Supabase. Integrated Gemini 2.5 Flash via Server Actions for secure, multimodal processing. Built a custom SRS engine and a robust Service Worker for offline quiz capabilities.",
+    results:
+      "A feature-rich platform supporting Vision AI grading, automated teacher dashboards, Hinglish feedback modes, and a seamless mobile-first learning experience that counteracts the 'forgetting curve'.",
+  },
+  {
     slug: "robyn-usa",
     title: "Robyn USA — WordPress Stabilisation",
     date: "2026-04-12",

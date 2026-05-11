@@ -17,6 +17,44 @@ To prevent "Quota Project" errors in Google APIs, set your project ID:
 gcloud auth application-default set-quota-project [YOUR_PROJECT_ID]
 ```
 
+## May 2026 Critical Fixes
+
+If the GA4 connection is "stuck" or blocked, ensure these three elements are correctly configured:
+
+### 1. Bypass "App Blocked" with Custom Client ID
+Google now blocks the default `gcloud` client ID for the `analytics.readonly` scope. To bypass this, you **must** use your own OAuth Client ID from the Google Cloud Console.
+- **Command:** 
+  ```powershell
+  gcloud auth application-default login --scopes="https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/analytics.readonly" --client-id-file="client_secret_YOUR_ID.json"
+  ```
+
+### 2. Set the Quota Project
+Google requires a specific project to be billed for API usage, even for free tiers. 
+- **Command:**
+  ```powershell
+  gcloud auth application-default set-quota-project YOUR_PROJECT_ID
+  ```
+
+### 3. Prevent "Silent Hangs" (Python 3.14+)
+Windows command stubs and Python buffering can cause the MCP server to hang indefinitely.
+- **Config fix:** Use the **absolute path** to your Python executable in `mcp_config.json`.
+- **Code fix:** Ensure no `print()` statements reach `stdout`. (Patched in `server.py`).
+
+```json
+"google-analytics": {
+  "command": "C:\\Users\\verti\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+  "args": ["-u", "-W", "ignore", "-m", "analytics_mcp"],
+  "env": {
+    "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\verti\\AppData\\Roaming\\gcloud\\application_default_credentials.json",
+    "GOOGLE_CLOUD_PROJECT": "your-project-id"
+  }
+}
+```
+
+---
+
+*Last Updated: May 11, 2026*
+
 ---
 
 ## 2. Configuration (`mcp_config.json`)
