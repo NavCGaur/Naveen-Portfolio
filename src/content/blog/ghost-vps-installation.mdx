@@ -1,0 +1,285 @@
+---
+title: "How to Install Ghost CMS on a VPS (Complete Self-Hosting Guide)"
+description: "Complete guide to self-hosting Ghost CMS on a VPS (Hetzner/Ubuntu). Step-by-step instructions for installation, MySQL setup, SSL, and security hardening."
+date: "2026-05-12"
+category: "Ghost CMS"
+image: "/images/blog/ghost/ghost-vps-install.png"
+---
+
+Ghost Pro is convenient, but if you want full control over your site, custom integrations, or simply lower monthly costs, self-hosting Ghost on a VPS is the better choice. This guide walks through the complete setup process — from choosing a server to having Ghost live with HTTPS.
+
+---
+
+## What You'll Need
+
+- A VPS (Hetzner, DigitalOcean, Vultr, Linode — any works)
+- A domain name pointed to your server's IP
+- Ubuntu 22.04 or 24.04 (recommended)
+- About 2–3 hours if you're doing this for the first time
+
+**Minimum server specs for Ghost:**
+- 1 GB RAM (2 GB recommended)
+- 1 vCPU
+- 20 GB SSD
+
+Hetzner's CX11 (~€3.29/month) is a popular starting point for small Ghost installations.
+
+---
+
+## Step 1: Set Up Your VPS
+
+After you create your VPS and get the IP address, connect via SSH:
+
+```bash
+ssh root@YOUR_SERVER_IP
+```
+
+Update the system first:
+
+```bash
+apt update && apt upgrade -y
+```
+
+Create a non-root user (important for security):
+
+```bash
+adduser ghostuser
+usermod -aG sudo ghostuser
+```
+
+Switch to the new user:
+
+```bash
+su - ghostuser
+```
+
+---
+
+## Step 2: Install Node.js
+
+Ghost requires a specific version of Node.js. Check the [Ghost documentation](https://ghost.org/docs/install/ubuntu/) for the currently supported version. As of 2025, Ghost supports Node.js v18 and v20.
+
+Install Node.js via NodeSource:
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+
+Verify:
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+## Step 3: Install MySQL
+
+Ghost uses MySQL as its database:
+
+```bash
+sudo apt install -y mysql-server
+sudo mysql_secure_installation
+```
+
+During `mysql_secure_installation`, set a root password, remove anonymous users, and disable remote root login when prompted.
+
+Create a dedicated database and user for Ghost:
+
+```bash
+sudo mysql -u root -p
+```
+
+Inside MySQL:
+
+```sql
+CREATE DATABASE ghost_db;
+CREATE USER 'ghost_user'@'localhost' IDENTIFIED BY 'StrongPasswordHere';
+GRANT ALL PRIVILEGES ON ghost_db.* TO 'ghost_user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+---
+
+## Step 4: Install Nginx
+
+Nginx acts as a reverse proxy, routing web traffic to Ghost:
+
+```bash
+sudo apt install -y nginx
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```
+
+---
+
+## Step 5: Install Ghost CLI
+
+The Ghost CLI handles installation, updates, and management:
+
+```bash
+sudo npm install ghost-cli@latest -g
+```
+
+---
+
+## Step 6: Create the Ghost Directory and Install Ghost
+
+```bash
+sudo mkdir -p /var/www/ghost
+sudo chown ghostuser:ghostuser /var/www/ghost
+sudo chmod 775 /var/www/ghost
+cd /var/www/ghost
+```
+
+Run the Ghost installer:
+
+```bash
+ghost install
+```
+
+The CLI will ask you several questions:
+
+- **Blog URL:** Enter `https://yourdomain.com`
+- **MySQL hostname:** `localhost`
+- **MySQL username:** `ghost_user`
+- **MySQL password:** The password you set above
+- **MySQL database name:** `ghost_db`
+- **Set up a ghost MySQL user?:** No (we already created one)
+- **Set up Nginx?:** Yes
+- **Set up SSL?:** Yes (requires your domain's DNS to already point to this server)
+- **Set up systemd?:** Yes
+
+If your domain's DNS hasn't propagated yet, choose `No` for SSL and set it up afterward with:
+
+```bash
+ghost setup ssl
+```
+
+---
+
+## Step 7: Verify the Installation
+
+Check Ghost is running:
+
+```bash
+ghost status
+```
+
+Visit `https://yourdomain.com` — you should see the default Ghost site. Go to `https://yourdomain.com/ghost` to complete the setup and create your admin account.
+
+---
+
+## Step 8: Basic Security Hardening
+
+**Set up a firewall:**
+
+```bash
+sudo ufw allow OpenSSH
+sudo ufw allow 'Nginx Full'
+sudo ufw enable
+```
+
+**Install Fail2ban** to protect against brute force attacks:
+
+```bash
+sudo apt install -y fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+```
+
+---
+
+## Step 9: Configure Email (Essential)
+
+Ghost needs SMTP to send member invites, password resets, and newsletters. Without it, several features won't work.
+
+Edit the Ghost configuration:
+
+```bash
+sudo nano /var/www/ghost/config.production.json
+```
+
+Add the mail section (example using Mailgun):
+
+```json
+"mail": {
+  "transport": "SMTP",
+  "options": {
+    "service": "Mailgun",
+    "host": "smtp.mailgun.org",
+    "port": 587,
+    "auth": {
+      "user": "postmaster@mg.yourdomain.com",
+      "pass": "YOUR_MAILGUN_SMTP_PASSWORD"
+    }
+  },
+  "from": "'Your Blog Name' <hello@yourdomain.com>"
+}
+```
+
+Save and restart Ghost:
+
+```bash
+ghost restart
+```
+
+> For Brevo SMTP, use `smtp-relay.brevo.com` on port 587. Use your **SMTP login** (in format `xxxxxxx@smtp-brevo.com`) and your **SMTP key** — not your API key. These are found under Account → SMTP & API → SMTP tab in the Brevo dashboard.
+
+---
+
+## Useful Ghost CLI Commands
+
+| Command | What it does |
+|---|---|
+| `ghost start` | Start Ghost |
+| `ghost stop` | Stop Ghost |
+| `ghost restart` | Restart Ghost |
+| `ghost status` | Check if Ghost is running |
+| `ghost update` | Update to the latest version |
+| `ghost ls` | List Ghost installations |
+| `ghost log` | View Ghost error logs |
+
+---
+
+## How Long Does This Take?
+
+For an experienced developer working without issues:
+
+- VPS setup: 30 minutes
+- Server dependencies: 45 minutes
+- Ghost install and config: 30 minutes
+- SSL and domain setup: 20 minutes
+- Testing: 30 minutes
+- Security hardening: 15 minutes
+
+**Total: roughly 2.5–3.5 hours.** If you're newer to Linux servers, budget 4–5 hours including troubleshooting.
+
+---
+
+## Common Issues
+
+**Ghost install fails with "MySQL error"** — Check your database name, username, and password. MySQL is case-sensitive for usernames.
+
+**SSL setup fails** — Your domain's DNS must point to the server before SSL can be provisioned. Wait for DNS propagation (up to 48 hours for some registrars, usually under an hour for Cloudflare).
+
+**Ghost won't start after restart** — Run `ghost log` to read the error. Often it's a config file syntax error — JSON doesn't allow trailing commas.
+
+**Email not sending** — Run a test from the server using Node.js with the `nodemailer` package to verify SMTP credentials independently of Ghost.
+
+---
+
+## Summary
+
+Self-hosting Ghost on a VPS gives you full control over your publishing platform at a fraction of the cost of Ghost Pro. The Ghost CLI handles most of the complexity — the main things to get right are MySQL setup, DNS configuration before SSL, and email configuration post-install.
+
+For client Ghost installations, this is the standard setup flow. With experience, you can complete a clean install in under 3 hours.
+
+Ghost VPS installation is one of the services I offer for clients moving off Ghost Pro or migrating from WordPress. Typical turnaround is 1–2 days including SMTP setup. Enquire here.
+
+---
+
+*Related: [Configuring Email for Ghost CMS: Mailgun, Brevo, and SMTP](/blog/ghost-email-smtp) | [Ghost Staff Roles and User Management Explained](/blog/ghost-staff-roles-pro)*
