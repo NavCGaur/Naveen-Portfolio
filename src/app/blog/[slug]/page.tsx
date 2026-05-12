@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
 import type { BlogPost } from "@/lib/blog";
 import Nav from "@/components/layout/Nav";
@@ -152,7 +153,15 @@ export default async function BlogPost({ params }: Props) {
         <article className="py-14 px-6 md:px-10">
           <div className="max-w-[760px] mx-auto prose-blog">
             <ArticleTracker slug={post.slug} />
-            <MDXRemote source={post.content} components={mdxComponents} />
+            <MDXRemote 
+              source={post.content} 
+              components={mdxComponents} 
+              options={{
+                mdxOptions: {
+                  remarkPlugins: [remarkGfm],
+                }
+              }}
+            />
           </div>
         </article>
 
