@@ -90,6 +90,7 @@ function ArticleJsonLd({ post }: { post: BlogPost }) {
 // MDX component overrides — CopyCodeButton replaces <pre> blocks
 const mdxComponents = {
   pre: CopyCodeButton,
+  ArticleCTALink: ArticleCTALink,
 };
 
 export default async function BlogPost({ params }: Props) {
