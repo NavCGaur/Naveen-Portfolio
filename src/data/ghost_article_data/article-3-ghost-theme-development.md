@@ -1,0 +1,214 @@
+# Ghost CMS Theme Development: Understanding post.hbs, Partials, and Related Posts
+
+**Target keywords:** Ghost CMS theme development, Ghost post.hbs template, Ghost partials, Ghost related posts not showing, Ghost CMS Handlebars templates, Ghost theme file structure
+
+---
+
+If you've moved past Code Injection and are editing Ghost theme files directly, you've entered the world of Ghost's Handlebars-based templating system. This guide covers the key files every Ghost theme developer needs to understand — especially `post.hbs`, partials, and the related posts section that commonly breaks when the theme structure changes.
+
+---
+
+## Ghost Theme File Structure: The Basics
+
+A Ghost theme is a folder of `.hbs` (Handlebars) template files, CSS, and JavaScript. Here are the files that matter most for post pages:
+
+| File | What it controls |
+|---|---|
+| `post.hbs` | Layout of individual article pages |
+| `index.hbs` | The main blog listing / homepage |
+| `partials/related.hbs` | The "Related Posts" section |
+| `partials/latest.hbs` | The "Latest Posts" section |
+| `partials/topper.hbs` | Post header (title, author, date) |
+| `partials/card.hbs` | Reusable post card used in listings |
+| `assets/css/screen.css` | Main stylesheet |
+
+---
+
+## Understanding the `post.hbs` Structure
+
+A typical `post.hbs` file looks like this:
+
+```handlebars
+{{!< default}}
+
+{{#post}}
+  {{> topper}}
+
+  <div class="content-with-sidebar-container">
+    <article class="c-post {{ post_class }}">
+      {{#if access}}
+        {{#if @custom.enable_table_of_contents}}
+          {{> table-of-contents}}
+        {{/if}}
+      {{/if}}
+
+      <div class="c-content">
+        {{ content }}
+
+        <div class="custom-author-box">
+          <!-- Author box here -->
+        </div>
+      </div>
+
+      {{#unless access}}
+        {{> upgrade}}
+      {{/unless}}
+
+      {{> comments/ghost}}
+    </article>
+
+    <aside class="article-sidebar">
+      <!-- Sidebar with latest posts -->
+    </aside>
+  </div>
+
+  {{> related}}
+  {{> latest}}
+{{/post}}
+```
+
+The critical rule: **everything that needs access to the current post's data must be inside `{{#post}}...{{/post}}`**. This includes partials like `{{> related}}` and `{{> latest}}`.
+
+---
+
+## The Most Common Ghost Theme Mistake: Context Errors in Partials
+
+When a partial like `related.hbs` is included inside `{{#post}}`, you're already *in the post context*. That means you access post properties **without** the `post.` prefix.
+
+**Wrong:**
+```handlebars
+{{#get 'posts' filter='tags:[{{post.primary_tag.slug}}]+id:-{{post.id}}'}}
+```
+
+**Correct:**
+```handlebars
+{{#get 'posts' filter='tags:[{{primary_tag.slug}}]+id:-{{id}}'}}
+```
+
+This is the number one reason related posts don't appear — the selector is looking for `post.primary_tag.slug` when the variable is simply `primary_tag.slug` at the current context level.
+
+---
+
+## Fixing the Related Posts Partial
+
+Here's a working `related.hbs` that correctly fetches posts sharing the same primary tag:
+
+```handlebars
+{{!--
+  Related Posts
+  Shows up to 4 posts with the same primary tag.
+  Requires current post to have a primary tag assigned.
+--}}
+
+{{#get 'posts' filter='tags:[{{primary_tag.slug}}]+id:-{{id}}' include='tags,authors' order='published_at desc' limit='4'}}
+  {{#if posts}}
+    <div class="c-section c-section--related">
+      <div class="o-grid">
+        <div class="c-section-heading">
+          <h2 class="c-section-heading__title">{{t 'Related'}}</h2>
+        </div>
+      </div>
+
+      <div class="o-grid o-grid--4-columns">
+        {{#foreach posts}}
+          {{> card showExcerpt=true}}
+        {{/foreach}}
+      </div>
+    </div>
+  {{/if}}
+{{/get}}
+```
+
+**Why related posts might still not appear:**
+
+- The current post has no primary tag assigned — check under **Post settings → Tags** and ensure the first tag listed is the one you want as primary
+- There are fewer than two posts sharing the same primary tag
+- The `card.hbs` partial is missing or broken — verify it exists in your `partials/` folder
+
+---
+
+## Debugging Ghost Partials
+
+When a section isn't appearing and you're not sure why, use these debug techniques:
+
+**1. Check if the partial is even loading:**
+
+Add HTML comments at the top and bottom of your partial file:
+```handlebars
+<!-- RELATED SECTION START -->
+  ... your partial code ...
+<!-- RELATED SECTION END -->
+```
+View the page source. If you don't see these comments, the partial isn't being included at all.
+
+**2. Force visibility with CSS:**
+
+```css
+.related-section, .c-section--related {
+  border: 3px solid red !important;
+  display: block !important;
+  min-height: 50px;
+}
+```
+
+If the red border appears but the content is empty, the template is rendering but the data fetch returned nothing.
+
+**3. Check the browser console:**
+
+Look for JavaScript errors that might be interfering with JavaScript-powered sections.
+
+---
+
+## What Breaks When You Modify post.hbs
+
+Changing the structure of `post.hbs` has ripple effects. Here's what to check after any structural change:
+
+**Partials that may break:**
+- `topper.hbs` — post header/hero area
+- `table-of-contents.hbs` — if TOC depends on `.c-content` selector
+- `related.hbs` and `latest.hbs` — lose data if moved outside `{{#post}}`
+- `comments/ghost.hbs` — may stop working if moved outside article context
+
+**CSS that may break:**
+- Any styles targeting `.post-full-content`, `.c-content`, `.c-post`
+- Responsive styles that assume a single-column layout (if you add a sidebar)
+- Mobile breakpoints if your layout now uses flexbox or grid
+
+**JavaScript that may break:**
+- Reading time estimators that scan `.post-content`
+- Image lightbox plugins targeting specific container selectors
+- Sticky sidebar behavior
+
+**Testing checklist after modifying post.hbs:**
+
+- [ ] Standard text post displays correctly
+- [ ] Post with a featured image shows correctly
+- [ ] Related posts appear (requires tagged posts)
+- [ ] Author box shows correct data
+- [ ] Sidebar loads latest articles
+- [ ] Member-only content paywall still works
+- [ ] Mobile layout is readable
+- [ ] Table of contents works (if enabled)
+
+---
+
+## Controlling Home Page Section Order
+
+If your Ghost theme uses tag-based homepage sections (for example: Culture, Politics, Economy, Technology), the order of sections is typically controlled by the order you've listed the tags in **Settings → Design → Theme settings**.
+
+If the order in theme settings doesn't match what you see on the site, the issue is usually that the `{{#get}}` helper fetches tags in a default sort order rather than the order you specified. The fix is to either:
+
+1. **Reorder the tags in theme settings** and save — many themes re-read this on refresh
+2. **Edit `home-tags-sections.hbs`** to process tags in the same sequence as your settings value, using JavaScript within a `{{#script}}` block to sort before rendering
+
+---
+
+## Summary
+
+Ghost's Handlebars templating system is elegant once you understand context. The biggest pitfall is accessing data with the wrong prefix — especially in partials. Always keep your partials inside the right context block, use debug comments to verify partials are loading, and test thoroughly after any structural change to `post.hbs`.
+
+For Ghost theme development work or theme customizations for clients, understanding these fundamentals saves hours of debugging.
+
+---
+
+*Related: [How to Add a Custom Author Box in Ghost CMS](#) | [Ghost CMS CSS Customization Guide](#)*

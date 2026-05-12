@@ -1,0 +1,152 @@
+# Ghost CMS Staff Roles, User Management, and Ghost Pro Limitations Explained
+
+**Target keywords:** Ghost CMS staff roles, Ghost CMS user permissions, Ghost Pro limitations, Ghost admin vs editor, Ghost CMS bio character limit, Ghost Pro vs self-hosted
+
+---
+
+Managing users in Ghost CMS is straightforward once you understand how its role system works. This guide covers the five built-in roles, how to invite staff members, what you can and can't customize on Ghost Pro, and workarounds for Ghost Pro's field limitations.
+
+---
+
+## Ghost CMS Staff Roles: All Five Explained
+
+Ghost has **five built-in roles**. Each one controls what a person can do inside Ghost Admin:
+
+### Owner
+
+The account that created the Ghost site. There is **only one Owner** per installation, and this account cannot be deleted. The Owner has all Administrator permissions, plus exclusive access to billing details on Ghost Pro.
+
+### Administrator
+
+Full access to everything: content, staff, settings, integrations, themes, and billing. Administrators can invite and remove other staff members (except the Owner). When you add a developer to your Ghost site to do technical work, this is the role to give them.
+
+### Editor
+
+Can create, edit, publish, and delete posts and pages — including posts by other users. Editors can manage tags and invite/manage Authors and Contributors. Editors **cannot** change site settings, themes, or billing.
+
+### Author
+
+Can write, edit, and publish their own posts. Cannot edit other people's posts, manage staff, or change any site settings.
+
+### Contributor
+
+The most restricted role. Contributors can write draft posts but **cannot publish** anything. They also cannot edit other people's work or access site settings. Best for external writers you want to review before publishing.
+
+---
+
+## How to Add Staff Members to Ghost
+
+Ghost uses an **email invitation flow** — there's no option to manually create a user account with a password through the admin UI. Here's the correct process:
+
+1. Log into Ghost Admin
+2. Go to **Settings → Staff**
+3. Click **Invite people**
+4. Enter the person's email address
+5. Select their role
+6. Click **Send invitation**
+
+The invited person receives an email with a link to create their account and set their password.
+
+> **Important for self-hosted Ghost:** If you get no email after sending an invite, it's because SMTP (outgoing email) is not configured on your server. Ghost Pro handles this automatically. For self-hosted, you need to set up Mailgun, Brevo, or another SMTP provider first.
+
+---
+
+## What If Email Invites Aren't Working?
+
+If your SMTP isn't configured yet and you need to give someone access urgently, here are your options in order of preference:
+
+**Option 1: Configure SMTP first (recommended)**  
+This is the clean solution. It takes about 10–15 minutes with Mailgun or Brevo, and it also fixes related issues like password resets and member sign-ins.
+
+**Option 2: Share admin credentials temporarily**  
+The current admin logs in, creates a new account for the developer, and then changes their own password afterward. This isn't ideal but gets the job done.
+
+**Option 3: Use Ghost Admin API**  
+If you have a valid admin API token, you can create a user via the API. This is technical but avoids direct database access.
+
+**Option 4: Direct database manipulation (last resort)**  
+It's technically possible to insert a user record directly into Ghost's MySQL database, but this requires generating a bcrypt password hash and manually constructing the database record. It bypasses Ghost's built-in user management and logging, and carries a risk of data corruption if done incorrectly. Always take a database backup first with `mysqldump` before attempting this.
+
+The correct sequence: fix email first (it solves multiple problems at once), use credential sharing if truly urgent, and avoid database manipulation except as a genuine last resort.
+
+---
+
+## Ghost Pro vs. Self-Hosted: What Can You Customize?
+
+Ghost Pro is a managed hosting service. You don't have access to the server or core files. Here's a clear breakdown of what each setup allows:
+
+| Customization | Ghost Pro | Self-Hosted |
+|---|---|---|
+| Theme CSS and templates | ✅ (upload your own theme) | ✅ |
+| Code Injection (CSS/JS) | ✅ | ✅ |
+| Custom integrations via webhooks/API | ✅ | ✅ |
+| Core Ghost files (validation, routes) | ❌ | ✅ |
+| Database schema changes | ❌ | ✅ |
+| Server-side validation rules | ❌ | ✅ |
+| SMTP configuration | ❌ (handled by Ghost) | ✅ |
+| Custom Node.js plugins | ❌ | ✅ |
+
+---
+
+## Ghost Pro's Bio Character Limit: The Problem and the Workarounds
+
+Ghost staff user bios are limited to **200 characters** — a limit enforced in Ghost's API validation and the Admin UI. On self-hosted Ghost, you can technically modify the validation files to increase this limit. On **Ghost Pro, you cannot modify these files**.
+
+If a Ghost Pro client wants longer author bios, here are practical workarounds:
+
+### Option 1: Create Dedicated Author Pages (No Code Required)
+
+This is the easiest approach for non-technical users:
+
+1. In Ghost Admin, go to **Pages → New page**
+2. Title the page with the author's name (e.g., "About Jane Smith")
+3. Write the full author bio, add photos, social links — no character limit
+4. Publish the page
+5. In **Settings → Staff**, update the author's bio to a short summary and add: *"Read full bio →"* with the link to their page
+
+This gives authors rich, unlimited bio pages while keeping the 200-character field as a teaser.
+
+### Option 2: Extended Bio via Code Injection
+
+If you're editing the theme, you can hide the default bio display and replace it with content from a custom field:
+
+```handlebars
+{{#author}}
+  <p>{{bio}}</p>
+  {{#if custom_about}}
+    <div class="extended-bio">
+      {{{custom_about}}}
+    </div>
+  {{/if}}
+{{/author}}
+```
+
+Note: Ghost's built-in `custom_about` field would need to exist in your theme's custom settings. This approach requires theme editing, which is supported on Ghost Pro via theme uploads.
+
+### Option 3: External Author Profile Pages
+
+Host a separate profile page for each author on Netlify, Vercel, or any static host. Link from the 200-character Ghost bio:
+
+> *Content strategist and editor. [Full profile →](https://yoursite.com/team/jane)*
+
+This fully bypasses Ghost's limitation and works for any hosting setup.
+
+---
+
+## What Ghost Support Can Help With
+
+If you're on Ghost Pro and hit a platform limitation, it's worth contacting Ghost support. They do occasionally respond to feature requests and have increased limits for specific use cases. For the bio limit specifically, requesting an increase platform-wide is the official path.
+
+---
+
+## Key Takeaways
+
+- Ghost has 5 roles: Owner, Administrator, Editor, Author, Contributor
+- Staff accounts are created via email invitation — there's no manual password creation in the UI
+- Ghost Pro limits you to theme customization and API integrations — no core file access
+- The 200-character bio limit can't be removed on Ghost Pro, but dedicated author pages are an effective workaround
+- For self-hosted Ghost, you have full control and can modify validation rules, database schema, and server configuration
+
+---
+
+*Related: [Ghost CMS Email Configuration](#) | [Installing Ghost CMS on a VPS](#)*
