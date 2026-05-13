@@ -6,9 +6,9 @@ export default function JsonLd() {
     url: "https://naveengaur.com",
     email: "hello@naveengaur.com",
     telephone: "+919920899845",
-    jobTitle: "Freelance WordPress Developer & Full-Stack Web Developer",
+    jobTitle: "WordPress Performance Specialist & Full-Stack Consultant",
     description:
-      "Freelance WordPress developer specializing in emergency fixes, speed optimization, malware removal, and ongoing maintenance for small businesses and founders globally.",
+      "WordPress Performance Specialist & Full-Stack Consultant specializing in Technical SEO, emergency recovery, custom web apps, and performance optimization for founders and agencies globally.",
     knowsAbout: [
       "WordPress Development",
       "WordPress Speed Optimization",
@@ -45,10 +45,10 @@ export default function JsonLd() {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Naveen Gaur — Freelance WordPress Developer",
+    name: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
     url: "https://naveengaur.com",
     description:
-      "Hire a freelance WordPress developer for emergency fixes, speed optimization, malware removal, and monthly maintenance retainers.",
+      "WordPress Performance Specialist & Full-Stack Consultant specializing in Technical SEO, emergency recovery, and custom web apps.",
     author: {
       "@type": "Person",
       name: "Naveen Gaur",
@@ -66,10 +66,10 @@ export default function JsonLd() {
   const webpageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Naveen Gaur — Freelance WordPress Developer & Speed Expert",
+    name: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
     url: "https://naveengaur.com",
     description:
-      "Portfolio and services page for Naveen Gaur, a freelance WordPress developer offering emergency fixes, performance audits, and maintenance retainers for small businesses.",
+      "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
     author: {
       "@type": "Person",
       name: "Naveen Gaur",
@@ -88,12 +88,12 @@ export default function JsonLd() {
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "Naveen Gaur — Freelance WordPress Developer",
+    name: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
     url: "https://naveengaur.com",
     telephone: "+919920899845",
     email: "hello@naveengaur.com",
     description:
-      "Freelance WordPress developer offering emergency crash recovery, speed optimization, malware removal, and monthly maintenance retainers for small business websites globally.",
+      "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
     provider: {
       "@type": "Person",
       name: "Naveen Gaur",

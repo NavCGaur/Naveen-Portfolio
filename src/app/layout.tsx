@@ -26,25 +26,20 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://naveengaur.com"),
   title: {
-    default: "Naveen Gaur — Freelance WordPress Developer & Bug Fix Expert",
+    default: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
     template: "%s | Naveen Gaur",
   },
   description:
-    "Freelance WordPress developer specializing in crash recovery, speed optimization, malware removal, and monthly maintenance for small businesses. Fast turnaround, direct access, no agency middlemen.",
+    "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
   keywords: [
-    "freelance WordPress developer",
-    "WordPress bug fix",
-    "WordPress crash recovery",
+    "WordPress Performance Specialist",
+    "Full-Stack Consultant",
+    "Technical SEO",
+    "WordPress Emergency Recovery",
+    "Custom Web Applications",
     "WordPress speed optimization",
     "WordPress malware removal",
-    "WordPress hacked site fix",
     "WordPress maintenance retainer",
-    "hire WordPress developer",
-    "WordPress emergency fix",
-    "WordPress security expert",
-    "WordPress plugin conflict fix",
-    "slow WordPress website fix",
-    "WordPress developer for hire",
     "Naveen Gaur",
     "naveengaur.com",
   ],
@@ -54,24 +49,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://naveengaur.com",
-    siteName: "Naveen Gaur — Freelance WordPress Developer",
-    title: "Naveen Gaur — Freelance WordPress Developer & Bug Fix Expert",
+    siteName: "Naveen Gaur — Performance & Full-Stack Consultant",
+    title: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
     description:
-      "WordPress crash recovery, speed optimization, malware removal, and monthly maintenance. Fast turnaround, direct access, no agency bloat.",
+      "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Naveen Gaur — Freelance WordPress Developer & Bug Fix Expert",
+        alt: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Naveen Gaur — Freelance WordPress Developer & Bug Fix Expert",
+    title: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
     description:
-      "WordPress crash recovery, speed optimization, malware removal, and monthly maintenance. Fast. Direct. Reliable.",
+      "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
     images: ["/og-image.png"],
   },
   robots: {
