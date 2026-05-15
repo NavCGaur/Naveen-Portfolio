@@ -30,19 +30,19 @@ const oneTimeServices = [
 ];
 
 const essentialFeatures = [
-  "24/7 uptime monitoring with instant alerts",
-  "Weekly off-site backups (restore in minutes)",
-  "Supervised theme & plugin updates",
-  "Security scanning & malware watch",
-  "Monthly plain-English health report",
+  "Supervised theme & plugin updates (Staging first)",
+  "AI-Native security & speed monitoring",
+  "Weekly off-site encrypted backups",
+  "No-Hack Guarantee (Free cleanup if breached)",
+  "Monthly Executive Health Report",
 ];
 
 const growthFeatures = [
-  "Everything in Essential",
-  "Continuous Core Web Vitals & speed tuning",
-  "SEO monitoring, fixes & monthly insights",
-  "Priority support — you skip the queue",
-  "1 hr/month of hands-on development, no ticket system",
+  "Everything in Professional",
+  "Priority 12-hour response guarantee",
+  "Continuous Core Web Vitals optimization",
+  "SEO health guard & monthly insights",
+  "1 hr/month of custom development / strategy",
 ];
 
 function CheckIcon() {
@@ -158,14 +158,14 @@ export default function Services() {
             >
               {/* Gold accent line on hover */}
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out rounded-b-lg z-10" />
-              <div className="text-[15px] font-medium tracking-[0.05em] uppercase text-ink-faint mb-4">Essential</div>
-              <div className="font-serif font-bold text-[48px] tracking-[-0.02em] text-ink leading-none mb-1.5">$29</div>
+              <div className="text-[15px] font-medium tracking-[0.05em] uppercase text-ink-faint mb-4">Professional</div>
+              <div className="font-serif font-bold text-[48px] tracking-[-0.02em] text-ink leading-none mb-1.5">$49</div>
               <div className="text-[15px] text-ink-faint mb-7">per month</div>
               <div className="text-[15px] font-medium text-ink mb-2 leading-[1.4]">
-                Your site stays online, backed up, and out of trouble.
+                Proactive stability and security for your business site.
               </div>
               <div className="text-[14px] text-ink-muted mb-7 leading-[1.6]">
-                The baseline every site needs — especially if you don&apos;t have time to babysit updates.
+                The baseline every professional site needs to stay fast, secure, and online.
               </div>
               <div className="h-px bg-black/[0.09] mb-6" />
               <ul className="flex flex-col gap-3">
@@ -191,14 +191,14 @@ export default function Services() {
               <span className="absolute -top-3 left-8 bg-gold text-ink text-[10px] font-medium tracking-[0.1em] uppercase px-3 py-1 rounded-full">
                 Most Popular
               </span>
-              <div className="text-[15px] font-medium tracking-[0.05em] uppercase text-white/60 mb-4">Growth &amp; Performance</div>
-              <div className="font-serif font-bold text-[48px] tracking-[-0.02em] text-gold leading-none mb-1.5">$99</div>
+              <div className="text-[15px] font-medium tracking-[0.05em] uppercase text-white/60 mb-4">Expert Consulting</div>
+              <div className="font-serif font-bold text-[48px] tracking-[-0.02em] text-gold leading-none mb-1.5">$149</div>
               <div className="text-[15px] text-white/60 mb-7">per month</div>
               <div className="text-[15px] font-medium text-white mb-2 leading-[1.4]">
-                Your site stays online and keeps getting better.
+                High-performance management for growing founders.
               </div>
               <div className="text-[14px] text-white/70 mb-7 leading-[1.6]">
-                Ideal if you care about speed, search rankings, and having a developer you can actually reach.
+                Ideal for e-commerce or high-traffic sites where speed, rankings, and priority access matter most.
               </div>
               <div className="h-px bg-white/10 mb-6" />
               <ul className="flex flex-col gap-3">
