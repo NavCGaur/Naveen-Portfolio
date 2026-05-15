@@ -41,8 +41,8 @@ const growthFeatures = [
   "Everything in Professional",
   "Priority 12-hour response guarantee",
   "Continuous Core Web Vitals optimization",
-  "SEO health guard & monthly insights",
-  "1 hr/month of custom development / strategy",
+  "SEO Health Guard & monthly insights",
+  "1 hr/month of custom dev / strategy calls",
 ];
 
 function CheckIcon() {
