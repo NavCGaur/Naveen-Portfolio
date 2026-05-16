@@ -26,11 +26,11 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://naveengaur.com"),
   title: {
-    default: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
+    default: "Naveen Gaur | WordPress Specialist & Full-Stack Consultant",
     template: "%s | Naveen Gaur",
   },
   description:
-    "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
+    "High-performance WordPress solutions for founders. Specialist in Emergency Recovery, Technical SEO, and AI-Native Workflows. I fix what others can't.",
   keywords: [
     "WordPress Performance Specialist",
     "Full-Stack Consultant",
