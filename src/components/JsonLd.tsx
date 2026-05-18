@@ -45,7 +45,7 @@ export default function JsonLd() {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
+    name: "Naveen Gaur — WordPress Performance Specialist & Full-Stack Consultant",
     url: "https://naveengaur.com",
     description:
       "WordPress Performance Specialist & Full-Stack Consultant specializing in Technical SEO, emergency recovery, and custom web apps.",
@@ -66,7 +66,7 @@ export default function JsonLd() {
   const webpageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
+    name: "Naveen Gaur — WordPress Performance Specialist & Full-Stack Consultant",
     url: "https://naveengaur.com",
     description:
       "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
@@ -88,7 +88,7 @@ export default function JsonLd() {
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
+    name: "Naveen Gaur — WordPress Performance Specialist & Full-Stack Consultant",
     url: "https://naveengaur.com",
     telephone: "+919920899845",
     email: "hello@naveengaur.com",

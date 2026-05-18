@@ -26,11 +26,11 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://naveengaur.com"),
   title: {
-    default: "Naveen Gaur | WordPress Specialist & Full-Stack Consultant",
+    default: "Naveen Gaur | WordPress Performance Specialist & Full-Stack Consultant",
     template: "%s | Naveen Gaur",
   },
   description:
-    "High-performance WordPress solutions for founders. Specialist in Emergency Recovery, Technical SEO, and AI-Native Workflows. I fix what others can't.",
+    "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
   keywords: [
     "WordPress Performance Specialist",
     "Full-Stack Consultant",
@@ -49,8 +49,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://naveengaur.com",
-    siteName: "Naveen Gaur — Performance & Full-Stack Consultant",
-    title: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
+    siteName: "Naveen Gaur — WordPress Performance Specialist & Full-Stack Consultant",
+    title: "Naveen Gaur — WordPress Performance Specialist & Full-Stack Consultant",
     description:
       "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
     images: [
@@ -58,13 +58,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
+        alt: "Naveen Gaur — WordPress Performance Specialist & Full-Stack Consultant",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Naveen Gaur — WordPress Performance & Full-Stack Consultant",
+    title: "Naveen Gaur — WordPress Performance Specialist & Full-Stack Consultant",
     description:
       "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
     images: ["/og-image.png"],

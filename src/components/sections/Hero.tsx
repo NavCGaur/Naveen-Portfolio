@@ -1,17 +1,6 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
-
 import * as ga from "@/lib/ga";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (delay: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, delay, ease: "easeOut" },
-  }),
-};
 
 const stats = [
   { num: "5+", label: "Years building on WordPress" },
@@ -25,57 +14,33 @@ export default function Hero() {
       <div className="max-w-[1100px] mx-auto w-full">
         <div className="max-w-[720px]">
           {/* Eyebrow */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            custom={0}
-            variants={fadeUp}
-            className="inline-flex items-center gap-2.5 text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-8 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full"
-          >
+          <div className="inline-flex items-center gap-2.5 text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-8 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full animate-fade-up">
             <span className="w-2 h-2 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)]" />
             WordPress &amp; Full-Stack Developer
-          </motion.div>
+          </div>
 
           {/* Headline */}
-          <motion.h1
-            initial="hidden"
-            animate="visible"
-            custom={0.1}
-            variants={fadeUp}
-            className="font-serif text-[clamp(44px,7vw,80px)] leading-[1.05] tracking-[-0.03em] text-ink mb-7"
-          >
+          <h1 className="font-serif text-[clamp(44px,7vw,80px)] leading-[1.05] tracking-[-0.03em] text-ink mb-7 animate-fade-up animate-delay-100">
             Your website should{" "}
             <em className="italic text-gold-dark">work for you,</em>
             <br />
             not worry you.
-          </motion.h1>
+          </h1>
 
           {/* Sub */}
-          <motion.p
-            initial="hidden"
-            animate="visible"
-            custom={0.2}
-            variants={fadeUp}
-            className="text-[18px] text-ink-muted max-w-[540px] leading-[1.7] mb-12 font-normal"
-          >
+          <p className="text-[18px] text-ink-muted max-w-[540px] leading-[1.7] mb-12 font-normal animate-fade-up animate-delay-200">
             I build, fix, and maintain WordPress sites for small businesses and
             founders who are tired of slow pages, surprise downtime, and
             developers who disappear.
-          </motion.p>
+          </p>
 
           {/* CTAs */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            custom={0.3}
-            variants={fadeUp}
-            className="flex gap-4 items-center flex-wrap"
-          >
+          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center animate-fade-up animate-delay-300">
             <a
               href="#contact"
               id="hero-cta-primary"
               onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Let's Talk" })}
-              className="group relative overflow-hidden inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] transition-all duration-300"
+              className="group relative overflow-hidden inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] border border-ink w-full sm:w-auto text-center transition-all duration-300"
             >
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
               <span className="relative z-10">Let&apos;s Talk →</span>
@@ -84,21 +49,15 @@ export default function Hero() {
               href="/free-audit"
               id="hero-cta-services"
               onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Free Video Audit" })}
-              className="group relative overflow-hidden inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:bg-black/[0.02] transition-all duration-300"
+              className="group relative overflow-hidden inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:bg-black/[0.02] w-full sm:w-auto text-center transition-all duration-300"
             >
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-dark to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
               <span className="relative z-10">Free Video Audit</span>
             </a>
-          </motion.div>
+          </div>
 
           {/* Stats */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            custom={0.4}
-            variants={fadeUp}
-            className="flex gap-12 pt-10 border-t border-black/[0.09] flex-wrap mt-[72px]"
-          >
+          <div className="flex gap-12 pt-10 border-t border-black/[0.09] flex-wrap mt-[72px] animate-fade-up animate-delay-400">
             {stats.map((s) => (
               <div key={s.num}>
                 <div className="font-serif text-[38px] text-ink leading-none tracking-[-0.03em]">
@@ -109,7 +68,7 @@ export default function Hero() {
                 </div>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
