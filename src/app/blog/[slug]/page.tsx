@@ -92,6 +92,11 @@ function ArticleJsonLd({ post }: { post: BlogPost }) {
 const mdxComponents = {
   pre: CopyCodeButton,
   ArticleCTALink: ArticleCTALink,
+  table: (props: any) => (
+    <div className="table-wrapper">
+      <table {...props} />
+    </div>
+  ),
 };
 
 export default async function BlogPost({ params }: Props) {
