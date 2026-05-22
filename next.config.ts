@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
+      {
+        source: '/blog/how-to-exclude-yourself-from-google-analytics',
+        destination: '/blog/how-to-go-incognito-and-stop-google-analytics-tracking',
+        permanent: true,
+      },
     ]
   },
 };
