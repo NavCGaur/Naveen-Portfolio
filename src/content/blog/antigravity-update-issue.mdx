@@ -1,0 +1,240 @@
+---
+title: "Google Antigravity 2.0 Broke My IDE: Fixing the Missing File Explorer and Workspace Bug"
+description: "If you recently updated Google Antigravity to 2.0.1+ and lost your file explorer, workspace sidebar, or chat history, here is how to restore the classic IDE and recover your profile."
+date: "2026-05-22"
+category: "Developer Tooling"
+---
+
+If you recently updated Google Antigravity to version 2.0.1 or higher and suddenly lost your file explorer, workspace sidebar, code editor layout, or previous chat history, you’re not alone.
+
+After updating, both **Antigravity** and **Antigravity IDE** started opening the exact same agent-focused interface on my system, with the normal IDE layout completely missing.
+
+This guide explains what likely changed, how to restore the classic IDE workspace, and how to recover your previous chat history, settings, and extensions.
+
+---
+
+## What Changed in Antigravity 2.0+
+
+Based on the observed behavior after the 2.0.1 update, Google appears to have separated Antigravity into two distinct layers:
+
+### Antigravity (Core)
+An agent-focused interface centered around:
+- AI conversations,
+- autonomous workflows,
+- and background agent execution.
+
+### Antigravity IDE
+The traditional Electron-based development environment containing:
+- workspace explorer,
+- local terminal,
+- extension system,
+- and editor layout.
+
+The problem is that after the update, both launchers can end up opening the same agent-focused interface instead of the IDE workspace. This makes it look like your files disappeared, your workspaces were deleted, or your setup was reset.
+
+Fortunately, the actual project files and chat databases are still stored locally.
+
+---
+
+## Symptoms of the Bug
+
+After updating to 2.0.1+, you may see:
+- Missing file explorer sidebar
+- No visible workspace folders
+- Agent-only conversation interface
+- Empty editor layout
+- Missing extensions/themes
+- Missing previous chat history
+- Both launchers opening the same interface
+
+This is especially alarming if you rely on Antigravity as your primary development workspace.
+
+---
+
+## Quick Fix: Restore the IDE Workspace
+
+The fastest workaround is to temporarily rename the updated `app.asar` package so the IDE falls back to its original workspace renderer.
+
+### Step 1: Close All Antigravity Processes
+
+Fully close:
+- Antigravity
+- Antigravity IDE
+
+Use Task Manager if necessary.
+
+### Step 2: Rename `app.asar`
+
+Open PowerShell as Administrator and run:
+
+```powershell
+cd "$env:LOCALAPPDATA\Programs\Antigravity\resources"
+Rename-Item app.asar app.asar.bak
+```
+
+Now launch **Antigravity IDE** normally.
+
+On my system, this restored:
+- the workspace explorer,
+- folder tree,
+- code editor,
+- and standard IDE layout.
+
+---
+
+## Why This Works
+
+Based on testing and reports from other users, the updated `app.asar` package appears to prioritize the newer agent-first interface layer.
+
+Renaming it forces Electron to bypass that package and fall back to the original IDE rendering flow.
+
+This is not necessarily the official intended architecture, but it consistently restored the classic IDE interface during testing.
+
+---
+
+## Important Note
+
+If you ever want to restore the newer agent interface again, simply reverse the rename:
+
+```powershell
+Rename-Item app.asar.bak app.asar
+```
+
+---
+
+## Restoring Old Chat History and Workspace State
+
+After restoring the IDE view, you may still notice:
+- missing chat history,
+- missing recent workspaces,
+- missing settings,
+- or empty conversation panels.
+
+That happens because the update generates a new configuration directory. Your old data still exists — it just lives in the previous profile folder.
+
+### Step 3: Copy the Old User Profile
+
+Close Antigravity IDE completely. Then:
+
+1. Press `Win + R`
+2. Enter:
+```txt
+%APPDATA%
+```
+3. Open the Roaming directory.
+
+You should now see two folders:
+```txt
+Antigravity
+Antigravity IDE
+```
+
+### Step 4: Migrate the Old User Folder
+
+Open:
+```txt
+Antigravity
+```
+
+Copy the folder named:
+```txt
+User
+```
+
+Then paste it into:
+```txt
+Antigravity IDE
+```
+
+When Windows prompts, choose:
+```txt
+Replace files in destination
+```
+
+This restored previous conversations, workspace state, and historical session data on my setup.
+
+---
+
+## Fixing Missing Extensions and Themes
+
+Some extensions may still fail to appear after restoring the profile. This appears related to extension indexing after the update.
+
+### Step 5: Rebuild Extension State
+
+Navigate to:
+```txt
+C:\Users\<YourUsername>\
+```
+
+Copy the contents of:
+```txt
+.antigravity
+```
+into:
+```txt
+.antigravity-ide
+```
+
+Then open:
+```txt
+.antigravity-ide\extensions\
+```
+
+Delete:
+```txt
+extensions.json
+```
+
+This forces the IDE to rebuild the extension index during the next launch. After restarting Antigravity IDE, my extensions and themes reappeared correctly.
+
+---
+
+## What Likely Caused the Issue
+
+Based on observed behavior and discussions from other developers, the issue appears related to:
+- shared Electron installation paths,
+- launcher routing conflicts,
+- and the transition toward the newer agent-first architecture.
+
+The update also appears to generate:
+- new profile directories,
+- new extension indexes,
+- and separate IDE configuration paths.
+
+That separation likely explains why chat history, themes, extensions, and workspace state initially appear missing.
+
+---
+
+## Verification Checklist
+
+After completing the recovery process, verify:
+- [x] File explorer sidebar restored
+- [x] Workspace folders visible
+- [x] Previous chats restored
+- [x] Extensions loaded correctly
+- [x] Themes rendering properly
+- [x] Terminal functioning normally
+- [x] Existing repositories accessible
+
+---
+
+## Final Thoughts
+
+The confusing part of this update is that it initially looks catastrophic: missing files, broken workspaces, deleted conversations, and lost configuration. In reality, most of the data still exists locally.
+
+The issue appears to be primarily launcher routing, profile separation, and extension indexing. Hopefully future releases handle the transition more clearly, because the current behavior makes it feel like the entire IDE environment vanished overnight.
+
+If you are dealing with a broken IDE configuration, need custom developer tooling integrations, or want an expert to configure agentic workflows like MCP for your team, I can help. **I offer developer setup, agentic tool development, and workflow optimization as a service — [get in touch today](/#contact).**
+
+<ArticleCTALink slug="antigravity-update-issue" />
+
+---
+
+## About the Author
+
+Naveen Gaur is a full-stack developer focused on AI-native workflows, CMS systems, frontend performance, and developer tooling.
+
+More articles and case studies:
+https://naveengaur.com
+
+*Related: [I Connected My AI Agent to GA4: Surprising Insights & Setup Guide](/blog/mcp-ga4-ai-agent) | [How to Customize CSS in Ghost CMS](/blog/ghost-cms-css-customization)*
