@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
+import { readApprovedComments } from "@/lib/github-comments";
 import type { BlogPost } from "@/lib/blog";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
@@ -103,6 +104,7 @@ export default async function BlogPost({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) notFound();
+  const comments = readApprovedComments(slug);
 
   return (
     <>
@@ -188,7 +190,7 @@ export default async function BlogPost({ params }: Props) {
                 marginBottom: "32px",
               }}
             >
-              <CommentsList slug={post.slug} />
+              <CommentsList slug={post.slug} comments={comments} />
               <div style={{ borderTop: "1px solid var(--bt-border)", paddingTop: "28px" }}>
                 <CommentForm slug={post.slug} />
               </div>

@@ -10,6 +10,7 @@ const commentSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email"),
   comment: z.string().min(5, "Comment must be at least 5 characters").max(1000, "Comment must be under 1000 characters"),
+  parentId: z.string().uuid().optional(), // present when replying to an existing comment
 });
 
 export async function POST(request: NextRequest) {
@@ -24,11 +25,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { slug, name, email, comment } = parsed.data;
+    const { slug, name, email, comment, parentId } = parsed.data;
 
     // Create a signed JWT containing all comment data — expires in 7 days
     const secret = new TextEncoder().encode(process.env.ADMIN_SECRET!);
-    const token = await new SignJWT({ slug, name, email, comment })
+    const jwtPayload: Record<string, unknown> = { slug, name, email, comment };
+    if (parentId) jwtPayload.parentId = parentId;
+    const token = await new SignJWT(jwtPayload)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
       .setExpirationTime("7d")

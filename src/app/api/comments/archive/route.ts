@@ -59,6 +59,8 @@ export async function GET(request: NextRequest) {
       email,
       comment,
       date: new Date().toISOString(),
+      isAuthor: false,
+      replies: [],
     });
 
     return htmlPage(
