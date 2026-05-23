@@ -13,7 +13,7 @@ This guide explains what likely changed, how to restore the classic IDE workspac
 
 ---
 
-## What Changed in Antigravity 2.0+
+## What Changed in Google Antigravity 2.0.1+? (The Agent vs. IDE Split)
 
 Based on the observed behavior after the 2.0.1 update, Google appears to have separated Antigravity into two distinct layers:
 
@@ -36,7 +36,7 @@ Fortunately, the actual project files and chat databases are still stored locall
 
 ---
 
-## Symptoms of the Bug
+## Symptoms: Missing File Explorer, Workspace Sidebar, and Chat History
 
 After updating to 2.0.1+, you may see:
 - Missing file explorer sidebar
@@ -51,7 +51,7 @@ This is especially alarming if you rely on Antigravity as your primary developme
 
 ---
 
-## Quick Fix: Restore the IDE Workspace
+## How to Restore Your Missing Antigravity IDE Workspace (Step-by-Step Fix)
 
 The fastest workaround is to temporarily rename the updated `app.asar` package so the IDE falls back to its original workspace renderer.
 
@@ -102,7 +102,7 @@ Rename-Item app.asar.bak app.asar
 
 ---
 
-## Restoring Old Chat History and Workspace State
+## How to Recover Lost Chat History, Settings, and Workspaces
 
 After restoring the IDE view, you may still notice:
 - missing chat history,
@@ -155,7 +155,7 @@ This restored previous conversations, workspace state, and historical session da
 
 ---
 
-## Fixing Missing Extensions and Themes
+## Restoring Missing Extensions and Themes in Antigravity
 
 Some extensions may still fail to appear after restoring the profile. This appears related to extension indexing after the update.
 
@@ -189,7 +189,7 @@ This forces the IDE to rebuild the extension index during the next launch. After
 
 ---
 
-## What Likely Caused the Issue
+## Root Cause Analysis: Why Did the Antigravity Update Break My IDE?
 
 Based on observed behavior and discussions from other developers, the issue appears related to:
 - shared Electron installation paths,
