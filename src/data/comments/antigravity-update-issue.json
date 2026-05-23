@@ -5,6 +5,15 @@
     "comment": "thank you so much for this, you made my day. ",
     "date": "2026-05-23T12:06:25.419Z",
     "isAuthor": false,
-    "replies": []
+    "replies": [
+      {
+        "id": "30be29fd-0aff-40f9-bbae-efc59e503dbf",
+        "name": "Naveen",
+        "comment": "So glad this helped you get your workspace back, Hisham! That update was definitely a heart-stopper when everything suddenly vanished. Happy coding!",
+        "date": "2026-05-23T19:47:36.819Z",
+        "isAuthor": true,
+        "replies": []
+      }
+    ]
   }
 ]
