@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         destination: '/blog/how-to-go-incognito-and-stop-google-analytics-tracking',
         permanent: true,
       },
+      {
+        source: '/blog/mcp-ga4-ai-agent',
+        destination: '/blog/google-analytics-ai-agent',
+        permanent: true,
+      },
     ]
   },
 };
