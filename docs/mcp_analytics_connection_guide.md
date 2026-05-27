@@ -40,20 +40,45 @@ Windows command stubs and Python buffering can cause the MCP server to hang inde
 - **Config fix:** Use the **absolute path** to your Python executable in `mcp_config.json`.
 - **Code fix:** Ensure no `print()` statements reach `stdout`. (Patched in `server.py`).
 
-```json
-"google-analytics": {
-  "command": "C:\\Users\\verti\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
-  "args": ["-u", "-W", "ignore", "-m", "analytics_mcp"],
-  "env": {
-    "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\verti\\AppData\\Roaming\\gcloud\\application_default_credentials.json",
-    "GOOGLE_CLOUD_PROJECT": "your-project-id"
-  }
-}
-```
+## May 2026 Critical Fixes (Bypassing Google's Client ID Blocks)
+
+If the GA4 or GSC connection is "stuck" or blocked due to standard Google CLI limitations, ensure these elements are configured:
+
+### 1. The "This App is Blocked" Google CLI Bypass
+Google blocks sensitive/restricted scopes (such as Google Ads, Google Analytics, and Search Console) from using the global, default `gcloud` CLI client ID to protect users from phishing. Trying to run `gcloud auth application-default login` with these scopes will result in a **"This app is blocked"** browser error.
+
+#### ➔ The Automated loopback & Sync Fix (Proven):
+We bypass this completely by using your own white-labeled Google Developer Application credentials (`client_secret.json`) and a local loopback server:
+
+1. **Generate Fresh Tokens**:
+   Run the custom authorizer script in the project root:
+   ```bash
+   python authenticate_google.py
+   ```
+   * Choose **Option 3** *(Unified: GA4, GSC & Google Ads)*.
+   * Sign in using your authorized email (`naveencg070@gmail.com`) to generate **`tokens_unified.json`**.
+   
+2. **Synchronize to System Credentials**:
+   Once generated, run the sync script to write the custom token directly into the Google Cloud CLI's global credentials path:
+   ```bash
+   python sync_gcloud_adc.py
+   ```
+   This writes a fully functional credential file directly to:
+   `C:\Users\verti\AppData\Roaming\gcloud\application_default_credentials.json`
+   Both MCP tools and background scripts will now run instantly without any blocks!
+
+### 2. Handling the 7-Day Expiration in "Testing" Mode
+If your Google Cloud Project is set to "Testing" publishing status, Google expires and revokes all user refresh tokens after exactly **7 days**. When GSC or GA4 fail with an `invalid_grant` error, simply repeat the 2-step process above to renew the tokens in 10 seconds.
+
+### 3. Direct REST Python Fallback (Bypassing Plugin Caching)
+Because local IDE plugins (MCP servers) are loaded as permanent processes in memory, they may cache old tokens and fail to reload modified credentials on the fly. In these cases, bypass the caching by running direct, fresh Python REST queries:
+- **GA4 direct query:** `python pull_ga4_data.py`
+- **GSC direct query:** `python pull_gsc_data.py`
+- **Comparison & Analysis query:** `python pull_comparison_data.py`
 
 ---
 
-*Last Updated: May 11, 2026*
+*Last Updated: May 27, 2026*
 
 ---
 
