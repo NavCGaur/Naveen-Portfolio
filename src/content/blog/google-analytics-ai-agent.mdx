@@ -176,14 +176,17 @@ This securely logs you in and stores a local credential token that your system-w
 * **For IDEs with Settings UI (Cursor, Windsurf):** Add the pre-built Google Analytics server in your IDE's Model Context Protocol (MCP) settings, passing in your GA4 Property ID and Google Cloud Project ID.
 * **For Google Antigravity IDE (Unified ADC Sync Method):** Because Antigravity is a high-performance agentic workspace, it directly inherits system-wide Application Default Credentials. To bypass Google's strict security blocks locally without a settings GUI:
   
-  1. Run your local OAuth script `authenticate_google.py` to authorize your custom Google Cloud client credentials and generate `tokens_unified.json`.
-  2. Run `sync_gcloud_adc.py` to synchronize these tokens and write the unified credentials directly to your local ADC file:
+  1. Save the two helper scripts, `authenticate_google.py` and `sync_gcloud_adc.py` (which are shared in the **Appendix** at the bottom of this article), directly into your project's root folder.
+  2. Run your local OAuth script `authenticate_google.py` to authorize your custom Google Cloud client credentials and generate `tokens_unified.json`.
+  3. Run `sync_gcloud_adc.py` to synchronize these tokens and write the unified credentials directly to your local ADC file:
      
      ```bash
      python sync_gcloud_adc.py
      ```
      
-  3. This places a secure, system-wide credential token at `%APPDATA%\gcloud\application_default_credentials.json`. Your Antigravity AI agent will instantly inherit this session to query your GA4 Data API natively and completely unblocked!
+  4. This places a secure, system-wide credential token at `%APPDATA%\gcloud\application_default_credentials.json`. 
+  
+  * **The Ultimate Value:** Once these scripts run, both your local reporting tools and your **Google Antigravity agentic AI assistant** will instantly inherit this session. Your Antigravity agent will automatically detect your project structure, read your credentials, and query your GA4 Data API natively and completely unblocked on your behalf!
 
 ---
 
