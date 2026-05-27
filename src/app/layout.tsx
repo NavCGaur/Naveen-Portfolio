@@ -94,7 +94,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSerif.variable} ${dmSans.variable} overflow-x-hidden`}>
+    <html lang="en" className={`${dmSerif.variable} ${dmSans.variable} overflow-x-hidden`} suppressHydrationWarning>
       <body className="overflow-x-hidden antialiased bg-surface text-ink font-sans">
         {/* Google Analytics 4 — set NEXT_PUBLIC_GA_ID in .env.local + Vercel env vars */}
         {GA_ID && (

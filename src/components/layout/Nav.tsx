@@ -17,8 +17,9 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const isBlogPage = pathname.startsWith("/blog");
-  const isDarkPage = pathname !== "/" && !isBlogPage;
+  const isBlogPage = pathname ? pathname.startsWith("/blog") : false;
+  const isAuditsPage = pathname ? pathname.startsWith("/audits") : false;
+  const isDarkPage = pathname ? (pathname !== "/" && !isBlogPage && !isAuditsPage) : true;
   const isTextLight = isDarkPage && !scrolled;
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function Nav() {
     setMenuOpen(false);
   };
 
-  const navBackground = (scrolled || isBlogPage)
+  const navBackground = (scrolled || isBlogPage || isAuditsPage)
     ? "bg-surface/95 backdrop-blur-md border-b border-black/[0.08] shadow-sm"
     : "bg-transparent";
 
