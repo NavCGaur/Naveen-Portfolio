@@ -265,6 +265,9 @@ Here is the exact code for both helper scripts:
 ### 1. `authenticate_google.py`
 Save this file as `authenticate_google.py` in your project root. It handles the local OAuth callback, launches the browser consent flow, and writes a unified token file (`tokens_unified.json`).
 
+<details>
+  <summary><b>📂 Click to expand and view <code>authenticate_google.py</code></b></summary>
+
 ```python
 import os
 import json
@@ -439,8 +442,13 @@ if __name__ == "__main__":
     run_auth_flow()
 ```
 
+</details>
+
 ### 2. `sync_gcloud_adc.py`
 Save this file as `sync_gcloud_adc.py` in your project root. It maps your generated `tokens_unified.json` and client details directly into Google's local Application Default Credentials path.
+
+<details>
+  <summary><b>📂 Click to expand and view <code>sync_gcloud_adc.py</code></b></summary>
 
 ```python
 import os
@@ -514,6 +522,8 @@ def sync_adc():
 if __name__ == "__main__":
     sync_adc()
 ```
+
+</details>
 
 ---
 
