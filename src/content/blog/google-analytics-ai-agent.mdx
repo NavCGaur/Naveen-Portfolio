@@ -125,22 +125,25 @@ Even experienced developers find the GA4 API ecosystem challenging to navigate. 
 Right now, most conversational analytics workflows fall into three categories.
 
 ### 1. Manual CSV Exports (The Simple Way)
+
 This remains the most common starting point. You navigate GA4, export a CSV report, upload it to Claude or ChatGPT, and ask for an analysis.
 
-* **Pros:** Zero setup required; works with any standard chatbot.
-* **Cons:** Stale data, manual work, strict row/token limitations, and a lack of real-time query capability.
+- **Pros:** Zero setup required; works with any standard chatbot.
+- **Cons:** Stale data, manual work, strict row/token limitations, and a lack of real-time query capability.
 
 ### 2. Connector Platforms (The Easy, No-Code Way)
+
 Paid middleware platforms act as a translation bridge, automatically streaming normalized analytics data directly into ChatGPT Custom GPTs, Claude Projects, or custom Slack dashboards.
 
-* **Pros:** Quick onboarding, no infrastructure management.
-* **Cons:** Recurring subscription fees, dependency on third-party security pipelines, and limited developer customization.
+- **Pros:** Quick onboarding, no infrastructure management.
+- **Cons:** Recurring subscription fees, dependency on third-party security pipelines, and limited developer customization.
 
 ### 3. Direct MCP + API Integration (The Developer Way)
+
 The gold standard for developers, technical SEOs, and automation engineers. By establishing a direct connection between your AI workspace and the GA4 Data API via an MCP server or local credentials, you get instant, unlimited conversational query power.
 
-* **Pros:** Direct API access, zero middleware fees, local-first privacy, and infinite customization.
-* **Cons:** Requires a one-time technical authentication setup.
+- **Pros:** Direct API access, zero middleware fees, local-first privacy, and infinite customization.
+- **Cons:** Requires a one-time technical authentication setup.
 
 ---
 
@@ -155,14 +158,18 @@ The gold standard for developers, technical SEOs, and automation engineers. By e
 Setting up your own GA4 conversational analytics agent is straightforward. Here is the blueprint to get it running:
 
 ### Step 1: Grab Your GA4 Property ID
+
 Log in to Google Analytics, go to **Admin ➔ Property Settings**, and copy the numeric **Property ID** shown at the top right.
 
 ### Step 2: Enable the APIs in Google Cloud
+
 You need to authorize API access. Go to your <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>, select your project, and enable two free APIs:
+
 1. **Google Analytics Data API** (to run and read reports).
 2. **Google Analytics Admin API** (to read custom dimensions and settings).
 
 ### Step 3: Securely Authenticate
+
 The cleanest way to authorize the connection without hardcoding sensitive passwords is using Google's official **Application Default Credentials (ADC)**. Open your terminal and run:
 
 ```bash
@@ -173,19 +180,21 @@ This securely logs you in and stores a local credential token that your system-w
 
 ### Step 4: Connect Your AI Platform
 
-* **For IDEs with Settings UI (Cursor, Windsurf):** Add the pre-built Google Analytics server in your IDE's Model Context Protocol (MCP) settings, passing in your GA4 Property ID and Google Cloud Project ID.
-* **For Google Antigravity IDE (Unified ADC Sync Method):** Because Antigravity is a high-performance agentic workspace, it directly inherits system-wide Application Default Credentials. To bypass Google's strict security blocks locally without a settings GUI:
-  
-  1. Save the two helper scripts, `authenticate_google.py` and `sync_gcloud_adc.py` (which are shared in the **Appendix** at the bottom of this article), directly into your project's root folder.
-  2. Run your local OAuth script `authenticate_google.py` to authorize your custom Google Cloud client credentials and generate `tokens_unified.json`.
-  3. Run `sync_gcloud_adc.py` to synchronize these tokens and write the unified credentials directly to your local ADC file:
-     
-     ```bash
-     python sync_gcloud_adc.py
-     ```
-     
-  * **The Ultimate Value:** Once these scripts run, both your local reporting tools and your **Google Antigravity agentic AI assistant** will instantly inherit this session. Your Antigravity agent will automatically detect your project structure, read your credentials, and query your GA4 Data API natively and completely unblocked on your behalf!
-  * **🔥 The Ultimate Agentic Shortcut:** Since Google Antigravity is a fully autonomous coding agent, you don't even have to copy and paste these files yourself! You can literally copy the URL of this article, paste it into your Antigravity chat, and say: *"Read this guide, extract the auth scripts from the Appendix, write them to my workspace, and execute them to set up my GA4 integration."* Your agent will read, write, and run the entire pipeline for you in seconds!
+- **For IDEs with Settings UI (Cursor, Windsurf):** Add the pre-built Google Analytics server in your IDE's Model Context Protocol (MCP) settings, passing in your GA4 Property ID and Google Cloud Project ID.
+- **For Google Antigravity IDE (Unified ADC Sync Method):** Because Antigravity is a high-performance agentic workspace, it directly inherits system-wide Application Default Credentials. To bypass Google's strict security blocks locally without a settings GUI:
+
+  * **🔥 The Ultimate Agentic Shortcut:** Since Google Antigravity is a fully autonomous coding agent, you don't even have to copy and paste these files yourself! You can literally copy the URL of this article, paste it into your Antigravity chat, and say: _"Read this guide, extract the auth scripts from the Appendix, write them to my workspace, and execute them to set up my GA4 integration."_ Your agent will read, write, and run the entire pipeline for you in seconds!
+
+  * **Manual Step-by-Step Setup:** If you prefer configuring this yourself:
+    1. Save the two helper scripts, `authenticate_google.py` and `sync_gcloud_adc.py` (which are shared in the **Appendix** at the bottom of this article), directly into your project's root folder.
+    2. Run your local OAuth script `authenticate_google.py` to authorize your custom Google Cloud client credentials and generate `tokens_unified.json`.
+    3. Run `sync_gcloud_adc.py` to synchronize these tokens and write the unified credentials directly to your local ADC file:
+
+       ```bash
+       python sync_gcloud_adc.py
+       ```
+    
+    4. **The Ultimate Value:** Once these scripts run, both your local reporting tools and your **Google Antigravity agentic AI assistant** will instantly inherit this session. Your Antigravity agent will automatically detect your project structure, read your credentials, and query your GA4 Data API natively and completely unblocked on your behalf!
 
 ---
 
@@ -234,12 +243,15 @@ It compresses hours of tedious data parsing into seconds of natural conversation
 This ecosystem still has real limitations that you must prepare for:
 
 ### 1. Initial Setup Friction
+
 Configuring Google Cloud projects, OAuth consent screens, and credentials requires a one-time technical setup. It is not yet a single-click consumer workflow.
 
 ### 2. AI Hallucinations and Attribution Limits
+
 AI is excellent at spotting anomalies and summarizing trends, but it can occasionally misinterpret complex attribution pathways or imply incorrect causation. Human oversight is mandatory.
 
 ### 3. GA4 Data Quality Rules
+
 If your conversion tags are broken, your events aren't configured, or your tracking scripts are failing, the AI will only analyze garbage data. A healthy tracking setup is still a prerequisite.
 
 ---
@@ -252,7 +264,7 @@ The shift is clear: analytics is moving away from traditional, crowded dashboard
 
 ## Final Thoughts
 
-Most people don't actually hate web analytics. They hate the friction of finding the answers they need inside complex dashboards. 
+Most people don't actually hate web analytics. They hate the friction of finding the answers they need inside complex dashboards.
 
 Conversational analytics changes that experience fundamentally. Instead of building manual dashboards, you ask questions and get instant, context-rich answers. Once you experience that speed, traditional reporting starts feeling incredibly slow.
 
@@ -265,6 +277,7 @@ If you are setting this up in **Google Antigravity** or a local developer worksp
 Here is the exact code for both helper scripts:
 
 ### 1. `authenticate_google.py`
+
 Save this file as `authenticate_google.py` in your project root. It handles the local OAuth callback, launches the browser consent flow, and writes a unified token file (`tokens_unified.json`).
 
 <details>
@@ -287,14 +300,14 @@ class OAuthCallbackHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         query_components = parse_qs(urlparse(self.path).query)
         code = query_components.get("code")
-        
+
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
-        
+
         if code:
             self.server.authorization_code = code[0]
-            
+
             # Premium Glassmorphic success UI
             success_html = """
             <!DOCTYPE html>
@@ -363,10 +376,10 @@ def load_client_secrets():
     if not os.path.exists(client_secret_path):
         print(f"✗ Error: {client_secret_path} not found in this directory.")
         sys.exit(1)
-        
+
     with open(client_secret_path, "r") as f:
         data = json.load(f)
-        
+
     if "installed" in data:
         return data["installed"]
     elif "web" in data:
@@ -379,7 +392,7 @@ def run_auth_flow():
     client_config = load_client_secrets()
     client_id = client_config["client_id"]
     client_secret = client_config["client_secret"]
-    
+
     # Unified Scope Setup for GA4 & GSC
     scopes = [
         "https://www.googleapis.com/auth/analytics.readonly",
@@ -387,7 +400,7 @@ def run_auth_flow():
     ]
     token_filename = "tokens_unified.json"
     scopes_str = " ".join(scopes)
-    
+
     # Construct Google OAuth URL
     auth_url = (
         "https://accounts.google.com/o/oauth2/v2/auth"
@@ -398,23 +411,23 @@ def run_auth_flow():
         "&access_type=offline"
         "&prompt=consent"
     )
-    
+
     server = HTTPServer(("localhost", PORT), OAuthCallbackHandler)
     server.authorization_code = None
-    
+
     print("\n[1/2] Opening browser for Google Analytics & Search Console authentication...")
     webbrowser.open(auth_url)
-    
+
     print("\nWaiting for authentication callback in browser...")
     server.handle_request()
-    
+
     code = server.authorization_code
     if not code:
         print("✗ Error: Authorization failed, no code captured.")
         sys.exit(1)
-        
+
     print("✓ Captured Authorization Code. Requesting Refresh Token...")
-    
+
     # Exchange Auth Code for Access & Refresh Tokens
     token_url = "https://oauth2.googleapis.com/token"
     payload = {
@@ -424,14 +437,14 @@ def run_auth_flow():
         "redirect_uri": REDIRECT_URI,
         "grant_type": "authorization_code"
     }
-    
+
     response = requests.post(token_url, data=payload, timeout=20)
-    
+
     if response.status_code == 200:
         token_data = response.json()
         with open(token_filename, "w", encoding="utf-8") as f:
             json.dump(token_data, f, indent=2)
-            
+
         print("\n" + "=" * 50)
         print("✓ SUCCESS: Google Account Authorized successfully!")
         print(f"Unified tokens saved to: {token_filename}")
@@ -447,6 +460,7 @@ if __name__ == "__main__":
 </details>
 
 ### 2. `sync_gcloud_adc.py`
+
 Save this file as `sync_gcloud_adc.py` in your project root. It maps your generated `tokens_unified.json` and client details directly into Google's local Application Default Credentials path.
 
 <details>
@@ -461,38 +475,38 @@ def sync_adc():
     print("=" * 60)
     print("      GCLOUD APPLICATION DEFAULT CREDENTIALS SYNC")
     print("=" * 60)
-    
+
     # 1. Load client_secret.json
     client_secret_path = "client_secret.json"
     if not os.path.exists(client_secret_path):
         print("[ERROR] client_secret.json not found in this directory.")
         sys.exit(1)
-        
+
     with open(client_secret_path, "r") as f:
         client_data = json.load(f)
-        
+
     config = client_data.get("installed") or client_data.get("web")
     if not config:
         print("[ERROR] Unrecognized format in client_secret.json.")
         sys.exit(1)
-        
+
     client_id = config.get("client_id")
     client_secret = config.get("client_secret")
-    
+
     # 2. Load tokens_unified.json
     tokens_path = "tokens_unified.json"
     if not os.path.exists(tokens_path):
         print("[ERROR] tokens_unified.json not found. Please run authenticate_google.py first.")
         sys.exit(1)
-        
+
     with open(tokens_path, "r") as f:
         tokens_data = json.load(f)
-        
+
     refresh_token = tokens_data.get("refresh_token")
     if not refresh_token:
         print("[ERROR] No refresh_token found in tokens_unified.json.")
         sys.exit(1)
-        
+
     # 3. Format the target credential JSON
     adc_data = {
         "client_id": client_id,
@@ -500,17 +514,17 @@ def sync_adc():
         "refresh_token": refresh_token,
         "type": "authorized_user"
     }
-    
+
     # 4. Resolve target path
     appdata = os.getenv("APPDATA") # Resolves to C:\\Users\\<user>\\AppData\\Roaming on Windows
     gcloud_dir = os.path.join(appdata, "gcloud")
     adc_path = os.path.join(gcloud_dir, "application_default_credentials.json")
-    
+
     # Ensure folder exists
     if not os.path.exists(gcloud_dir):
         os.makedirs(gcloud_dir)
         print(f"[INFO] Created gcloud config directory: {gcloud_dir}")
-        
+
     # Write the credential file
     try:
         with open(adc_path, "w", encoding="utf-8") as f:
