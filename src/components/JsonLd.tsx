@@ -27,7 +27,7 @@ export default function JsonLd() {
     ],
     sameAs: [
       "https://www.upwork.com/freelancers/naveengaur",
-      "https://linkedin.com/in/naveengaur",
+      "https://www.linkedin.com/in/naveen-gaur-dev/",
       "https://wa.me/919920899845",
     ],
     address: {
