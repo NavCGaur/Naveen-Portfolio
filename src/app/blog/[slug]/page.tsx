@@ -11,6 +11,7 @@ import Footer from "@/components/layout/Footer";
 import ArticleTracker from "@/components/ArticleTracker";
 import ArticleShareButtons from "@/components/ArticleShareButtons";
 import ArticleCTALink from "@/components/ArticleCTALink";
+import LinkedInCTA from "@/components/LinkedInCTA";
 import CommentsList from "@/components/CommentsList";
 import CommentForm from "@/components/CommentForm";
 import CopyCodeButton from "@/components/CopyCodeButton";
@@ -93,6 +94,7 @@ function ArticleJsonLd({ post }: { post: BlogPost }) {
 const mdxComponents = {
   pre: CopyCodeButton,
   ArticleCTALink: ArticleCTALink,
+  LinkedInCTA: LinkedInCTA,
   table: (props: any) => (
     <div className="table-wrapper">
       <table {...props} />
