@@ -65,7 +65,7 @@ We implemented a **decoupled, two-tier architecture** that isolates real-time We
        └── Write raw chat pair in Postgres (Supabase)
 ```
 
-By placing a Next.js (Vercel) serverless API route in the middle, we created a universal communication router. The Baileys VPS gateway remains a generic WebSocket pipeline, while the serverless middleware orchestrates all CRM API calls natively.
+By placing a Next.js (Vercel) serverless API route in the middle, we created a universal communication router. The Baileys VPS gateway remains a generic WebSocket pipeline (for details on setting up this headless VPS gateway, see our complete [Baileys WhatsApp Bot Developer Guide](/blog/baileys-whatsapp-bot-developer-guide)), while the serverless middleware orchestrates all CRM API calls natively.
 
 ---
 

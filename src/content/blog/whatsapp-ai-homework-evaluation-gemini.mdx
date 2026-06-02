@@ -64,7 +64,7 @@ We deployed a **decoupled, two-tier microservice** to handle the payload routing
 [Node.js VPS Gateway (Safe Queued Output)] ──► Sent to Student
 ```
 
-By separating the **Gateway** (focused only on socket states and buffer downloads) from the **Logic Engine** (which executes database transactions and AI calls), we ensured that heavy vision processing never blocks active WebSocket connections.
+By separating the **Gateway** (focused only on socket states and buffer downloads—for our core setup blueprint, see our complete [Baileys WhatsApp Bot Developer Guide](/blog/baileys-whatsapp-bot-developer-guide)) from the **Logic Engine** (which executes database transactions and AI calls), we ensured that heavy vision processing never blocks active WebSocket connections.
 
 ---
 

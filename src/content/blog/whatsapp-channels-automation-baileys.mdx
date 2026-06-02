@@ -18,9 +18,7 @@ During our recent production deployments, we encountered three major protocol bo
 
 ---
 
-## 🚀 1. The Core Protocol Distinction
-
-Based on packet inspection and tracing, we observed that WhatsApp isolates standard, End-to-End Encrypted (E2EE) 1-to-1 chats from public channels (Newsletters). 
+Before automating public channels, ensure you have established a stable self-hosted socket daemon (for our complete environment setup and VPS deployment instructions, see our complete [Baileys WhatsApp Bot Developer Guide](/blog/baileys-whatsapp-bot-developer-guide)). Based on packet inspection and tracing, we observed that WhatsApp isolates standard, End-to-End Encrypted (E2EE) 1-to-1 chats from public channels (Newsletters). 
 *   **Standard Chats:** In our environment, normal chats upload media using E2EE parameters through `/mms/*` paths on standard `/o1/` CDN hosts.
 *   **Channels (Newsletters):** Operate completely unencrypted, routing media through specialized `/newsletter/*` paths on public `/m1/` CDN hosts. 
 
