@@ -16,7 +16,7 @@ This guide details the technical blueprint of how we built a resilient, memory-a
 
 ---
 
-## 🚀 1. Why WhatsApp & Baileys?
+## Why Choose @whiskeysockets/baileys for Custom WhatsApp Bots?
 
 ### The Engagement Multiplier
 
@@ -55,7 +55,7 @@ To keep operations lightweight, we split the application into a **two-tier archi
 
 ---
 
-## 🛠️ 2. Step-by-Step Code Walkthrough
+## Step-by-Step Node.js Code Walkthrough with Baileys
 
 ### Part A: Setting up the Baileys Client (`index.js`)
 
@@ -265,7 +265,7 @@ async function callApi(path, body) {
 
 ---
 
-## 🚫 3. Crucial: Solving the \"Ban & Crash\" Problem (Rate-Limiting Queues)
+## Preventing WhatsApp Account Bans & Socket Crashes (Rate-Limiting Queues)
 
 If your bot sends multiple API calls instantly to the same recipient or pushes bulk updates simultaneously, WhatsApp will trigger a session ban. We mitigated this risk using an asynchronous, rate-limited memory queue:
 
@@ -298,7 +298,7 @@ async function processSendQueue(sock) {
 
 ---
 
-## 💡 4. Production VPS Deployment & Management
+## Production VPS Deployment & Management
 
 To run the Node.js Baileys gateway in a professional VPS environment, you must secure your server with **PM2** process monitors and fail-safes.
 
@@ -354,7 +354,7 @@ pm2 status
 
 ---
 
-## 🧠 Why Build Custom Instead of Using Off-the-Shelf Agents (Hermes, Landbot)?
+## Why Build Custom Instead of Using Off-the-Shelf Agents (Hermes, Landbot)?
 
 When setting up a WhatsApp integration, many teams consider wrapper services like Hermes, Coze, or standard flow builders like Landbot. Here is a technical breakdown of why we rejected off-the-shelf agents in favor of a custom Baileys/Next.js stack:
 
@@ -364,6 +364,14 @@ When setting up a WhatsApp integration, many teams consider wrapper services lik
 | **Memory Architecture**           | Generic system chat history (context window size limitations).         | Custom **Memory Context Routing**. We query previous attempts for that exact homework plan ID and feed that specific context straight to Gemini. |
 | **Hinglish & Direct Tone Tuning** | Very hard to enforce strict localized prompt guidelines consistently.  | Full controller prompts. The model speaks in second-person direct Hinglish (_"Aapne"_ instead of _"Student ne"_).                                |
 | **Pricing Scaling**               | Per-message/per-run markup pricing (can grow to thousands of dollars). | **$0 SaaS Fees.** You only pay for a $3 VPS (Oracle/Hetzner) and raw token consumption on Gemini API.                                            |
+
+## ❓ Frequently Asked Questions (FAQ)
+
+### How do you prevent a WhatsApp account ban when using Baileys?
+To prevent your bot from getting banned, you must implement a rate-limiting message queue. Avoid sending bulk messages concurrently, and inject artificial random delays (e.g., 1.5 to 3 seconds) between sent payloads to mimic natural human typing and sending patterns.
+
+### Does Baileys support multi-device authentication?
+Yes, `@whiskeysockets/baileys` natively supports multi-device logins. It uses multi-file authentication state folders to store credentials, allowing the socket to reconnect automatically without scanning the QR code every session.
 
 ---
 
