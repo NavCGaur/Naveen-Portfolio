@@ -64,6 +64,9 @@ function ArticleJsonLd({ post }: { post: BlogPost }) {
       "@type": "Person",
       name: "Naveen Gaur",
       url: "https://naveengaur.com",
+      sameAs: [
+        "https://www.linkedin.com/in/naveen-gaur-dev/"
+      ],
     },
     publisher: {
       "@type": "Person",

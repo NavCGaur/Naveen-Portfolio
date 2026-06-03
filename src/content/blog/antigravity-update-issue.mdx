@@ -218,11 +218,32 @@ After completing the recovery process, verify:
 
 ---
 
+## ❓ Frequently Asked Questions (FAQ)
+
+### Why did my Google Antigravity file explorer disappear after updating to 2.0.1?
+The version 2.0.1 update splits Antigravity into two layers: an agent-first conversational layer and the traditional IDE environment. A configuration path or launcher routing bug can force the IDE launcher to default to the agent-first layer, hiding your sidebar and workspace.
+
+### How do I recover lost workspaces and chat history after restoring the Antigravity IDE?
+If your extensions, themes, or historical sessions appear empty, navigate to your local Roaming directory (`%APPDATA%`) and copy the `User` config directory from the `Antigravity` folder into the newly generated `Antigravity IDE` folder.
+
+---
+
 ## Final Thoughts
 
 The confusing part of this update is that it initially looks catastrophic: missing files, broken workspaces, deleted conversations, and lost configuration. In reality, most of the data still exists locally.
 
 The issue appears to be primarily launcher routing, profile separation, and extension indexing. Hopefully future releases handle the transition more clearly, because the current behavior makes it feel like the entire IDE environment vanished overnight.
+
+---
+
+### 📚 Recommended Architecture & Performance Guides
+
+If you found this technical guide useful, check out my other deep-dives on system design, database integration, and high-performance setups:
+*   **WhatsApp Bots**: [Step-by-Step Guide to the Baileys WhatsApp Bot: Setup, Scaling, and VPS Deployment](/blog/baileys-whatsapp-bot-developer-guide)
+*   **Conversational AI**: [How to Connect an AI Agent to Your GA4 Analytics: Live Sync Setup](/blog/google-analytics-ai-agent)
+*   **WordPress Migrations**: [Zero-Downtime Manual WordPress Migrations & Host Transfers](/migration)
+
+---
 
 ### 💬 Did this fix work for you?
 
@@ -230,11 +251,6 @@ If this workaround successfully restored your workspaces and file explorer, **pl
 
 If you are on **macOS or Linux** and encountered a different directory structure or ran into another issue, share your setup in the comments. Let's crowdsource this so other developers experiencing this bug can find a reliable fix.
 
-### 👉 Let's Connect
-
-I share deep-dives into advanced developer workflows, AI agent implementations, and system performance engineering. Connect with me or follow my updates on **<LinkedInCTA slug="antigravity-update-issue" />**.
-
-
 ---
 
-*Related: [I Connected My AI Agent to GA4: Surprising Insights & Setup Guide](/blog/mcp-ga4-ai-agent) | [How to Customize CSS in Ghost CMS](/blog/ghost-cms-css-customization)*
+*Related: [I Connected My AI Agent to GA4: Surprising Insights & Setup Guide](/blog/google-analytics-ai-agent) | [How to Customize CSS in Ghost CMS](/blog/ghost-cms-css-customization)*
