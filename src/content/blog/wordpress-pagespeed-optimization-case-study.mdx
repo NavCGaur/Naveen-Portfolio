@@ -1,7 +1,7 @@
 ---
 title: "WordPress PageSpeed Optimization: How We Improved Mobile Performance from 56 to 98 Without a Website Rebuild"
 description: "Case study on optimizing WordPress/Elementor performance from 56 to 98 mobile PageSpeed score by pruning CSS and delaying JS, avoiding a costly rebuild."
-date: "2026-06-04"
+date: "2026-06-05"
 category: "Performance Engineering"
 ---
 
@@ -13,7 +13,7 @@ Before recommending that path, we investigated the actual causes of the slowdown
 
 ## 1. Business Context & Problem
 
-The client operates a somatic trauma healing practice (`katgrace.com`). Because trauma therapy is highly personal and requires establishing immediate clinical trust, the website's design is heavily visual, featuring high-resolution images.
+The client operates a somatic trauma healing practice. Because trauma therapy is highly personal and requires establishing immediate clinical trust, the website's design is heavily visual, featuring high-resolution images.
 
 However, prospective clients accessing the site from mobile devices—often via cellular connections—experienced severe lag. The homepage took over 5.9 seconds to display its primary visual assets. In digital marketing, page load speeds exceeding 3 seconds lead to dramatic drops in visitor retention, directly raising user acquisition costs and wasting paid and organic marketing efforts.
 
@@ -56,7 +56,7 @@ To ensure the optimization was a success, the solution had to satisfy three busi
 
 ## 5. The Optimization Process
 
-We implemented a three-phased technical tuning strategy:
+We implemented a three-phased technical tuning strategy. To eliminate manual testing delays during this process, we engineered a custom command-line tool that automates cache purging and testing cycles (read the details in our article on [building a WordPress cache and PageSpeed automation pipeline](/blog/wordpress-cache-pagespeed-automation-pipeline)).
 
 ### Phase 1: Pruning Unused Code
 
@@ -85,7 +85,7 @@ Immediately after turning on Asynchronous CSS, the mobile performance score drop
 
 ### Issue 2: The WebP Lazy-Load Trap
 
-After replacing the hero image with the optimized WebP file (`Kat-grace-photo.webp`), the mobile score dropped, showing a 4.3-second delay.
+After replacing the hero image with the optimized WebP file (`hero-photo.webp`), the mobile score dropped, showing a 4.3-second delay.
 
 - _The Cause_: The server had a rule preventing the main hero image from "lazy-loading" (which delays images until scrolled to). However, that rule matched the old filename. Because the new WebP file had a different name, the server lazy-loaded it, hiding the main photo from the browser.
 - _The Resolution_: We logged into the server database via SSH and updated the LiteSpeed configurations (`litespeed.conf.media-lazy_exc`) to exclude the new file name.
