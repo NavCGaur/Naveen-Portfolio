@@ -1,8 +1,22 @@
 ---
-title: "Why Did My WordPress Site Crash After a Plugin Update? (And How to Fix It)"
+title: "WordPress Crash After Plugin Update: How to Fix White Screen & 500 Errors"
 description: "Your WordPress site went down right after a plugin update. Here is exactly why this happens and the step-by-step process to diagnose and recover your site fast."
 date: "2026-04-28"
-category: "Crash Recovery"
+category: "WordPress"
+howto:
+  name: "How to Fix a WordPress Crash After a Plugin Update"
+  description: "Recover a crashed WordPress website following a plugin update using FTP, File Manager, or Recovery Mode."
+  steps:
+    - name: "Check Your Error Logs"
+      text: "Access your site's error log via cPanel > Error Logs or your hosting's file manager to locate the file and line causing the crash."
+    - name: "Access WordPress Without Admin Panel"
+      text: "Connect via FTP/SFTP or your host's File Manager. Navigate to wp-content/plugins/ and rename the folder of the suspected plugin to deactivate it."
+    - name: "Use WordPress Recovery Mode"
+      text: "Check the email address associated with your WordPress admin account for an automated recovery mode link."
+    - name: "Roll Back the Plugin"
+      text: "Once the site is active, install the WP Rollback plugin to revert the problematic plugin to its previous working version."
+    - name: "Test in Staging Going Forward"
+      text: "Always test future plugin updates in a staging environment before pushing them to the live production site."
 ---
 
 Your WordPress site was working fine. You clicked "Update All" on the plugins page, and now — white screen, 500 error, or a completely broken layout. This is one of the most common WordPress emergencies I see, and it is almost always fixable within a few hours.

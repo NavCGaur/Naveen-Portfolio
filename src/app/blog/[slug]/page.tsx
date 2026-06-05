@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 function ArticleJsonLd({ post }: { post: BlogPost }) {
-  const schema = {
+  const articleSchema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     headline: post.title,
@@ -85,11 +85,57 @@ function ArticleJsonLd({ post }: { post: BlogPost }) {
       "freelance WordPress developer",
     ].join(", "),
   };
+
+  const faqSchema = post.faq ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": post.faq.map((item) => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer,
+      },
+    })),
+  } : null;
+
+  const howtoSchema = post.howto ? {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": post.howto.name,
+    "description": post.howto.description || post.description,
+    "step": post.howto.steps.map((step, index) => ({
+      "@type": "HowToStep",
+      "position": index + 1,
+      "name": step.name,
+      "itemListElement": [
+        {
+          "@type": "HowToDirection",
+          "text": step.text,
+        },
+      ],
+    })),
+  } : null;
+
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      {howtoSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howtoSchema) }}
+        />
+      )}
+    </>
   );
 }
 

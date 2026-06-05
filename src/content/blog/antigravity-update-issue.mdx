@@ -1,8 +1,25 @@
 ---
-title: "Google Antigravity 2.0 Broke My IDE: Fixing the Missing File Explorer and Workspace Bug"
-description: "If you recently updated Google Antigravity to 2.0.1+ and lost your file explorer, workspace sidebar, or chat history, here is how to restore the classic IDE and recover your profile."
+title: "How to Fix Antigravity 2.0 IDE: Restore Missing File Explorer & Chats"
+description: "Google Antigravity 2.0.1+ update broke your IDE file explorer or chat history? Here is a step-by-step guide to restore your classic workspace and migrate settings."
 date: "2026-05-22"
 category: "Developer Tooling"
+faq:
+  - question: "Why did my Google Antigravity file explorer disappear after updating to 2.0.1?"
+    answer: "The version 2.0.1 update splits Antigravity into two layers: an agent-first conversational layer and the traditional IDE environment. A configuration path or launcher routing bug can force the IDE launcher to default to the agent-first layer, hiding your sidebar and workspace."
+  - question: "How do I recover lost workspaces and chat history after restoring the Antigravity IDE?"
+    answer: "If your extensions, themes, or historical sessions appear empty, navigate to your local Roaming directory (%APPDATA%) and copy the User config directory from the Antigravity folder into the newly generated Antigravity IDE folder."
+howto:
+  name: "How to Restore Your Missing Antigravity IDE Workspace"
+  description: "Restore the classic file explorer sidebar, code editor, and chat history in Google Antigravity IDE after the 2.0.1 update."
+  steps:
+    - name: "Close All Antigravity Processes"
+      text: "Fully close Antigravity and Antigravity IDE on your system, using Task Manager if necessary."
+    - name: "Rename app.asar Package"
+      text: "Open PowerShell as Administrator, navigate to the resources directory of the app, and rename app.asar to app.asar.bak."
+    - name: "Migrate Old User Profile"
+      text: "Copy the User profile folder from your old AppData/Roaming/Antigravity directory and paste it into the new AppData/Roaming/Antigravity IDE directory, overwriting files."
+    - name: "Rebuild Extension Index"
+      text: "Copy the contents of the .antigravity folder to .antigravity-ide, and delete extensions.json in the extensions directory to force the IDE to re-index your themes and extensions."
 ---
 
 If you recently updated Google Antigravity to version 2.0.1 or higher and suddenly lost your file explorer, workspace sidebar, code editor layout, or previous chat history, you’re not alone.

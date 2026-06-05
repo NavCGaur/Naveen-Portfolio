@@ -61,6 +61,7 @@ export default function JsonLd() {
       },
       "query-input": "required name=search_term_string",
     },
+    // Search is implemented — /blog?q= now server-renders filtered results
   };
 
   const webpageSchema = {
@@ -162,11 +163,11 @@ export default function JsonLd() {
             description:
               "Weekly off-site backups, supervised plugin and theme updates, 24/7 uptime monitoring, and a monthly plain-English health report.",
           },
-          price: "29",
+          price: "49",
           priceCurrency: "USD",
           priceSpecification: {
             "@type": "UnitPriceSpecification",
-            price: "29",
+            price: "49",
             priceCurrency: "USD",
             unitText: "per month",
           },
@@ -179,11 +180,11 @@ export default function JsonLd() {
             description:
               "Everything in Essential plus continuous speed tuning, SEO monitoring, priority support, and 1 hour of custom development per month.",
           },
-          price: "99",
+          price: "149",
           priceCurrency: "USD",
           priceSpecification: {
             "@type": "UnitPriceSpecification",
-            price: "99",
+            price: "149",
             priceCurrency: "USD",
             unitText: "per month",
           },
@@ -225,7 +226,7 @@ export default function JsonLd() {
         name: "What does a WordPress maintenance plan include?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "My Essential plan ($29/month) includes weekly off-site backups, supervised theme and plugin updates, 24/7 uptime monitoring, security scanning, and a monthly plain-English health report. The Growth plan ($99/month) adds continuous speed optimisation, SEO monitoring, priority support, and 1 hour of custom development per month.",
+          text: "My Essential plan ($49/month) includes weekly off-site backups, supervised theme and plugin updates, 24/7 uptime monitoring, security scanning, and a monthly plain-English health report. The Growth plan ($149/month) adds continuous speed optimisation, SEO monitoring, priority support, and 1 hour of custom development per month.",
         },
       },
       {

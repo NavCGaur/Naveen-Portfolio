@@ -14,10 +14,63 @@ const contactSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const parsed = contactSchema.safeParse(body);
+    const contentType = request.headers.get("content-type") || "";
+    let data: any = {};
+    let isFormUrlEncoded = false;
+
+    if (
+      contentType.includes("application/x-www-form-urlencoded") ||
+      contentType.includes("multipart/form-data")
+    ) {
+      isFormUrlEncoded = true;
+      const formData = await request.formData();
+      const rawData = Object.fromEntries(formData.entries());
+
+      // Extract and format fields from different landing page forms
+      let nameVal = (rawData.name as string) || "";
+      if (!nameVal.trim()) {
+        if (rawData.type === "migration_request") {
+          nameVal = "Migration Client";
+        } else if (rawData.email) {
+          nameVal = (rawData.email as string).split("@")[0];
+        } else {
+          nameVal = "Website Client";
+        }
+      }
+
+      const websiteVal = (rawData.website || rawData.url || "") as string;
+      const budgetVal = (rawData.budget || rawData.volume || rawData.traffic || rawData.host || "") as string;
+
+      // Construct a detailed message combining specific form fields
+      const messageParts = [
+        rawData.message as string,
+        rawData.company ? `Company: ${rawData.company}` : "",
+        rawData.current_host ? `Current Host: ${rawData.current_host}` : "",
+        rawData.new_host ? `New Host: ${rawData.new_host}` : "",
+        rawData.type ? `Inquiry Type: ${rawData.type}` : "",
+      ];
+      const messageVal = messageParts.filter(Boolean).join("\n");
+
+      data = {
+        name: nameVal,
+        email: rawData.email,
+        website: websiteVal || undefined,
+        budget: budgetVal || undefined,
+        message: messageVal,
+      };
+    } else {
+      data = await request.json();
+    }
+
+    const parsed = contactSchema.safeParse(data);
 
     if (!parsed.success) {
+      if (isFormUrlEncoded) {
+        const referer = request.headers.get("referer") || "/";
+        const redirectUrl = new URL(referer);
+        redirectUrl.searchParams.set("status", "error");
+        return NextResponse.redirect(redirectUrl.toString().split("#")[0] + "#audit", 303);
+      }
       return NextResponse.json(
         { error: "Invalid form data", details: parsed.error.flatten() },
         { status: 400 }
@@ -55,7 +108,7 @@ export async function POST(request: NextRequest) {
             ${
               budget
                 ? `<tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #4A4A4A; font-size: 14px;">Budget</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #4A4A4A; font-size: 14px;">Budget / Detail</td>
               <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #0D0D0D; font-size: 14px;">${budget}</td>
             </tr>`
                 : ""
@@ -63,7 +116,7 @@ export async function POST(request: NextRequest) {
           </table>
 
           <div style="margin-top: 24px;">
-            <p style="color: #4A4A4A; font-size: 14px; margin-bottom: 8px;">Message:</p>
+            <p style="color: #4A4A4A; font-size: 14px; margin-bottom: 8px;">Message details:</p>
             <div style="background: white; border: 1px solid #EAEAEA; border-radius: 6px; padding: 16px; color: #0D0D0D; font-size: 14px; line-height: 1.65; white-space: pre-wrap;">${message}</div>
           </div>
 
@@ -74,9 +127,27 @@ export async function POST(request: NextRequest) {
       `,
     });
 
+    if (isFormUrlEncoded) {
+      const referer = request.headers.get("referer") || "/";
+      const redirectUrl = new URL(referer);
+      redirectUrl.searchParams.set("status", "success");
+      // Redirect back to original page at the target anchor
+      return NextResponse.redirect(redirectUrl.toString().split("#")[0] + "#audit", 303);
+    }
+
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error("Contact form error:", error);
+    const contentType = request.headers.get("content-type") || "";
+    if (
+      contentType.includes("application/x-www-form-urlencoded") ||
+      contentType.includes("multipart/form-data")
+    ) {
+      const referer = request.headers.get("referer") || "/";
+      const redirectUrl = new URL(referer);
+      redirectUrl.searchParams.set("status", "error");
+      return NextResponse.redirect(redirectUrl.toString().split("#")[0] + "#audit", 303);
+    }
     return NextResponse.json(
       { error: "Failed to send message. Please try again." },
       { status: 500 }

@@ -1,9 +1,14 @@
 ---
-title: "Ghost CMS Email Configuration: Mailgun, Brevo, and SMTP Troubleshooting"
-description: "Fix Ghost CMS email issues. Learn to configure Mailgun and Brevo SMTP for staff invites, newsletters, and member sign-ins. Includes common troubleshooting fixes."
+title: "Ghost Failed to Send Email? SMTP & Mailgun Configuration Fix"
+description: "Fix the 'Failed to send email. Please check your site configuration' error in Ghost CMS. Learn how to configure SMTP for Mailgun, Brevo, and Docker installations."
 date: "2026-05-12"
 category: "Ghost CMS"
 image: "/images/blog/ghost/ghost-email-smtp.png"
+faq:
+  - question: "Why does Ghost say 'Failed to send email. Please check your site configuration and try again'?"
+    answer: "This error usually occurs because the transactional email settings have not been correctly configured in your config.production.json file. Ghost requires SMTP settings in this file to send logins, staff invites, and magic links."
+  - question: "What is the difference between transactional and newsletter emails in Ghost?"
+    answer: "Transactional emails (staff invites, sign-in magic links) are configured on the server in config.production.json using SMTP. Newsletter bulk emails are configured directly in the Ghost Admin UI using a Mailgun API key."
 ---
 
 One of the first things that breaks on a fresh Ghost self-hosted installation is email. Without SMTP configured, Ghost can't send staff invites, member welcome emails, password resets, or newsletter content. This guide covers everything you need to get email working correctly.
@@ -64,6 +69,27 @@ After saving, always restart Ghost:
 ```bash
 ghost restart
 ```
+
+### Configuring SMTP via Docker, Coolify, or Environment Variables
+
+If you are running Ghost in a Docker container, on a platform like Coolify, or on a hosting provider where editing `config.production.json` directly is not feasible, you can configure SMTP settings using environment variables. 
+
+Ghost uses `nconf` under the hood, which allows any JSON configuration path to be overridden by environment variables using double underscores (`__`) as delimiters.
+
+Add the following environment variables to your container setup:
+
+```env
+mail__transport=SMTP
+mail__options__host=smtp.mailgun.org
+mail__options__port=587
+mail__options__auth__user=postmaster@mg.yourdomain.com
+mail__options__auth__pass=YOUR_MAILGUN_SMTP_PASSWORD
+mail__from="'Blog Name' <hello@yourdomain.com>"
+```
+
+*(Note: If you are using Brevo, replace `mail__options__host` with `smtp-relay.brevo.com` and use your Brevo credentials instead).*
+
+After saving these variables, restart or rebuild your container to apply the changes.
 
 ---
 
@@ -268,4 +294,4 @@ Email is not optional for a properly functioning Ghost site. Mailgun is the easi
 
 ---
 
-*Related: [Installing Ghost CMS on a VPS](/blog/ghost-vps-installation) | [Ghost Staff Roles and User Management](/blog/ghost-staff-roles-pro)*
+*Related: [Installing Ghost CMS on a VPS](/blog/ghost-vps-installation) | [Ghost CMS Developer Pricing Guide](/blog/ghost-cms-developer-pricing) | [Ghost Staff Roles and User Management](/blog/ghost-staff-roles-pro)*
