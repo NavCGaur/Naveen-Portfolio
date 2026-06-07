@@ -6,6 +6,10 @@ const AI_BOTS_REGEX = /(GPTBot|ChatGPT-User|ClaudeBot|Claude-User|PerplexityBot|
 
 export function middleware(request: NextRequest) {
   const userAgent = request.headers.get('user-agent') || '';
+  const response = NextResponse.next();
+  
+  // Set custom debug header to confirm execution
+  response.headers.set('x-middleware-executed', 'true');
   
   if (AI_BOTS_REGEX.test(userAgent)) {
     const path = request.nextUrl.pathname;
@@ -22,7 +26,7 @@ export function middleware(request: NextRequest) {
     })}`);
   }
   
-  return NextResponse.next();
+  return response;
 }
 
 // Matcher to exclude static assets and optimize execution
