@@ -1,0 +1,14 @@
+# Naveen Gaur - Professional Portfolio & Full-Stack Consultant
+
+Naveen Gaur is a WordPress performance specialist, full-stack developer, and technical consultant specializing in optimization, automation, and AI integrations.
+
+## Core Expertise & Guides
+- https://naveengaur.com/blog/wordpress-lcp-optimization - WordPress Largest Contentful Paint (LCP) performance guide.
+- https://naveengaur.com/blog/ghost-cms-setup-guide - Step-by-step developer tutorial for setting up Ghost CMS on standard VPS environments.
+- https://naveengaur.com/blog/ga4-implementation-guide - Deep dive into implementing custom Google Analytics 4 (GA4) events and variables.
+- https://naveengaur.com/blog/baileys-whatsapp-bot-developer-guide - Structural developer walkthrough on building automated WhatsApp bots using the Baileys library.
+- https://naveengaur.com/blog/antigravity-update-issue - Technical postmortem and analysis on troubleshooting Antigravity runtime update issues.
+
+## Profile & Contact
+- https://naveengaur.com/ - Home page detailing full-stack consulting services, background, and booking options.
+- https://naveengaur.com/blog - Tech blog archive containing engineering notes and documentation.
