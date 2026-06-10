@@ -149,6 +149,16 @@ const mdxComponents = {
       <table {...props} />
     </div>
   ),
+  a: (props: any) => {
+    const isExternal = props.href?.startsWith("http");
+    return (
+      <a
+        {...props}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+      />
+    );
+  },
 };
 
 export default async function BlogPost({ params }: Props) {

@@ -86,9 +86,17 @@ const mdxComponents = {
       <table {...props} className="w-full border-collapse text-left text-[14px]" />
     </div>
   ),
-  a: (props: any) => (
-    <a {...props} className="text-[#C4A35A] hover:text-[#d4b46a] font-bold underline transition-colors" />
-  ),
+  a: (props: any) => {
+    const isExternal = props.href?.startsWith("http");
+    return (
+      <a 
+        {...props} 
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+        className="text-[#C4A35A] hover:text-[#d4b46a] font-bold underline transition-colors" 
+      />
+    );
+  },
 };
 
 export default async function AuditPage({ params }: Props) {
