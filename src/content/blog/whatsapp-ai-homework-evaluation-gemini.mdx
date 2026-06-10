@@ -8,13 +8,13 @@ image: "/images/blog/whatsapp-ai-homework-evaluation.png"
 
 For regional web platforms—especially in EdTech, local logistics, or localized services—forcing users to log into complex desktop dashboards often results in a steep drop-off in user engagement.
 
-When building **LoopLearnX** (an automated homework evaluation and tutoring tool for CBSE students), we analyzed our user interaction metrics and encountered a major adoption hurdle. This case study details our technical journey from a brittle desktop portal to a highly responsive, WhatsApp-native AI agent, outlining our constraints, architecture decisions, and real-world production failures.
+When building [LoopLearnX](https://looplearnx.com) (an automated homework evaluation and tutoring tool for CBSE students), we analyzed our user interaction metrics and encountered a major adoption hurdle. This case study details our technical journey from a brittle desktop portal to a highly responsive, WhatsApp-native AI agent, outlining our constraints, architecture decisions, and real-world production failures.
 
 ---
 
 ## 📊 1. Business Context
 
-LoopLearnX was designed to provide instant CBSE NCERT-standard tutoring and evaluation for high school students. 
+[LoopLearnX](https://looplearnx.com) was designed to provide instant CBSE NCERT-standard tutoring and evaluation for high school students. 
 
 Our initial workflow required students to upload their completed notebook homework through a standard desktop web dashboard. However, during testing, we found that students consistently preferred taking a quick, native photo of their physical notebook paper and sharing it through WhatsApp rather than using the upload workflow in the dashboard. 
 
@@ -123,7 +123,7 @@ This custom self-hosted architecture is highly effective for high-volume, non-re
 
 ## Conclusion
 
-By moving our submission engine straight to where students already operate daily, LoopLearnX successfully stabilized user engagement. Decoupling the WebSocket gateway from our serverless Next.js logic allowed us to run advanced Gemini Vision grading safely, transforming a complex desktop portal workflow into a single, intuitive WhatsApp thread.
+By moving our submission engine straight to where students already operate daily, [LoopLearnX](https://looplearnx.com) successfully stabilized user engagement. Decoupling the WebSocket gateway from our serverless Next.js logic allowed us to run advanced Gemini Vision grading safely, transforming a complex desktop portal workflow into a single, intuitive WhatsApp thread.
 
 **Evaluating a custom WhatsApp AI system for your SaaS, education, or database product? Let's analyze your workflows, outline technical tradeoffs, and build a resilient channel. [Request a Free Scoping Audit here](/whatsapp-automation).**
 

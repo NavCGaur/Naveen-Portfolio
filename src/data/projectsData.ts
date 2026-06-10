@@ -10,7 +10,7 @@ export const projectsData: Project[] = [
     cover: "/images/projects/looplearnx.png",
     client: "LoopLearnX",
     industry: "EdTech / AI",
-    liveUrl: "https://looplearnx.vercel.app/",
+    liveUrl: "https://looplearnx.com",
     repoUrl: "",
     role: "Full Stack Developer",
     techStack: ["Next.js 16", "React 19", "Tailwind CSS 4", "Supabase", "Google Gemini 2.5 Flash", "PWA", "Vitest"],

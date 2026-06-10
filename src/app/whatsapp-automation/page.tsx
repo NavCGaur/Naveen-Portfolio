@@ -104,7 +104,7 @@ export default function WhatsAppAutomationPage() {
                   Build multi-modal intelligent chat interfaces. Enable customers or students to send images, files, or audio buffers, routing them directly through custom prompt frameworks (like LLMs and document parsers) for instant processing.
                 </p>
                 <ul className="space-y-2 text-[14px] text-white/60">
-                  <li>✔ Multimodal Homework Evaluation (LoopLearnX use case)</li>
+                  <li>✔ Multimodal Homework Evaluation (<a href="https://looplearnx.com" target="_blank" rel="noopener noreferrer" className="text-[#C4A35A] hover:underline">LoopLearnX</a> use case)</li>
                   <li>✔ Automated 24/7 B2B Lead Qualification Bots</li>
                   <li>✔ Calendar & Booking Integrations (Calendly, Cal.com)</li>
                 </ul>
@@ -148,7 +148,7 @@ export default function WhatsAppAutomationPage() {
               Featured Deployment Case Study
             </span>
             <h2 className="font-serif text-[clamp(28px,4vw,42px)] leading-[1.2] text-white mb-6">
-              LoopLearnX: Evaluating Student Notebook Homework Natively Over WhatsApp
+              <a href="https://looplearnx.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#C4A35A] transition-colors">LoopLearnX</a>: Evaluating Student Notebook Homework Natively Over WhatsApp
             </h2>
             <div className="border-l-2 border-[#C4A35A] pl-6 my-8 text-white/70 italic text-[17px] leading-[1.7]">
               "Instead of forcing high school students to log into complex desktop portals to upload their written homework, we brought our education engine straight into their pockets. Students take a photo of their notebook pages, text it, and receive immediate AI grading over WhatsApp."
