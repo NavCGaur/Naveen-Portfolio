@@ -1,9 +1,10 @@
 ---
-title: "The Complete Baileys WhatsApp Bot Tutorial (2026) — Step-by-Step Code"
-description: "Learn to build a production-grade WhatsApp bot with Baileys, Node.js, and PM2. Step-by-step setup guide with rate-limiting, custom queues, and VPS deployment."
+title: "Baileys WhatsApp Bot Tutorial (2026): Production Setup & Code"
+description: "Learn to build a production-grade WhatsApp bot with Baileys, Node.js, and PM2. Step-by-step tutorial with rate-limiting, custom queues, and VPS deployment."
 date: "2026-05-27"
 category: "WhatsApp & Automation"
 image: "/images/blog/baileys-whatsapp-bot.png"
+tags: ["Baileys", "WhatsApp Bot", "Tutorial", "Node.js", "Production Setup", "Code"]
 faq:
   - question: "How do you prevent a WhatsApp account ban when using Baileys?"
     answer: "To prevent your bot from getting banned, you must implement a rate-limiting message queue. Avoid sending bulk messages concurrently, and inject artificial random delays (e.g., 1.5 to 3 seconds) between sent payloads to mimic natural human typing and sending patterns."
@@ -18,6 +19,12 @@ When building [LoopLearnX](https://looplearnx.com) (an automated homework evalua
 Integrating a custom, self-hosted WhatsApp interface directly into our Next.js application was not just a convenience—it was the single most critical driver of student engagement.
 
 This guide details the technical blueprint of how we built a resilient, memory-aware **WhatsApp AI Bot** using `@whiskeysockets/baileys` and Next.js, hosted on an Oracle Cloud VPS. We will cover the exact production failures we encountered, learnings learned, and why custom self-hosting beats off-the-shelf agent frameworks.
+
+> [!NOTE]
+> **Quick Answer (TL;DR):** Setting up `@whiskeysockets/baileys` in production requires:
+> 1. **Persistent Authentication:** Use `useMultiFileAuthState` to save credentials in a local storage container.
+> 2. **Process Management:** Deploy via **PM2** (`pm2 start index.js`) on a VPS to ensure automatic connection restarts.
+> 3. **Rate Limiting & Queue:** Implement a message dispatch queue with random delays (1.5 - 3.0s) to simulate human sending speed and avoid WhatsApp API account bans.
 
 ---
 

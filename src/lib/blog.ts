@@ -24,6 +24,7 @@ export interface BlogPost {
     description?: string;
     steps: Array<{ name: string; text: string }>;
   };
+  tags?: string[];
 }
 
 export interface BlogPostMeta {
@@ -117,5 +118,6 @@ export function getPostBySlug(slug: string): BlogPost | null {
     image: data.image || undefined,
     faq: data.faq || undefined,
     howto: data.howto || undefined,
+    tags: data.tags || undefined,
   };
 }

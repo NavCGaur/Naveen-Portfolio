@@ -31,18 +31,6 @@ export const metadata: Metadata = {
   },
   description:
     "WordPress Performance Specialist & Full-Stack Consultant | Technical SEO · Emergency Recovery · Custom Web Apps | Helping Founders Fix What Others Can’t",
-  keywords: [
-    "WordPress Performance Specialist",
-    "Full-Stack Consultant",
-    "Technical SEO",
-    "WordPress Emergency Recovery",
-    "Custom Web Applications",
-    "WordPress speed optimization",
-    "WordPress malware removal",
-    "WordPress maintenance retainer",
-    "Naveen Gaur",
-    "naveengaur.com",
-  ],
   authors: [{ name: "Naveen Gaur", url: "https://naveengaur.com" }],
   creator: "Naveen Gaur",
   openGraph: {

@@ -3,6 +3,7 @@ title: "How to Fix Antigravity 2.0 IDE: Restore Missing File Explorer & Chats"
 description: "Google Antigravity 2.0.1+ update broke your IDE file explorer or chat history? Here is a step-by-step guide to restore your classic workspace and migrate settings."
 date: "2026-05-22"
 category: "Developer Tooling"
+tags: ["Google Antigravity", "Antigravity IDE", "Developer Tools", "Workspaces", "Bug Fix", "AEO"]
 faq:
   - question: "Why did my Google Antigravity file explorer disappear after updating to 2.0.1?"
     answer: "The version 2.0.1 update splits Antigravity into two layers: an agent-first conversational layer and the traditional IDE environment. A configuration path or launcher routing bug can force the IDE launcher to default to the agent-first layer, hiding your sidebar and workspace."
@@ -27,6 +28,11 @@ If you recently updated Google Antigravity to version 2.0.1 or higher and sudden
 After updating, both **Antigravity** and **Antigravity IDE** started opening the exact same agent-focused interface on my system, with the normal IDE layout completely missing.
 
 This guide explains what likely changed, how to restore the classic IDE workspace, and how to recover your previous chat history, settings, and extensions.
+
+> [!NOTE]
+> **Quick Answer (TL;DR):** If your Antigravity IDE sidebar or file explorer disappeared after the 2.0.1+ update:
+> 1. **IDE Recovery:** Close processes, open PowerShell as Admin, navigate to your App resources, and rename `app.asar` to `app.asar.bak`.
+> 2. **Config Migration:** Copy the `User` folder from `%APPDATA%\Roaming\Antigravity` to `%APPDATA%\Roaming\Antigravity IDE` to restore all previous chats.
 
 ---
 
@@ -119,6 +125,18 @@ If you ever want to restore the newer agent interface again, simply reverse the 
 ```powershell
 Rename-Item app.asar.bak app.asar
 ```
+
+---
+
+<div className="blog-card border blog-border rounded-xl p-8 my-10 text-center">
+  <h3 className="font-serif text-[22px] blog-heading mb-3">
+    Building Custom Integrations or AI Tooling?
+  </h3>
+  <p className="text-[14px] blog-text-muted max-w-[500px] mx-auto leading-[1.6] mb-6">
+    I build custom API integrations, automated agents, and workflow systems for small businesses and founders. Let's build what you need.
+  </p>
+  <ArticleCTALink slug="antigravity-update-issue" />
+</div>
 
 ---
 

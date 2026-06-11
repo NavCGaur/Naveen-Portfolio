@@ -4,6 +4,7 @@ description: "Fix the 'Failed to send email. Please check your site configuratio
 date: "2026-05-12"
 category: "Ghost CMS"
 image: "/images/blog/ghost/ghost-email-smtp.png"
+tags: ["Ghost CMS", "SMTP", "Mailgun", "Brevo", "Email Configuration", "Technical SEO"]
 faq:
   - question: "Why does Ghost say 'Failed to send email. Please check your site configuration and try again'?"
     answer: "This error usually occurs because the transactional email settings have not been correctly configured in your config.production.json file. Ghost requires SMTP settings in this file to send logins, staff invites, and magic links."
@@ -12,6 +13,12 @@ faq:
 ---
 
 One of the first things that breaks on a fresh Ghost self-hosted installation is email. Without SMTP configured, Ghost can't send staff invites, member welcome emails, password resets, or newsletter content. This guide covers everything you need to get email working correctly.
+
+> [!NOTE]
+> **Quick Answer (TL;DR):** Transactional email errors in Ghost are fixed by adding SMTP settings to your `config.production.json` file:
+> 1. Set the `"mail": { "transport": "SMTP" }` blocks.
+> 2. Populate the `"options"` block with your provider's SMTP `host`, `port` (typically `587` or `465`), `user`, and `pass` credentials.
+> 3. Restart Ghost (`ghost restart`) to load the changes.
 
 ---
 

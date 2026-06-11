@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: post.description,
       publishedTime: post.date,
       authors: ["Naveen Gaur"],
-      tags: [post.category, "WordPress", "freelance WordPress developer"],
+      tags: post.tags && post.tags.length > 0 ? post.tags : [post.category, "Naveen Gaur", "Full-Stack Consultant"],
     },
     twitter: {
       card: "summary_large_image",
@@ -78,12 +78,9 @@ function ArticleJsonLd({ post }: { post: BlogPost }) {
       "@id": `https://naveengaur.com/blog/${post.slug}`,
     },
     articleSection: post.category,
-    keywords: [
-      post.category,
-      "WordPress",
-      "WordPress developer",
-      "freelance WordPress developer",
-    ].join(", "),
+    keywords: post.tags && post.tags.length > 0 
+      ? post.tags.join(", ") 
+      : [post.category, "Naveen Gaur", "Full-Stack Consultant"].join(", "),
   };
 
   const faqSchema = post.faq ? {
