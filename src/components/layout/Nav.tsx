@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 
 import * as ga from "@/lib/ga";
 
@@ -49,13 +48,13 @@ export default function Nav() {
             }`}
         >
           <div className="w-[50px] h-[50px] rounded-full overflow-hidden border-2 border-gold/40 shadow-md relative">
-            <Image
+            <img
               src="/images/projects/Naveen_profile_pic.jpg"
               alt="Naveen Gaur"
               width={50}
               height={50}
               className="w-full h-full object-cover"
-              priority
+              fetchPriority="high"
             />
           </div>
           Naveen Gaur
