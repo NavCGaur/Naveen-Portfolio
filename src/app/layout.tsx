@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, DM_Sans } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import JsonLd from "@/components/JsonLd";
+import GoogleAnalyticsDeferred from "@/components/GoogleAnalyticsDeferred";
 import { ProjectModalProvider } from "@/hooks/use-project-modal";
 import { ProjectModal } from "@/components/project-modal";
 
@@ -88,23 +88,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.google-analytics.com" />
       </head>
       <body className="overflow-x-hidden antialiased bg-surface text-ink font-sans">
-        {/* Google Analytics 4 — set NEXT_PUBLIC_GA_ID in .env.local + Vercel env vars */}
-        {GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-              strategy="lazyOnload"
-            />
-            <Script id="ga4-init" strategy="lazyOnload">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_ID}', { page_path: window.location.pathname });
-              `}
-            </Script>
-          </>
-        )}
+        {GA_ID && <GoogleAnalyticsDeferred gaId={GA_ID} />}
         <JsonLd />
         <ProjectModalProvider>
           {children}
