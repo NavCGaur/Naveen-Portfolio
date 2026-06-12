@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 // Regex pattern for all major AI Crawler User-Agents
 const AI_BOTS_REGEX = /GPTBot|ChatGPT-User|ClaudeBot|anthropic-ai|Bytespider|CCBot|cohere-ai|Google-Extended|PerplexityBot|bingbot|YouBot|FacebookBot|Applebot-Extended|Amazonbot/i;
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const userAgent = request.headers.get('user-agent') || '';
   const response = NextResponse.next();
   
