@@ -83,6 +83,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${dmSerif.variable} ${dmSans.variable} overflow-x-hidden`} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+      </head>
       <body className="overflow-x-hidden antialiased bg-surface text-ink font-sans">
         {/* Google Analytics 4 — set NEXT_PUBLIC_GA_ID in .env.local + Vercel env vars */}
         {GA_ID && (
