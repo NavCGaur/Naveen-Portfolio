@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 import * as ga from "@/lib/ga";
 
@@ -47,11 +48,14 @@ export default function Nav() {
           className={`flex items-center gap-3 font-serif text-[18px] tracking-[0.02em] transition-colors ${isTextLight ? "text-white hover:text-[#C4A35A]" : "text-ink hover:text-gold-dark"
             }`}
         >
-          <div className="w-[50px] h-[50px] rounded-full overflow-hidden border-2 border-gold/40 shadow-md">
-            <img
+          <div className="w-[50px] h-[50px] rounded-full overflow-hidden border-2 border-gold/40 shadow-md relative">
+            <Image
               src="/images/projects/Naveen_profile_pic.jpg"
               alt="Naveen Gaur"
+              width={50}
+              height={50}
               className="w-full h-full object-cover"
+              priority
             />
           </div>
           Naveen Gaur

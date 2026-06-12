@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
@@ -193,10 +194,12 @@ export default async function BlogPost({ params }: Props) {
               {post.description}
             </p>
             <div className="flex items-center gap-3 pt-6 border-t blog-border">
-              <div className="w-8 h-8 rounded-full overflow-hidden border border-[#C4A35A]/20">
-                <img 
+              <div className="w-8 h-8 rounded-full overflow-hidden border border-[#C4A35A]/20 relative">
+                <Image 
                   src="/images/projects/Naveen_profile_pic.jpg" 
                   alt="Naveen Gaur" 
+                  width={32}
+                  height={32}
                   className="w-full h-full object-cover"
                 />
               </div>

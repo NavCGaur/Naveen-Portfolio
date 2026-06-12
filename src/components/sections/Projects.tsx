@@ -112,7 +112,6 @@ export default function Projects() {
                       fill
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                       sizes="(max-width: 640px) 85vw, (max-width: 768px) 380px, 420px"
-                      unoptimized
                     />
 
                     {/* Hover Overlay */}

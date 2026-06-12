@@ -26,7 +26,6 @@ export function ProjectModalRightPanel({ project }: RightPanelProps) {
                   className="object-cover"
                   priority={index === 0}
                   sizes="(max-width: 1024px) 100vw, 800px"
-                  unoptimized
                 />
               </div>
             ))}
