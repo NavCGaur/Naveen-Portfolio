@@ -170,8 +170,8 @@ export default async function BlogPost({ params }: Props) {
       <ArticleJsonLd post={post} />
       <main className="min-h-screen blog-bg">
         {/* Article Header */}
-        <header className="pt-[140px] pb-12 px-6 md:px-10 border-b blog-border">
-          <div className="max-w-[760px] mx-auto">
+        <header className="pt-[150px] pb-12 px-6 md:px-10 hd:px-14 border-b blog-border">
+          <div className="max-w-[760px] hd:max-w-[1200px] mx-auto">
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 text-[13px] blog-text-faint hover:text-[#C4A35A] transition-colors mb-8"
@@ -217,8 +217,8 @@ export default async function BlogPost({ params }: Props) {
         </header>
 
         {/* Article Body + invisible tracker */}
-        <article className="py-14 px-6 md:px-10">
-          <div className="max-w-[760px] mx-auto prose-blog">
+        <article className="py-14 px-6 md:px-10 hd:px-14">
+          <div className="max-w-[760px] hd:max-w-[1200px] mx-auto prose-blog">
             <ArticleTracker slug={post.slug} />
             <MDXRemote 
               source={post.content} 
@@ -233,8 +233,8 @@ export default async function BlogPost({ params }: Props) {
         </article>
 
         {/* Share + Comments */}
-        <section className="pb-16 px-6 md:px-10">
-          <div className="max-w-[760px] mx-auto">
+        <section className="pb-16 px-6 md:px-10 hd:px-14">
+          <div className="max-w-[760px] hd:max-w-[1200px] mx-auto">
 
             {/* Share buttons */}
             <ArticleShareButtons slug={post.slug} title={post.title} />
@@ -260,8 +260,8 @@ export default async function BlogPost({ params }: Props) {
         </section>
 
         {/* CTA Footer */}
-        <section className="pb-24 px-6 md:px-10">
-          <div className="max-w-[760px] mx-auto">
+        <section className="pb-24 px-6 md:px-10 hd:px-14">
+          <div className="max-w-[760px] hd:max-w-[1200px] mx-auto">
             <div className="blog-card border blog-border rounded-xl p-10 text-center">
               <h2 className="font-serif text-[clamp(22px,3vw,32px)] blog-heading mb-4">
                 Need help with your WordPress site?

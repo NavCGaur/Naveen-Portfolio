@@ -24,8 +24,8 @@ export default function Projects() {
   }
 
   return (
-    <section id="projects" className="py-[100px] px-6 md:px-10 bg-ink overflow-hidden">
-      <div className="max-w-[1100px] mx-auto">
+    <section id="projects" className="py-[100px] px-6 md:px-10 hd:px-14 bg-ink overflow-hidden">
+      <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto">
 
         {/* Section Header */}
         <div className="flex items-end justify-between mb-14">

@@ -10,9 +10,9 @@ const stats = [
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex items-center pt-[120px] pb-20 px-6 md:px-10">
-      <div className="max-w-[1100px] mx-auto w-full">
-        <div className="max-w-[720px]">
+    <section className="min-h-screen flex items-center pt-[120px] pb-20 px-6 md:px-10 hd:px-14">
+      <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto w-full">
+        <div className="max-w-[720px] hd:max-w-[840px]">
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2.5 text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-8 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full animate-fade-up">
             <span className="w-2 h-2 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)]" />

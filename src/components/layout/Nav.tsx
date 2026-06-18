@@ -39,7 +39,7 @@ export default function Nav() {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBackground}`}>
-      <div className="w-full px-6 md:px-10 h-[60px] flex items-center justify-between">
+      <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto w-full px-6 md:px-10 hd:px-14 h-[72px] flex items-center justify-between">
         {/* Logo / Name */}
         <a
           href="/"

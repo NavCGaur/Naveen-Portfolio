@@ -53,8 +53,8 @@ function CheckIcon() {
 
 export default function Services() {
   return (
-    <section id="services" className="pt-[100px] pb-12 px-6 md:px-10 bg-surface">
-      <div className="max-w-[1100px] mx-auto">
+    <section id="services" className="pt-[100px] pb-12 px-6 md:px-10 hd:px-14 bg-surface">
+      <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto">
 
         {/* One-Time Services */}
         <div className="mb-[72px]">

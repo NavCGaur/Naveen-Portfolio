@@ -59,8 +59,8 @@ export default function BlogIndexClient({ posts, categories }: Props) {
     slug === undefined; // on /blog all = active, none of the category pills
 
   return (
-    <section className="py-12 px-6 md:px-10">
-      <div className="max-w-[1100px] mx-auto">
+    <section className="py-12 px-6 md:px-10 hd:px-14">
+      <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto">
 
         {/* ── Filter bar ──────────────────────────────── */}
         <div className="border-b blog-border pb-8 mb-8">

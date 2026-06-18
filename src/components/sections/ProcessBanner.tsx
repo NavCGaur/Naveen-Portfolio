@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function ProcessBanner() {
   return (
-    <section className="pt-0 pb-16 md:pb-24 px-6 md:px-10">
-      <div className="max-w-[1100px] mx-auto text-center">
+    <section className="pt-0 pb-16 md:pb-24 px-6 md:px-10 hd:px-14">
+      <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto text-center">
         <Link
           href="/how-it-works"
           className="group inline-block bg-[#FAFAF8] border border-black/[0.08] hover:border-black/[0.15] hover:bg-white hover:shadow-sm rounded-2xl md:rounded-full py-8 md:py-6 px-8 md:px-12 transition-all duration-300"

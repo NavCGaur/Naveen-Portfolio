@@ -49,8 +49,8 @@ ${frustration}`;
     <>
       <Nav />
       <main className="min-h-screen bg-[#0D0D0D]">
-        <section className="pt-[160px] pb-24 px-6 md:px-10">
-          <div className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        <section className="pt-[170px] pb-24 px-6 md:px-10 hd:px-14">
+          <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             
             {/* Left Column: Copy */}
             <div>

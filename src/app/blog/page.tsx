@@ -78,8 +78,8 @@ export default function BlogIndex() {
       <main className="min-h-screen blog-bg">
 
         {/* ── Hero ──────────────────────────────────────── */}
-        <section className="pt-[140px] pb-4 px-6 md:px-10">
-          <div className="max-w-[1100px] mx-auto">
+        <section className="pt-[140px] pb-4 px-6 md:px-10 hd:px-14">
+          <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto">
             <span className="block text-[11px] font-medium tracking-[0.14em] uppercase text-[#C4A35A] mb-4">
               Field Notes
             </span>
@@ -100,8 +100,8 @@ export default function BlogIndex() {
         </Suspense>
 
         {/* ── CTA ───────────────────────────────────────── */}
-        <section className="pb-24 px-6 md:px-10">
-          <div className="max-w-[1100px] mx-auto">
+        <section className="pb-24 px-6 md:px-10 hd:px-14">
+          <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto">
             <div className="blog-card border blog-border rounded-xl p-10 md:p-14 text-center">
               <h2 className="font-serif text-[clamp(24px,3vw,36px)] blog-heading mb-4">
                 Got a technical problem right now?

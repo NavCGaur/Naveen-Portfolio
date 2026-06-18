@@ -2,8 +2,8 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-ink border-t border-white/[0.08] py-8 px-6 md:px-10 text-center md:text-left">
-      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
+    <footer className="bg-ink border-t border-white/[0.08] py-8 px-6 md:px-10 hd:px-14 text-center md:text-left">
+      <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="text-[14px] tracking-[0.01em] text-white/60">
           &copy; {currentYear} Naveen Gaur. All rights reserved.
         </div>

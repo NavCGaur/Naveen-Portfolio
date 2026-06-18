@@ -32,8 +32,8 @@ const techBadges = [
 
 export default function WhyMe() {
   return (
-    <section id="why" className="py-[100px] px-6 md:px-10 bg-white">
-      <div className="max-w-[1100px] mx-auto">
+    <section id="why" className="py-[100px] px-6 md:px-10 hd:px-14 bg-white">
+      <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto">
         <motion.span
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -61,8 +61,8 @@ function StarRating() {
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-[100px] px-6 md:px-10 bg-surface">
-      <div className="max-w-[1200px] mx-auto">
+    <section id="testimonials" className="py-[100px] px-6 md:px-10 hd:px-14 bg-surface">
+      <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto">
         <motion.span
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
