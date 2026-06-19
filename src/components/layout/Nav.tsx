@@ -77,15 +77,15 @@ export default function Nav() {
           <li>
             <a
               href="/free-audit"
-              onClick={() => ga.event({ action: "nav_cta_click", category: "conversion", label: "Nav - Free Video Audit" })}
+              onClick={() => ga.event({ action: "nav_cta_click", category: "conversion", label: "Nav - Run AI Audit" })}
               className={`text-[15px] font-medium px-[20px] py-2.5 rounded-sm transition-colors ${isTextLight ? "bg-white text-ink hover:bg-[#C4A35A]" : "bg-ink text-white hover:bg-gold-dark"
                 }`}
             >
-              Free Video Audit
+              Run AI Audit
             </a>
           </li>
         </ul>
-
+ 
         {/* Mobile Hamburger */}
         <button
           id="mobile-menu-toggle"
@@ -108,7 +108,7 @@ export default function Nav() {
           />
         </button>
       </div>
-
+ 
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-surface border-t border-black/[0.08] px-6 py-4 flex flex-col gap-4">
@@ -124,10 +124,10 @@ export default function Nav() {
           ))}
           <a
             href="/free-audit"
-            onClick={() => handleLinkClick("Mobile Nav - Free Video Audit")}
+            onClick={() => handleLinkClick("Mobile Nav - Run AI Audit")}
             className="text-[15px] font-medium bg-ink text-white px-4 py-2.5 rounded-sm text-center hover:bg-gold-dark transition-colors"
           >
-            Free Video Audit
+            Run AI Audit
           </a>
         </div>
       )}

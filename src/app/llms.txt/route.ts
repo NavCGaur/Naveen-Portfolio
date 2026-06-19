@@ -14,7 +14,7 @@ Naveen Gaur is a full-stack developer specializing in the WordPress ecosystem. H
 - **Speed Optimization:** Achieving 90+ Core Web Vitals scores without bloated plugins.
 - **Hosting & Infrastructure Automation:** Decoupling billing (WHMCS) from server APIs (FlyWP, Enhance), custom Vercel-like Next.js dashboards, and automated secure S3 disaster recovery backends.
 - **Agency Partnerships:** White-label technical support for design and marketing firms.
-- **Video Audits:** Personalized 5-minute Loom video teardowns for technical diagnostics.
+- **Website & AI Audits:** Real-time speed, WordPress bloat, and AI readiness indexing checks.
 
 ## Strategic Pillars
 - **The Barbell Strategy:** Focusing on high-urgency rescue missions and high-stability agency retainers.
@@ -25,7 +25,7 @@ Naveen Gaur is a full-stack developer specializing in the WordPress ecosystem. H
 - [Web Hosting Automation Services](https://naveengaur.com/hosting-automation)
 - [Custom WhatsApp Automation Services](https://naveengaur.com/whatsapp-automation)
 - [Agency Partnership Program](https://naveengaur.com/agency)
-- [Free Video Audit Request](https://naveengaur.com/free-audit)
+- [Free Website & AI Audit](https://naveengaur.com/free-audit)
 - [WordPress Migration Services](https://naveengaur.com/migration)
 - [Technical Blog](https://naveengaur.com/blog)
 

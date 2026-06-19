@@ -48,11 +48,11 @@ export default function Hero() {
             <a
               href="/free-audit"
               id="hero-cta-services"
-              onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Free Video Audit" })}
+              onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Free Website & AI Audit" })}
               className="group relative overflow-hidden inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:bg-black/[0.02] w-full sm:w-auto text-center transition-all duration-300"
             >
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-dark to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
-              <span className="relative z-10">Free Video Audit</span>
+              <span className="relative z-10">Free Website & AI Audit</span>
             </a>
           </div>
 
