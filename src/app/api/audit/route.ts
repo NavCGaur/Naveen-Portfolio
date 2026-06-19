@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
           "User-Agent":
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         },
-        signal: AbortSignal.timeout(10000),
+        signal: AbortSignal.timeout(15000),
       })
         .then(async (res) => {
           if (!res.ok) return null;
@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
 
       fetch(
         `${PAGESPEED_ENDPOINT}?url=${encodeURIComponent(cleanUrl)}&category=performance&category=seo&category=best-practices&category=accessibility&key=${PAGESPEED_API_KEY}`,
-        { signal: AbortSignal.timeout(45000) }
+        { signal: AbortSignal.timeout(35000) }
       ).catch(() => null),
     ]);
 
