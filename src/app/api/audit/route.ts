@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
 
       fetch(
         `${PAGESPEED_ENDPOINT}?url=${encodeURIComponent(cleanUrl)}&category=performance&category=seo&category=best-practices&category=accessibility&key=${PAGESPEED_API_KEY}`,
-        { signal: AbortSignal.timeout(35000) }
+        { signal: AbortSignal.timeout(48000) }
       ).catch(() => null),
     ]);
 
