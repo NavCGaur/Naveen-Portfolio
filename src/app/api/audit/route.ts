@@ -4,7 +4,7 @@ import dns from "dns";
 import { promisify } from "util";
 
 const lookup = promisify(dns.lookup);
-const PAGESPEED_API_KEY = process.env.PAGESPEED_API_KEY || "AIzaSyAuKsQQ0W0YxkWSqMzxfl3T59BYafnzgdQ";
+const PAGESPEED_API_KEY = process.env.PAGESPEED_API_KEY;
 const PAGESPEED_ENDPOINT = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
 
 const auditRequestSchema = z.object({
@@ -63,6 +63,14 @@ function checkRateLimit(ip: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!PAGESPEED_API_KEY) {
+      console.error("Missing PAGESPEED_API_KEY env variable");
+      return NextResponse.json(
+        { error: "PageSpeed API key is not configured on the server." },
+        { status: 500 }
+      );
+    }
+
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "127.0.0.1";
 
     if (!checkRateLimit(ip)) {
