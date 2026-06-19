@@ -3,6 +3,8 @@ import { z } from "zod";
 import dns from "dns";
 import { promisify } from "util";
 
+export const maxDuration = 60;
+
 const lookup = promisify(dns.lookup);
 const PAGESPEED_API_KEY = process.env.PAGESPEED_API_KEY;
 const PAGESPEED_ENDPOINT = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
@@ -110,19 +112,39 @@ export async function POST(request: NextRequest) {
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         },
         signal: AbortSignal.timeout(10000),
-      }).catch(() => null),
+      })
+        .then(async (res) => {
+          if (!res.ok) return null;
+          const html = await res.text();
+          return { ok: true, headers: res.headers, html };
+        })
+        .catch(() => null),
 
       fetch(`${origin}/robots.txt`, {
         signal: AbortSignal.timeout(5000),
-      }).catch(() => null),
+      })
+        .then(async (res) => {
+          if (!res.ok) return null;
+          const text = await res.text();
+          return { ok: true, text };
+        })
+        .catch(() => null),
 
       fetch(`${origin}/llms.txt`, {
         signal: AbortSignal.timeout(5000),
-      }).catch(() => null),
+      })
+        .then(async (res) => {
+          if (res.ok) {
+            await res.text();
+            return true;
+          }
+          return false;
+        })
+        .catch(() => false),
 
       fetch(
         `${PAGESPEED_ENDPOINT}?url=${encodeURIComponent(cleanUrl)}&category=performance&category=seo&category=best-practices&category=accessibility&key=${PAGESPEED_API_KEY}`,
-        { signal: AbortSignal.timeout(30000) }
+        { signal: AbortSignal.timeout(45000) }
       ).catch(() => null),
     ]);
 
@@ -132,7 +154,7 @@ export async function POST(request: NextRequest) {
     let pluginCount = 0;
     const schemaTypes: string[] = [];
 
-    if (htmlRes?.ok) {
+    if (htmlRes && htmlRes.ok) {
       const headers = htmlRes.headers;
       cachingActive =
         headers.has("x-litespeed-cache") ||
@@ -142,7 +164,7 @@ export async function POST(request: NextRequest) {
         headers.get("cf-cache-status")?.toLowerCase() === "hit" ||
         (headers.get("cache-control")?.toLowerCase().includes("max-age") ?? false);
 
-      const html = await htmlRes.text();
+      const html = htmlRes.html;
 
       if (html.includes("elementor-")) pageBuilder = "Elementor";
       else if (html.includes("wp-content/themes/divi")) pageBuilder = "Divi";
@@ -177,8 +199,8 @@ export async function POST(request: NextRequest) {
 
     // --- Robots.txt Analysis ---
     let aiRobotsAllowed = true;
-    if (robotsRes?.ok) {
-      const text = await robotsRes.text();
+    if (robotsRes && robotsRes.ok) {
+      const text = robotsRes.text;
       const lines = text.split("\n").map((l) => l.trim().toLowerCase());
       let trackingAI = false;
       for (const line of lines) {
@@ -195,7 +217,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const llmsTxtPresent = robotsRes != null && (llmsRes?.ok ?? false);
+    const llmsTxtPresent = robotsRes != null && (llmsRes ?? false);
 
     // --- PageSpeed Analysis ---
     if (!psRes?.ok) {
