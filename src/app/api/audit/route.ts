@@ -221,9 +221,8 @@ export async function POST(request: NextRequest) {
 
     // --- PageSpeed Analysis ---
     if (!psRes?.ok) {
-      const psStatus = psRes?.status;
       return NextResponse.json(
-        { error: `Google PageSpeed API failed (HTTP ${psStatus ?? "timeout"}). Please try again in a moment.` },
+        { error: "The audit is taking longer than usual due to high traffic. Please try again in a few moments." },
         { status: 502 }
       );
     }
