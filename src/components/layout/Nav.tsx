@@ -19,7 +19,8 @@ export default function Nav() {
 
   const isBlogPage = pathname ? pathname.startsWith("/blog") : false;
   const isAuditsPage = pathname ? pathname.startsWith("/audits") : false;
-  const isDarkPage = pathname ? (pathname !== "/" && !isBlogPage && !isAuditsPage) : true;
+  const isFreeAuditPage = pathname ? pathname.startsWith("/free-audit") : false;
+  const isDarkPage = pathname ? (pathname !== "/" && !isBlogPage && !isAuditsPage && !isFreeAuditPage) : true;
   const isTextLight = isDarkPage && !scrolled;
 
   useEffect(() => {

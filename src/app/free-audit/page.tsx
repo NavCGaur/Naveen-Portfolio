@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Nav from "@/components/layout/Nav";
+import Footer from "@/components/layout/Footer";
 
 const LOADING_STEPS = [
   "Resolving hostname & validating URL...",
@@ -294,6 +297,7 @@ function FullReport({ data }: { data: AuditDetails }) {
 }
 
 export default function FreeAuditPage() {
+  const router = useRouter();
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [loadingStepIndex, setLoadingStepIndex] = useState(0);
@@ -328,8 +332,8 @@ export default function FreeAuditPage() {
       });
       const result = await response.json();
 
-      if (response.ok && result.report) {
-        setReportData(result.report);
+      if (response.ok && result.id) {
+        router.push(`/audits/${result.id}`);
       } else {
         setStatus("error");
         setErrorMessage(result.error || "An error occurred during analysis. Please try again.");
@@ -344,139 +348,143 @@ export default function FreeAuditPage() {
   if (reportData) return <FullReport data={reportData} />;
 
   return (
-    <main className="min-h-screen bg-[#0D0D0D]">
-      <section className="pt-[120px] pb-24 px-6 md:px-10">
-        <div className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+    <>
+      <Nav />
+      <main className="min-h-screen bg-surface text-ink font-sans">
+        <section className="pt-[120px] pb-24 px-6 md:px-10">
+          <div className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
-          {/* Left: Copy */}
-          <div className="pt-4">
-            <span className="block text-[11px] font-medium tracking-[0.14em] uppercase text-[#C4A35A] mb-4">
-              Free WordPress & AI Discovery Audit
-            </span>
-            <h1 className="font-serif text-[clamp(34px,5vw,52px)] tracking-[-0.025em] leading-[1.1] text-white mb-6">
-              Is your site ready for Google&apos;s speed & ChatGPT&apos;s search?
-            </h1>
-            <p className="text-[16px] text-white/60 leading-[1.7] font-light mb-8">
-              Generic audits give you useless checklist scores. This tool inspects your WordPress plugin bloat, measures Core Web Vitals via Google PageSpeed, and audits whether AI engines (ChatGPT, Perplexity) can crawl and cite your business.
-            </p>
+            {/* Left: Copy */}
+            <div className="pt-4 animate-fade-up">
+              <span className="inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-6 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full">
+                Free WordPress &amp; AI Discovery Audit
+              </span>
+              <h1 className="font-serif text-[clamp(34px,5vw,52px)] tracking-[-0.025em] leading-[1.1] text-ink mb-6">
+                Is your site ready for Google&apos;s speed &amp; ChatGPT&apos;s search?
+              </h1>
+              <p className="text-[16.5px] text-ink-muted leading-[1.7] mb-8 font-normal">
+                Generic audits give you useless checklist scores. This tool inspects your WordPress plugin bloat, measures Core Web Vitals via Google PageSpeed, and audits whether AI engines (ChatGPT, Perplexity) can crawl and cite your business.
+              </p>
 
-            <ul className="space-y-5 mb-10">
-              {[
-                {
-                  title: "WordPress Bloat Detection",
-                  body: "Detects active page builders, plugin weights, and server TTFB from the outside — no login needed.",
-                },
-                {
-                  title: "AI Crawl & Citation Audit",
-                  body: "Verifies if your robots.txt permits AI agents and checks whether structured schema exists to get cited by LLMs.",
-                },
-                {
-                  title: "Business-Impact Translation",
-                  body: "No jargon — raw milliseconds translated into estimated visitors and conversions lost per month.",
-                },
-              ].map(({ title, body }) => (
-                <li key={title} className="flex gap-4 items-start">
-                  <span className="text-[#C4A35A] text-[18px] leading-none mt-0.5">▹</span>
-                  <div>
-                    <h3 className="text-white text-[15px] font-medium mb-0.5">{title}</h3>
-                    <p className="text-[13px] text-white/50 leading-[1.6]">{body}</p>
+              <ul className="space-y-5 mb-10">
+                {[
+                  {
+                    title: "WordPress Bloat Detection",
+                    body: "Detects active page builders, plugin weights, and server TTFB from the outside — no login needed.",
+                  },
+                  {
+                    title: "AI Crawl & Citation Audit",
+                    body: "Verifies if your robots.txt permits AI agents and checks whether structured schema exists to get cited by LLMs.",
+                  },
+                  {
+                    title: "Business-Impact Translation",
+                    body: "No jargon — raw milliseconds translated into estimated visitors and conversions lost per month.",
+                  },
+                ].map(({ title, body }) => (
+                  <li key={title} className="flex gap-4 items-start">
+                    <span className="text-gold-dark text-[18px] leading-none mt-0.5">▹</span>
+                    <div>
+                      <h3 className="text-ink text-[15px] font-semibold mb-0.5">{title}</h3>
+                      <p className="text-[13.5px] text-ink-muted leading-[1.6]">{body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Right: Form / Loading */}
+            <div className="bg-white border border-black/[0.08] shadow-md shadow-black/[0.02] p-8 md:p-10 rounded-xl h-fit animate-fade-up animate-delay-100">
+              {status === "loading" ? (
+                <div className="space-y-8 py-4">
+                  <div className="text-center">
+                    <div className="inline-block w-10 h-10 border-2 border-gold/30 border-t-gold-dark rounded-full animate-spin mb-4" />
+                    <h3 className="text-ink text-[17px] font-semibold mb-1">Analyzing Website</h3>
+                    <p className="text-[12px] text-ink-muted">Takes 15–25 seconds. Do not close this window.</p>
                   </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Right: Form / Loading */}
-          <div className="bg-[#141414] border border-white/[0.06] p-8 md:p-10 rounded-xl h-fit">
-            {status === "loading" ? (
-              <div className="space-y-8 py-4">
-                <div className="text-center">
-                  <div className="inline-block w-10 h-10 border-2 border-[#C4A35A]/30 border-t-[#C4A35A] rounded-full animate-spin mb-4" />
-                  <h3 className="text-white text-[17px] font-medium mb-1">Analyzing Website</h3>
-                  <p className="text-[12px] text-white/40">Takes 15–25 seconds. Do not close this window.</p>
+                  <div className="space-y-2.5 bg-[#FAFAF8] p-5 rounded border border-black/[0.05]">
+                    {LOADING_STEPS.map((step, idx) => {
+                      const done = idx < loadingStepIndex;
+                      const active = idx === loadingStepIndex;
+                      return (
+                        <div key={idx} className="flex gap-3 items-center text-[12.5px]">
+                          {done ? (
+                            <span className="text-emerald-600 font-bold text-[11px]">✓</span>
+                          ) : active ? (
+                            <span className="w-1.5 h-1.5 bg-gold-dark rounded-full animate-ping shrink-0" />
+                          ) : (
+                            <span className="w-1.5 h-1.5 bg-black/10 rounded-full shrink-0" />
+                          )}
+                          <span className={`transition-colors ${done ? "text-ink-muted/50" : active ? "text-gold-dark font-semibold" : "text-ink-faint/30"}`}>
+                            {step}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-                <div className="space-y-2.5 bg-[#0D0D0D] p-5 rounded border border-white/[0.04]">
-                  {LOADING_STEPS.map((step, idx) => {
-                    const done = idx < loadingStepIndex;
-                    const active = idx === loadingStepIndex;
-                    return (
-                      <div key={idx} className="flex gap-3 items-center text-[12.5px]">
-                        {done ? (
-                          <span className="text-[#22c55e] font-bold text-[11px]">✓</span>
-                        ) : active ? (
-                          <span className="w-1.5 h-1.5 bg-[#C4A35A] rounded-full animate-ping shrink-0" />
-                        ) : (
-                          <span className="w-1.5 h-1.5 bg-white/10 rounded-full shrink-0" />
-                        )}
-                        <span className={`transition-colors ${done ? "text-white/30" : active ? "text-[#C4A35A] font-medium" : "text-white/15"}`}>
-                          {step}
-                        </span>
+              ) : (
+                <>
+                  <h2 className="text-ink text-[20px] font-semibold mb-6">Run Instant Audit</h2>
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">First Name *</label>
+                        <input
+                          type="text"
+                          name="name"
+                          required
+                          placeholder="Your name"
+                          className="w-full bg-[#FAFAF8] border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
+                        />
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : (
-              <>
-                <h2 className="text-white text-[20px] font-medium mb-6">Run Instant Audit</h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">Business Email *</label>
+                        <input
+                          type="email"
+                          name="email"
+                          required
+                          placeholder="name@company.com"
+                          className="w-full bg-[#FAFAF8] border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
+                        />
+                      </div>
+                    </div>
+
                     <div>
-                      <label className="block text-[10px] text-white/50 mb-1.5 uppercase tracking-wide font-medium">First Name *</label>
+                      <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">Website URL *</label>
                       <input
-                        type="text"
-                        name="name"
+                        type="url"
+                        name="url"
                         required
-                        placeholder="Your name"
-                        className="w-full bg-[#0D0D0D] border border-white/[0.08] rounded-sm px-4 py-3 text-white text-[14px] placeholder:text-white/20 focus:outline-none focus:border-[#C4A35A]/60 transition-colors"
+                        placeholder="https://example.com"
+                        className="w-full bg-[#FAFAF8] border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
                       />
                     </div>
-                    <div>
-                      <label className="block text-[10px] text-white/50 mb-1.5 uppercase tracking-wide font-medium">Business Email *</label>
-                      <input
-                        type="email"
-                        name="email"
-                        required
-                        placeholder="name@company.com"
-                        className="w-full bg-[#0D0D0D] border border-white/[0.08] rounded-sm px-4 py-3 text-white text-[14px] placeholder:text-white/20 focus:outline-none focus:border-[#C4A35A]/60 transition-colors"
-                      />
-                    </div>
-                  </div>
 
-                  <div>
-                    <label className="block text-[10px] text-white/50 mb-1.5 uppercase tracking-wide font-medium">Website URL *</label>
-                    <input
-                      type="url"
-                      name="url"
-                      required
-                      placeholder="https://example.com"
-                      className="w-full bg-[#0D0D0D] border border-white/[0.08] rounded-sm px-4 py-3 text-white text-[14px] placeholder:text-white/20 focus:outline-none focus:border-[#C4A35A]/60 transition-colors"
-                    />
-                  </div>
+                    <button
+                      type="submit"
+                      className="w-full bg-ink text-white py-4 rounded-sm text-[13px] font-semibold tracking-[0.06em] uppercase hover:bg-gold-dark transition-colors duration-200 mt-2 cursor-pointer"
+                    >
+                      Audit Website & AI Readiness →
+                    </button>
 
-                  <button
-                    type="submit"
-                    className="w-full bg-[#C4A35A] text-[#0D0D0D] py-4 rounded-sm text-[13px] font-bold tracking-[0.06em] uppercase hover:bg-[#d4b46a] transition-colors duration-200 mt-2"
-                  >
-                    Audit Website & AI Readiness →
-                  </button>
+                    {status === "error" && (
+                      <div className="bg-red-50 border border-red-200 rounded p-4">
+                        <p className="text-red-600 text-[12.5px] text-center">{errorMessage}</p>
+                      </div>
+                    )}
 
-                  {status === "error" && (
-                    <div className="bg-red-500/10 border border-red-500/20 rounded p-4">
-                      <p className="text-red-400 text-[12.5px] text-center">{errorMessage}</p>
-                    </div>
-                  )}
+                    <p className="text-[11px] text-ink-faint text-center mt-2">
+                      Free. Limited to 2 audits per IP per 24h.
+                    </p>
+                  </form>
+                </>
+              )}
+            </div>
 
-                  <p className="text-[11px] text-white/25 text-center mt-2">
-                    Free. No credit card. Limited to 2 audits per IP per 24h.
-                  </p>
-                </form>
-              </>
-            )}
           </div>
-
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }

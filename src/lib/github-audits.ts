@@ -36,7 +36,83 @@ export interface AuditReport {
     schemaTypes: string[];
     aiRobotsAllowed: boolean;
     llmsTxtPresent: boolean;
+    // Business identification
+    businessName?: string;
+    businessType?: string;
+    // Layer 1 objective facts
+    hasMissingH1?: boolean;
+    hasMissingMetaDesc?: boolean;
+    hasOutdatedCopyright?: boolean;
+    noPhoneNumber?: boolean;
+    noCtaButton?: boolean;
+    noSocialLinks?: boolean;
+    imagesWithoutAlt?: number;
+    // Blog / content analysis
+    blog?: {
+      exists: boolean;
+      totalPosts: number;
+      daysSinceLastPost?: number;
+      avgIntervalDays?: number;
+      recentAvgIntervalDays?: number;
+      historicAvgIntervalDays?: number;
+      contentSlowing?: boolean;
+    };
+    // Business credibility score (0–10)
+    credibility?: {
+      score: number;
+      hasAboutPage: boolean;
+      hasTeamPage: boolean;
+      hasPrivacyPolicy: boolean;
+      hasTerms: boolean;
+      hasTestimonials: boolean;
+      hasReviewSchema: boolean;
+      hasSocialLinks: boolean;
+      hasAddress: boolean;
+      hasPhone: boolean;
+    };
+    // Local SEO readiness score (0–10)
+    localSeo?: {
+      score: number;
+      hasPhone: boolean;
+      hasAddress: boolean;
+      hasLocalSchema: boolean;
+      hasMapsEmbed: boolean;
+      hasCityInH1: boolean;
+      hasServiceArea: boolean;
+      hasBusinessHours: boolean;
+    };
+    // Online Authority & Discovery readiness score (0–10)
+    onlineAuthority?: {
+      score: number;
+      hasAboutOrTeam: boolean;
+      hasTestimonials: boolean;
+      hasReviewSchema: boolean;
+      hasSocialLinks: boolean;
+      hasLegalPages: boolean;
+      hasGoodSpeedOrCache: boolean;
+    };
+    // Testimonial trust signals
+    testimonials?: {
+      found: boolean;
+      count: number;
+      hasNamedAttribution: boolean;
+      hasSchema: boolean;
+      hasPhotos: boolean;
+    };
+    // Contact accessibility
+    contact?: {
+      hasPhone: boolean;
+      hasEmail: boolean;
+      hasForm: boolean;
+      hasAddress: boolean;
+      hasMapsEmbed: boolean;
+      hasBusinessHours: boolean;
+    };
   };
+  // AI-generated synthesis observations (Gemini)
+  aiObservations?: Array<{ title: string; body: string }>;
+  executiveSummary?: string;
+  businessCategory?: "local-service" | "professional-service" | "ecommerce" | "content-saas";
   error?: string;
 }
 

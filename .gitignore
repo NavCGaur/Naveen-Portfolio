@@ -43,3 +43,5 @@ next-env.d.ts
 # credentials
 *.json
 GA4_data.md
+
+.vercel
