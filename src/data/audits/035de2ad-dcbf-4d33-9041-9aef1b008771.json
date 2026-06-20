@@ -1,0 +1,91 @@
+{
+  "id": "035de2ad-dcbf-4d33-9041-9aef1b008771",
+  "url": "https://katgrace.com",
+  "name": "kat",
+  "email": "sonugaur2028@gmail.com",
+  "status": "completed",
+  "timestamp": "2026-06-20T07:45:37.631Z",
+  "metrics": {
+    "performance": 99,
+    "seo": 100,
+    "bestPractices": 96,
+    "accessibility": 81
+  },
+  "details": {
+    "ttfb": 227,
+    "loadTime": 1.13,
+    "lcp": 0.54,
+    "fcp": 0.44,
+    "tbt": 0,
+    "cls": 0,
+    "pageSize": 0.66,
+    "pageBuilder": "Elementor",
+    "pluginCount": 5,
+    "cachingActive": true,
+    "schemaTypes": [
+      "ImageObject",
+      "WebSite",
+      "SearchAction",
+      "WebPage",
+      "Person",
+      "Article"
+    ],
+    "aiRobotsAllowed": true,
+    "llmsTxtPresent": false,
+    "businessName": "Kat Grace Trauma Healing",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": true,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": true,
+      "totalPosts": 10,
+      "daysSinceLastPost": 32,
+      "avgIntervalDays": 4,
+      "recentAvgIntervalDays": 7,
+      "historicAvgIntervalDays": 3,
+      "contentSlowing": true
+    },
+    "credibility": {
+      "score": 3,
+      "hasAboutPage": true,
+      "hasTeamPage": false,
+      "hasPrivacyPolicy": false,
+      "hasTerms": false,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": false,
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 1,
+      "hasPhone": true,
+      "hasAddress": false,
+      "hasLocalSchema": false,
+      "hasMapsEmbed": false,
+      "hasCityInH1": false,
+      "hasServiceArea": false,
+      "hasBusinessHours": false
+    },
+    "testimonials": {
+      "found": false,
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": false,
+      "hasForm": true,
+      "hasAddress": false,
+      "hasMapsEmbed": false,
+      "hasBusinessHours": false
+    }
+  },
+  "aiObservations": []
+}
