@@ -279,9 +279,7 @@ export default async function AuditPage({ params }: Props) {
     const discoveryScore = businessCategory === "local-service" 
       ? calculatedLocalSeoScore 
       : calculatedOnlineAuthorityScore;
-    const discoveryLabel = businessCategory === "local-service" 
-      ? "Local Search Readiness" 
-      : "Online Discovery & Authority";
+    const discoveryLabel = "AI & Discovery Readiness";
 
     const isSlow = loadTime > 3.0;
     const isTtfbHigh = ttfb > 500;
@@ -809,8 +807,8 @@ export default async function AuditPage({ params }: Props) {
                 <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
                   <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
                     <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Local Search Readiness</span>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getScoreLabelColorClass(localSeo.score)}`}>
-                      {localSeo.score}/10 — {getScoreLabel(localSeo.score)}
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getScoreLabelColorClass(calculatedLocalSeoScore)}`}>
+                      {calculatedLocalSeoScore}/10 — {getScoreLabel(calculatedLocalSeoScore)}
                     </span>
                   </div>
                   <div className="space-y-2 text-[13px]">
@@ -843,9 +841,9 @@ export default async function AuditPage({ params }: Props) {
               ) : (
                 <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
                   <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
-                    <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Online Authority &amp; Discovery</span>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getScoreLabelColorClass(onlineAuthority?.score ?? 0)}`}>
-                      {onlineAuthority?.score ?? 0}/10 — {getScoreLabel(onlineAuthority?.score ?? 0)}
+                    <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Authority Signals Checklist</span>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getScoreLabelColorClass(calculatedOnlineAuthorityScore)}`}>
+                      {calculatedOnlineAuthorityScore}/10 — {getScoreLabel(calculatedOnlineAuthorityScore)}
                     </span>
                   </div>
                   <div className="space-y-2 text-[13px]">
