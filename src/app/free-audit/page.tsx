@@ -350,252 +350,270 @@ export default function FreeAuditPage() {
   return (
     <>
       <Nav />
-      <main className="min-h-screen bg-surface text-ink font-sans">
-        <section className="pt-[120px] pb-24 px-6 md:px-10">
-          <div className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+      <main className="min-h-screen bg-[#FAFAF8] text-[#0D0D0D] font-sans antialiased">
+        
+        {/* Section 1: Hero & Benefits */}
+        <section className="pt-[140px] pb-16 px-6 max-w-[800px] mx-auto text-center animate-fade-up">
+          <span className="inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-6 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full">
+            Website Growth Opportunity Report
+          </span>
+          <h1 className="font-serif text-[clamp(36px,5vw,56px)] tracking-[-0.025em] leading-[1.1] text-ink mb-6">
+            Find Out What&apos;s Holding Your Website Back
+          </h1>
+          <p className="text-[17px] text-[#475569] leading-[1.7] mb-12 max-w-[680px] mx-auto font-normal">
+            Get a free Website Growth Opportunity Report covering visibility, trust signals, performance, and AI readiness. We analyze your website and identify what matters most to your business.
+          </p>
 
-            {/* Left: Copy */}
-            <div className="pt-4 animate-fade-up">
-              <span className="inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-6 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full">
-                Website Growth Opportunity Report
-              </span>
-              <h1 className="font-serif text-[clamp(34px,5vw,52px)] tracking-[-0.025em] leading-[1.1] text-ink mb-6">
-                Find Out What&apos;s Holding Your Website Back
-              </h1>
-              <p className="text-[16.5px] text-ink-muted leading-[1.7] mb-8 font-normal">
-                Get a free Website Growth Opportunity Report covering visibility, trust signals, performance, and AI readiness. We analyze your website and identify what matters most to your business.
-              </p>
-
-              <h2 className="text-ink text-[16px] font-bold uppercase tracking-wider mb-5 font-sans">What You&apos;ll Learn</h2>
-              <ul className="space-y-5 mb-10">
-                {[
-                  {
-                    title: "What is making your website harder to find",
-                    body: "We audit core accessibility obstacles, page weight, hosting speed, and technical roadblocks.",
-                  },
-                  {
-                    title: "Why visitors may not be contacting you",
-                    body: "We review credibility elements, testimonials presence, and contact paths that build real customer trust.",
-                  },
-                  {
-                    title: "Whether AI platforms can understand your business",
-                    body: "We check robots.txt agent rules and structured schema metadata that let ChatGPT, Bing, and Claude recommend your services.",
-                  },
-                  {
-                    title: "Business-Focused Recommendations",
-                    body: "We translate complex technical findings into practical opportunities and prioritize what matters most to fix first.",
-                  },
-                ].map(({ title, body }) => (
-                  <li key={title} className="flex gap-4 items-start">
-                    <span className="text-gold-dark text-[18px] leading-none mt-0.5">✓</span>
-                    <div>
-                      <h3 className="text-ink text-[15px] font-semibold mb-0.5">{title}</h3>
-                      <p className="text-[13.5px] text-ink-muted leading-[1.6]">{body}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Right: Form / Loading */}
-            <div className="bg-white border border-black/[0.08] shadow-md shadow-black/[0.02] p-8 md:p-10 rounded-xl h-fit animate-fade-up animate-delay-100">
-              {status === "loading" ? (
-                <div className="space-y-8 py-4">
-                  <div className="text-center">
-                    <div className="inline-block w-10 h-10 border-2 border-gold/30 border-t-gold-dark rounded-full animate-spin mb-4" />
-                    <h3 className="text-ink text-[17px] font-semibold mb-1">Analyzing Website</h3>
-                    <p className="text-[12px] text-ink-muted">Takes 15–25 seconds. Do not close this window.</p>
-                  </div>
-                  <div className="space-y-2.5 bg-[#FAFAF8] p-5 rounded border border-black/[0.05]">
-                    {LOADING_STEPS.map((step, idx) => {
-                      const done = idx < loadingStepIndex;
-                      const active = idx === loadingStepIndex;
-                      return (
-                        <div key={idx} className="flex gap-3 items-center text-[12.5px]">
-                          {done ? (
-                            <span className="text-emerald-600 font-bold text-[11px]">✓</span>
-                          ) : active ? (
-                            <span className="w-1.5 h-1.5 bg-gold-dark rounded-full animate-ping shrink-0" />
-                          ) : (
-                            <span className="w-1.5 h-1.5 bg-black/10 rounded-full shrink-0" />
-                          )}
-                          <span className={`transition-colors ${done ? "text-ink-muted/50" : active ? "text-gold-dark font-semibold" : "text-ink-faint/30"}`}>
-                            {step}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <h2 className="text-ink text-[20px] font-semibold mb-6">Get My Free Report</h2>
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <div>
-                        <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">First Name *</label>
-                        <input
-                          type="text"
-                          name="name"
-                          required
-                          placeholder="Your name"
-                          className="w-full bg-[#FAFAF8] border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">Business Email *</label>
-                        <input
-                          type="email"
-                          name="email"
-                          required
-                          placeholder="name@company.com"
-                          className="w-full bg-[#FAFAF8] border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">Website URL *</label>
-                      <input
-                        type="url"
-                        name="url"
-                        required
-                        placeholder="https://example.com"
-                        className="w-full bg-[#FAFAF8] border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-full bg-ink text-white py-4 rounded-sm text-[13px] font-semibold tracking-[0.06em] uppercase hover:bg-gold-dark transition-colors duration-200 mt-2 cursor-pointer"
-                    >
-                      Analyze My Website →
-                    </button>
-
-                    {status === "error" && (
-                      <div className="bg-red-50 border border-red-200 rounded p-4">
-                        <p className="text-red-600 text-[12.5px] text-center">{errorMessage}</p>
-                      </div>
-                    )}
-
-                    <p className="text-[11px] text-ink-faint text-center mt-2">
-                      Free. Limited to 2 audits per IP per 24h.
-                    </p>
-                  </form>
-                </>
-              )}
-            </div>
-
-          </div>
-        </section>
-
-        {/* Section: Social Proof & AEO context */}
-        <section className="bg-white border-t border-black/[0.05] py-20 px-6 md:px-10">
-          <div className="max-w-[1100px] mx-auto space-y-16">
-            
-            {/* Recent Opportunities Found */}
-            <div>
-              <div className="text-center max-w-[650px] mx-auto mb-12">
-                <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-gold-dark">Real Findings</span>
-                <h2 className="font-serif text-[28px] text-ink mt-2 mb-3">Recent Opportunities We&apos;ve Found</h2>
-                <p className="text-[14px] text-ink-muted leading-[1.6]">
-                  Every website analysis looks at specific code elements and performance metrics. Here are the most common growth opportunities we flag:
-                </p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[
-                  {
-                    title: "Missing testimonials reducing trust",
-                    body: "A therapist's website loaded quickly but had no visible testimonials, creating a trust bottleneck.",
-                    icon: "💬"
-                  },
-                  {
-                    title: "Outdated website content",
-                    body: "A consultant had stopped publishing blog articles for 8 months, signaling inactive operations to crawlers.",
-                    icon: "📅"
-                  },
-                  {
-                    title: "Missing AI visibility signals",
-                    body: "A local law firm was completely invisible to ChatGPT because schema markup was missing in their code.",
-                    icon: "🤖"
-                  },
-                  {
-                    title: "Slow-loading mobile pages",
-                    body: "An ecommerce site had heavy images that made pages load in 6 seconds, frustrating mobile shoppers.",
-                    icon: "⚡"
-                  }
-                ].map((item, idx) => (
-                  <div key={idx} className="bg-[#FAFAF8] border border-black/[0.06] p-6 rounded-lg">
-                    <span className="text-[24px] block mb-3">{item.icon}</span>
-                    <h3 className="text-[15px] font-bold text-ink mb-2 leading-snug">{item.title}</h3>
+          <div className="bg-white border border-black/[0.06] rounded-xl p-8 text-left shadow-xs mb-10">
+            <h2 className="text-[#725921] text-[13px] font-bold uppercase tracking-wider mb-6 font-sans border-b border-black/[0.04] pb-3">
+              What You&apos;ll Learn
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "Why visitors may not be contacting you",
+                  body: "We identify issues that may be making your website harder to find, slower to use, or less effective at converting visitors into inquiries."
+                },
+                {
+                  title: "What is making your website harder to find",
+                  body: "We audit core accessibility obstacles, page weight, hosting response speed, and technical roadblocks."
+                },
+                {
+                  title: "Whether AI platforms can recommend you",
+                  body: "We check robots.txt agent rules and structured schema metadata that let ChatGPT, Bing, and Claude recommend your services."
+                },
+                {
+                  title: "Business-Focused Recommendations",
+                  body: "We translate complex technical findings into practical opportunities and prioritize what matters most to fix first."
+                }
+              ].map((item, idx) => (
+                <div key={idx} className="flex gap-3 items-start">
+                  <span className="text-[#C4A35A] text-[16px] leading-none mt-0.5">✓</span>
+                  <div>
+                    <h3 className="text-ink text-[14.5px] font-semibold mb-1">{item.title}</h3>
                     <p className="text-[13px] text-ink-muted leading-[1.6]">{item.body}</p>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Why We Added AI Visibility Checks */}
-            <div className="bg-[#FAFAF8] border border-black/[0.05] p-8 md:p-10 rounded-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-4">
-                <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-gold-dark block">The Shift in Search</span>
-                <h3 className="font-serif text-[26px] text-ink leading-tight">Why We Added AI Visibility Checks</h3>
-                <p className="text-[14.5px] text-ink-muted leading-[1.7]">
-                  AI platforms are already sending active, high-intent visitors directly to websites. Recently, organic referral traffic to our own site included visitors directly from:
-                </p>
-                <div className="flex flex-wrap gap-3 pt-2">
-                  <span className="bg-white border border-black/[0.06] px-4 py-2 rounded text-[13px] font-semibold text-ink flex items-center gap-2 shadow-xs">
-                    <span className="text-[#10a37f]">●</span> ChatGPT Referrals
-                  </span>
-                  <span className="bg-white border border-black/[0.06] px-4 py-2 rounded text-[13px] font-semibold text-ink flex items-center gap-2 shadow-xs">
-                    <span className="text-[#00809d]">●</span> Bing Chat Cites
-                  </span>
-                  <span className="bg-white border border-black/[0.06] px-4 py-2 rounded text-[13px] font-semibold text-ink flex items-center gap-2 shadow-xs">
-                    <span className="text-[#4285f4]">●</span> Google AI Overviews
-                  </span>
                 </div>
-                <p className="text-[13.5px] text-ink-muted leading-[1.6] italic pt-2">
-                  Our Growth Opportunity Report parses robots.txt agent rules and schema definitions to ensure your business details are readable and indexable by these conversational models.
-                </p>
-              </div>
-              <div className="lg:col-span-5 bg-white border border-black/[0.06] p-6 rounded-lg shadow-sm space-y-4">
-                <span className="text-[10px] uppercase font-bold text-ink-muted tracking-wider block">Example AI Traffic Split</span>
-                <div className="space-y-3">
-                  <div>
-                    <div className="flex justify-between text-[12px] font-bold mb-1">
-                      <span>ChatGPT &amp; Bing AI</span>
-                      <span className="text-gold-dark">48%</span>
-                    </div>
-                    <div className="w-full bg-black/5 h-2 rounded-full overflow-hidden">
-                      <div className="bg-gold-dark h-full rounded-full" style={{ width: "48%" }} />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-[12px] font-bold mb-1">
-                      <span>Google AI Overviews</span>
-                      <span className="text-gold-dark">23%</span>
-                    </div>
-                    <div className="w-full bg-black/5 h-2 rounded-full overflow-hidden">
-                      <div className="bg-[#725921] h-full rounded-full" style={{ width: "23%" }} />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-[12px] font-bold mb-1">
-                      <span>Traditional Search</span>
-                      <span className="text-ink-muted">29%</span>
-                    </div>
-                    <div className="w-full bg-black/5 h-2 rounded-full overflow-hidden">
-                      <div className="bg-black/20 h-full rounded-full" style={{ width: "29%" }} />
-                    </div>
-                  </div>
-                </div>
-                <p className="text-[11px] text-ink-faint text-center italic">
-                  * Representative visual split of organic AI-assisted referral traffic.
-                </p>
-              </div>
+              ))}
             </div>
-
           </div>
         </section>
+
+        {/* Section 2: Real Findings / Opportunities */}
+        <section className="bg-white border-t border-b border-black/[0.05] py-20 px-6">
+          <div className="max-w-[800px] mx-auto">
+            <div className="text-center mb-12">
+              <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-gold-dark">Real Findings</span>
+              <h2 className="font-serif text-[28px] text-ink mt-2 mb-3">Recent Opportunities We&apos;ve Found</h2>
+              <p className="text-[14px] text-ink-muted leading-[1.6] max-w-[560px] mx-auto">
+                Every website analysis looks at specific code elements and performance metrics. Here are the most common growth opportunities we flag:
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "Missing testimonials reducing trust",
+                  body: "A therapist's website loaded quickly but had no visible testimonials, creating a trust bottleneck.",
+                  icon: "💬"
+                },
+                {
+                  title: "Outdated website content",
+                  body: "A consultant had stopped publishing blog articles for 8 months, signaling inactive operations to crawlers.",
+                  icon: "📅"
+                },
+                {
+                  title: "Missing AI visibility signals",
+                  body: "A local law firm was completely invisible to ChatGPT because schema markup was missing in their code.",
+                  icon: "🤖"
+                },
+                {
+                  title: "Slow-loading mobile pages",
+                  body: "An ecommerce site had heavy images that made pages load in 6 seconds, frustrating mobile shoppers.",
+                  icon: "⚡"
+                }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-[#FAFAF8] border border-black/[0.06] p-6 rounded-lg">
+                  <span className="text-[20px] block mb-2">{item.icon}</span>
+                  <h3 className="text-[14.5px] font-bold text-ink mb-1 leading-snug">{item.title}</h3>
+                  <p className="text-[13px] text-ink-muted leading-[1.6]">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Section 3: Report Preview Previews */}
+        <section className="py-20 px-6 max-w-[800px] mx-auto">
+          <div className="text-center mb-12">
+            <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-gold-dark">The Output</span>
+            <h2 className="font-serif text-[28px] text-ink mt-2 mb-3">See What You&apos;ll Receive</h2>
+            <p className="text-[14px] text-ink-muted leading-[1.6] max-w-[560px] mx-auto">
+              Your growth report contains actionable developer instructions and strategic findings, completely free of fluff.
+            </p>
+          </div>
+          <div className="space-y-6">
+            {/* Mockup 1: What Matters Most */}
+            <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-xs">
+              <span className="bg-[#C4A35A]/10 text-[#725921] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#C4A35A]/20">Report Preview</span>
+              <h3 className="font-serif text-[17px] text-[#725921] mt-3 mb-2">1. What Matters Most</h3>
+              <div className="bg-[#FAFAF8] p-4 rounded border border-black/[0.04] text-[13px] text-[#475569] leading-[1.6]">
+                &quot;Your website already has a strong technical foundation. The biggest opportunity isn&apos;t speed — it is visibility. Specifically: helping search engines, AI platforms, and prospective clients understand and trust your business more quickly.&quot;
+              </div>
+            </div>
+            {/* Mockup 2: Key Observations */}
+            <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-xs">
+              <span className="bg-[#C4A35A]/10 text-[#725921] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#C4A35A]/20">Report Preview</span>
+              <h3 className="font-serif text-[17px] text-[#725921] mt-3 mb-2">2. Key Observations</h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-2.5 text-[13px]">
+                  <span className="text-[#C4A35A] mt-0.5">🔍</span>
+                  <div>
+                    <p className="font-bold text-[#0D0D0D]">Accessible to Humans, but Unstructured for AI Engines</p>
+                    <p className="text-[#475569] mt-0.5">While human visitors can easily find your phone or contact form, search bots and AI crawlers struggle to verify operational hours or locations due to missing schema metadata.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Mockup 3: Action Checklist */}
+            <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-xs">
+              <span className="bg-[#C4A35A]/10 text-[#725921] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#C4A35A]/20">Report Preview</span>
+              <h3 className="font-serif text-[17px] text-[#725921] mt-3 mb-2">3. Prioritized Action Checklist</h3>
+              <div className="grid grid-cols-3 gap-3 text-center">
+                <div className="border border-red-100 bg-red-50/50 p-3 rounded">
+                  <span className="text-[10px] uppercase font-bold text-red-700 block">Fix First</span>
+                  <span className="text-[12px] font-semibold text-[#0D0D0D] block mt-1">Add Business Schema</span>
+                </div>
+                <div className="border border-amber-100 bg-amber-50/50 p-3 rounded">
+                  <span className="text-[10px] uppercase font-bold text-amber-700 block">Fix Next</span>
+                  <span className="text-[12px] font-semibold text-[#0D0D0D] block mt-1">Enable Server Caching</span>
+                </div>
+                <div className="border border-emerald-100 bg-emerald-50/50 p-3 rounded">
+                  <span className="text-[10px] uppercase font-bold text-emerald-700 block">Fix Later</span>
+                  <span className="text-[12px] font-semibold text-[#0D0D0D] block mt-1">Audit Social Links</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 4: Form Request Area */}
+        <section className="bg-white border-t border-b border-black/[0.05] py-20 px-6">
+          <div className="max-w-[580px] mx-auto bg-[#FAFAF8] border border-black/[0.08] shadow-md shadow-black/[0.02] p-8 md:p-10 rounded-xl">
+            {status === "loading" ? (
+              <div className="space-y-8 py-4">
+                <div className="text-center">
+                  <div className="inline-block w-10 h-10 border-2 border-gold/30 border-t-gold-dark rounded-full animate-spin mb-4" />
+                  <h3 className="text-ink text-[17px] font-semibold mb-1">Analyzing Website</h3>
+                  <p className="text-[12px] text-ink-muted">Takes 15–25 seconds. Do not close this window.</p>
+                </div>
+                <div className="space-y-2.5 bg-white p-5 rounded border border-black/[0.05]">
+                  {LOADING_STEPS.map((step, idx) => {
+                    const done = idx < loadingStepIndex;
+                    const active = idx === loadingStepIndex;
+                    return (
+                      <div key={idx} className="flex gap-3 items-center text-[12.5px]">
+                        {done ? (
+                          <span className="text-emerald-600 font-bold text-[11px]">✓</span>
+                        ) : active ? (
+                          <span className="w-1.5 h-1.5 bg-gold-dark rounded-full animate-ping shrink-0" />
+                        ) : (
+                          <span className="w-1.5 h-1.5 bg-black/10 rounded-full shrink-0" />
+                        )}
+                        <span className={`transition-colors ${done ? "text-ink-muted/50" : active ? "text-gold-dark font-semibold" : "text-ink-faint/30"}`}>
+                          {step}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-ink text-[22px] font-serif text-center mb-6">Get My Free Report</h2>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">First Name *</label>
+                      <input
+                        type="text"
+                        name="name"
+                        required
+                        placeholder="Your name"
+                        className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">Business Email *</label>
+                      <input
+                        type="email"
+                        name="email"
+                        required
+                        placeholder="name@company.com"
+                        className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">Website URL *</label>
+                    <input
+                      type="url"
+                      name="url"
+                      required
+                      placeholder="https://example.com"
+                      className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-ink text-white py-4 rounded-sm text-[13px] font-semibold tracking-[0.06em] uppercase hover:bg-gold-dark transition-colors duration-200 mt-2 cursor-pointer"
+                  >
+                    Reveal My Top Opportunities →
+                  </button>
+
+                  {status === "error" && (
+                    <div className="bg-red-50 border border-red-200 rounded p-4">
+                      <p className="text-red-600 text-[12.5px] text-center">{errorMessage}</p>
+                    </div>
+                  )}
+
+                  <div className="text-center space-y-1.5 pt-2 text-[12px] text-ink-muted">
+                    <p>✓ Average report generation time: 30–60 seconds</p>
+                    <p>✓ No login or WordPress credentials required</p>
+                    <p>✓ Runs completely from the outside</p>
+                  </div>
+                </form>
+              </>
+            )}
+          </div>
+        </section>
+
+        {/* Section 5: Why AI Visibility Checks */}
+        <section className="py-20 px-6 max-w-[800px] mx-auto space-y-6">
+          <div className="text-center max-w-[600px] mx-auto mb-10">
+            <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-gold-dark">The Shift in Search</span>
+            <h2 className="font-serif text-[28px] text-ink mt-2 mb-3">Why We Added AI Visibility Checks</h2>
+          </div>
+          <p className="text-[15px] text-ink-muted leading-[1.75] text-center">
+            AI platforms are already sending active, high-intent visitors directly to websites. Recent referral sources to our own website included:
+          </p>
+          <div className="flex justify-center flex-wrap gap-4 py-4">
+            <span className="bg-white border border-black/[0.06] px-5 py-3 rounded-lg text-[13.5px] font-semibold text-ink flex items-center gap-2 shadow-xs">
+              <span className="text-[#10a37f]">●</span> ChatGPT Referrals
+            </span>
+            <span className="bg-white border border-black/[0.06] px-5 py-3 rounded-lg text-[13.5px] font-semibold text-ink flex items-center gap-2 shadow-xs">
+              <span className="text-[#00809d]">●</span> Bing Chat Cites
+            </span>
+            <span className="bg-white border border-black/[0.06] px-5 py-3 rounded-lg text-[13.5px] font-semibold text-ink flex items-center gap-2 shadow-xs">
+              <span className="text-[#4285f4]">●</span> Google AI Overviews
+            </span>
+          </div>
+          <p className="text-[14px] text-ink-muted leading-[1.75] text-center max-w-[680px] mx-auto">
+            AI-driven traffic is already appearing in analytics, which is why AI visibility checks ( robots.txt rule verification, llms.txt accessibility, and business entity schema validation ) are now included in every growth report.
+          </p>
+        </section>
+
       </main>
       <Footer />
     </>
