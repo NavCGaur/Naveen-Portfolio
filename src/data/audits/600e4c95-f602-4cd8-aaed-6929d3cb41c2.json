@@ -1,0 +1,29 @@
+{
+  "id": "600e4c95-f602-4cd8-aaed-6929d3cb41c2",
+  "url": "https://greatescapekayaks.com",
+  "name": "Naveen Gaur",
+  "email": "sonugaur2028@gmail.com",
+  "status": "completed",
+  "timestamp": "2026-06-20T05:48:06.554Z",
+  "metrics": {
+    "performance": 61,
+    "seo": 77,
+    "bestPractices": 77,
+    "accessibility": 88
+  },
+  "details": {
+    "ttfb": 255,
+    "loadTime": 2.78,
+    "lcp": 1.63,
+    "fcp": 1.23,
+    "tbt": 492,
+    "cls": 0.1,
+    "pageSize": 5.9,
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": false,
+    "schemaTypes": [],
+    "aiRobotsAllowed": true,
+    "llmsTxtPresent": false
+  }
+}
