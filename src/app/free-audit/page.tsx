@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
+import * as ga from "@/lib/ga";
 
 const LOADING_STEPS = [
   "Resolving hostname & validating URL...",
@@ -278,6 +279,7 @@ function FullReport({ data }: { data: AuditDetails }) {
             target="_blank"
             rel="noreferrer"
             className="inline-block bg-[#C4A35A] text-[#0D0D0D] px-10 py-4 rounded-sm text-[13px] font-bold tracking-[0.06em] uppercase hover:bg-[#d4b46a] transition-colors duration-200"
+            onClick={() => ga.event({ action: "report_booking_click", category: "conversion", label: "Report - cal.com" })}
           >
             Book Free 15-Min Strategy Call
           </a>
@@ -303,6 +305,59 @@ export default function FreeAuditPage() {
   const [loadingStepIndex, setLoadingStepIndex] = useState(0);
   const [reportData, setReportData] = useState<AuditDetails | null>(null);
 
+  const firedDepths = useRef(new Set<number>());
+  const firedTimes = useRef(new Set<number>());
+
+  useEffect(() => {
+    // ── Scroll depth tracking ────────────────────────────────────────────────
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+      const pct = Math.round((scrollTop / docHeight) * 100);
+
+      const SCROLL_THRESHOLDS = [25, 50, 75, 100];
+      for (const threshold of SCROLL_THRESHOLDS) {
+        if (pct >= threshold && !firedDepths.current.has(threshold)) {
+          firedDepths.current.add(threshold);
+          ga.event({
+            action: "scroll_depth",
+            category: "page_engagement",
+            label: "free-audit",
+            value: threshold,
+          });
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    // ── Time on page tracking ────────────────────────────────────────────────
+    const TIME_MILESTONES = [30, 60, 120, 300]; // seconds
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    for (const seconds of TIME_MILESTONES) {
+      const t = setTimeout(() => {
+        if (!firedTimes.current.has(seconds)) {
+          firedTimes.current.add(seconds);
+          ga.event({
+            action: "time_on_page",
+            category: "page_engagement",
+            label: "free-audit",
+            value: seconds,
+          });
+        }
+      }, seconds * 1000);
+      timers.push(t);
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      timers.forEach(clearTimeout);
+    };
+  }, []);
+
   useEffect(() => {
     if (status !== "loading") return;
     const interval = setInterval(() => {
@@ -324,6 +379,12 @@ export default function FreeAuditPage() {
     const email = formData.get("email") as string;
     const url = formData.get("url") as string;
 
+    ga.event({
+      action: "audit_submit_attempt",
+      category: "conversion",
+      label: url,
+    });
+
     try {
       const response = await fetch("/api/audit", {
         method: "POST",
@@ -333,14 +394,31 @@ export default function FreeAuditPage() {
       const result = await response.json();
 
       if (response.ok && result.id) {
+        ga.event({
+          action: "audit_success",
+          category: "conversion",
+          label: url,
+        });
         router.push(`/audits/${result.id}`);
       } else {
         setStatus("error");
-        setErrorMessage(result.error || "An error occurred during analysis. Please try again.");
+        const errText = result.error || "An error occurred during analysis. Please try again.";
+        setErrorMessage(errText);
+        ga.event({
+          action: "audit_error",
+          category: "error",
+          label: `${url} - ${errText}`,
+        });
       }
     } catch {
       setStatus("error");
-      setErrorMessage("Network error. Please check your connection and try again.");
+      const errText = "Network error. Please check your connection and try again.";
+      setErrorMessage(errText);
+      ga.event({
+        action: "audit_error",
+        category: "error",
+        label: `${url} - ${errText}`,
+      });
     }
   };
 
