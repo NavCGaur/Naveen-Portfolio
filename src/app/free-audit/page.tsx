@@ -375,8 +375,8 @@ export default function FreeAuditPage() {
     setErrorMessage("");
 
     const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
+    const name = (formData.get("name") as string) || "";
+    const email = (formData.get("email") as string) || "";
     const url = formData.get("url") as string;
 
     ga.event({
@@ -402,7 +402,8 @@ export default function FreeAuditPage() {
         router.push(`/audits/${result.id}`);
       } else {
         setStatus("error");
-        const errText = result.error || "An error occurred during analysis. Please try again.";
+        const isRateLimit = response.status === 429;
+        const errText = isRateLimit ? "RATE_LIMIT_EXCEEDED" : (result.error || "An error occurred during analysis. Please try again.");
         setErrorMessage(errText);
         ga.event({
           action: "audit_error",
@@ -438,9 +439,94 @@ export default function FreeAuditPage() {
           <h1 className="font-serif text-[clamp(38px,5.5vw,60px)] tracking-[-0.025em] leading-[1.1] text-ink mb-6">
             Find Out What&apos;s Holding Your Website Back
           </h1>
-          <p className="text-[19px] text-[#1E293B] leading-[1.7] mb-12 max-w-[680px] mx-auto font-normal">
+          <p className="text-[19px] text-[#1E293B] leading-[1.7] mb-8 max-w-[680px] mx-auto font-normal">
             Get a free Website Growth Opportunity Report covering visibility, trust signals, performance, and AI readiness. We analyze your website and identify what matters most to your business.
           </p>
+
+          {/* Main Search Input Form - Above the Fold */}
+          <div className="max-w-[640px] mx-auto mb-16">
+            {status === "loading" ? (
+              <div className="bg-white border border-black/[0.06] rounded-xl p-8 text-left shadow-xs space-y-6">
+                <div className="text-center">
+                  <div className="inline-block w-10 h-10 border-2 border-gold/30 border-t-gold-dark rounded-full animate-spin mb-4" />
+                  <h3 className="text-ink text-[19px] font-bold mb-1">Analyzing Website</h3>
+                  <p className="text-[13.5px] text-[#1E293B]">Takes 15–25 seconds. Do not close this window.</p>
+                </div>
+                <div className="space-y-2.5 bg-[#FAFAF8] p-5 rounded border border-black/[0.05]">
+                  {LOADING_STEPS.map((step, idx) => {
+                    const done = idx < loadingStepIndex;
+                    const active = idx === loadingStepIndex;
+                    return (
+                      <div key={idx} className="flex gap-3 items-center text-[13.5px]">
+                        {done ? (
+                          <span className="text-emerald-600 font-bold text-[12px]">✓</span>
+                        ) : active ? (
+                          <span className="w-1.5 h-1.5 bg-gold-dark rounded-full animate-ping shrink-0" />
+                        ) : (
+                          <span className="w-1.5 h-1.5 bg-black/10 rounded-full shrink-0" />
+                        )}
+                        <span className={`transition-colors font-medium ${done ? "text-ink-muted/50" : active ? "text-gold-dark font-bold" : "text-ink-faint/30"}`}>
+                          {step}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="flex flex-col sm:flex-row gap-3 bg-white p-2 rounded-lg border border-black/[0.1] shadow-md focus-within:border-gold-dark transition-all duration-200">
+                  <div className="flex-1 flex items-center px-3">
+                    <span className="text-[18px] text-[#C4A35A] mr-2">🌐</span>
+                    <input
+                      type="url"
+                      name="url"
+                      required
+                      placeholder="Enter your website URL (e.g., https://example.com)"
+                      className="w-full bg-transparent border-0 text-ink text-[16px] placeholder:text-ink-faint/30 focus:outline-none py-3"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-ink hover:bg-gold-dark text-white px-8 py-3.5 rounded-md text-[14px] font-bold tracking-[0.06em] uppercase transition-colors duration-200 cursor-pointer shrink-0"
+                  >
+                    Scan Website →
+                  </button>
+                </div>
+                
+                {status === "error" && errorMessage === "RATE_LIMIT_EXCEEDED" && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-5 text-left space-y-4">
+                    <h4 className="text-amber-800 text-[15px] font-bold">Daily Scan Limit Reached</h4>
+                    <p className="text-amber-900 text-[13.5px] leading-relaxed">
+                      You have run the maximum number of free scans (2) allowed per day for your IP. Let&apos;s look at your website speed, schema gaps, and AI readiness metrics together on a short strategy call instead.
+                    </p>
+                    <div>
+                      <a
+                        href="https://cal.com/naveengaur/30min"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-block bg-ink text-white px-6 py-2.5 rounded-sm text-[12px] font-bold tracking-[0.06em] uppercase hover:bg-gold-dark transition-colors duration-200"
+                      >
+                        Book Free Strategy Call →
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {status === "error" && errorMessage !== "RATE_LIMIT_EXCEEDED" && (
+                  <div className="bg-red-50 border border-red-200 rounded p-4 text-left">
+                    <p className="text-red-600 text-[13.5px] font-medium">{errorMessage}</p>
+                  </div>
+                )}
+                
+                <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[13px] text-[#475569] font-medium pt-2">
+                  <span>✓ 100% Free Report</span>
+                  <span>✓ Takes ~30 seconds</span>
+                  <span>✓ No registration required</span>
+                </div>
+              </form>
+            )}
+          </div>
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-8 text-left shadow-xs mb-10">
             <h2 className="text-[#725921] text-[14px] font-bold uppercase tracking-wider mb-6 font-sans border-b border-black/[0.04] pb-3">
@@ -574,96 +660,19 @@ export default function FreeAuditPage() {
           </div>
         </section>
 
-        {/* Section 4: Form Request Area */}
-        <section className="bg-white border-t border-b border-black/[0.05] py-20 px-6">
-          <div className="max-w-[580px] mx-auto bg-[#FAFAF8] border border-black/[0.08] shadow-md shadow-black/[0.02] p-8 md:p-10 rounded-xl">
-            {status === "loading" ? (
-              <div className="space-y-8 py-4">
-                <div className="text-center">
-                  <div className="inline-block w-10 h-10 border-2 border-gold/30 border-t-gold-dark rounded-full animate-spin mb-4" />
-                  <h3 className="text-ink text-[19px] font-bold mb-1">Analyzing Website</h3>
-                  <p className="text-[13.5px] text-[#1E293B]">Takes 15–25 seconds. Do not close this window.</p>
-                </div>
-                <div className="space-y-2.5 bg-white p-5 rounded border border-black/[0.05]">
-                  {LOADING_STEPS.map((step, idx) => {
-                    const done = idx < loadingStepIndex;
-                    const active = idx === loadingStepIndex;
-                    return (
-                      <div key={idx} className="flex gap-3 items-center text-[13.5px]">
-                        {done ? (
-                          <span className="text-emerald-600 font-bold text-[12px]">✓</span>
-                        ) : active ? (
-                          <span className="w-1.5 h-1.5 bg-gold-dark rounded-full animate-ping shrink-0" />
-                        ) : (
-                          <span className="w-1.5 h-1.5 bg-black/10 rounded-full shrink-0" />
-                        )}
-                        <span className={`transition-colors font-medium ${done ? "text-ink-muted/50" : active ? "text-gold-dark font-bold" : "text-ink-faint/30"}`}>
-                          {step}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : (
-              <>
-                <h2 className="text-ink text-[24px] font-serif text-center mb-6">Get My Free Report</h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-[11.5px] text-[#1E293B] mb-1.5 uppercase tracking-wide font-bold">First Name *</label>
-                      <input
-                        type="text"
-                        name="name"
-                        required
-                        placeholder="Your name"
-                        className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[15.5px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11.5px] text-[#1E293B] mb-1.5 uppercase tracking-wide font-bold">Business Email *</label>
-                      <input
-                        type="email"
-                        name="email"
-                        required
-                        placeholder="name@company.com"
-                        className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[15.5px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11.5px] text-[#1E293B] mb-1.5 uppercase tracking-wide font-bold">Website URL *</label>
-                    <input
-                      type="url"
-                      name="url"
-                      required
-                      placeholder="https://example.com"
-                      className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[15.5px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full bg-ink text-white py-4 rounded-sm text-[14.5px] font-bold tracking-[0.06em] uppercase hover:bg-gold-dark transition-colors duration-200 mt-2 cursor-pointer"
-                  >
-                    Reveal My Top Opportunities →
-                  </button>
-
-                  {status === "error" && (
-                    <div className="bg-red-50 border border-red-200 rounded p-4">
-                      <p className="text-red-600 text-[13.5px] text-center font-medium">{errorMessage}</p>
-                    </div>
-                  )}
-
-                  <div className="text-center space-y-1.5 pt-2 text-[13.5px] text-[#1E293B] font-medium">
-                    <p>✓ Average report generation time: 30–60 seconds</p>
-                    <p>✓ No login or WordPress credentials required</p>
-                    <p>✓ Runs completely from the outside</p>
-                  </div>
-                </form>
-              </>
-            )}
+        {/* Section 4: Minimal Bottom CTA */}
+        <section className="bg-white border-t border-b border-black/[0.05] py-16 px-6 text-center">
+          <div className="max-w-[600px] mx-auto">
+            <h2 className="font-serif text-[26px] text-ink mb-3">Ready to Discover Your Opportunities?</h2>
+            <p className="text-[15.5px] text-[#1E293B] leading-[1.6] mb-6">
+              Enter your website URL at the top of the page to generate your instant Website & AI Readiness report.
+            </p>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="inline-block bg-ink text-white px-8 py-3.5 rounded-sm text-[13px] font-bold tracking-[0.06em] uppercase hover:bg-gold-dark transition-colors duration-200 cursor-pointer"
+            >
+              Back to Scan Form ↑
+            </button>
           </div>
         </section>
 

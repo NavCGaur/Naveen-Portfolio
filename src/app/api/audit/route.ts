@@ -18,8 +18,8 @@ const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models
 
 const auditRequestSchema = z.object({
   url: z.string().url("Please enter a valid website URL"),
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
+  name: z.string().optional().or(z.literal("")),
+  email: z.string().optional().or(z.literal("")),
 });
 
 // SSRF guard: block private/loopback IPs
@@ -206,8 +206,8 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid input. " + parsed.error.issues[0]?.message }, { status: 400 });
       }
       url = parsed.data.url;
-      name = parsed.data.name;
-      email = parsed.data.email;
+      name = parsed.data.name || "Anonymous Visitor";
+      email = parsed.data.email || "anonymous@naveengaur.com";
     } catch {
       return NextResponse.json({ error: "Invalid request payload." }, { status: 400 });
     }
