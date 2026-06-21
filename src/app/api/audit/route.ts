@@ -145,26 +145,82 @@ Output ONLY a valid JSON object matching this schema:
   }
 }
 
+async function sendAuditErrorEmail(url: string, name: string, email: string, errorMsg: string) {
+  if (!process.env.RESEND_API_KEY) return;
+  try {
+    await resend.emails.send({
+      from: "Audit System Alert <onboarding@resend.dev>",
+      to: [process.env.CONTACT_EMAIL || "hello@naveengaur.com", "naveencg070@gmail.com"],
+      subject: `🚨 ALERT: Website Audit Error for ${url || "Unknown URL"}`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; background: #FFF5F5; border: 2px solid #E53E3E; border-radius: 8px;">
+          <h2 style="color: #E53E3E; font-size: 20px; margin-bottom: 16px; font-weight: bold;">Audit Error Encountered</h2>
+          <p style="color: #2D3748; font-size: 15px; line-height: 1.6;">
+            A user encountered a failure while attempting to run an audit. Details are below:
+          </p>
+          
+          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+            <tr>
+              <td style="padding: 10px 0; border-bottom: 1px solid #FED7D7; color: #4A5568; font-size: 14px; font-weight: bold; width: 120px;">Client Name</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #FED7D7; color: #1A202C; font-size: 14px;">${name || "N/A"}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; border-bottom: 1px solid #FED7D7; color: #4A5568; font-size: 14px; font-weight: bold;">Client Email</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #FED7D7; color: #1A202C; font-size: 14px;"><a href="mailto:${email || ""}">${email || "N/A"}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; border-bottom: 1px solid #FED7D7; color: #4A5568; font-size: 14px; font-weight: bold;">Website URL</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #FED7D7; color: #1A202C; font-size: 14px;"><a href="${url || "#"}" target="_blank">${url || "N/A"}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; border-bottom: 1px solid #FED7D7; color: #4A5568; font-size: 14px; font-weight: bold;">Error Message</td>
+              <td style="padding: 10px 0; border-bottom: 1px solid #FED7D7; color: #E53E3E; font-size: 14px; font-weight: bold;">${errorMsg}</td>
+            </tr>
+          </table>
+
+          <div style="font-size: 12px; color: #718096; border-top: 1px solid #FED7D7; padding-top: 16px;">
+            Sent automatically from naveengaur.com audit portal
+          </div>
+        </div>
+      `
+    });
+  } catch (e) {
+    console.error("Failed to send error alert email:", e);
+  }
+}
+
 export async function POST(request: NextRequest) {
+  let url = "";
+  let name = "";
+  let email = "";
+
   try {
     if (!PAGESPEED_API_KEY) {
       return NextResponse.json({ error: "PageSpeed API key is not configured on the server." }, { status: 500 });
     }
 
+    try {
+      const body = await request.json();
+      const parsed = auditRequestSchema.safeParse(body);
+      if (!parsed.success) {
+        return NextResponse.json({ error: "Invalid input. " + parsed.error.issues[0]?.message }, { status: 400 });
+      }
+      url = parsed.data.url;
+      name = parsed.data.name;
+      email = parsed.data.email;
+    } catch {
+      return NextResponse.json({ error: "Invalid request payload." }, { status: 400 });
+    }
+
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "127.0.0.1";
     if (!checkRateLimit(ip)) {
+      await sendAuditErrorEmail(url, name, email, "Rate limit exceeded (Max 2 audits per 24 hours per IP)");
       return NextResponse.json({ error: "Rate limit exceeded. Maximum 2 audits per 24 hours per IP." }, { status: 429 });
     }
 
-    const body = await request.json();
-    const parsed = auditRequestSchema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid input. " + parsed.error.issues[0]?.message }, { status: 400 });
-    }
-
-    const { url, name, email } = parsed.data;
     const cleanUrl = url.trim().replace(/\/$/, "");
     if (!(await isSafeUrl(cleanUrl))) {
+      await sendAuditErrorEmail(cleanUrl, name, email, "Access to private or local network addresses forbidden (SSRF Block)");
       return NextResponse.json({ error: "Access to private or local network addresses is forbidden." }, { status: 400 });
     }
 
@@ -410,6 +466,7 @@ export async function POST(request: NextRequest) {
 
     // ── PageSpeed Analysis ───────────────────────────────────────────────────
     if (!psRes?.ok) {
+      await sendAuditErrorEmail(cleanUrl, name, email, "PageSpeed API request timed out or returned error code");
       return NextResponse.json(
         { error: "The audit is taking longer than usual due to high traffic. Please try again in a few moments." },
         { status: 502 }
@@ -637,7 +694,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, id: reportId, report }, { status: 200 });
   } catch (err) {
+    const errMsg = err instanceof Error ? err.message : String(err);
     console.error("Audit API critical error:", err);
+    await sendAuditErrorEmail(url, name, email, `Critical Server Error: ${errMsg}`);
     return NextResponse.json({ error: "Server error while running audit. Please try again." }, { status: 500 });
   }
 }
