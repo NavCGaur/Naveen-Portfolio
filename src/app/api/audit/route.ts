@@ -3,7 +3,10 @@ import { z } from "zod";
 import dns from "dns";
 import { promisify } from "util";
 import crypto from "crypto";
+import { Resend } from "resend";
 import { saveAudit, AuditReport } from "@/lib/github-audits";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const maxDuration = 60;
 
@@ -575,6 +578,62 @@ export async function POST(request: NextRequest) {
     const saved = await saveAudit(reportId, report);
     if (!saved) console.error(`Failed to save audit ${reportId} to GitHub`);
     console.log(`Audit complete for ${cleanUrl} | ID: ${reportId} | Saved: ${saved} | Category: ${businessCategory}`);
+
+    // Send notification email with client details and audit link
+    try {
+      const websiteHost = request.headers.get("host") || "naveengaur.com";
+      const protocol = request.headers.get("x-forwarded-proto") || "https";
+      const reportLink = `${protocol}://${websiteHost}/audits/${reportId}`;
+
+      await resend.emails.send({
+        from: "Website Auditor <onboarding@resend.dev>",
+        to: [process.env.CONTACT_EMAIL || "hello@naveengaur.com", "naveencg070@gmail.com"],
+        replyTo: email,
+        subject: `New Website Audit Run: ${cleanUrl}`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; background: #FAFAF8; border-radius: 8px;">
+            <h2 style="color: #725921; font-size: 20px; margin-bottom: 24px; font-weight: bold;">New Website Audit Completed</h2>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+              <tr>
+                <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #4A4A4A; font-size: 14px; width: 150px;">Client Name</td>
+                <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #0D0D0D; font-size: 14px;"><strong>${name}</strong></td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #4A4A4A; font-size: 14px;">Client Email</td>
+                <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #0D0D0D; font-size: 14px;"><a href="mailto:${email}" style="color: #C4A35A; text-decoration: none;">${email}</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #4A4A4A; font-size: 14px;">Website Audited</td>
+                <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #0D0D0D; font-size: 14px;"><a href="${cleanUrl}" target="_blank" style="color: #C4A35A; text-decoration: none;">${cleanUrl}</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #4A4A4A; font-size: 14px;">Audit Category</td>
+                <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #0D0D0D; font-size: 14px; text-transform: capitalize;">${businessCategory}</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #4A4A4A; font-size: 14px;">Lighthouse Scores</td>
+                <td style="padding: 12px 0; border-bottom: 1px solid #EAEAEA; color: #0D0D0D; font-size: 14px;">
+                  Perf: <strong>${performance}</strong> | SEO: <strong>${seo}</strong> | Best Prac: <strong>${bestPractices}</strong> | Access: <strong>${accessibility}</strong>
+                </td>
+              </tr>
+            </table>
+
+            <div style="margin-top: 24px; text-align: center;">
+              <a href="${reportLink}" target="_blank" style="display: inline-block; background: #C4A35A; color: #0D0D0D; padding: 12px 24px; font-weight: bold; text-decoration: none; border-radius: 4px; font-size: 14px;">
+                View Completed Report Online
+              </a>
+            </div>
+
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #EAEAEA; font-size: 12px; color: #9A9A9A;">
+              Sent automatically from naveengaur.com audit portal
+            </div>
+          </div>
+        `,
+      });
+    } catch (emailErr) {
+      console.error("Failed to send audit notification email:", emailErr);
+    }
 
     return NextResponse.json({ success: true, id: reportId, report }, { status: 200 });
   } catch (err) {
