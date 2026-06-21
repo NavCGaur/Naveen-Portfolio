@@ -354,18 +354,18 @@ export default function FreeAuditPage() {
         
         {/* Section 1: Hero & Benefits */}
         <section className="pt-[140px] pb-16 px-6 max-w-[800px] mx-auto text-center animate-fade-up">
-          <span className="inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-6 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full">
+          <span className="inline-flex items-center text-[13px] font-semibold tracking-[0.12em] uppercase text-gold-dark mb-6 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full">
             Website Growth Opportunity Report
           </span>
-          <h1 className="font-serif text-[clamp(36px,5vw,56px)] tracking-[-0.025em] leading-[1.1] text-ink mb-6">
+          <h1 className="font-serif text-[clamp(38px,5.5vw,60px)] tracking-[-0.025em] leading-[1.1] text-ink mb-6">
             Find Out What&apos;s Holding Your Website Back
           </h1>
-          <p className="text-[17px] text-[#475569] leading-[1.7] mb-12 max-w-[680px] mx-auto font-normal">
+          <p className="text-[19px] text-[#1E293B] leading-[1.7] mb-12 max-w-[680px] mx-auto font-normal">
             Get a free Website Growth Opportunity Report covering visibility, trust signals, performance, and AI readiness. We analyze your website and identify what matters most to your business.
           </p>
 
           <div className="bg-white border border-black/[0.06] rounded-xl p-8 text-left shadow-xs mb-10">
-            <h2 className="text-[#725921] text-[13px] font-bold uppercase tracking-wider mb-6 font-sans border-b border-black/[0.04] pb-3">
+            <h2 className="text-[#725921] text-[14px] font-bold uppercase tracking-wider mb-6 font-sans border-b border-black/[0.04] pb-3">
               What You&apos;ll Learn
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -388,10 +388,10 @@ export default function FreeAuditPage() {
                 }
               ].map((item, idx) => (
                 <div key={idx} className="flex gap-3 items-start">
-                  <span className="text-[#C4A35A] text-[16px] leading-none mt-0.5">✓</span>
+                  <span className="text-[#C4A35A] text-[18px] leading-none mt-0.5">✓</span>
                   <div>
-                    <h3 className="text-ink text-[14.5px] font-semibold mb-1">{item.title}</h3>
-                    <p className="text-[13px] text-ink-muted leading-[1.6]">{item.body}</p>
+                    <h3 className="text-ink text-[16px] font-bold mb-1">{item.title}</h3>
+                    <p className="text-[14.5px] text-[#2A2A2A] leading-[1.6]">{item.body}</p>
                   </div>
                 </div>
               ))}
@@ -403,9 +403,9 @@ export default function FreeAuditPage() {
         <section className="bg-white border-t border-b border-black/[0.05] py-20 px-6">
           <div className="max-w-[800px] mx-auto">
             <div className="text-center mb-12">
-              <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-gold-dark">Real Findings</span>
-              <h2 className="font-serif text-[28px] text-ink mt-2 mb-3">Recent Opportunities We&apos;ve Found</h2>
-              <p className="text-[14px] text-ink-muted leading-[1.6] max-w-[560px] mx-auto">
+              <span className="text-[12px] font-bold tracking-[0.12em] uppercase text-gold-dark">Real Findings</span>
+              <h2 className="font-serif text-[30px] text-ink mt-2 mb-3">Recent Opportunities We&apos;ve Found</h2>
+              <p className="text-[15.5px] text-[#1E293B] leading-[1.6] max-w-[560px] mx-auto">
                 Every website analysis looks at specific code elements and performance metrics. Here are the most common growth opportunities we flag:
               </p>
             </div>
@@ -433,9 +433,9 @@ export default function FreeAuditPage() {
                 }
               ].map((item, idx) => (
                 <div key={idx} className="bg-[#FAFAF8] border border-black/[0.06] p-6 rounded-lg">
-                  <span className="text-[20px] block mb-2">{item.icon}</span>
-                  <h3 className="text-[14.5px] font-bold text-ink mb-1 leading-snug">{item.title}</h3>
-                  <p className="text-[13px] text-ink-muted leading-[1.6]">{item.body}</p>
+                  <span className="text-[22px] block mb-2">{item.icon}</span>
+                  <h3 className="text-[16px] font-bold text-ink mb-1 leading-snug">{item.title}</h3>
+                  <p className="text-[14.5px] text-[#2A2A2A] leading-[1.6]">{item.body}</p>
                 </div>
               ))}
             </div>
@@ -445,51 +445,51 @@ export default function FreeAuditPage() {
         {/* Section 3: Report Preview Previews */}
         <section className="py-20 px-6 max-w-[800px] mx-auto">
           <div className="text-center mb-12">
-            <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-gold-dark">The Output</span>
-            <h2 className="font-serif text-[28px] text-ink mt-2 mb-3">See What You&apos;ll Receive</h2>
-            <p className="text-[14px] text-ink-muted leading-[1.6] max-w-[560px] mx-auto">
+            <span className="text-[12px] font-bold tracking-[0.12em] uppercase text-gold-dark">The Output</span>
+            <h2 className="font-serif text-[30px] text-ink mt-2 mb-3">See What You&apos;ll Receive</h2>
+            <p className="text-[15.5px] text-[#1E293B] leading-[1.6] max-w-[560px] mx-auto">
               Your growth report contains actionable developer instructions and strategic findings, completely free of fluff.
             </p>
           </div>
           <div className="space-y-6">
             {/* Mockup 1: What Matters Most */}
             <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-xs">
-              <span className="bg-[#C4A35A]/10 text-[#725921] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#C4A35A]/20">Report Preview</span>
-              <h3 className="font-serif text-[17px] text-[#725921] mt-3 mb-2">1. What Matters Most</h3>
-              <div className="bg-[#FAFAF8] p-4 rounded border border-black/[0.04] text-[13px] text-[#475569] leading-[1.6]">
+              <span className="bg-[#C4A35A]/10 text-[#725921] text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#C4A35A]/20">Report Preview</span>
+              <h3 className="font-serif text-[19px] text-[#725921] mt-3 mb-2">1. What Matters Most</h3>
+              <div className="bg-[#FAFAF8] p-4 rounded border border-black/[0.04] text-[14.5px] text-[#1E293B] leading-[1.6]">
                 &quot;Your website already has a strong technical foundation. The biggest opportunity isn&apos;t speed — it is visibility. Specifically: helping search engines, AI platforms, and prospective clients understand and trust your business more quickly.&quot;
               </div>
             </div>
             {/* Mockup 2: Key Observations */}
             <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-xs">
-              <span className="bg-[#C4A35A]/10 text-[#725921] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#C4A35A]/20">Report Preview</span>
-              <h3 className="font-serif text-[17px] text-[#725921] mt-3 mb-2">2. Key Observations</h3>
+              <span className="bg-[#C4A35A]/10 text-[#725921] text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#C4A35A]/20">Report Preview</span>
+              <h3 className="font-serif text-[19px] text-[#725921] mt-3 mb-2">2. Key Observations</h3>
               <div className="space-y-3">
-                <div className="flex items-start gap-2.5 text-[13px]">
+                <div className="flex items-start gap-2.5 text-[14.5px]">
                   <span className="text-[#C4A35A] mt-0.5">🔍</span>
                   <div>
                     <p className="font-bold text-[#0D0D0D]">Accessible to Humans, but Unstructured for AI Engines</p>
-                    <p className="text-[#475569] mt-0.5">While human visitors can easily find your phone or contact form, search bots and AI crawlers struggle to verify operational hours or locations due to missing schema metadata.</p>
+                    <p className="text-[#1E293B] mt-0.5">While human visitors can easily find your phone or contact form, search bots and AI crawlers struggle to verify operational hours or locations due to missing schema metadata.</p>
                   </div>
                 </div>
               </div>
             </div>
             {/* Mockup 3: Action Checklist */}
             <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-xs">
-              <span className="bg-[#C4A35A]/10 text-[#725921] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#C4A35A]/20">Report Preview</span>
-              <h3 className="font-serif text-[17px] text-[#725921] mt-3 mb-2">3. Prioritized Action Checklist</h3>
+              <span className="bg-[#C4A35A]/10 text-[#725921] text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#C4A35A]/20">Report Preview</span>
+              <h3 className="font-serif text-[19px] text-[#725921] mt-3 mb-2">3. Prioritized Action Checklist</h3>
               <div className="grid grid-cols-3 gap-3 text-center">
                 <div className="border border-red-100 bg-red-50/50 p-3 rounded">
-                  <span className="text-[10px] uppercase font-bold text-red-700 block">Fix First</span>
-                  <span className="text-[12px] font-semibold text-[#0D0D0D] block mt-1">Add Business Schema</span>
+                  <span className="text-[11px] uppercase font-bold text-red-700 block">Fix First</span>
+                  <span className="text-[13.5px] font-bold text-[#0D0D0D] block mt-1">Add Business Schema</span>
                 </div>
                 <div className="border border-amber-100 bg-amber-50/50 p-3 rounded">
-                  <span className="text-[10px] uppercase font-bold text-amber-700 block">Fix Next</span>
-                  <span className="text-[12px] font-semibold text-[#0D0D0D] block mt-1">Enable Server Caching</span>
+                  <span className="text-[11px] uppercase font-bold text-amber-700 block">Fix Next</span>
+                  <span className="text-[13.5px] font-bold text-[#0D0D0D] block mt-1">Enable Caching</span>
                 </div>
                 <div className="border border-emerald-100 bg-emerald-50/50 p-3 rounded">
-                  <span className="text-[10px] uppercase font-bold text-emerald-700 block">Fix Later</span>
-                  <span className="text-[12px] font-semibold text-[#0D0D0D] block mt-1">Audit Social Links</span>
+                  <span className="text-[11px] uppercase font-bold text-emerald-700 block">Fix Later</span>
+                  <span className="text-[13.5px] font-bold text-[#0D0D0D] block mt-1">Audit Social Links</span>
                 </div>
               </div>
             </div>
@@ -503,23 +503,23 @@ export default function FreeAuditPage() {
               <div className="space-y-8 py-4">
                 <div className="text-center">
                   <div className="inline-block w-10 h-10 border-2 border-gold/30 border-t-gold-dark rounded-full animate-spin mb-4" />
-                  <h3 className="text-ink text-[17px] font-semibold mb-1">Analyzing Website</h3>
-                  <p className="text-[12px] text-ink-muted">Takes 15–25 seconds. Do not close this window.</p>
+                  <h3 className="text-ink text-[19px] font-bold mb-1">Analyzing Website</h3>
+                  <p className="text-[13.5px] text-[#1E293B]">Takes 15–25 seconds. Do not close this window.</p>
                 </div>
                 <div className="space-y-2.5 bg-white p-5 rounded border border-black/[0.05]">
                   {LOADING_STEPS.map((step, idx) => {
                     const done = idx < loadingStepIndex;
                     const active = idx === loadingStepIndex;
                     return (
-                      <div key={idx} className="flex gap-3 items-center text-[12.5px]">
+                      <div key={idx} className="flex gap-3 items-center text-[13.5px]">
                         {done ? (
-                          <span className="text-emerald-600 font-bold text-[11px]">✓</span>
+                          <span className="text-emerald-600 font-bold text-[12px]">✓</span>
                         ) : active ? (
                           <span className="w-1.5 h-1.5 bg-gold-dark rounded-full animate-ping shrink-0" />
                         ) : (
                           <span className="w-1.5 h-1.5 bg-black/10 rounded-full shrink-0" />
                         )}
-                        <span className={`transition-colors ${done ? "text-ink-muted/50" : active ? "text-gold-dark font-semibold" : "text-ink-faint/30"}`}>
+                        <span className={`transition-colors font-medium ${done ? "text-ink-muted/50" : active ? "text-gold-dark font-bold" : "text-ink-faint/30"}`}>
                           {step}
                         </span>
                       </div>
@@ -529,56 +529,56 @@ export default function FreeAuditPage() {
               </div>
             ) : (
               <>
-                <h2 className="text-ink text-[22px] font-serif text-center mb-6">Get My Free Report</h2>
+                <h2 className="text-ink text-[24px] font-serif text-center mb-6">Get My Free Report</h2>
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">First Name *</label>
+                      <label className="block text-[11.5px] text-[#1E293B] mb-1.5 uppercase tracking-wide font-bold">First Name *</label>
                       <input
                         type="text"
                         name="name"
                         required
                         placeholder="Your name"
-                        className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
+                        className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[15.5px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">Business Email *</label>
+                      <label className="block text-[11.5px] text-[#1E293B] mb-1.5 uppercase tracking-wide font-bold">Business Email *</label>
                       <input
                         type="email"
                         name="email"
                         required
                         placeholder="name@company.com"
-                        className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
+                        className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[15.5px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] text-ink-muted mb-1.5 uppercase tracking-wide font-semibold">Website URL *</label>
+                    <label className="block text-[11.5px] text-[#1E293B] mb-1.5 uppercase tracking-wide font-bold">Website URL *</label>
                     <input
                       type="url"
                       name="url"
                       required
                       placeholder="https://example.com"
-                      className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[14px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
+                      className="w-full bg-white border border-black/[0.1] rounded-sm px-4 py-3 text-ink text-[15.5px] placeholder:text-ink-faint/30 focus:outline-none focus:border-gold-dark focus:bg-white transition-colors"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full bg-ink text-white py-4 rounded-sm text-[13px] font-semibold tracking-[0.06em] uppercase hover:bg-gold-dark transition-colors duration-200 mt-2 cursor-pointer"
+                    className="w-full bg-ink text-white py-4 rounded-sm text-[14.5px] font-bold tracking-[0.06em] uppercase hover:bg-gold-dark transition-colors duration-200 mt-2 cursor-pointer"
                   >
                     Reveal My Top Opportunities →
                   </button>
 
                   {status === "error" && (
                     <div className="bg-red-50 border border-red-200 rounded p-4">
-                      <p className="text-red-600 text-[12.5px] text-center">{errorMessage}</p>
+                      <p className="text-red-600 text-[13.5px] text-center font-medium">{errorMessage}</p>
                     </div>
                   )}
 
-                  <div className="text-center space-y-1.5 pt-2 text-[12px] text-ink-muted">
+                  <div className="text-center space-y-1.5 pt-2 text-[13.5px] text-[#1E293B] font-medium">
                     <p>✓ Average report generation time: 30–60 seconds</p>
                     <p>✓ No login or WordPress credentials required</p>
                     <p>✓ Runs completely from the outside</p>
@@ -592,24 +592,24 @@ export default function FreeAuditPage() {
         {/* Section 5: Why AI Visibility Checks */}
         <section className="py-20 px-6 max-w-[800px] mx-auto space-y-6">
           <div className="text-center max-w-[600px] mx-auto mb-10">
-            <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-gold-dark">The Shift in Search</span>
-            <h2 className="font-serif text-[28px] text-ink mt-2 mb-3">Why We Added AI Visibility Checks</h2>
+            <span className="text-[12px] font-bold tracking-[0.12em] uppercase text-gold-dark">The Shift in Search</span>
+            <h2 className="font-serif text-[30px] text-ink mt-2 mb-3">Why We Added AI Visibility Checks</h2>
           </div>
-          <p className="text-[15px] text-ink-muted leading-[1.75] text-center">
+          <p className="text-[16.5px] text-[#1E293B] leading-[1.75] text-center">
             AI platforms are already sending active, high-intent visitors directly to websites. Recent referral sources to our own website included:
           </p>
           <div className="flex justify-center flex-wrap gap-4 py-4">
-            <span className="bg-white border border-black/[0.06] px-5 py-3 rounded-lg text-[13.5px] font-semibold text-ink flex items-center gap-2 shadow-xs">
+            <span className="bg-white border border-black/[0.06] px-5 py-3 rounded-lg text-[14.5px] font-semibold text-ink flex items-center gap-2 shadow-xs">
               <span className="text-[#10a37f]">●</span> ChatGPT Referrals
             </span>
-            <span className="bg-white border border-black/[0.06] px-5 py-3 rounded-lg text-[13.5px] font-semibold text-ink flex items-center gap-2 shadow-xs">
+            <span className="bg-white border border-black/[0.06] px-5 py-3 rounded-lg text-[14.5px] font-semibold text-ink flex items-center gap-2 shadow-xs">
               <span className="text-[#00809d]">●</span> Bing Chat Cites
             </span>
-            <span className="bg-white border border-black/[0.06] px-5 py-3 rounded-lg text-[13.5px] font-semibold text-ink flex items-center gap-2 shadow-xs">
+            <span className="bg-white border border-black/[0.06] px-5 py-3 rounded-lg text-[14.5px] font-semibold text-ink flex items-center gap-2 shadow-xs">
               <span className="text-[#4285f4]">●</span> Google AI Overviews
             </span>
           </div>
-          <p className="text-[14px] text-ink-muted leading-[1.75] text-center max-w-[680px] mx-auto">
+          <p className="text-[15.5px] text-[#1E293B] leading-[1.75] text-center max-w-[680px] mx-auto">
             AI-driven traffic is already appearing in analytics, which is why AI visibility checks ( robots.txt rule verification, llms.txt accessibility, and business entity schema validation ) are now included in every growth report.
           </p>
         </section>
