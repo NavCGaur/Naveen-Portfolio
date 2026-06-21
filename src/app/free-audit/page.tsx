@@ -353,7 +353,7 @@ export default function FreeAuditPage() {
       <main className="min-h-screen bg-[#FAFAF8] text-[#0D0D0D] font-sans antialiased">
         
         {/* Section 1: Hero & Benefits */}
-        <section className="pt-[140px] pb-16 px-6 max-w-[800px] mx-auto text-center animate-fade-up">
+        <section className="pt-[140px] pb-16 px-6 max-w-[1200px] mx-auto text-center animate-fade-up">
           <span className="inline-flex items-center text-[13px] font-semibold tracking-[0.12em] uppercase text-gold-dark mb-6 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full">
             Website Growth Opportunity Report
           </span>
@@ -368,7 +368,7 @@ export default function FreeAuditPage() {
             <h2 className="text-[#725921] text-[14px] font-bold uppercase tracking-wider mb-6 font-sans border-b border-black/[0.04] pb-3">
               What You&apos;ll Learn
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
                   title: "Why visitors may not be contacting you",
@@ -401,7 +401,7 @@ export default function FreeAuditPage() {
 
         {/* Section 2: Real Findings / Opportunities */}
         <section className="bg-white border-t border-b border-black/[0.05] py-20 px-6">
-          <div className="max-w-[800px] mx-auto">
+          <div className="max-w-[1200px] mx-auto">
             <div className="text-center mb-12">
               <span className="text-[12px] font-bold tracking-[0.12em] uppercase text-gold-dark">Real Findings</span>
               <h2 className="font-serif text-[30px] text-ink mt-2 mb-3">Recent Opportunities We&apos;ve Found</h2>
@@ -409,7 +409,7 @@ export default function FreeAuditPage() {
                 Every website analysis looks at specific code elements and performance metrics. Here are the most common growth opportunities we flag:
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
                   title: "Missing testimonials reducing trust",
@@ -443,7 +443,7 @@ export default function FreeAuditPage() {
         </section>
 
         {/* Section 3: Report Preview Previews */}
-        <section className="py-20 px-6 max-w-[800px] mx-auto">
+        <section className="py-20 px-6 max-w-[1200px] mx-auto">
           <div className="text-center mb-12">
             <span className="text-[12px] font-bold tracking-[0.12em] uppercase text-gold-dark">The Output</span>
             <h2 className="font-serif text-[30px] text-ink mt-2 mb-3">See What You&apos;ll Receive</h2>
@@ -451,7 +451,7 @@ export default function FreeAuditPage() {
               Your growth report contains actionable developer instructions and strategic findings, completely free of fluff.
             </p>
           </div>
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Mockup 1: What Matters Most */}
             <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-xs">
               <span className="bg-[#C4A35A]/10 text-[#725921] text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-[#C4A35A]/20">Report Preview</span>
@@ -590,7 +590,7 @@ export default function FreeAuditPage() {
         </section>
 
         {/* Section 5: Why AI Visibility Checks */}
-        <section className="py-20 px-6 max-w-[800px] mx-auto space-y-6">
+        <section className="py-20 px-6 max-w-[1200px] mx-auto space-y-6">
           <div className="text-center max-w-[600px] mx-auto mb-10">
             <span className="text-[12px] font-bold tracking-[0.12em] uppercase text-gold-dark">The Shift in Search</span>
             <h2 className="font-serif text-[30px] text-ink mt-2 mb-3">Why We Added AI Visibility Checks</h2>
