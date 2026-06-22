@@ -377,7 +377,25 @@ export default function FreeAuditPage() {
     const formData = new FormData(e.currentTarget);
     const name = (formData.get("name") as string) || "";
     const email = (formData.get("email") as string) || "";
-    const url = formData.get("url") as string;
+    let url = (formData.get("url") as string || "").trim();
+    if (!url) {
+      setStatus("error");
+      setErrorMessage("Please enter a valid website URL.");
+      return;
+    }
+
+    // Auto-prepend https:// if protocol is missing
+    if (!/^https?:\/\//i.test(url)) {
+      url = "https://" + url;
+    }
+
+    // Basic domain/URL structure regex check
+    const domainCheck = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+    if (!domainCheck.test(url)) {
+      setStatus("error");
+      setErrorMessage("Please enter a valid website address (e.g., example.com).");
+      return;
+    }
 
     ga.event({
       action: "audit_submit_attempt",
@@ -479,10 +497,10 @@ export default function FreeAuditPage() {
                   <div className="flex-1 flex items-center px-3">
                     <span className="text-[18px] text-[#C4A35A] mr-2">🌐</span>
                     <input
-                      type="url"
+                      type="text"
                       name="url"
                       required
-                      placeholder="Enter your website URL (e.g., https://example.com)"
+                      placeholder="Enter your website URL (e.g., example.com)"
                       className="w-full bg-transparent border-0 text-ink text-[16px] placeholder:text-ink-faint/30 focus:outline-none py-3"
                     />
                   </div>

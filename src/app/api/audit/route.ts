@@ -23,7 +23,7 @@ const auditRequestSchema = z.object({
 });
 
 // SSRF guard: block private/loopback IPs
-async function isSafeUrl(targetUrl: string): Promise<boolean> {
+async function checkUrlSafety(targetUrl: string): Promise<{ safe: boolean; reason?: "invalid" | "private" | "dns_failed" }> {
   try {
     const urlObj = new URL(targetUrl);
     const hostname = urlObj.hostname;
@@ -33,15 +33,25 @@ async function isSafeUrl(targetUrl: string): Promise<boolean> {
       hostname === "::1" ||
       hostname.endsWith(".local") ||
       hostname.endsWith(".internal")
-    ) return false;
-    const { address } = await lookup(hostname);
+    ) {
+      return { safe: false, reason: "private" };
+    }
+    let address: string;
+    try {
+      const res = await lookup(hostname);
+      address = res.address;
+    } catch {
+      return { safe: false, reason: "dns_failed" };
+    }
     const parts = address.split(".").map(Number);
-    if (parts[0] === 10) return false;
-    if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) return false;
-    if (parts[0] === 192 && parts[1] === 168) return false;
-    if (parts[0] === 169 && parts[1] === 254) return false;
-    return true;
-  } catch { return false; }
+    if (parts[0] === 10) return { safe: false, reason: "private" };
+    if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) return { safe: false, reason: "private" };
+    if (parts[0] === 192 && parts[1] === 168) return { safe: false, reason: "private" };
+    if (parts[0] === 169 && parts[1] === 254) return { safe: false, reason: "private" };
+    return { safe: true };
+  } catch {
+    return { safe: false, reason: "invalid" };
+  }
 }
 
 // In-memory rate limiter: 2 audits per IP per 24h
@@ -219,9 +229,19 @@ export async function POST(request: NextRequest) {
     }
 
     const cleanUrl = url.trim().replace(/\/$/, "");
-    if (!(await isSafeUrl(cleanUrl))) {
-      await sendAuditErrorEmail(cleanUrl, name, email, "Access to private or local network addresses forbidden (SSRF Block)");
-      return NextResponse.json({ error: "Access to private or local network addresses is forbidden." }, { status: 400 });
+    const safety = await checkUrlSafety(cleanUrl);
+    if (!safety.safe) {
+      if (safety.reason === "dns_failed") {
+        return NextResponse.json(
+          { error: "This website domain could not be resolved. Please verify the spelling and try again." },
+          { status: 400 }
+        );
+      }
+      if (safety.reason === "private") {
+        await sendAuditErrorEmail(cleanUrl, name, email, "Access to private or local network addresses forbidden (SSRF Block)");
+        return NextResponse.json({ error: "Access to private or local network addresses is forbidden." }, { status: 400 });
+      }
+      return NextResponse.json({ error: "Please enter a valid website URL." }, { status: 400 });
     }
 
     const urlObj = new URL(cleanUrl);
