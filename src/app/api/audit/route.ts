@@ -362,23 +362,75 @@ export async function POST(request: NextRequest) {
           };
           extractTypes(parsedSchema);
           
-          if (!businessName && parsedSchema && typeof parsedSchema === "object") {
-             const s = parsedSchema as Record<string, unknown>;
-             if (typeof s["name"] === "string" && s["name"]) businessName = he.decode(s["name"]);
-             if (typeof s["@type"] === "string" && s["@type"] && !businessType) businessType = s["@type"];
-             if (s["address"] && typeof s["address"] === "object") hasAddress = true;
-             if (s["openingHours"] || s["openingHoursSpecification"]) hasBusinessHours = true;
-             if (s["telephone"] && typeof s["telephone"] === "string") noPhoneNumber = false;
-          }
+          const extractNameAndType = (obj: unknown): void => {
+            if (obj && typeof obj === "object") {
+              const rec = obj as Record<string, unknown>;
+              const typeStr = typeof rec["@type"] === "string" ? rec["@type"].toLowerCase() : "";
+              if (
+                typeStr.includes("organization") ||
+                typeStr.includes("localbusiness") ||
+                typeStr.includes("website") ||
+                typeStr.includes("corporation")
+              ) {
+                if (typeof rec["name"] === "string" && rec["name"] && !businessName) {
+                  businessName = he.decode(rec["name"]);
+                }
+                if (typeof rec["@type"] === "string" && !businessType) {
+                  businessType = rec["@type"];
+                }
+              }
+              if (!businessName && typeof rec["name"] === "string" && rec["name"]) {
+                businessName = he.decode(rec["name"]);
+              }
+              if (rec["address"] && typeof rec["address"] === "object") hasAddress = true;
+              if (rec["openingHours"] || rec["openingHoursSpecification"]) hasBusinessHours = true;
+              if (rec["telephone"] && typeof rec["telephone"] === "string") noPhoneNumber = false;
+              
+              Object.values(rec).forEach(extractNameAndType);
+            }
+          };
+          extractNameAndType(parsedSchema);
         } catch { /* skip invalid JSON */ }
       });
 
-      // Business name fallback — title tag
+      // Business name fallback — title tag split with smart matching
       if (!businessName) {
         const titleText = $('title').first().text();
         if (titleText) {
-          const segment = titleText.split(/\s*[|\u2014\-]\s*/)[0].trim();
-          if (segment.length > 2 && segment.length < 80) businessName = he.decode(segment);
+          const segments = titleText.split(/\s*[|\u2014\-]\s*/).map(s => s.trim()).filter(Boolean);
+          if (segments.length > 0) {
+            let domainSlug = "";
+            try {
+              const host = new URL(cleanUrl).hostname.toLowerCase();
+              domainSlug = host.replace(/^www\./, "").split(".")[0];
+            } catch {}
+
+            let bestSegment = segments[0];
+            if (domainSlug && domainSlug.length > 2) {
+              const matched = segments.find(seg => seg.toLowerCase().includes(domainSlug) || domainSlug.includes(seg.toLowerCase()));
+              if (matched) {
+                bestSegment = matched;
+              } else {
+                const cleanSlug = domainSlug.replace(/(digital|agency|tech|web|design|consulting|solutions|media|studio|group|systems|software)$/i, "");
+                if (cleanSlug.length > 2) {
+                  const partMatched = segments.find(seg => seg.toLowerCase().includes(cleanSlug));
+                  if (partMatched) bestSegment = partMatched;
+                }
+              }
+            }
+
+            if (bestSegment === segments[0] && segments.length > 1) {
+              const bizWords = /\b(digital|agency|solutions|services|company|group|consulting|design|media|studio|labs|tech|software|systems|limited|ltd|inc|llc|corp)\b/i;
+              const hasBizWord = segments.map(seg => bizWords.test(seg));
+              if (!hasBizWord[0] && hasBizWord[1]) {
+                bestSegment = segments[1];
+              }
+            }
+
+            if (bestSegment.length > 2 && bestSegment.length < 80) {
+              businessName = he.decode(bestSegment);
+            }
+          }
         }
       }
       if (!businessName) {

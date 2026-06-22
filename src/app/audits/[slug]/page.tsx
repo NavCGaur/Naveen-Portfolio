@@ -11,6 +11,8 @@ import he from "he";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
 import { getAudit } from "@/lib/github-audits";
+import AuditStickyNav from "@/components/sections/AuditStickyNav";
+import AuditEmailForm from "@/components/sections/AuditEmailForm";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -284,7 +286,7 @@ export default async function AuditPage({ params }: Props) {
     const discoveryScore = businessCategory === "local-service" 
       ? calculatedLocalSeoScore 
       : calculatedOnlineAuthorityScore;
-    const discoveryLabel = "AI & Discovery Readiness";
+    const discoveryLabel = businessCategory === "local-service" ? "Local Search Readiness" : "AI & Discovery Readiness";
 
     const isSlow = loadTime > 3.0;
     const isTtfbHigh = ttfb > 500;
@@ -544,8 +546,47 @@ export default async function AuditPage({ params }: Props) {
       });
     }
 
+    const isLocal = businessCategory === "local-service";
+    
+    // Pillar 2 (Trust & Credibility) checks:
+    const totalTrustChecks = 9;
+    const passedTrustChecks = [
+      credibility?.hasAboutPage === true,
+      credibility?.hasTeamPage === true,
+      credibility?.hasPrivacyPolicy === true,
+      credibility?.hasTerms === true,
+      credibility?.hasTestimonials === true,
+      credibility?.hasReviewSchema === true,
+      credibility?.hasSocialLinks === true,
+      localSeo?.hasAddress === true,
+      localSeo?.hasPhone === true
+    ].filter(Boolean).length;
+
+    // Pillar 3 (Local Search / AI & Discovery) checks:
+    const totalDiscoveryChecks = 7;
+    const passedDiscoveryChecks = isLocal
+      ? [
+          localSeo?.hasPhone === true,
+          localSeo?.hasAddress === true,
+          hasLocalBusinessSchema === true,
+          localSeo?.hasMapsEmbed === true,
+          localSeo?.hasCityInH1 === true,
+          localSeo?.hasServiceArea === true,
+          localSeo?.hasBusinessHours === true
+        ].filter(Boolean).length
+      : [
+          (credibility?.hasAboutPage || credibility?.hasTeamPage) === true,
+          onlineAuthority?.hasTestimonials === true,
+          onlineAuthority?.hasReviewSchema === true,
+          onlineAuthority?.hasSocialLinks === true,
+          onlineAuthority?.hasLegalPages === true,
+          onlineAuthority?.hasGoodSpeedOrCache === true,
+          loadTime < 3.0
+        ].filter(Boolean).length;
+
     return (
       <div className="min-h-screen bg-[#FAFAF8] text-[#0D0D0D] font-sans antialiased selection:bg-[#C4A35A]/20">
+        <AuditStickyNav discoveryLabel={discoveryLabel} />
         <header className="border-b border-[#E2E8F0] py-6 bg-white shadow-sm">
           <div className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6 flex justify-between items-center">
             <div className="flex flex-col">
@@ -559,7 +600,7 @@ export default async function AuditPage({ params }: Props) {
           </div>
         </header>
 
-        <main className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6 py-12">
+        <main id="overview" className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6 py-12">
           {/* Section 0: Title */}
           <div className="mb-8 text-center md:text-left">
             <span className="bg-[#C4A35A]/10 text-[#725921] border border-[#C4A35A]/30 text-[11px] font-bold uppercase tracking-[0.1em] px-3.5 py-1.5 rounded-full">
@@ -641,25 +682,21 @@ export default async function AuditPage({ params }: Props) {
           <div className="bg-[#FAFAF8] border border-black/[0.08] rounded-xl p-7 mb-8 shadow-xs">
             <h2 className="text-[18px] font-bold uppercase tracking-wider text-[#725921] mb-4">What Matters Most</h2>
             
-            {/* Dynamic performance summary */}
-            <div className="text-[17px] font-medium text-[#0D0D0D] leading-[1.6] mb-5 font-serif">
-              {foundationScore >= 80 ? (
-                <p>
-                  Your website already has a strong technical foundation. The biggest opportunity isn&apos;t speed — it is <strong>visibility and trust</strong>. Specifically: helping search engines, AI platforms, and prospective clients understand and trust your business more quickly.
-                </p>
-              ) : (
-                <p>
-                  The primary bottleneck for your website is <strong>technical performance</strong>. Slow mobile loading times create friction for incoming visitors. Prioritize enabling page caching and reducing asset weight to build a stable foundation, then focus on authority and AI visibility.
+            {/* Consolidated narrative summary */}
+            <div className="text-[15.5px] text-[#475569] leading-[1.7] mb-5">
+              <span className="block text-[17px] font-medium text-[#0D0D0D] leading-[1.6] mb-3 font-serif">
+                {foundationScore >= 80 ? (
+                  <>Your website already has a strong technical foundation. The biggest opportunity isn&apos;t speed — it is <strong>visibility and trust</strong>: helping search engines, AI platforms, and prospective clients understand and trust your business more quickly.</>
+                ) : (
+                  <>The primary bottleneck for your website is <strong>technical performance</strong>. Slow mobile loading times create friction for incoming visitors, which needs to be resolved before focusing on visibility and trust.</>
+                )}
+              </span>
+              {executiveSummary && (
+                <p className="mt-3 border-l-2 border-[#C4A35A] pl-4 italic text-[#475569] leading-[1.6]">
+                  "{executiveSummary}"
                 </p>
               )}
             </div>
-
-            {/* Factual Executive Summary generated by Gemini */}
-            {executiveSummary && (
-              <div className="border-t border-black/[0.05] pt-5 mb-5 text-[15.5px] text-[#475569] leading-[1.6]">
-                <p className="italic font-light">"{executiveSummary}"</p>
-              </div>
-            )}
 
             {/* Programmatic Contradictions list */}
             {contradictionBullets.length > 0 && (
@@ -710,6 +747,9 @@ export default async function AuditPage({ params }: Props) {
                 </div>
                 <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Speed index, caching status, core web vitals, and search accessibility.</p>
               </div>
+              <div className="mt-2 text-[12.5px] text-[#725921] font-semibold">
+                Metrics Verified via PageSpeed API
+              </div>
               <div className="mt-4 pt-3 border-t border-black/[0.04]">
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
                   Math.round((performance + seo + accessibility) / 3) >= 80 
@@ -732,6 +772,9 @@ export default async function AuditPage({ params }: Props) {
                 </div>
                 <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Customer stories, team transparency, social proof, and legal trust pages.</p>
               </div>
+              <div className="mt-2 text-[12.5px] text-[#725921] font-semibold">
+                {passedTrustChecks} of {totalTrustChecks} checks passed
+              </div>
               <div className="mt-4 pt-3 border-t border-black/[0.04]">
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
                   Math.round(calculatedCredibilityScore * 10) >= 70 
@@ -753,6 +796,9 @@ export default async function AuditPage({ params }: Props) {
                   {Math.round(discoveryScore * 10)}<span className="text-[21px] font-sans text-[#475569]/60 font-normal">/100</span>
                 </div>
                 <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Structured schema data, AI bot rules, and organic discovery signals.</p>
+              </div>
+              <div className="mt-2 text-[12.5px] text-[#725921] font-semibold">
+                {passedDiscoveryChecks} of {totalDiscoveryChecks} checks passed
               </div>
               <div className="mt-4 pt-3 border-t border-black/[0.04]">
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
@@ -944,11 +990,23 @@ export default async function AuditPage({ params }: Props) {
             </div>
           </details>
 
+          {/* Pillar 3: AI & Discovery Readiness */}
+          <div id="ai-discovery" className="pt-8 border-t border-[#E2E8F0] mt-12 mb-6">
+            <span className="text-[12px] font-bold uppercase tracking-widest text-[#725921] bg-[#725921]/15 px-3 py-1 rounded-sm">Pillar 3: {discoveryLabel}</span>
+            <p className="text-[13px] text-[#475569] mt-2">Rolls up AI chatbot crawl rules, business schemas, and search engine metadata configurations.</p>
+          </div>
+          
           {/* Section 3: Can AI Recommend Your Business? */}
           <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
-              1. Can AI Recommend Your Business?
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+              6. Can AI Recommend Your Business?
             </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: {discoveryLabel}</span>
+            </div>
+            <p className="text-[15px] italic text-[#475569] mb-6 font-light">
+              Why this matters: Chatbots like ChatGPT, Claude, and Perplexity crawl root pages to search for verified structured schemas and indexes. If robots.txt blocks them, your company won&apos;t be recommended in AI answer engines.
+            </p>
             
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
@@ -1008,11 +1066,22 @@ export default async function AuditPage({ params }: Props) {
             </div>
           </section>
 
+          {/* Pillar 1: Technical Foundation */}
+          <div id="technical-foundation" className="pt-8 border-t border-[#E2E8F0] mt-12 mb-6">
+            <span className="text-[12px] font-bold uppercase tracking-widest text-[#725921] bg-[#725921]/15 px-3 py-1 rounded-sm">Pillar 1: Technical Foundation</span>
+            <p className="text-[13px] text-[#475569] mt-2">Rolls up all hosting, server response, and mobile speed measurements.</p>
+          </div>
           {/* Section 4: Website Performance Check */}
           <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
-              2. Website Performance Check
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+              1. Website Performance Check
             </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: Technical Foundation</span>
+            </div>
+            <p className="text-[15px] italic text-[#475569] mb-6 font-light">
+              Why this matters: Behind-the-scenes server settings determine how quickly your site is ready to draw pages. If page caching is disabled, every visitor forces your server to rebuild pages from scratch, slowing down responsiveness.
+            </p>
             <div className="space-y-6">
               <div className="flex gap-4">
                 <span className={`text-[21px] leading-none ${isCachingMissing ? 'text-red-600' : 'text-green-600'}`}>
@@ -1066,9 +1135,15 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 5: Mobile Visitor Experience — verdict cards, not raw numbers */}
           <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
-              3. Mobile Visitor Experience
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+              2. Mobile Visitor Experience
             </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: Technical Foundation</span>
+            </div>
+            <p className="text-[15px] italic text-[#475569] mb-6 font-light">
+              Why this matters: Google ranks websites primarily based on mobile loading behavior. Slow page rendering freezes taps and clicks, causing up to 40% of mobile search visitors to drop off.
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* LCP */}
               <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
@@ -1119,11 +1194,22 @@ export default async function AuditPage({ params }: Props) {
             </div>
           </section>
 
+          {/* Pillar 2: Trust & Credibility */}
+          <div id="trust-credibility" className="pt-8 border-t border-[#E2E8F0] mt-12 mb-6">
+            <span className="text-[12px] font-bold uppercase tracking-widest text-[#725921] bg-[#725921]/15 px-3 py-1 rounded-sm">Pillar 2: Trust &amp; Credibility</span>
+            <p className="text-[13px] text-[#475569] mt-2">Rolls up user trust parameters, direct human communication channels, and active resource feeds.</p>
+          </div>
           {/* Section 6: Content & Publishing Analysis */}
           <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
-              4. Content &amp; Publishing Analysis
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+              3. Content &amp; Publishing Analysis
             </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: Trust &amp; Credibility</span>
+            </div>
+            <p className="text-[15px] italic text-[#475569] mb-6 font-light">
+              Why this matters: Regular content updates signal to search engine indexers that your company is actively operating. When publishing slows down or stops, crawlers visit your site less frequently.
+            </p>
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
               {blog && blog.exists === true ? (
                 <div>
@@ -1226,9 +1312,15 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 7: Trust Signals (Testimonials) */}
           <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
-              5. Trust Signals &amp; Credibility
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+              4. Trust Signals &amp; Credibility
             </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: Trust &amp; Credibility</span>
+            </div>
+            <p className="text-[15px] italic text-[#475569] mb-6 font-light">
+              Why this matters: Trust factors (like real client names, headshots, or a client logo wall) directly determine whether a visitor converts into an inquiry. Clean social proof makes cold traffic feel comfortable reaching out.
+            </p>
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
               {testimonials && testimonials.found === true ? (
                 <div>
@@ -1341,9 +1433,15 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 8: Contact Accessibility */}
           <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
-              6. Contact &amp; Client Accessibility
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+              5. Contact &amp; Client Accessibility
             </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: Trust &amp; Credibility</span>
+            </div>
+            <p className="text-[15px] italic text-[#475569] mb-6 font-light">
+              Why this matters: Removing booking friction (like providing a direct phone number, email link, and map location) makes it simple for humans to contact you, raising conversion rates.
+            </p>
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
               {contact ? (
                 <div>
@@ -1413,6 +1511,7 @@ export default async function AuditPage({ params }: Props) {
           </section>
 
           {/* Section 7: Prioritized Action Checklist */}
+          <div id="prioritized-checklist" className="scroll-mt-24"></div>
           <section className="mb-12">
             <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
               7. Prioritized Action Checklist
@@ -1625,19 +1724,33 @@ export default async function AuditPage({ params }: Props) {
               </div>
             </div>
             
-            <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-              <a 
-                href="https://cal.com/naveengaur/30min" 
-                target="_blank" 
-                rel="noreferrer"
-                className="w-full md:w-auto bg-[#C4A35A] text-[#0D0D0D] px-8 py-4 rounded-sm text-[14px] font-bold tracking-[0.05em] uppercase hover:bg-[#d4b46a] transition-colors"
-              >
-                Book Free 15-Min Strategy Call
-              </a>
+            <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch mt-8 max-w-[960px] mx-auto">
+              <div className="flex-1 bg-white border border-[#E2E8F0] p-6 rounded-xl text-left flex flex-col justify-between shadow-xs">
+                <div>
+                  <h4 className="text-[16px] font-bold text-[#0D0D0D] mb-2 font-serif">Option A: Review Report on a Call</h4>
+                  <p className="text-[14px] text-[#475569] mb-6 leading-[1.6]">
+                    Let's walk through these findings together. We can prioritize the next steps, clarify any technical points, and figure out what changes are worth investing in.
+                  </p>
+                </div>
+                <div>
+                  <a 
+                    href="https://cal.com/naveengaur/30min" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="inline-block bg-[#C4A35A] text-[#0D0D0D] px-8 py-3.5 rounded-sm text-[14px] font-bold tracking-[0.05em] uppercase hover:bg-[#d4b46a] transition-colors w-full text-center cursor-pointer"
+                  >
+                    Book Free 15-Min Strategy Call
+                  </a>
+                  <p className="text-[12px] text-[#475569] mt-3 italic text-center">
+                    No sales pressure. Just factual technical advice.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex-1 flex">
+                <AuditEmailForm url={url} reportLink={reportUrl} />
+              </div>
             </div>
-            <p className="text-[12.5px] text-[#475569] mt-4 italic">
-              No sales pressure. We review your specific site issues together.
-            </p>
           </section>
 
           <div className="mt-16 pt-8 border-t border-[#E2E8F0] text-[16px] text-[#1E293B] leading-[1.8] font-medium">

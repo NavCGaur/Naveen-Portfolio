@@ -10,7 +10,7 @@
   --color-surface: #FAFAF8;
 
   --font-serif: var(--font-dm-serif);
-  --font-sans: var(--font-dm-sans);
+  --font-sans: var(--font-inter);
 
   /* Custom breakpoint: Full HD screens at 100% zoom (1920×1080) */
   --breakpoint-hd: 1600px;
@@ -19,7 +19,7 @@
 @layer base {
   :root {
     --font-dm-serif: "DM Serif Display", Georgia, serif;
-    --font-dm-sans: "DM Sans", system-ui, sans-serif;
+    --font-inter: "Inter", system-ui, sans-serif;
   }
 
   * {
