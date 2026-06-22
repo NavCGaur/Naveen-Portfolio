@@ -106,7 +106,7 @@ function getScoreLabelColorClass(score: number): string {
 const mdxComponents = {
   table: (props: React.HTMLAttributes<HTMLTableElement>) => (
     <div className="table-wrapper my-8 overflow-x-auto w-full rounded-xl border border-slate-200 bg-white shadow-sm">
-      <table {...props} className="w-full border-collapse text-left text-[14px]" />
+      <table {...props} className="w-full border-collapse text-left text-[15px]" />
     </div>
   ),
   a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
@@ -142,8 +142,8 @@ export default async function AuditPage({ params }: Props) {
         <div className="min-h-screen bg-[#FAFAF8] text-[#0D0D0D] flex flex-col items-center justify-center p-6 font-sans">
           <div className="max-w-[480px] text-center bg-white border border-[#E2E8F0] p-10 rounded-lg shadow-sm">
             <div className="inline-block w-8 h-8 border-2 border-[#C4A35A]/30 border-t-[#C4A35A] rounded-full animate-spin mb-4"></div>
-            <h1 className="text-[20px] font-semibold text-[#725921] mb-2 font-serif">Audit Report Generating</h1>
-            <p className="text-[14px] text-[#1E293B] leading-[1.6]">
+            <h1 className="text-[21px] font-semibold text-[#725921] mb-2 font-serif">Audit Report Generating</h1>
+            <p className="text-[15px] text-[#1E293B] leading-[1.6]">
               We are analyzing your website&apos;s WordPress core parameters and querying Google PageSpeed. This page will auto-refresh.
             </p>
             <script
@@ -160,12 +160,12 @@ export default async function AuditPage({ params }: Props) {
       return (
         <div className="min-h-screen bg-[#FAFAF8] text-[#0D0D0D] flex flex-col items-center justify-center p-6 font-sans">
           <div className="max-w-[480px] text-center bg-white border border-[#E2E8F0] p-10 rounded-lg shadow-sm">
-            <span className="text-[32px] block mb-2">⚠️</span>
-            <h1 className="text-[20px] font-semibold text-red-700 mb-2 font-serif">Audit Analysis Failed</h1>
-            <p className="text-[14px] text-[#1E293B] leading-[1.6] mb-6">
+            <span className="text-[34px] block mb-2">⚠️</span>
+            <h1 className="text-[21px] font-semibold text-red-700 mb-2 font-serif">Audit Analysis Failed</h1>
+            <p className="text-[15px] text-[#1E293B] leading-[1.6] mb-6">
               {error || "An unexpected error occurred while running the audit check."}
             </p>
-            <Link href="/free-audit" className="bg-[#C4A35A] text-[#0D0D0D] px-6 py-3 rounded text-[13px] font-semibold tracking-[0.05em] uppercase hover:bg-[#d4b46a] transition-colors">
+            <Link href="/free-audit" className="bg-[#C4A35A] text-[#0D0D0D] px-6 py-3 rounded text-[14px] font-semibold tracking-[0.05em] uppercase hover:bg-[#d4b46a] transition-colors">
               Try Another URL
             </Link>
           </div>
@@ -547,102 +547,102 @@ export default async function AuditPage({ params }: Props) {
     return (
       <div className="min-h-screen bg-[#FAFAF8] text-[#0D0D0D] font-sans antialiased selection:bg-[#C4A35A]/20">
         <header className="border-b border-[#E2E8F0] py-6 bg-white shadow-sm">
-          <div className="max-w-[860px] mx-auto px-6 flex justify-between items-center">
+          <div className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6 flex justify-between items-center">
             <div className="flex flex-col">
-              <span className="text-[12px] font-bold tracking-[0.08em] text-[#C4A35A] uppercase">Naveen Gaur</span>
-              <span className="text-[14px] font-semibold text-[#725921]">Client Audit Portal</span>
+              <span className="text-[13px] font-bold tracking-[0.08em] text-[#C4A35A] uppercase">Naveen Gaur</span>
+              <span className="text-[15px] font-semibold text-[#725921]">Client Audit Portal</span>
             </div>
             <div className="text-right">
-              <span className="text-[11px] text-[#1E293B] block">Generated for:</span>
-              <span className="text-[13px] font-medium text-[#0D0D0D]">{name}</span>
+              <span className="text-[12px] text-[#1E293B] block">Generated for:</span>
+              <span className="text-[14px] font-medium text-[#0D0D0D]">{name}</span>
             </div>
           </div>
         </header>
 
-        <main className="max-w-[860px] mx-auto px-6 py-12">
+        <main className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6 py-12">
           {/* Section 0: Title */}
           <div className="mb-8 text-center md:text-left">
-            <span className="bg-[#C4A35A]/10 text-[#725921] border border-[#C4A35A]/30 text-[10px] font-bold uppercase tracking-[0.1em] px-3.5 py-1.5 rounded-full">
+            <span className="bg-[#C4A35A]/10 text-[#725921] border border-[#C4A35A]/30 text-[11px] font-bold uppercase tracking-[0.1em] px-3.5 py-1.5 rounded-full">
               Website Growth Opportunity Report
             </span>
-            <h1 className="text-[clamp(32px,4.5vw,46px)] font-serif tracking-[-0.02em] text-[#725921] mt-4 mb-2 leading-[1.15]">
+            <h1 className="text-[clamp(34px,4.5vw,48px)] font-serif tracking-[-0.02em] text-[#725921] mt-4 mb-2 leading-[1.15]">
               {businessName} — Growth Opportunity Report
             </h1>
-            <p className="text-[14px] text-[#475569] font-light">
+            <p className="text-[15px] text-[#475569] font-light">
               Analysis conducted on {dateStr} • <a href={url} target="_blank" rel="noreferrer" className="text-[#C4A35A] hover:underline font-medium">{url}</a>
             </p>
           </div>
 
           {/* What We Like — positive observations first to reduce defensiveness */}
           <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs mb-8">
-            <h2 className="text-[13px] font-bold uppercase tracking-wider text-[#725921] mb-5">What We Like About Your Website</h2>
+            <h2 className="text-[14px] font-bold uppercase tracking-wider text-[#725921] mb-5">What We Like About Your Website</h2>
             <div className="space-y-4">
               {/* Positive: server is healthy */}
               {!isTtfbHigh && (
                 <div className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                  <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
                   <div>
-                    <p className="text-[14.5px] font-semibold text-[#0D0D0D] leading-snug">Healthy hosting infrastructure</p>
-                    <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your server responds quickly, which is the foundation a well-performing website needs.</p>
+                    <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Healthy hosting infrastructure</p>
+                    <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your server responds quickly, which is the foundation a well-performing website needs.</p>
                   </div>
                 </div>
               )}
               {/* Positive: caching is on */}
               {!isCachingMissing && (
                 <div className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                  <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
                   <div>
-                    <p className="text-[14.5px] font-semibold text-[#0D0D0D] leading-snug">Page caching is active</p>
-                    <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your site is set up to serve pages efficiently, which protects speed under real traffic.</p>
+                    <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Page caching is active</p>
+                    <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your site is set up to serve pages efficiently, which protects speed under real traffic.</p>
                   </div>
                 </div>
               )}
               {/* Positive: AI crawlers are allowed */}
               {!isAiBlocked && (
                 <div className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                  <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
                   <div>
-                    <p className="text-[14.5px] font-semibold text-[#0D0D0D] leading-snug">Open to modern AI search</p>
-                    <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your website allows AI platforms like ChatGPT and Bing to crawl and reference your content.</p>
+                    <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Open to modern AI search</p>
+                    <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your website allows AI platforms like ChatGPT and Bing to crawl and reference your content.</p>
                   </div>
                 </div>
               )}
               {/* Positive: site loads under 4 seconds */}
               {!isSlow && (
                 <div className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                  <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
                   <div>
-                    <p className="text-[14.5px] font-semibold text-[#0D0D0D] leading-snug">Acceptable mobile load speed</p>
-                    <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your pages load within a reasonable range, meaning most visitors won't immediately drop off.</p>
+                    <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Acceptable mobile load speed</p>
+                    <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your pages load within a reasonable range, meaning most visitors won't immediately drop off.</p>
                   </div>
                 </div>
               )}
               {/* Positive: schema found */}
               {hasLocalBusinessSchema && (
                 <div className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                  <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
                   <div>
-                    <p className="text-[14.5px] font-semibold text-[#0D0D0D] leading-snug">Business identity structured for search</p>
-                    <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Google and AI tools can identify your business type and core details from your website's code.</p>
+                    <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Business identity structured for search</p>
+                    <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Google and AI tools can identify your business type and core details from your website's code.</p>
                   </div>
                 </div>
               )}
               {/* Fallback positive if all checks pass */}
               <div className="flex items-start gap-3">
-                <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
                 <div>
-                  <p className="text-[14.5px] font-semibold text-[#0D0D0D] leading-snug">Clear, established web presence</p>
-                  <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">You already have a website that represents your business — the optimizations below build on that foundation.</p>
+                  <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Clear, established web presence</p>
+                  <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">You already have a website that represents your business — the optimizations below build on that foundation.</p>
                 </div>
               </div>
             </div>
           </div>
           {/* Section: What Matters Most & Executive Summary */}
           <div className="bg-[#FAFAF8] border border-black/[0.08] rounded-xl p-7 mb-8 shadow-xs">
-            <h2 className="text-[13px] font-bold uppercase tracking-wider text-[#725921] mb-4">What Matters Most</h2>
+            <h2 className="text-[14px] font-bold uppercase tracking-wider text-[#725921] mb-4">What Matters Most</h2>
             
             {/* Dynamic performance summary */}
-            <div className="text-[16px] font-medium text-[#0D0D0D] leading-[1.6] mb-5 font-serif">
+            <div className="text-[17px] font-medium text-[#0D0D0D] leading-[1.6] mb-5 font-serif">
               {foundationScore >= 80 ? (
                 <p>
                   Your website already has a strong technical foundation. The biggest opportunity isn&apos;t speed — it is <strong>visibility and trust</strong>. Specifically: helping search engines, AI platforms, and prospective clients understand and trust your business more quickly.
@@ -656,7 +656,7 @@ export default async function AuditPage({ params }: Props) {
 
             {/* Factual Executive Summary generated by Gemini */}
             {executiveSummary && (
-              <div className="border-t border-black/[0.05] pt-5 mb-5 text-[14.5px] text-[#475569] leading-[1.6]">
+              <div className="border-t border-black/[0.05] pt-5 mb-5 text-[15.5px] text-[#475569] leading-[1.6]">
                 <p className="italic font-light">"{executiveSummary}"</p>
               </div>
             )}
@@ -664,10 +664,10 @@ export default async function AuditPage({ params }: Props) {
             {/* Programmatic Contradictions list */}
             {contradictionBullets.length > 0 && (
               <div className="border-t border-black/[0.05] pt-5 space-y-4">
-                <span className="block text-[11px] uppercase font-bold text-[#475569] tracking-wider mb-2">Key Observations</span>
+                <span className="block text-[12px] uppercase font-bold text-[#475569] tracking-wider mb-2">Key Observations</span>
                 {contradictionBullets.map((bullet, idx) => (
-                  <div key={idx} className="flex items-start gap-3 text-[13.5px]">
-                    <span className="text-[16px] shrink-0 mt-0.5">🔍</span>
+                  <div key={idx} className="flex items-start gap-3 text-[14.5px]">
+                    <span className="text-[17px] shrink-0 mt-0.5">🔍</span>
                     <div>
                       <p className="font-bold text-[#0D0D0D] leading-snug">{bullet.title}</p>
                       <p className="text-[#475569] mt-0.5 leading-[1.5]">{bullet.body}</p>
@@ -682,16 +682,16 @@ export default async function AuditPage({ params }: Props) {
           {aiObservations && aiObservations.length > 0 && (
             <div className="bg-gradient-to-br from-[#725921]/5 via-[#C4A35A]/5 to-[#FAFAF8] border border-[#C4A35A]/30 rounded-xl p-7 shadow-xs mb-8">
               <div className="flex items-center gap-2 mb-6">
-                <span className="text-[18px]">✨</span>
-                <h2 className="text-[13px] font-bold uppercase tracking-wider text-[#725921]">AI Strategic Synthesis</h2>
-                <span className="ml-auto bg-[#C4A35A]/15 text-[#725921] border border-[#C4A35A]/30 text-[9px] font-bold uppercase tracking-[0.05em] px-2.5 py-0.5 rounded-full">Gemini Insights</span>
+                <span className="text-[19px]">✨</span>
+                <h2 className="text-[14px] font-bold uppercase tracking-wider text-[#725921]">AI Strategic Synthesis</h2>
+                <span className="ml-auto bg-[#C4A35A]/15 text-[#725921] border border-[#C4A35A]/30 text-[10px] font-bold uppercase tracking-[0.05em] px-2.5 py-0.5 rounded-full">Gemini Insights</span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {aiObservations.map((obs, idx) => (
                   <div key={idx} className="bg-white/80 backdrop-blur-xs border border-black/[0.05] p-5 rounded-lg shadow-xs flex flex-col justify-between">
                     <div>
-                      <h3 className="text-[14px] font-bold text-[#725921] mb-2 font-serif">{obs.title}</h3>
-                      <p className="text-[13px] text-[#475569] leading-[1.6]">{obs.body}</p>
+                      <h3 className="text-[15px] font-bold text-[#725921] mb-2 font-serif">{obs.title}</h3>
+                      <p className="text-[14px] text-[#475569] leading-[1.6]">{obs.body}</p>
                     </div>
                   </div>
                 ))}
@@ -704,14 +704,14 @@ export default async function AuditPage({ params }: Props) {
             {/* Card 1: Technical Foundation */}
             <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs text-center flex flex-col justify-between">
               <div>
-                <span className="text-[11px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">Technical Foundation</span>
-                <div className="text-[44px] font-bold font-serif text-[#725921] leading-none my-2">
-                  {Math.round((performance + seo + accessibility) / 3)}<span className="text-[20px] font-sans text-[#475569]/60 font-normal">/100</span>
+                <span className="text-[12px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">Technical Foundation</span>
+                <div className="text-[48px] font-bold font-serif text-[#725921] leading-none my-2">
+                  {Math.round((performance + seo + accessibility) / 3)}<span className="text-[21px] font-sans text-[#475569]/60 font-normal">/100</span>
                 </div>
-                <p className="text-[13px] text-[#475569] px-2 leading-[1.5]">Speed index, caching status, core web vitals, and search accessibility.</p>
+                <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Speed index, caching status, core web vitals, and search accessibility.</p>
               </div>
               <div className="mt-4 pt-3 border-t border-black/[0.04]">
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
                   Math.round((performance + seo + accessibility) / 3) >= 80 
                     ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
                     : Math.round((performance + seo + accessibility) / 3) >= 50
@@ -726,14 +726,14 @@ export default async function AuditPage({ params }: Props) {
             {/* Card 2: Trust & Credibility */}
             <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs text-center flex flex-col justify-between">
               <div>
-                <span className="text-[11px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">Trust &amp; Credibility</span>
-                <div className="text-[44px] font-bold font-serif text-[#725921] leading-none my-2">
-                  {Math.round(calculatedCredibilityScore * 10)}<span className="text-[20px] font-sans text-[#475569]/60 font-normal">/100</span>
+                <span className="text-[12px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">Trust &amp; Credibility</span>
+                <div className="text-[48px] font-bold font-serif text-[#725921] leading-none my-2">
+                  {Math.round(calculatedCredibilityScore * 10)}<span className="text-[21px] font-sans text-[#475569]/60 font-normal">/100</span>
                 </div>
-                <p className="text-[13px] text-[#475569] px-2 leading-[1.5]">Customer stories, team transparency, social proof, and legal trust pages.</p>
+                <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Customer stories, team transparency, social proof, and legal trust pages.</p>
               </div>
               <div className="mt-4 pt-3 border-t border-black/[0.04]">
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
                   Math.round(calculatedCredibilityScore * 10) >= 70 
                     ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
                     : Math.round(calculatedCredibilityScore * 10) >= 40
@@ -748,14 +748,14 @@ export default async function AuditPage({ params }: Props) {
             {/* Card 3: AI & Discovery Readiness */}
             <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs text-center flex flex-col justify-between">
               <div>
-                <span className="text-[11px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">{discoveryLabel}</span>
-                <div className="text-[44px] font-bold font-serif text-[#725921] leading-none my-2">
-                  {Math.round(discoveryScore * 10)}<span className="text-[20px] font-sans text-[#475569]/60 font-normal">/100</span>
+                <span className="text-[12px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">{discoveryLabel}</span>
+                <div className="text-[48px] font-bold font-serif text-[#725921] leading-none my-2">
+                  {Math.round(discoveryScore * 10)}<span className="text-[21px] font-sans text-[#475569]/60 font-normal">/100</span>
                 </div>
-                <p className="text-[13px] text-[#475569] px-2 leading-[1.5]">Structured schema data, AI bot rules, and organic discovery signals.</p>
+                <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Structured schema data, AI bot rules, and organic discovery signals.</p>
               </div>
               <div className="mt-4 pt-3 border-t border-black/[0.04]">
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
                   Math.round(discoveryScore * 10) >= 75 
                     ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
                     : Math.round(discoveryScore * 10) >= 45
@@ -774,34 +774,34 @@ export default async function AuditPage({ params }: Props) {
               {/* Credibility card */}
               <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
                 <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
-                  <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Business Credibility</span>
-                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getScoreLabelColorClass(credibility.score)}`}>
+                  <span className="text-[13px] font-bold uppercase tracking-wider text-[#475569]">Business Credibility</span>
+                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getScoreLabelColorClass(credibility.score)}`}>
                     {credibility.score}/10 — {getScoreLabel(credibility.score)}
                   </span>
                 </div>
-                <div className="space-y-2 text-[13px]">
+                <div className="space-y-2 text-[14px]">
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] leading-none shrink-0">{credibility.hasAboutPage ? "✓" : "⚠️"}</span>
+                    <span className="text-[15px] leading-none shrink-0">{credibility.hasAboutPage ? "✓" : "⚠️"}</span>
                     <span className={credibility.hasAboutPage ? "text-emerald-700 font-semibold" : "text-[#475569]"}>About page linked in navigation</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] leading-none shrink-0">{credibility.hasTeamPage ? "✓" : "⚠️"}</span>
+                    <span className="text-[15px] leading-none shrink-0">{credibility.hasTeamPage ? "✓" : "⚠️"}</span>
                     <span className={credibility.hasTeamPage ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Team / Staff section or page</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] leading-none shrink-0">{credibility.hasTestimonials ? "✓" : "⚠️"}</span>
+                    <span className="text-[15px] leading-none shrink-0">{credibility.hasTestimonials ? "✓" : "⚠️"}</span>
                     <span className={credibility.hasTestimonials ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Customer testimonials visible</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] leading-none shrink-0">{credibility.hasReviewSchema ? "✓" : "⚠️"}</span>
+                    <span className="text-[15px] leading-none shrink-0">{credibility.hasReviewSchema ? "✓" : "⚠️"}</span>
                     <span className={credibility.hasReviewSchema ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Structured review schema code</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] leading-none shrink-0">{credibility.hasSocialLinks ? "✓" : "⚠️"}</span>
+                    <span className="text-[15px] leading-none shrink-0">{credibility.hasSocialLinks ? "✓" : "⚠️"}</span>
                     <span className={credibility.hasSocialLinks ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Active social media channels</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] leading-none shrink-0">{credibility.hasPrivacyPolicy && credibility.hasTerms ? "✓" : "⚠️"}</span>
+                    <span className="text-[15px] leading-none shrink-0">{credibility.hasPrivacyPolicy && credibility.hasTerms ? "✓" : "⚠️"}</span>
                     <span className={credibility.hasPrivacyPolicy && credibility.hasTerms ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Standard legal pages (Privacy / Terms)</span>
                   </div>
                 </div>
@@ -811,34 +811,34 @@ export default async function AuditPage({ params }: Props) {
               {businessCategory === "local-service" && localSeo ? (
                 <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
                   <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
-                    <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Local Search Readiness</span>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getScoreLabelColorClass(calculatedLocalSeoScore)}`}>
+                    <span className="text-[13px] font-bold uppercase tracking-wider text-[#475569]">Local Search Readiness</span>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getScoreLabelColorClass(calculatedLocalSeoScore)}`}>
                       {calculatedLocalSeoScore}/10 — {getScoreLabel(calculatedLocalSeoScore)}
                     </span>
                   </div>
-                  <div className="space-y-2 text-[13px]">
+                  <div className="space-y-2 text-[14px]">
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{localSeo.hasLocalSchema ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasLocalSchema ? "✓" : "⚠️"}</span>
                       <span className={localSeo.hasLocalSchema ? "text-emerald-700 font-semibold" : "text-[#475569]"}>LocalBusiness schema code configured</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{localSeo.hasPhone ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasPhone ? "✓" : "⚠️"}</span>
                       <span className={localSeo.hasPhone ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Phone number visible on homepage</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{localSeo.hasAddress ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasAddress ? "✓" : "⚠️"}</span>
                       <span className={localSeo.hasAddress ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Physical address or location visible</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{localSeo.hasMapsEmbed ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasMapsEmbed ? "✓" : "⚠️"}</span>
                       <span className={localSeo.hasMapsEmbed ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Interactive Google Maps embed</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{localSeo.hasBusinessHours ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasBusinessHours ? "✓" : "⚠️"}</span>
                       <span className={localSeo.hasBusinessHours ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Operation hours clearly displayed</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{localSeo.hasCityInH1 || localSeo.hasServiceArea ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasCityInH1 || localSeo.hasServiceArea ? "✓" : "⚠️"}</span>
                       <span className={localSeo.hasCityInH1 || localSeo.hasServiceArea ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Local keyword presence (City / Service Area)</span>
                     </div>
                   </div>
@@ -846,34 +846,34 @@ export default async function AuditPage({ params }: Props) {
               ) : (
                 <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
                   <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
-                    <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Authority Signals Checklist</span>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getScoreLabelColorClass(calculatedOnlineAuthorityScore)}`}>
+                    <span className="text-[13px] font-bold uppercase tracking-wider text-[#475569]">Authority Signals Checklist</span>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getScoreLabelColorClass(calculatedOnlineAuthorityScore)}`}>
                       {calculatedOnlineAuthorityScore}/10 — {getScoreLabel(calculatedOnlineAuthorityScore)}
                     </span>
                   </div>
-                  <div className="space-y-2 text-[13px]">
+                  <div className="space-y-2 text-[14px]">
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{onlineAuthority?.hasAboutOrTeam ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasAboutOrTeam ? "✓" : "⚠️"}</span>
                       <span className={onlineAuthority?.hasAboutOrTeam ? "text-emerald-700 font-semibold" : "text-[#475569]"}>About or Team page linked</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{onlineAuthority?.hasTestimonials ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasTestimonials ? "✓" : "⚠️"}</span>
                       <span className={onlineAuthority?.hasTestimonials ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Social proof (testimonials/reviews)</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{onlineAuthority?.hasReviewSchema ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasReviewSchema ? "✓" : "⚠️"}</span>
                       <span className={onlineAuthority?.hasReviewSchema ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Aggregate rating / review schema</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{onlineAuthority?.hasSocialLinks ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasSocialLinks ? "✓" : "⚠️"}</span>
                       <span className={onlineAuthority?.hasSocialLinks ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Active social profiles linked</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{onlineAuthority?.hasLegalPages ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasLegalPages ? "✓" : "⚠️"}</span>
                       <span className={onlineAuthority?.hasLegalPages ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Legal trust indicators (Privacy &amp; Terms)</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] leading-none shrink-0">{onlineAuthority?.hasGoodSpeedOrCache ? "✓" : "⚠️"}</span>
+                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasGoodSpeedOrCache ? "✓" : "⚠️"}</span>
                       <span className={onlineAuthority?.hasGoodSpeedOrCache ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Technical caching &amp; response speed</span>
                     </div>
                   </div>
@@ -885,8 +885,8 @@ export default async function AuditPage({ params }: Props) {
           {/* Top Opportunities */}
           <div className="bg-white border border-[#E2E8F0] rounded-xl shadow-xs mb-10 overflow-hidden">
             <div className="px-7 pt-6 pb-4 border-b border-[#E2E8F0]">
-              <h2 className="text-[14px] font-bold uppercase tracking-wider text-[#725921]">Top Opportunities</h2>
-              <p className="text-[13px] text-[#475569] mt-1">Based on your website data, these are the changes most likely to improve customer discovery.</p>
+              <h2 className="text-[15px] font-bold uppercase tracking-wider text-[#725921]">Top Opportunities</h2>
+              <p className="text-[14px] text-[#475569] mt-1">Based on your website data, these are the changes most likely to improve customer discovery.</p>
             </div>
             <div className="divide-y divide-[#E2E8F0]">
               {sortedOpportunities.length > 0 ? (
@@ -894,7 +894,7 @@ export default async function AuditPage({ params }: Props) {
                   <div key={opp.id} className="px-7 py-5 grid grid-cols-12 gap-4 items-start">
                     <div className="col-span-12 sm:col-span-7">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border ${
+                        <span className={`text-[11px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border ${
                           opp.impact === "High" 
                             ? "text-red-600 bg-red-50 border-red-100" 
                             : "text-amber-700 bg-amber-50 border-amber-100"
@@ -902,26 +902,26 @@ export default async function AuditPage({ params }: Props) {
                           {opp.impact} Impact
                         </span>
                       </div>
-                      <p className="text-[14.5px] font-semibold text-[#0D0D0D]">{opp.title}</p>
-                      <p className="text-[13px] text-[#475569] mt-1 leading-[1.5]">{opp.body}</p>
-                      <p className="text-[11.5px] text-[#725921] italic mt-2">Why we flagged this: {opp.why}</p>
+                      <p className="text-[15.5px] font-semibold text-[#0D0D0D]">{opp.title}</p>
+                      <p className="text-[14px] text-[#475569] mt-1 leading-[1.5]">{opp.body}</p>
+                      <p className="text-[12.5px] text-[#725921] italic mt-2">Why we flagged this: {opp.why}</p>
                     </div>
                     <div className="col-span-12 sm:col-span-5 flex sm:justify-end gap-6 text-center mt-2 sm:mt-0">
                       <div>
-                        <p className="text-[10px] uppercase text-[#475569] font-bold tracking-wider">Difficulty</p>
-                        <p className="text-[13px] font-semibold text-[#0D0D0D] mt-0.5">{opp.difficulty}</p>
+                        <p className="text-[11px] uppercase text-[#475569] font-bold tracking-wider">Difficulty</p>
+                        <p className="text-[14px] font-semibold text-[#0D0D0D] mt-0.5">{opp.difficulty}</p>
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase text-[#475569] font-bold tracking-wider">Est. Time</p>
-                        <p className="text-[13px] font-semibold text-[#0D0D0D] mt-0.5">{opp.time}</p>
+                        <p className="text-[11px] uppercase text-[#475569] font-bold tracking-wider">Est. Time</p>
+                        <p className="text-[14px] font-semibold text-[#0D0D0D] mt-0.5">{opp.time}</p>
                       </div>
                     </div>
                   </div>
                 ))
               ) : (
                 <div className="px-7 py-5">
-                  <p className="text-[14px] font-semibold text-emerald-700">✓ No critical opportunities detected.</p>
-                  <p className="text-[13px] text-[#475569] mt-1">Your website foundation is solid. Consider focusing on content and authority growth.</p>
+                  <p className="text-[15px] font-semibold text-emerald-700">✓ No critical opportunities detected.</p>
+                  <p className="text-[14px] text-[#475569] mt-1">Your website foundation is solid. Consider focusing on content and authority growth.</p>
                 </div>
               )}
             </div>
@@ -929,16 +929,16 @@ export default async function AuditPage({ params }: Props) {
 
           {/* AI Strategy Companion — collapsed into a subtle disclosure widget */}
           <details className="group bg-[#FAFAF8] border border-black/[0.07] rounded-lg mb-12 print:hidden">
-            <summary className="flex items-center gap-2 px-5 py-3.5 cursor-pointer list-none text-[13px] font-semibold text-[#475569] hover:text-[#0D0D0D] transition-colors select-none">
+            <summary className="flex items-center gap-2 px-5 py-3.5 cursor-pointer list-none text-[14px] font-semibold text-[#475569] hover:text-[#0D0D0D] transition-colors select-none">
               <span className="text-[#C4A35A]">💡</span>
               Want an AI-generated implementation plan?
-              <span className="ml-auto text-[10px] font-bold uppercase tracking-widest text-[#C4A35A] group-open:opacity-0">Show</span>
+              <span className="ml-auto text-[11px] font-bold uppercase tracking-widest text-[#C4A35A] group-open:opacity-0">Show</span>
             </summary>
             <div className="px-5 pb-5 pt-1 border-t border-black/[0.05]">
-              <p className="text-[13px] text-[#475569] leading-[1.6] mb-3">
+              <p className="text-[14px] text-[#475569] leading-[1.6] mb-3">
                 This report URL is readable by AI assistants. Share it with <strong>ChatGPT, Gemini, Perplexity, or Claude</strong> to get a tailored developer roadmap.
               </p>
-              <div className="bg-white border border-black/[0.06] rounded p-3.5 font-mono text-[12px] text-[#475569] select-all cursor-pointer hover:bg-slate-50 transition-colors">
+              <div className="bg-white border border-black/[0.06] rounded p-3.5 font-mono text-[13px] text-[#475569] select-all cursor-pointer hover:bg-slate-50 transition-colors">
                 "Here is my website audit report: {reportUrl}. Based on these findings, create a step-by-step developer plan to fix the top issues."
               </div>
             </div>
@@ -946,14 +946,14 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 3: Can AI Recommend Your Business? */}
           <section className="mb-12">
-            <h2 className="text-[19px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
               1. Can AI Recommend Your Business?
             </h2>
             
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
-                <span className="text-[13px] uppercase font-bold text-[#475569]">AI Search &amp; Chatbot Audit</span>
-                <span className={`px-3 py-1 rounded-full text-[11px] font-bold border ${
+                <span className="text-[14px] uppercase font-bold text-[#475569]">AI Search &amp; Chatbot Audit</span>
+                <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
                   hasLocalBusinessSchema && !isAiBlocked
                     ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                     : !hasLocalBusinessSchema && isAiBlocked
@@ -966,10 +966,10 @@ export default async function AuditPage({ params }: Props) {
               
               <div className="space-y-6">
                 <div className="flex gap-3">
-                  <span className="text-[18px] leading-none mt-0.5">{hasLocalBusinessSchema ? "✅" : "❌"}</span>
+                  <span className="text-[19px] leading-none mt-0.5">{hasLocalBusinessSchema ? "✅" : "❌"}</span>
                   <div>
-                    <h4 className="text-[14px] font-bold text-[#0D0D0D]">Business Entity Schema</h4>
-                    <p className="text-[13.5px] text-[#475569] mt-0.5 leading-[1.6]">
+                    <h4 className="text-[15px] font-bold text-[#0D0D0D]">Business Entity Schema</h4>
+                    <p className="text-[14.5px] text-[#475569] mt-0.5 leading-[1.6]">
                       {hasLocalBusinessSchema 
                         ? "Business schema definitions found. AI engines (like ChatGPT or OpenAI's GPTBot) can successfully identify your operational details."
                         : "No LocalBusiness or Organization schema detected. AI engines require structured data to fetch details like your hours, location, and services."}
@@ -978,10 +978,10 @@ export default async function AuditPage({ params }: Props) {
                 </div>
 
                 <div className="flex gap-3">
-                  <span className="text-[18px] leading-none mt-0.5">{!isAiBlocked ? "✅" : "❌"}</span>
+                  <span className="text-[19px] leading-none mt-0.5">{!isAiBlocked ? "✅" : "❌"}</span>
                   <div>
-                    <h4 className="text-[14px] font-bold text-[#0D0D0D]">AI Agent Access (robots.txt)</h4>
-                    <p className="text-[13.5px] text-[#475569] mt-0.5 leading-[1.6]">
+                    <h4 className="text-[15px] font-bold text-[#0D0D0D]">AI Agent Access (robots.txt)</h4>
+                    <p className="text-[14.5px] text-[#475569] mt-0.5 leading-[1.6]">
                       {!isAiBlocked 
                         ? "AI crawlers are allowed. ChatGPT, Perplexity, and Claude can read your content and cite your website."
                         : `Your configuration blocks AI search crawlers. Specifically blocked: ${blockedAiBots.length > 0 ? blockedAiBots.join(', ') : 'All bots'}.`}
@@ -990,10 +990,10 @@ export default async function AuditPage({ params }: Props) {
                 </div>
 
                 <div className="flex gap-3">
-                  <span className="text-[18px] leading-none mt-0.5">{llmsTxtPresent ? "✅" : "⚠️"}</span>
+                  <span className="text-[19px] leading-none mt-0.5">{llmsTxtPresent ? "✅" : "⚠️"}</span>
                   <div>
-                    <h4 className="text-[14px] font-bold text-[#0D0D0D]">AI Context Index File (llms.txt)</h4>
-                    <p className="text-[13.5px] text-[#475569] mt-0.5 leading-[1.6]">
+                    <h4 className="text-[15px] font-bold text-[#0D0D0D]">AI Context Index File (llms.txt)</h4>
+                    <p className="text-[14.5px] text-[#475569] mt-0.5 leading-[1.6]">
                       {llmsTxtPresent
                         ? "llms.txt file is present. AI crawlers have a clear, summarized guide to read your expertise efficiently."
                         : "No llms.txt file detected. Creating one guides models on how to read and summarize your services without scraping irrelevant layout blocks."}
@@ -1002,7 +1002,7 @@ export default async function AuditPage({ params }: Props) {
                 </div>
               </div>
               
-              <div className="bg-[#FAFAF8] border border-black/[0.04] p-4 rounded-lg mt-6 text-[13px] text-[#475569] leading-[1.6]">
+              <div className="bg-[#FAFAF8] border border-black/[0.04] p-4 rounded-lg mt-6 text-[14px] text-[#475569] leading-[1.6]">
                 <strong>Why this matters:</strong> AI search engines bypass traditional keywords. They use structured schemas and accessible index files to verify authority and recommend regional businesses.
               </div>
             </div>
@@ -1010,17 +1010,17 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 4: Website Performance Check */}
           <section className="mb-12">
-            <h2 className="text-[19px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
               2. Website Performance Check
             </h2>
             <div className="space-y-6">
               <div className="flex gap-4">
-                <span className={`text-[20px] leading-none ${isCachingMissing ? 'text-red-600' : 'text-green-600'}`}>
+                <span className={`text-[21px] leading-none ${isCachingMissing ? 'text-red-600' : 'text-green-600'}`}>
                   {isCachingMissing ? "❌" : "✓"}
                 </span>
                 <div>
-                  <h4 className="text-[15px] font-bold text-[#0D0D0D]">Active Page Memory Caching</h4>
-                  <p className="text-[14.5px] text-[#475569] mt-1 leading-[1.6]">
+                  <h4 className="text-[16px] font-bold text-[#0D0D0D]">Active Page Memory Caching</h4>
+                  <p className="text-[15.5px] text-[#475569] mt-1 leading-[1.6]">
                     {isCachingMissing ? (
                       "Active Page Cache is disabled. Without caching, your server is forced to rebuild your web page from scratch for every single visitor, slowing down responses and increasing server load under traffic spikes."
                     ) : (
@@ -1031,12 +1031,12 @@ export default async function AuditPage({ params }: Props) {
               </div>
 
               <div className="flex gap-4">
-                <span className={`text-[20px] leading-none ${isTtfbHigh ? 'text-red-600' : 'text-green-600'}`}>
+                <span className={`text-[21px] leading-none ${isTtfbHigh ? 'text-red-600' : 'text-green-600'}`}>
                   {isTtfbHigh ? "❌" : "✓"}
                 </span>
                 <div>
-                  <h4 className="text-[15px] font-bold text-[#0D0D0D]">Server Response Time (TTFB): {ttfb}ms</h4>
-                  <p className="text-[14.5px] text-[#475569] mt-1 leading-[1.6]">
+                  <h4 className="text-[16px] font-bold text-[#0D0D0D]">Server Response Time (TTFB): {ttfb}ms</h4>
+                  <p className="text-[15.5px] text-[#475569] mt-1 leading-[1.6]">
                     {isTtfbHigh ? (
                       "Your hosting server takes over 500ms just to acknowledge requests. This can be caused by congested hosting environments and affects overall mobile performance."
                     ) : (
@@ -1047,12 +1047,12 @@ export default async function AuditPage({ params }: Props) {
               </div>
 
               <div className="flex gap-4">
-                <span className={`text-[20px] leading-none ${isPluginsHigh ? 'text-amber-500' : 'text-green-600'}`}>
+                <span className={`text-[21px] leading-none ${isPluginsHigh ? 'text-amber-500' : 'text-green-600'}`}>
                   {isPluginsHigh ? "⚠️" : "✓"}
                 </span>
                 <div>
-                  <h4 className="text-[15px] font-bold text-[#0D0D0D]">WordPress Plugin Footprint: {pluginCount} plugins</h4>
-                  <p className="text-[14.5px] text-[#475569] mt-1 leading-[1.6]">
+                  <h4 className="text-[16px] font-bold text-[#0D0D0D]">WordPress Plugin Footprint: {pluginCount} plugins</h4>
+                  <p className="text-[15.5px] text-[#475569] mt-1 leading-[1.6]">
                     {isPluginsHigh ? (
                       `Your page source loads assets from ${pluginCount} active WordPress plugins. Each active plugin loads extra script files and stylesheets, blocking browser rendering on mobile screens.`
                     ) : (
@@ -1066,15 +1066,15 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 5: Mobile Visitor Experience — verdict cards, not raw numbers */}
           <section className="mb-12">
-            <h2 className="text-[19px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
               3. Mobile Visitor Experience
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* LCP */}
               <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
-                <p className="text-[11px] uppercase font-bold text-[#475569] tracking-wider mb-2">How fast does your main content appear?</p>
-                <p className={`text-[15px] font-bold mb-1 ${verdictColor(lcpVerdict)}`}>{verdictLabel(lcpVerdict)}</p>
-                <p className="text-[13px] text-[#475569] leading-[1.5]">
+                <p className="text-[12px] uppercase font-bold text-[#475569] tracking-wider mb-2">How fast does your main content appear?</p>
+                <p className={`text-[16px] font-bold mb-1 ${verdictColor(lcpVerdict)}`}>{verdictLabel(lcpVerdict)}</p>
+                <p className="text-[14px] text-[#475569] leading-[1.5]">
                   {lcpVerdict === "good" && "The main content on your page loads quickly. Visitors on mobile see it within Google's recommended window."}
                   {lcpVerdict === "needs-work" && `Your page's main content takes ${lcp}s to appear — Google recommends under 2.5s for a good mobile experience.`}
                   {lcpVerdict === "poor" && `At ${lcp}s, your page is slow to show its main content. Visitors on mobile are likely to leave before it finishes loading.`}
@@ -1083,9 +1083,9 @@ export default async function AuditPage({ params }: Props) {
               </div>
               {/* TBT / Interactivity */}
               <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
-                <p className="text-[11px] uppercase font-bold text-[#475569] tracking-wider mb-2">Can visitors interact without delay?</p>
-                <p className={`text-[15px] font-bold mb-1 ${verdictColor(tbtVerdict)}`}>{verdictLabel(tbtVerdict)}</p>
-                <p className="text-[13px] text-[#475569] leading-[1.5]">
+                <p className="text-[12px] uppercase font-bold text-[#475569] tracking-wider mb-2">Can visitors interact without delay?</p>
+                <p className={`text-[16px] font-bold mb-1 ${verdictColor(tbtVerdict)}`}>{verdictLabel(tbtVerdict)}</p>
+                <p className="text-[14px] text-[#475569] leading-[1.5]">
                   {tbtVerdict === "good" && "Your page responds quickly to taps and clicks. Background scripts are not blocking the user's experience."}
                   {tbtVerdict === "needs-work" && `Background scripts freeze your page for ${tbt}ms. Visitors may tap buttons and get no response until scripts finish.`}
                   {tbtVerdict === "poor" && `Your page freezes for ${tbt}ms while scripts load — well above Google's 200ms benchmark. Buttons may feel unresponsive on mobile.`}
@@ -1094,9 +1094,9 @@ export default async function AuditPage({ params }: Props) {
               </div>
               {/* Speed Index / Visual fill */}
               <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
-                <p className="text-[11px] uppercase font-bold text-[#475569] tracking-wider mb-2">How quickly does the page look ready?</p>
-                <p className={`text-[15px] font-bold mb-1 ${verdictColor(speedVerdict)}`}>{verdictLabel(speedVerdict)}</p>
-                <p className="text-[13px] text-[#475569] leading-[1.5]">
+                <p className="text-[12px] uppercase font-bold text-[#475569] tracking-wider mb-2">How quickly does the page look ready?</p>
+                <p className={`text-[16px] font-bold mb-1 ${verdictColor(speedVerdict)}`}>{verdictLabel(speedVerdict)}</p>
+                <p className="text-[14px] text-[#475569] leading-[1.5]">
                   {speedVerdict === "good" && "Your page fills visually fast — visitors see a fully rendered layout without long blank-screen waits."}
                   {speedVerdict === "needs-work" && `The page takes ${loadTime}s to look complete. Parts of the screen may appear blank or shift while loading.`}
                   {speedVerdict === "poor" && `At ${loadTime}s, your page loads significantly slower than industry benchmarks. Most mobile visitors experience a long blank wait.`}
@@ -1105,11 +1105,11 @@ export default async function AuditPage({ params }: Props) {
               </div>
               {/* Page Weight */}
               <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
-                <p className="text-[11px] uppercase font-bold text-[#475569] tracking-wider mb-2">How much data does your homepage load?</p>
-                <p className={`text-[15px] font-bold mb-1 ${verdictColor(sizeVerdict)}`}>
+                <p className="text-[12px] uppercase font-bold text-[#475569] tracking-wider mb-2">How much data does your homepage load?</p>
+                <p className={`text-[16px] font-bold mb-1 ${verdictColor(sizeVerdict)}`}>
                   {sizeVerdict === "good" ? "Lightweight ✓" : sizeVerdict === "needs-work" ? "Moderate ⚠️" : sizeVerdict === "poor" ? "Heavy ❌" : "N/A"}
                 </p>
-                <p className="text-[13px] text-[#475569] leading-[1.5]">
+                <p className="text-[14px] text-[#475569] leading-[1.5]">
                   {sizeVerdict === "good" && `Your homepage downloads ${pageSize} MB — well within mobile-friendly limits. Visitors on slower connections load it comfortably.`}
                   {sizeVerdict === "needs-work" && `At ${pageSize} MB, your homepage is moderately sized. Visitors on 4G connections may notice a delay, especially first-time visitors without cached data.`}
                   {sizeVerdict === "poor" && `Your homepage downloads ${pageSize} MB of data — significantly more than recommended. This increases load time noticeably on mobile networks.`}
@@ -1121,15 +1121,15 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 6: Content & Publishing Analysis */}
           <section className="mb-12">
-            <h2 className="text-[19px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
               4. Content &amp; Publishing Analysis
             </h2>
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
               {blog && blog.exists === true ? (
                 <div>
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
-                    <span className="text-[13px] uppercase font-bold text-[#475569]">Blog / Content Activity</span>
-                    <span className={`px-3 py-1 rounded-full text-[11px] font-bold border ${
+                    <span className="text-[14px] uppercase font-bold text-[#475569]">Blog / Content Activity</span>
+                    <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
                       blog.contentSlowing
                         ? "bg-amber-50 text-amber-700 border-amber-200"
                         : blog.daysSinceLastPost && blog.daysSinceLastPost > 90
@@ -1145,12 +1145,12 @@ export default async function AuditPage({ params }: Props) {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left mb-6">
                     <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
-                      <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Posts in Active Feed</span>
-                      <span className="text-[24px] font-serif font-bold text-[#725921]">{blog.totalPosts}</span>
+                      <span className="block text-[12px] uppercase font-bold text-[#475569] mb-1">Posts in Active Feed</span>
+                      <span className="text-[26px] font-serif font-bold text-[#725921]">{blog.totalPosts}</span>
                     </div>
                     <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
-                      <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Last Published</span>
-                      <span className="text-[18px] font-semibold text-[#0D0D0D]">
+                      <span className="block text-[12px] uppercase font-bold text-[#475569] mb-1">Last Published</span>
+                      <span className="text-[19px] font-semibold text-[#0D0D0D]">
                         {blog.daysSinceLastPost !== undefined
                           ? blog.daysSinceLastPost === 0
                             ? "Today"
@@ -1161,13 +1161,13 @@ export default async function AuditPage({ params }: Props) {
                       </span>
                     </div>
                     <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
-                      <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Average Interval</span>
-                      <span className="text-[18px] font-semibold text-[#0D0D0D]">
+                      <span className="block text-[12px] uppercase font-bold text-[#475569] mb-1">Average Interval</span>
+                      <span className="text-[19px] font-semibold text-[#0D0D0D]">
                         {blog.avgIntervalDays !== undefined ? `Every ${blog.avgIntervalDays} days` : "N/A"}
                       </span>
                     </div>
                   </div>
-                  <div className="text-[13.5px] text-[#475569] leading-[1.6] space-y-3">
+                  <div className="text-[14.5px] text-[#475569] leading-[1.6] space-y-3">
                     {blog.contentSlowing && (
                       <div className="flex gap-2.5 items-start">
                         <span className="text-amber-500 font-bold">⚠️</span>
@@ -1197,8 +1197,8 @@ export default async function AuditPage({ params }: Props) {
               ) : (
                 <div>
                   <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#E2E8F0]">
-                    <span className="text-[13px] uppercase font-bold text-[#475569]">Content Strategy</span>
-                    <span className={`px-3 py-1 border rounded-full text-[11px] font-bold ${
+                    <span className="text-[14px] uppercase font-bold text-[#475569]">Content Strategy</span>
+                    <span className={`px-3 py-1 border rounded-full text-[12px] font-bold ${
                       blog?.exists === "unverified" 
                         ? "bg-amber-50 text-amber-700 border-amber-200" 
                         : "bg-red-50 text-red-700 border-red-200"
@@ -1207,12 +1207,12 @@ export default async function AuditPage({ params }: Props) {
                     </span>
                   </div>
                   <div className="flex gap-3 items-start">
-                    <span className={`text-[18px] mt-0.5 ${blog?.exists === "unverified" ? "text-amber-500" : "text-red-500"}`}>⚠️</span>
+                    <span className={`text-[19px] mt-0.5 ${blog?.exists === "unverified" ? "text-amber-500" : "text-red-500"}`}>⚠️</span>
                     <div>
-                      <h4 className="text-[14px] font-bold text-[#0D0D0D]">
+                      <h4 className="text-[15px] font-bold text-[#0D0D0D]">
                         {blog?.exists === "unverified" ? "Could Not Fully Verify Blog Content" : "Blogging / Articles Section is Missing"}
                       </h4>
-                      <p className="text-[13.5px] text-[#475569] mt-1 leading-[1.6]">
+                      <p className="text-[14.5px] text-[#475569] mt-1 leading-[1.6]">
                         {blog?.exists === "unverified"
                           ? "We detected potential blog or resource links, but our automated crawler couldn't verify the actual post cadence. Ensure your RSS feeds and blog archive loops are structured clearly for engines to read."
                           : "We couldn't detect an active RSS blog feed on your website. Starting a structured resource section or company blog is one of the highest-yield activities for service business websites. It creates multiple entry points from Google search queries and positions your brand as a helpful expert."}
@@ -1226,15 +1226,15 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 7: Trust Signals (Testimonials) */}
           <section className="mb-12">
-            <h2 className="text-[19px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
               5. Trust Signals &amp; Credibility
             </h2>
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
               {testimonials && testimonials.found === true ? (
                 <div>
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
-                    <span className="text-[13px] uppercase font-bold text-[#475569]">Social Proof Metrics</span>
-                    <span className={`px-3 py-1 rounded-full text-[11px] font-bold border ${
+                    <span className="text-[14px] uppercase font-bold text-[#475569]">Social Proof Metrics</span>
+                    <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
                       testimonials.hasNamedAttribution && testimonials.hasPhotos
                         ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                         : "bg-amber-50 text-amber-700 border-amber-200"
@@ -1244,29 +1244,29 @@ export default async function AuditPage({ params }: Props) {
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center sm:text-left mb-6">
                     <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
-                      <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Testimonials</span>
-                      <span className="text-[24px] font-serif font-bold text-[#725921]">{testimonials.count || "Yes"}</span>
+                      <span className="block text-[12px] uppercase font-bold text-[#475569] mb-1">Testimonials</span>
+                      <span className="text-[26px] font-serif font-bold text-[#725921]">{testimonials.count || "Yes"}</span>
                     </div>
                     <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
-                      <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Named Attribution</span>
-                      <span className="text-[18px] font-semibold text-[#0D0D0D]">
+                      <span className="block text-[12px] uppercase font-bold text-[#475569] mb-1">Named Attribution</span>
+                      <span className="text-[19px] font-semibold text-[#0D0D0D]">
                         {testimonials.hasNamedAttribution === true ? "Yes ✓" : testimonials.hasNamedAttribution === "unverified" ? "⚠️" : "Missing ⚠️"}
                       </span>
                     </div>
                     <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
-                      <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Client Photos</span>
-                      <span className="text-[18px] font-semibold text-[#0D0D0D]">
+                      <span className="block text-[12px] uppercase font-bold text-[#475569] mb-1">Client Photos</span>
+                      <span className="text-[19px] font-semibold text-[#0D0D0D]">
                         {testimonials.hasPhotos === true ? "Yes ✓" : testimonials.hasPhotos === "unverified" ? "⚠️" : "Missing ⚠️"}
                       </span>
                     </div>
                     <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
-                      <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Logo Wall</span>
-                      <span className="text-[18px] font-semibold text-[#0D0D0D]">
+                      <span className="block text-[12px] uppercase font-bold text-[#475569] mb-1">Logo Wall</span>
+                      <span className="text-[19px] font-semibold text-[#0D0D0D]">
                         {testimonials.hasLogoWall === true ? "Yes ✓" : testimonials.hasLogoWall === "unverified" ? "⚠️" : "Missing ⚠️"}
                       </span>
                     </div>
                   </div>
-                  <div className="text-[13.5px] text-[#475569] leading-[1.6] space-y-3">
+                  <div className="text-[14.5px] text-[#475569] leading-[1.6] space-y-3">
                     {!testimonials.hasNamedAttribution && (
                       <div className="flex gap-2.5 items-start">
                         <span className="text-amber-500 font-bold">⚠️</span>
@@ -1312,8 +1312,8 @@ export default async function AuditPage({ params }: Props) {
               ) : (
                 <div>
                   <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#E2E8F0]">
-                    <span className="text-[13px] uppercase font-bold text-[#475569]">Social Proof Strategy</span>
-                    <span className={`px-3 py-1 border rounded-full text-[11px] font-bold ${
+                    <span className="text-[14px] uppercase font-bold text-[#475569]">Social Proof Strategy</span>
+                    <span className={`px-3 py-1 border rounded-full text-[12px] font-bold ${
                       testimonials?.found === "unverified"
                         ? "bg-amber-50 text-amber-700 border-amber-200"
                         : "bg-red-50 text-red-700 border-red-200"
@@ -1322,12 +1322,12 @@ export default async function AuditPage({ params }: Props) {
                     </span>
                   </div>
                   <div className="flex gap-3 items-start">
-                    <span className={`text-[18px] mt-0.5 ${testimonials?.found === "unverified" ? "text-amber-500" : "text-red-500"}`}>⚠️</span>
+                    <span className={`text-[19px] mt-0.5 ${testimonials?.found === "unverified" ? "text-amber-500" : "text-red-500"}`}>⚠️</span>
                     <div>
-                      <h4 className="text-[14px] font-bold text-[#0D0D0D]">
+                      <h4 className="text-[15px] font-bold text-[#0D0D0D]">
                         {testimonials?.found === "unverified" ? "Could Not Extract Testimonials" : "Lack of Social Proof on Homepage"}
                       </h4>
-                      <p className="text-[13.5px] text-[#475569] mt-1 leading-[1.6]">
+                      <p className="text-[14.5px] text-[#475569] mt-1 leading-[1.6]">
                         {testimonials?.found === "unverified"
                           ? "We detected potential review layouts (like carousels or embeds), but they require JavaScript to render. Ensure critical social proof is rendered server-side so bots can read it."
                           : "We couldn't detect client testimonials or reviews on your homepage. When visitors land on a service website, their primary question is *\"Can I trust this business?\"* Adding at least 3 detailed testimonials (with full names and photos) will immediately reduce bounce rates and increase contact inquiries."}
@@ -1341,15 +1341,15 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 8: Contact Accessibility */}
           <section className="mb-12">
-            <h2 className="text-[19px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
               6. Contact &amp; Client Accessibility
             </h2>
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
               {contact ? (
                 <div>
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
-                    <span className="text-[13px] uppercase font-bold text-[#475569]">Contact Channels Audit</span>
-                    <span className={`px-3 py-1 rounded-full text-[11px] font-bold border ${
+                    <span className="text-[14px] uppercase font-bold text-[#475569]">Contact Channels Audit</span>
+                    <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
                       contact.hasPhone && (contact.hasEmail || contact.hasForm)
                         ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                         : "bg-amber-50 text-amber-700 border-amber-200"
@@ -1360,32 +1360,32 @@ export default async function AuditPage({ params }: Props) {
                   
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[15px]">{contact.hasPhone === true ? "✓" : contact.hasPhone === "unverified" ? "⚠️" : "❌"}</span>
-                      <span className="text-[13px] font-medium text-[#475569]">Phone Number</span>
+                      <span className="text-[16px]">{contact.hasPhone === true ? "✓" : contact.hasPhone === "unverified" ? "⚠️" : "❌"}</span>
+                      <span className="text-[14px] font-medium text-[#475569]">Phone Number</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[15px]">{contact.hasEmail === true ? "✓" : contact.hasEmail === "unverified" ? "⚠️" : "❌"}</span>
-                      <span className="text-[13px] font-medium text-[#475569]">Email Address</span>
+                      <span className="text-[16px]">{contact.hasEmail === true ? "✓" : contact.hasEmail === "unverified" ? "⚠️" : "❌"}</span>
+                      <span className="text-[14px] font-medium text-[#475569]">Email Address</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[15px]">{contact.hasForm === true ? "✓" : contact.hasForm === "unverified" ? "⚠️" : "❌"}</span>
-                      <span className="text-[13px] font-medium text-[#475569]">Contact Form</span>
+                      <span className="text-[16px]">{contact.hasForm === true ? "✓" : contact.hasForm === "unverified" ? "⚠️" : "❌"}</span>
+                      <span className="text-[14px] font-medium text-[#475569]">Contact Form</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[15px]">{contact.hasAddress ? "✓" : "❌"}</span>
-                      <span className="text-[13px] font-medium text-[#475569]">Physical Address</span>
+                      <span className="text-[16px]">{contact.hasAddress ? "✓" : "❌"}</span>
+                      <span className="text-[14px] font-medium text-[#475569]">Physical Address</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[15px]">{contact.hasMapsEmbed ? "✓" : "❌"}</span>
-                      <span className="text-[13px] font-medium text-[#475569]">Google Maps Embed</span>
+                      <span className="text-[16px]">{contact.hasMapsEmbed ? "✓" : "❌"}</span>
+                      <span className="text-[14px] font-medium text-[#475569]">Google Maps Embed</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[15px]">{contact.hasBusinessHours ? "✓" : "❌"}</span>
-                      <span className="text-[13px] font-medium text-[#475569]">Business Hours</span>
+                      <span className="text-[16px]">{contact.hasBusinessHours ? "✓" : "❌"}</span>
+                      <span className="text-[14px] font-medium text-[#475569]">Business Hours</span>
                     </div>
                   </div>
 
-                  <div className="text-[13.5px] text-[#475569] leading-[1.6] space-y-2">
+                  <div className="text-[14.5px] text-[#475569] leading-[1.6] space-y-2">
                     {!contact.hasPhone && (
                       <p className="flex items-start gap-2 text-amber-700">
                         <span className="mt-0.5">⚠️</span>
@@ -1407,14 +1407,14 @@ export default async function AuditPage({ params }: Props) {
                   </div>
                 </div>
               ) : (
-                <p className="text-[13px] text-[#475569]">Contact details analysis not available.</p>
+                <p className="text-[14px] text-[#475569]">Contact details analysis not available.</p>
               )}
             </div>
           </section>
 
           {/* Section 7: Prioritized Action Checklist */}
           <section className="mb-12">
-            <h2 className="text-[19px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
               7. Prioritized Action Checklist
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1422,27 +1422,27 @@ export default async function AuditPage({ params }: Props) {
               <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
                 <div className="flex items-center gap-1.5 mb-4 border-b border-[#E2E8F0] pb-3">
                   <span className="h-2.5 w-2.5 rounded-full bg-red-500 animate-pulse"></span>
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-red-600">Fix First (High Priority)</p>
+                  <p className="text-[12px] font-bold uppercase tracking-widest text-red-600">Fix First (High Priority)</p>
                 </div>
                 {fixFirstRecs.length > 0 ? (
                   <ul className="space-y-4">
                     {fixFirstRecs.map((rec, idx) => (
                       <li key={idx} className="border-b border-black/[0.03] pb-3 last:border-0 last:pb-0">
-                        <p className="text-[13.5px] font-bold text-[#0D0D0D] leading-snug">→ {rec.task}</p>
+                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">→ {rec.task}</p>
                         <div className="flex gap-1.5 mt-2">
-                          <span className="px-2 py-0.5 rounded-full text-[8.5px] font-bold uppercase bg-red-50 text-red-700 border border-red-100">
+                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-red-50 text-red-700 border border-red-100">
                             Impact: {rec.impact}
                           </span>
-                          <span className="px-2 py-0.5 rounded-full text-[8.5px] font-bold uppercase bg-slate-50 text-[#475569] border border-black/[0.04]">
+                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-slate-50 text-[#475569] border border-black/[0.04]">
                             Effort: {rec.effort}
                           </span>
                         </div>
-                        <p className="text-[11px] text-[#475569] mt-2 italic leading-relaxed">Why we flagged this: {rec.why}</p>
+                        <p className="text-[12px] text-[#475569] mt-2 italic leading-relaxed">Why we flagged this: {rec.why}</p>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-[13px] text-emerald-700 font-semibold leading-relaxed">✓ No high-priority bottlenecks detected.</p>
+                  <p className="text-[14px] text-emerald-700 font-semibold leading-relaxed">✓ No high-priority bottlenecks detected.</p>
                 )}
               </div>
 
@@ -1450,27 +1450,27 @@ export default async function AuditPage({ params }: Props) {
               <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
                 <div className="flex items-center gap-1.5 mb-4 border-b border-[#E2E8F0] pb-3">
                   <span className="h-2.5 w-2.5 rounded-full bg-amber-500"></span>
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-amber-700">Fix Next (Medium Priority)</p>
+                  <p className="text-[12px] font-bold uppercase tracking-widest text-amber-700">Fix Next (Medium Priority)</p>
                 </div>
                 {fixNextRecs.length > 0 ? (
                   <ul className="space-y-4">
                     {fixNextRecs.map((rec, idx) => (
                       <li key={idx} className="border-b border-black/[0.03] pb-3 last:border-0 last:pb-0">
-                        <p className="text-[13.5px] font-bold text-[#0D0D0D] leading-snug">→ {rec.task}</p>
+                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">→ {rec.task}</p>
                         <div className="flex gap-1.5 mt-2">
-                          <span className="px-2 py-0.5 rounded-full text-[8.5px] font-bold uppercase bg-amber-50 text-amber-700 border border-amber-100">
+                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-amber-50 text-amber-700 border border-amber-100">
                             Impact: {rec.impact}
                           </span>
-                          <span className="px-2 py-0.5 rounded-full text-[8.5px] font-bold uppercase bg-slate-50 text-[#475569] border border-black/[0.04]">
+                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-slate-50 text-[#475569] border border-black/[0.04]">
                             Effort: {rec.effort}
                           </span>
                         </div>
-                        <p className="text-[11px] text-[#475569] mt-2 italic leading-relaxed">Why we flagged this: {rec.why}</p>
+                        <p className="text-[12px] text-[#475569] mt-2 italic leading-relaxed">Why we flagged this: {rec.why}</p>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-[13px] text-emerald-700 font-semibold leading-relaxed">✓ No medium-priority bottlenecks detected.</p>
+                  <p className="text-[14px] text-emerald-700 font-semibold leading-relaxed">✓ No medium-priority bottlenecks detected.</p>
                 )}
               </div>
 
@@ -1478,27 +1478,27 @@ export default async function AuditPage({ params }: Props) {
               <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
                 <div className="flex items-center gap-1.5 mb-4 border-b border-[#E2E8F0] pb-3">
                   <span className="h-2.5 w-2.5 rounded-full bg-slate-500"></span>
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#475569]">Fix Later (Low Priority)</p>
+                  <p className="text-[12px] font-bold uppercase tracking-widest text-[#475569]">Fix Later (Low Priority)</p>
                 </div>
                 {fixLaterRecs.length > 0 ? (
                   <ul className="space-y-4">
                     {fixLaterRecs.map((rec, idx) => (
                       <li key={idx} className="border-b border-black/[0.03] pb-3 last:border-0 last:pb-0">
-                        <p className="text-[13.5px] font-bold text-[#0D0D0D] leading-snug">→ {rec.task}</p>
+                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">→ {rec.task}</p>
                         <div className="flex gap-1.5 mt-2">
-                          <span className="px-2 py-0.5 rounded-full text-[8.5px] font-bold uppercase bg-slate-100 text-[#475569] border border-slate-200">
+                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-slate-100 text-[#475569] border border-slate-200">
                             Impact: {rec.impact}
                           </span>
-                          <span className="px-2 py-0.5 rounded-full text-[8.5px] font-bold uppercase bg-slate-50 text-[#475569] border border-black/[0.04]">
+                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-slate-50 text-[#475569] border border-black/[0.04]">
                             Effort: {rec.effort}
                           </span>
                         </div>
-                        <p className="text-[11px] text-[#475569] mt-2 italic leading-relaxed">Why we flagged this: {rec.why}</p>
+                        <p className="text-[12px] text-[#475569] mt-2 italic leading-relaxed">Why we flagged this: {rec.why}</p>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-[13px] text-emerald-700 font-semibold leading-relaxed">✓ All minor optimizations are complete.</p>
+                  <p className="text-[14px] text-emerald-700 font-semibold leading-relaxed">✓ All minor optimizations are complete.</p>
                 )}
               </div>
             </div>
@@ -1507,70 +1507,70 @@ export default async function AuditPage({ params }: Props) {
           {/* What We Also Noticed — Layer 1 Objective Facts (Alfred-style small observations) */}
           {observedIssues > 0 && (
             <section className="mb-12">
-              <h2 className="text-[19px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
+              <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
                 8. A Few Other Things We Noticed
               </h2>
               <div className="space-y-3">
                 {hasMissingMetaDesc && (
                   <div className="flex items-start gap-3 bg-white border border-[#E2E8F0] rounded-lg p-4 shadow-xs">
-                    <span className="text-amber-500 text-[16px] mt-0.5 shrink-0">⚠️</span>
+                    <span className="text-amber-500 text-[17px] mt-0.5 shrink-0">⚠️</span>
                     <div>
-                      <p className="text-[14px] font-semibold text-[#0D0D0D]">No search description found</p>
-                      <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your website is missing a meta description — the short summary text Google shows under your link in search results. Without one, Google picks text at random, which often looks unprofessional.</p>
+                      <p className="text-[15px] font-semibold text-[#0D0D0D]">No search description found</p>
+                      <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your website is missing a meta description — the short summary text Google shows under your link in search results. Without one, Google picks text at random, which often looks unprofessional.</p>
                     </div>
                   </div>
                 )}
                 {hasOutdatedCopyright && (
                   <div className="flex items-start gap-3 bg-white border border-[#E2E8F0] rounded-lg p-4 shadow-xs">
-                    <span className="text-amber-500 text-[16px] mt-0.5 shrink-0">⚠️</span>
+                    <span className="text-amber-500 text-[17px] mt-0.5 shrink-0">⚠️</span>
                     <div>
-                      <p className="text-[14px] font-semibold text-[#0D0D0D]">Copyright year appears outdated</p>
-                      <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your website's footer displays a copyright year that isn't {new Date().getFullYear()}. While small, this signals to new visitors that the site may not be actively maintained — which can reduce trust on first visit.</p>
+                      <p className="text-[15px] font-semibold text-[#0D0D0D]">Copyright year appears outdated</p>
+                      <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your website's footer displays a copyright year that isn't {new Date().getFullYear()}. While small, this signals to new visitors that the site may not be actively maintained — which can reduce trust on first visit.</p>
                     </div>
                   </div>
                 )}
                 {noPhoneNumber && (
                   <div className="flex items-start gap-3 bg-white border border-[#E2E8F0] rounded-lg p-4 shadow-xs">
-                    <span className="text-amber-500 text-[16px] mt-0.5 shrink-0">⚠️</span>
+                    <span className="text-amber-500 text-[17px] mt-0.5 shrink-0">⚠️</span>
                     <div>
-                      <p className="text-[14px] font-semibold text-[#0D0D0D]">No phone number detected</p>
-                      <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">We didn't find a phone number on your homepage. For local businesses, a visible phone number increases both trust and conversions — especially for visitors arriving from mobile search who want to call directly.</p>
+                      <p className="text-[15px] font-semibold text-[#0D0D0D]">No phone number detected</p>
+                      <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">We didn't find a phone number on your homepage. For local businesses, a visible phone number increases both trust and conversions — especially for visitors arriving from mobile search who want to call directly.</p>
                     </div>
                   </div>
                 )}
                 {noCtaButton && (
                   <div className="flex items-start gap-3 bg-white border border-[#E2E8F0] rounded-lg p-4 shadow-xs">
-                    <span className="text-amber-500 text-[16px] mt-0.5 shrink-0">⚠️</span>
+                    <span className="text-amber-500 text-[17px] mt-0.5 shrink-0">⚠️</span>
                     <div>
-                      <p className="text-[14px] font-semibold text-[#0D0D0D]">Primary call-to-action may not be prominent</p>
-                      <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">We didn't detect a clear "Book," "Contact," or "Get Started" action on your homepage. A visible CTA is the most direct route from a visitor's interest to a conversation or booking.</p>
+                      <p className="text-[15px] font-semibold text-[#0D0D0D]">Primary call-to-action may not be prominent</p>
+                      <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">We didn't detect a clear "Book," "Contact," or "Get Started" action on your homepage. A visible CTA is the most direct route from a visitor's interest to a conversation or booking.</p>
                     </div>
                   </div>
                 )}
                 {hasMissingH1 && (
                   <div className="flex items-start gap-3 bg-white border border-[#E2E8F0] rounded-lg p-4 shadow-xs">
-                    <span className="text-amber-500 text-[16px] mt-0.5 shrink-0">⚠️</span>
+                    <span className="text-amber-500 text-[17px] mt-0.5 shrink-0">⚠️</span>
                     <div>
-                      <p className="text-[14px] font-semibold text-[#0D0D0D]">No main heading detected</p>
-                      <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your page appears to be missing a primary H1 heading. Search engines use this to understand what your page is about, and its absence may reduce how confidently Google ranks your page for relevant searches.</p>
+                      <p className="text-[15px] font-semibold text-[#0D0D0D]">No main heading detected</p>
+                      <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your page appears to be missing a primary H1 heading. Search engines use this to understand what your page is about, and its absence may reduce how confidently Google ranks your page for relevant searches.</p>
                     </div>
                   </div>
                 )}
                 {noSocialLinks && (
                   <div className="flex items-start gap-3 bg-white border border-[#E2E8F0] rounded-lg p-4 shadow-xs">
-                    <span className="text-amber-500 text-[16px] mt-0.5 shrink-0">⚠️</span>
+                    <span className="text-amber-500 text-[17px] mt-0.5 shrink-0">⚠️</span>
                     <div>
-                      <p className="text-[14px] font-semibold text-[#0D0D0D]">No social media links detected</p>
-                      <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">We did not find links to major social channels (Facebook, Instagram, LinkedIn, etc.) on your homepage. Social profiles are an important validation signal for both human visitors and Google search bots.</p>
+                      <p className="text-[15px] font-semibold text-[#0D0D0D]">No social media links detected</p>
+                      <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">We did not find links to major social channels (Facebook, Instagram, LinkedIn, etc.) on your homepage. Social profiles are an important validation signal for both human visitors and Google search bots.</p>
                     </div>
                   </div>
                 )}
                 {imagesWithoutAlt > 0 && (
                   <div className="flex items-start gap-3 bg-white border border-[#E2E8F0] rounded-lg p-4 shadow-xs">
-                    <span className="text-amber-500 text-[16px] mt-0.5 shrink-0">⚠️</span>
+                    <span className="text-amber-500 text-[17px] mt-0.5 shrink-0">⚠️</span>
                     <div>
-                      <p className="text-[14px] font-semibold text-[#0D0D0D]">Images missing alt-text: {imagesWithoutAlt}</p>
-                      <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">We detected {imagesWithoutAlt} images on your homepage missing text descriptions ("alt-text"). Alt descriptions allow screen readers to describe images to visually impaired visitors and assist search engines in indexing your media search relevance.</p>
+                      <p className="text-[15px] font-semibold text-[#0D0D0D]">Images missing alt-text: {imagesWithoutAlt}</p>
+                      <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">We detected {imagesWithoutAlt} images on your homepage missing text descriptions ("alt-text"). Alt descriptions allow screen readers to describe images to visually impaired visitors and assist search engines in indexing your media search relevance.</p>
                     </div>
                   </div>
                 )}
@@ -1579,38 +1579,38 @@ export default async function AuditPage({ params }: Props) {
           )}
 
           {/* Cost of Inaction */}
-          <div className="border-l-4 border-l-[#C4A35A] pl-6 my-12 text-[17px] leading-[1.75] text-[#475569] font-medium">
+          <div className="border-l-4 border-l-[#C4A35A] pl-6 my-12 text-[18px] leading-[1.75] text-[#475569] font-medium">
             <strong>The opportunity cost:</strong> Each month without these improvements may reduce your visibility in both traditional search and AI-powered discovery, allowing competitors to capture the customers searching for what you offer.
           </div>
 
           <section className="bg-white border border-[#E2E8F0] p-8 rounded-lg shadow-sm text-center">
             {businessCategory === "local-service" ? (
               <>
-                <span className="text-[11px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">Local SEO Strategy</span>
-                <h2 className="text-[22px] font-serif text-[#725921] mb-4">Dominate Your Local Market Search</h2>
-                <p className="text-[15px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
+                <span className="text-[12px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">Local SEO Strategy</span>
+                <h2 className="text-[23px] font-serif text-[#725921] mb-4">Dominate Your Local Market Search</h2>
+                <p className="text-[16px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
                   Local search is highly competitive. Let's review this report together and build a targeted roadmap to outrank local competitors and capture high-intent service inquiries in your area.
                 </p>
               </>
             ) : businessCategory === "ecommerce" ? (
               <>
-                <span className="text-[11px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">E-Commerce Growth</span>
-                <h2 className="text-[22px] font-serif text-[#725921] mb-4">Optimize Your Store for Conversions</h2>
-                <p className="text-[15px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
+                <span className="text-[12px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">E-Commerce Growth</span>
+                <h2 className="text-[23px] font-serif text-[#725921] mb-4">Optimize Your Store for Conversions</h2>
+                <p className="text-[16px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
                   Every millisecond of load time impacts your bottom line. Let's review this technical audit to identify the exact performance bottlenecks costing you sales and build a plan to fix them.
                 </p>
               </>
             ) : (
               <>
-                <span className="text-[11px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">Recommended Solution</span>
-                <h2 className="text-[22px] font-serif text-[#725921] mb-4">Want a Prioritized Action Plan?</h2>
-                <p className="text-[15px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
+                <span className="text-[12px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">Recommended Solution</span>
+                <h2 className="text-[23px] font-serif text-[#725921] mb-4">Want a Prioritized Action Plan?</h2>
+                <p className="text-[16px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
                   I&apos;ll personally review this report with you on a free 15-minute call and show you:
                 </p>
               </>
             )}
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-[580px] mx-auto text-left mb-8 text-[14px] text-[#0D0D0D]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-[580px] mx-auto text-left mb-8 text-[15px] text-[#0D0D0D]">
               <div className="flex items-start gap-2">
                 <span className="text-[#C4A35A] font-bold shrink-0">✓</span> Which recommendations matter most to your business
               </div>
@@ -1630,25 +1630,25 @@ export default async function AuditPage({ params }: Props) {
                 href="https://cal.com/naveengaur/30min" 
                 target="_blank" 
                 rel="noreferrer"
-                className="w-full md:w-auto bg-[#C4A35A] text-[#0D0D0D] px-8 py-4 rounded-sm text-[13px] font-bold tracking-[0.05em] uppercase hover:bg-[#d4b46a] transition-colors"
+                className="w-full md:w-auto bg-[#C4A35A] text-[#0D0D0D] px-8 py-4 rounded-sm text-[14px] font-bold tracking-[0.05em] uppercase hover:bg-[#d4b46a] transition-colors"
               >
                 Book Free 15-Min Strategy Call
               </a>
             </div>
-            <p className="text-[11.5px] text-[#475569] mt-4 italic">
+            <p className="text-[12.5px] text-[#475569] mt-4 italic">
               No sales pressure. We review your specific site issues together.
             </p>
           </section>
 
-          <div className="mt-16 pt-8 border-t border-[#E2E8F0] text-[15px] text-[#1E293B] leading-[1.8] font-medium">
+          <div className="mt-16 pt-8 border-t border-[#E2E8F0] text-[16px] text-[#1E293B] leading-[1.8] font-medium">
             <strong>Naveen Gaur</strong><br />
             WordPress &amp; Full-Stack Developer • Technical Architect<br />
             <a href="mailto:hello@naveengaur.com" className="text-[#C4A35A] hover:underline">hello@naveengaur.com</a>
           </div>
         </main>
 
-        <footer className="border-t border-[#E2E8F0] py-8 bg-white mt-24 text-center text-[12px] text-[#1E293B]">
-          <div className="max-w-[860px] mx-auto px-6">
+        <footer className="border-t border-[#E2E8F0] py-8 bg-white mt-24 text-center text-[13px] text-[#1E293B]">
+          <div className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6">
             <p>© {new Date().getFullYear()} Naveen Gaur. All rights reserved. Private Client Audit Portal.</p>
           </div>
         </footer>
@@ -1940,21 +1940,21 @@ export default async function AuditPage({ params }: Props) {
       <div className="fixed top-20 left-0 w-full z-45 bg-[#FAFAF8]/95 backdrop-blur-md border-b border-slate-200 py-3 px-6 md:px-10 flex justify-between items-center print:hidden shadow-sm">
         <div className="flex items-center gap-3">
           <span className="h-2.5 w-2.5 rounded-full bg-[#C4A35A] animate-pulse"></span>
-          <span className="text-[12px] font-mono tracking-widest text-[#725921] uppercase font-bold">
+          <span className="text-[13px] font-mono tracking-widest text-[#725921] uppercase font-bold">
             Private Client Portal
           </span>
         </div>
         
-        <span className="px-3.5 py-1 bg-[#C4A35A]/10 border border-[#C4A35A]/20 text-[#725921] rounded-full text-[10.5px] font-bold tracking-widest uppercase shadow-sm">
+        <span className="px-3.5 py-1 bg-[#C4A35A]/10 border border-[#C4A35A]/20 text-[#725921] rounded-full text-[11.5px] font-bold tracking-widest uppercase shadow-sm">
           Confidential Analysis
         </span>
       </div>
 
       <main className="min-h-screen bg-[#FAFAF8] text-[#0D0D0D] pt-36 pb-24 px-6 md:px-10 selection:bg-[#C4A35A] selection:text-[#0D0D0D]">
-        <div className="max-w-[860px] mx-auto">
+        <div className="max-w-[860px] lg:max-w-[1040px] mx-auto">
           
           <header className="text-center mb-16 border-b border-slate-200 pb-12 print:border-b-2 print:border-black">
-            <h1 className="font-serif text-[clamp(32px,5vw,48px)] text-[#0D0D0D] tracking-[0.01em] leading-[1.2] mb-6">
+            <h1 className="font-serif text-[clamp(34px,5vw,50px)] text-[#0D0D0D] tracking-[0.01em] leading-[1.2] mb-6">
               {meta.clientName}: <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#725921] via-[#C4A35A] to-[#0D0D0D] print:text-black print:bg-none">
                 Executive Visibility &amp; Growth Audit
@@ -1963,24 +1963,24 @@ export default async function AuditPage({ params }: Props) {
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-[680px] mx-auto mt-10 p-7 bg-white border border-slate-200 rounded-xl text-left print:bg-none print:border-none print:text-black shadow-sm">
               <div>
-                <span className="block text-slate-500 uppercase tracking-widest font-bold text-[14px] mb-2 print:text-black/60">Client Site</span>
-                <a href={meta.url} target="_blank" rel="noopener noreferrer" className="text-[19px] font-bold text-[#0D0D0D] hover:text-[#C4A35A] transition-colors print:text-black underline block">
+                <span className="block text-slate-500 uppercase tracking-widest font-bold text-[15px] mb-2 print:text-black/60">Client Site</span>
+                <a href={meta.url} target="_blank" rel="noopener noreferrer" className="text-[20px] font-bold text-[#0D0D0D] hover:text-[#C4A35A] transition-colors print:text-black underline block">
                   {meta.url.replace("https://", "").replace("www.", "")}
                 </a>
               </div>
               <div>
-                <span className="block text-slate-500 uppercase tracking-widest font-bold text-[14px] mb-2 print:text-black/60">Prepared By</span>
-                <span className="text-[19px] font-bold text-[#0D0D0D] print:text-black block">Naveen Gaur</span>
+                <span className="block text-slate-500 uppercase tracking-widest font-bold text-[15px] mb-2 print:text-black/60">Prepared By</span>
+                <span className="text-[20px] font-bold text-[#0D0D0D] print:text-black block">Naveen Gaur</span>
               </div>
               <div>
-                <span className="block text-slate-500 uppercase tracking-widest font-bold text-[14px] mb-2 print:text-black/60">Date of Audit</span>
-                <span className="text-[19px] font-bold text-[#0D0D0D] print:text-black block">{meta.auditDate}</span>
+                <span className="block text-slate-500 uppercase tracking-widest font-bold text-[15px] mb-2 print:text-black/60">Date of Audit</span>
+                <span className="text-[20px] font-bold text-[#0D0D0D] print:text-black block">{meta.auditDate}</span>
               </div>
             </div>
           </header>
 
           <section className="mb-14 print:break-inside-avoid">
-            <h2 className="font-serif text-[20px] text-slate-500 tracking-wider uppercase mb-6 text-center print:text-black/80 font-bold">
+            <h2 className="font-serif text-[21px] text-slate-500 tracking-wider uppercase mb-6 text-center print:text-black/80 font-bold">
               Google PageSpeed Diagnostics
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -1991,45 +1991,45 @@ export default async function AuditPage({ params }: Props) {
                 { label: "SEO", score: meta.mobileSeo },
               ].map((card, idx) => (
                 <div key={idx} className="p-6 bg-white border border-slate-200 rounded-xl text-center print:border-none print:bg-none print:text-black shadow-sm">
-                  <span className={`block font-serif text-[44px] font-bold mb-2 leading-none ${getScoreColorClass(card.score).split(" ")[0]} print:text-black`}>
+                  <span className={`block font-serif text-[48px] font-bold mb-2 leading-none ${getScoreColorClass(card.score).split(" ")[0]} print:text-black`}>
                     {card.score}
                   </span>
-                  <span className="text-[11px] font-bold uppercase text-slate-500 tracking-wider print:text-black/60">
+                  <span className="text-[12px] font-bold uppercase text-slate-500 tracking-wider print:text-black/60">
                     {card.label}
                   </span>
                 </div>
               ))}
             </div>
-            <p className="text-[14px] text-slate-700 text-center mt-6 italic print:text-black/50 font-semibold">
+            <p className="text-[15px] text-slate-700 text-center mt-6 italic print:text-black/50 font-semibold">
               * Scores reflect Google mobile simulation (the primary basis for ranking organic searches).
             </p>
           </section>
 
           {/* AI Strategy Companion Callout */}
           <div className="bg-[#FAFAF8] border border-black/[0.08] p-6 rounded-lg mb-12 flex items-start gap-4 shadow-sm print:hidden">
-            <span className="text-[20px] mt-0.5">💡</span>
+            <span className="text-[21px] mt-0.5">💡</span>
             <div>
-              <h4 className="text-[14.5px] font-bold text-[#0D0D0D] mb-1">AI-Powered Strategy Companion</h4>
-              <p className="text-[13.5px] text-[#475569] leading-[1.6]">
+              <h4 className="text-[15.5px] font-bold text-[#0D0D0D] mb-1">AI-Powered Strategy Companion</h4>
+              <p className="text-[14.5px] text-[#475569] leading-[1.6]">
                 This report is fully crawlable and readable by large language models. You can share this URL with <strong>ChatGPT, Gemini, Perplexity, or Claude</strong> to automatically generate a tailored developer implementation roadmap.
               </p>
-              <div className="bg-white border border-black/[0.06] rounded p-3.5 mt-4 font-mono text-[12.5px] text-[#475569] select-all cursor-pointer hover:bg-slate-50 transition-colors shadow-xs">
+              <div className="bg-white border border-black/[0.06] rounded p-3.5 mt-4 font-mono text-[13.5px] text-[#475569] select-all cursor-pointer hover:bg-slate-50 transition-colors shadow-xs">
                 "Here is my website performance and AI readiness report: {reportUrl}. Based on these metrics and findings, can you generate a step-by-step developer implementation plan to fix these issues?"
               </div>
             </div>
           </div>
 
           <section className="mb-16 print:break-inside-avoid">
-            <h2 className="font-serif text-[20px] text-slate-500 tracking-wider uppercase mb-6 text-center print:text-black/80 font-bold">
+            <h2 className="font-serif text-[21px] text-slate-500 tracking-wider uppercase mb-6 text-center print:text-black/80 font-bold">
               The Five Core Speed Measurements
             </h2>
             <div className="table-wrapper overflow-x-auto rounded-xl border border-slate-200 bg-white print:border-none print:bg-none print:text-black shadow-sm">
-              <table className="w-full border-collapse text-[14px]">
+              <table className="w-full border-collapse text-[15px]">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-200 print:border-b-2 print:border-black">
-                    <th className="p-4 text-[#1E293B] font-bold uppercase tracking-wider text-[11px] print:text-black">Measurement</th>
-                    <th className="p-4 text-[#1E293B] font-bold uppercase tracking-wider text-[11px] print:text-black">🖥️ Desktop</th>
-                    <th className="p-4 text-[#1E293B] font-bold uppercase tracking-wider text-[11px] print:text-black">📱 Mobile</th>
+                    <th className="p-4 text-[#1E293B] font-bold uppercase tracking-wider text-[12px] print:text-black">Measurement</th>
+                    <th className="p-4 text-[#1E293B] font-bold uppercase tracking-wider text-[12px] print:text-black">🖥️ Desktop</th>
+                    <th className="p-4 text-[#1E293B] font-bold uppercase tracking-wider text-[12px] print:text-black">📱 Mobile</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -2044,13 +2044,13 @@ export default async function AuditPage({ params }: Props) {
                       <td className="p-4 font-semibold text-[#0D0D0D] print:text-black">{row.name}</td>
                       <td className="p-4">
                         <span className="font-semibold mr-2 print:text-black text-[#0D0D0D]">{row.desktop}</span>
-                        <span className={`inline-block px-2.5 py-0.5 border rounded-full text-[9px] font-bold uppercase ${getBadgeColorClass(row.desktop, row.key)} print:text-black print:border-black`}>
+                        <span className={`inline-block px-2.5 py-0.5 border rounded-full text-[10px] font-bold uppercase ${getBadgeColorClass(row.desktop, row.key)} print:text-black print:border-black`}>
                           {getBadgeText(row.desktop, row.key)}
                         </span>
                       </td>
                       <td className="p-4">
                         <span className="font-semibold mr-2 print:text-black text-[#0D0D0D]">{row.mobile}</span>
-                        <span className={`inline-block px-2.5 py-0.5 border rounded-full text-[9px] font-bold uppercase ${getBadgeColorClass(row.mobile, row.key)} print:text-black print:border-black`}>
+                        <span className={`inline-block px-2.5 py-0.5 border rounded-full text-[10px] font-bold uppercase ${getBadgeColorClass(row.mobile, row.key)} print:text-black print:border-black`}>
                           {getBadgeText(row.mobile, row.key)}
                         </span>
                       </td>
