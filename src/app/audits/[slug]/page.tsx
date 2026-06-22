@@ -991,15 +991,15 @@ export default async function AuditPage({ params }: Props) {
           </details>
 
           {/* Pillar 1: Technical Foundation */}
-          <div id="technical-foundation" className="pt-8 border-t border-[#E2E8F0] mt-12 mb-6">
-            <span className="text-[12px] font-bold uppercase tracking-widest text-[#725921] bg-[#725921]/15 px-3 py-1 rounded-sm">Pillar 1: Technical Foundation</span>
-            <p className="text-[13px] text-[#475569] mt-2">Rolls up all hosting, server response, and mobile speed measurements.</p>
+          <div id="technical-foundation" className="pt-16 border-t border-[#E2E8F0] mt-16 mb-8">
+            <h2 className="text-[26px] font-serif font-bold text-[#725921] tracking-tight mb-2">Pillar 1: Technical Foundation</h2>
+            <p className="text-[14.5px] text-[#475569] leading-relaxed">Rolls up all hosting, server response, and mobile speed measurements.</p>
           </div>
           {/* Section 4: Website Performance Check */}
-          <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+          <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
+            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
               1. Website Performance Check
-            </h2>
+            </h3>
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: Technical Foundation</span>
             </div>
@@ -1058,10 +1058,10 @@ export default async function AuditPage({ params }: Props) {
           </section>
 
           {/* Section 5: Mobile Visitor Experience — verdict cards, not raw numbers */}
-          <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+          <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
+            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
               2. Mobile Visitor Experience
-            </h2>
+            </h3>
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: Technical Foundation</span>
             </div>
@@ -1119,15 +1119,15 @@ export default async function AuditPage({ params }: Props) {
           </section>
 
           {/* Pillar 2: Trust & Credibility */}
-          <div id="trust-credibility" className="pt-8 border-t border-[#E2E8F0] mt-12 mb-6">
-            <span className="text-[12px] font-bold uppercase tracking-widest text-[#725921] bg-[#725921]/15 px-3 py-1 rounded-sm">Pillar 2: Trust &amp; Credibility</span>
-            <p className="text-[13px] text-[#475569] mt-2">Rolls up user trust parameters, direct human communication channels, and active resource feeds.</p>
+          <div id="trust-credibility" className="pt-16 border-t border-[#E2E8F0] mt-16 mb-8">
+            <h2 className="text-[26px] font-serif font-bold text-[#725921] tracking-tight mb-2">Pillar 2: Trust &amp; Credibility</h2>
+            <p className="text-[14.5px] text-[#475569] leading-relaxed">Rolls up user trust parameters, direct human communication channels, and active resource feeds.</p>
           </div>
           {/* Section 6: Content & Publishing Analysis */}
-          <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+          <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
+            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
               3. Content &amp; Publishing Analysis
-            </h2>
+            </h3>
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: Trust &amp; Credibility</span>
             </div>
@@ -1235,10 +1235,10 @@ export default async function AuditPage({ params }: Props) {
           </section>
 
           {/* Section 7: Trust Signals (Testimonials) */}
-          <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+          <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
+            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
               4. Trust Signals &amp; Credibility
-            </h2>
+            </h3>
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: Trust &amp; Credibility</span>
             </div>
@@ -1356,10 +1356,10 @@ export default async function AuditPage({ params }: Props) {
           </section>
 
           {/* Section 8: Contact Accessibility */}
-          <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+          <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
+            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
               5. Contact &amp; Client Accessibility
-            </h2>
+            </h3>
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: Trust &amp; Credibility</span>
             </div>
@@ -1435,16 +1435,16 @@ export default async function AuditPage({ params }: Props) {
           </section>
 
           {/* Pillar 3: AI & Discovery Readiness */}
-          <div id="ai-discovery" className="pt-8 border-t border-[#E2E8F0] mt-12 mb-6">
-            <span className="text-[12px] font-bold uppercase tracking-widest text-[#725921] bg-[#725921]/15 px-3 py-1 rounded-sm">Pillar 3: {discoveryLabel}</span>
-            <p className="text-[13px] text-[#475569] mt-2">Rolls up AI chatbot crawl rules, business schemas, and search engine metadata configurations.</p>
+          <div id="ai-discovery" className="pt-16 border-t border-[#E2E8F0] mt-16 mb-8">
+            <h2 className="text-[26px] font-serif font-bold text-[#725921] tracking-tight mb-2">Pillar 3: {discoveryLabel}</h2>
+            <p className="text-[14.5px] text-[#475569] leading-relaxed">Rolls up AI chatbot crawl rules, business schemas, and search engine metadata configurations.</p>
           </div>
           
           {/* Section 3: Can AI Recommend Your Business? */}
-          <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+          <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
+            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
               6. Can AI Recommend Your Business?
-            </h2>
+            </h3>
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: {discoveryLabel}</span>
             </div>
