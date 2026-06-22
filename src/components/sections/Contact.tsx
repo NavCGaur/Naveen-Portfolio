@@ -89,7 +89,7 @@ export default function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => ga.event({ action: "click", category: "conversion", label: "WhatsApp" })}
-            className="group relative overflow-hidden inline-flex items-center justify-center gap-2 bg-[#25D366] text-white px-8 py-3.5 rounded-sm text-[16px] font-medium tracking-[0.05em] hover:bg-[#20bd5a] transition-all duration-300 shadow-lg shadow-[#25D366]/20"
+            className="group relative overflow-hidden inline-flex items-center justify-center gap-2 border border-gold text-gold bg-gold/[0.05] px-8 py-3.5 rounded-md text-[16px] font-medium tracking-[0.05em] hover:bg-gold hover:text-ink transition-all duration-300 shadow-md shadow-gold/5 hover:shadow-gold/20"
           >
             <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-white to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
             <span className="relative z-10 flex items-center gap-2">
@@ -131,51 +131,51 @@ export default function Contact() {
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-[14px] text-white/60 mb-1.5">Name *</label>
+                  <label htmlFor="name" className="block text-[13px] font-medium text-white/60 mb-2 uppercase tracking-wide">Name *</label>
                   <input
                     id="name"
                     {...register("name")}
                     onFocus={handleFormFocus}
-                    className="w-full bg-white/5 border border-white/10 rounded-sm px-4 py-2.5 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-gold transition-colors"
+                    className="w-full bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.08] hover:border-white/[0.15] rounded-md px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all duration-200"
                     placeholder="Your name"
                   />
-                  {errors.name && <p className="text-[#ff6b6b] text-[12px] mt-1">{errors.name.message}</p>}
+                  {errors.name && <p className="text-[#ff6b6b] text-[12px] mt-1.5">{errors.name.message}</p>}
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-[14px] text-white/60 mb-1.5">Email *</label>
+                  <label htmlFor="email" className="block text-[13px] font-medium text-white/60 mb-2 uppercase tracking-wide">Email *</label>
                   <input
                     id="email"
                     type="email"
                     {...register("email")}
                     onFocus={handleFormFocus}
-                    className="w-full bg-white/5 border border-white/10 rounded-sm px-4 py-2.5 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-gold transition-colors"
+                    className="w-full bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.08] hover:border-white/[0.15] rounded-md px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all duration-200"
                     placeholder="you@company.com"
                   />
-                  {errors.email && <p className="text-[#ff6b6b] text-[12px] mt-1">{errors.email.message}</p>}
+                  {errors.email && <p className="text-[#ff6b6b] text-[12px] mt-1.5">{errors.email.message}</p>}
                 </div>
 
 
                 <div>
-                  <label htmlFor="website" className="block text-[14px] text-white/60 mb-1.5">Website (Optional)</label>
+                  <label htmlFor="website" className="block text-[13px] font-medium text-white/60 mb-2 uppercase tracking-wide">Website (Optional)</label>
                   <input
                     id="website"
                     {...register("website")}
-                    className="w-full bg-white/5 border border-white/10 rounded-sm px-4 py-2.5 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-gold transition-colors"
+                    className="w-full bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.08] hover:border-white/[0.15] rounded-md px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all duration-200"
                     placeholder="https://yoursite.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-[14px] text-white/60 mb-1.5">Message *</label>
+                  <label htmlFor="message" className="block text-[13px] font-medium text-white/60 mb-2 uppercase tracking-wide">Message *</label>
                   <textarea
                     id="message"
                     {...register("message")}
                     rows={4}
-                    className="w-full bg-white/5 border border-white/10 rounded-sm px-4 py-2.5 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-gold transition-colors resize-none"
+                    className="w-full bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.08] hover:border-white/[0.15] rounded-md px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all duration-200 resize-none"
                     placeholder="Tell me what's going on..."
                   />
-                  {errors.message && <p className="text-[#ff6b6b] text-[12px] mt-1">{errors.message.message}</p>}
+                  {errors.message && <p className="text-[#ff6b6b] text-[12px] mt-1.5">{errors.message.message}</p>}
                 </div>
 
                 {submitStatus === "error" && (
@@ -217,18 +217,9 @@ export default function Contact() {
             </div>
 
             <div>
-              <div className="text-[13px] tracking-[0.05em] uppercase text-white/60 mb-2">Upwork</div>
-              <div className="text-[17px] text-white/80">
-                <a href="https://www.upwork.com/freelancers/naveengaur" target="_blank" rel="noopener noreferrer" className="text-gold hover:text-white transition-colors font-medium">
-                  View Profile →
-                </a>
-              </div>
-            </div>
-
-            <div>
               <div className="text-[13px] tracking-[0.05em] uppercase text-white/60 mb-2">Availability</div>
               <div className="text-[17px] text-white/80 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)]"></span>
+                <span className="w-2 h-2 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)] animate-pulse"></span>
                 Open to new projects
               </div>
             </div>

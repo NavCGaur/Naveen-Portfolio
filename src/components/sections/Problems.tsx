@@ -116,7 +116,7 @@ export default function Problems() {
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-10" />
 
               
-              <div className="relative z-20 w-12 h-12 rounded-lg bg-gold/[0.12] flex items-center justify-center mb-8 group-hover:bg-gold/20 transition-colors">
+              <div className="relative z-20 w-12 h-12 rounded-lg bg-gold/[0.15] border border-gold/20 flex items-center justify-center mb-8 group-hover:bg-gold/25 group-hover:border-gold/45 transition-colors">
                 {p.icon}
               </div>
               <div className="text-[20px] font-medium text-white mb-4">
