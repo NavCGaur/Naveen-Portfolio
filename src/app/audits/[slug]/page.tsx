@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import Link from "next/link";
+import he from "he";
 
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
@@ -185,9 +186,10 @@ export default async function AuditPage({ params }: Props) {
     const cachingActive = details?.cachingActive ?? false;
     const schemaTypes = details?.schemaTypes ?? [];
     const aiRobotsAllowed = details?.aiRobotsAllowed ?? true;
+    const blockedAiBots = details?.blockedAiBots ?? [];
     const llmsTxtPresent = details?.llmsTxtPresent ?? false;
     // Business identification
-    const businessName = details?.businessName ?? name;
+    const businessName = he.decode(details?.businessName ?? name ?? "");
     // Layer 1 objective facts
     const hasMissingH1 = details?.hasMissingH1 ?? false;
     const hasMissingMetaDesc = details?.hasMissingMetaDesc ?? false;
@@ -205,8 +207,11 @@ export default async function AuditPage({ params }: Props) {
     const onlineAuthority = details?.onlineAuthority;
     const testimonials = details?.testimonials;
     const contact = details?.contact;
-    const aiObservations = audit.aiObservations ?? [];
-    const executiveSummary = audit.executiveSummary ?? "";
+    const aiObservations = (audit.aiObservations ?? []).map(obs => ({
+      title: he.decode(obs.title ?? ""),
+      body: he.decode(obs.body ?? "")
+    }));
+    const executiveSummary = audit.executiveSummary ? he.decode(audit.executiveSummary) : "";
     const businessCategory = audit.businessCategory ?? "professional-service";
 
     // Resolve Credibility details & score fallbacks
@@ -979,7 +984,7 @@ export default async function AuditPage({ params }: Props) {
                     <p className="text-[13.5px] text-[#475569] mt-0.5 leading-[1.6]">
                       {!isAiBlocked 
                         ? "AI crawlers are allowed. ChatGPT, Perplexity, and Claude can read your content and cite your website."
-                        : "Your configuration blocks AI search crawlers, preventing your business from being recommended in conversational AI search."}
+                        : `Your configuration blocks AI search crawlers. Specifically blocked: ${blockedAiBots.length > 0 ? blockedAiBots.join(', ') : 'All bots'}.`}
                     </p>
                   </div>
                 </div>
@@ -1120,7 +1125,7 @@ export default async function AuditPage({ params }: Props) {
               4. Content &amp; Publishing Analysis
             </h2>
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
-              {blog && blog.exists ? (
+              {blog && blog.exists === true ? (
                 <div>
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
                     <span className="text-[13px] uppercase font-bold text-[#475569]">Blog / Content Activity</span>
@@ -1193,16 +1198,24 @@ export default async function AuditPage({ params }: Props) {
                 <div>
                   <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#E2E8F0]">
                     <span className="text-[13px] uppercase font-bold text-[#475569]">Content Strategy</span>
-                    <span className="px-3 py-1 bg-red-50 text-red-700 border border-red-200 rounded-full text-[11px] font-bold">
-                      No Blog Detected
+                    <span className={`px-3 py-1 border rounded-full text-[11px] font-bold ${
+                      blog?.exists === "unverified" 
+                        ? "bg-amber-50 text-amber-700 border-amber-200" 
+                        : "bg-red-50 text-red-700 border-red-200"
+                    }`}>
+                      {blog?.exists === "unverified" ? "Status Unverified" : "No Blog Detected"}
                     </span>
                   </div>
                   <div className="flex gap-3 items-start">
-                    <span className="text-red-500 text-[18px] mt-0.5">⚠️</span>
+                    <span className={`text-[18px] mt-0.5 ${blog?.exists === "unverified" ? "text-amber-500" : "text-red-500"}`}>⚠️</span>
                     <div>
-                      <h4 className="text-[14px] font-bold text-[#0D0D0D]">Blogging / Articles Section is Missing</h4>
+                      <h4 className="text-[14px] font-bold text-[#0D0D0D]">
+                        {blog?.exists === "unverified" ? "Could Not Fully Verify Blog Content" : "Blogging / Articles Section is Missing"}
+                      </h4>
                       <p className="text-[13.5px] text-[#475569] mt-1 leading-[1.6]">
-                        We couldn't detect an active RSS blog feed on your website. Starting a structured resource section or company blog is one of the highest-yield activities for service business websites. It creates multiple entry points from Google search queries and positions your brand as a helpful expert.
+                        {blog?.exists === "unverified"
+                          ? "We detected potential blog or resource links, but our automated crawler couldn't verify the actual post cadence. Ensure your RSS feeds and blog archive loops are structured clearly for engines to read."
+                          : "We couldn't detect an active RSS blog feed on your website. Starting a structured resource section or company blog is one of the highest-yield activities for service business websites. It creates multiple entry points from Google search queries and positions your brand as a helpful expert."}
                       </p>
                     </div>
                   </div>
@@ -1217,7 +1230,7 @@ export default async function AuditPage({ params }: Props) {
               5. Trust Signals &amp; Credibility
             </h2>
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
-              {testimonials && testimonials.found ? (
+              {testimonials && testimonials.found === true ? (
                 <div>
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
                     <span className="text-[13px] uppercase font-bold text-[#475569]">Social Proof Metrics</span>
@@ -1229,21 +1242,27 @@ export default async function AuditPage({ params }: Props) {
                       {testimonials.hasNamedAttribution && testimonials.hasPhotos ? "Strong Trust Signals" : "Basic Trust Signals"}
                     </span>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left mb-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center sm:text-left mb-6">
                     <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
-                      <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Testimonials Found</span>
+                      <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Testimonials</span>
                       <span className="text-[24px] font-serif font-bold text-[#725921]">{testimonials.count || "Yes"}</span>
                     </div>
                     <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
                       <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Named Attribution</span>
                       <span className="text-[18px] font-semibold text-[#0D0D0D]">
-                        {testimonials.hasNamedAttribution ? "Yes ✓" : "Missing ⚠️"}
+                        {testimonials.hasNamedAttribution === true ? "Yes ✓" : testimonials.hasNamedAttribution === "unverified" ? "⚠️" : "Missing ⚠️"}
                       </span>
                     </div>
                     <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
                       <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Client Photos</span>
                       <span className="text-[18px] font-semibold text-[#0D0D0D]">
-                        {testimonials.hasPhotos ? "Yes ✓" : "Missing ⚠️"}
+                        {testimonials.hasPhotos === true ? "Yes ✓" : testimonials.hasPhotos === "unverified" ? "⚠️" : "Missing ⚠️"}
+                      </span>
+                    </div>
+                    <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
+                      <span className="block text-[11px] uppercase font-bold text-[#475569] mb-1">Logo Wall</span>
+                      <span className="text-[18px] font-semibold text-[#0D0D0D]">
+                        {testimonials.hasLogoWall === true ? "Yes ✓" : testimonials.hasLogoWall === "unverified" ? "⚠️" : "Missing ⚠️"}
                       </span>
                     </div>
                   </div>
@@ -1294,16 +1313,24 @@ export default async function AuditPage({ params }: Props) {
                 <div>
                   <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#E2E8F0]">
                     <span className="text-[13px] uppercase font-bold text-[#475569]">Social Proof Strategy</span>
-                    <span className="px-3 py-1 bg-red-50 text-red-700 border border-red-200 rounded-full text-[11px] font-bold">
-                      No Testimonials Found
+                    <span className={`px-3 py-1 border rounded-full text-[11px] font-bold ${
+                      testimonials?.found === "unverified"
+                        ? "bg-amber-50 text-amber-700 border-amber-200"
+                        : "bg-red-50 text-red-700 border-red-200"
+                    }`}>
+                      {testimonials?.found === "unverified" ? "Status Unverified" : "No Testimonials Found"}
                     </span>
                   </div>
                   <div className="flex gap-3 items-start">
-                    <span className="text-red-500 text-[18px] mt-0.5">⚠️</span>
+                    <span className={`text-[18px] mt-0.5 ${testimonials?.found === "unverified" ? "text-amber-500" : "text-red-500"}`}>⚠️</span>
                     <div>
-                      <h4 className="text-[14px] font-bold text-[#0D0D0D]">Lack of Social Proof on Homepage</h4>
+                      <h4 className="text-[14px] font-bold text-[#0D0D0D]">
+                        {testimonials?.found === "unverified" ? "Could Not Extract Testimonials" : "Lack of Social Proof on Homepage"}
+                      </h4>
                       <p className="text-[13.5px] text-[#475569] mt-1 leading-[1.6]">
-                        We couldn't detect client testimonials or reviews on your homepage. When visitors land on a service website, their primary question is *"Can I trust this business?"* Adding at least 3 detailed testimonials (with full names and photos) will immediately reduce bounce rates and increase contact inquiries.
+                        {testimonials?.found === "unverified"
+                          ? "We detected potential review layouts (like carousels or embeds), but they require JavaScript to render. Ensure critical social proof is rendered server-side so bots can read it."
+                          : "We couldn't detect client testimonials or reviews on your homepage. When visitors land on a service website, their primary question is *\"Can I trust this business?\"* Adding at least 3 detailed testimonials (with full names and photos) will immediately reduce bounce rates and increase contact inquiries."}
                       </p>
                     </div>
                   </div>
@@ -1333,15 +1360,15 @@ export default async function AuditPage({ params }: Props) {
                   
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[15px]">{contact.hasPhone ? "✓" : "❌"}</span>
+                      <span className="text-[15px]">{contact.hasPhone === true ? "✓" : contact.hasPhone === "unverified" ? "⚠️" : "❌"}</span>
                       <span className="text-[13px] font-medium text-[#475569]">Phone Number</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[15px]">{contact.hasEmail ? "✓" : "❌"}</span>
+                      <span className="text-[15px]">{contact.hasEmail === true ? "✓" : contact.hasEmail === "unverified" ? "⚠️" : "❌"}</span>
                       <span className="text-[13px] font-medium text-[#475569]">Email Address</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[15px]">{contact.hasForm ? "✓" : "❌"}</span>
+                      <span className="text-[15px]">{contact.hasForm === true ? "✓" : contact.hasForm === "unverified" ? "⚠️" : "❌"}</span>
                       <span className="text-[13px] font-medium text-[#475569]">Contact Form</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
@@ -1557,11 +1584,32 @@ export default async function AuditPage({ params }: Props) {
           </div>
 
           <section className="bg-white border border-[#E2E8F0] p-8 rounded-lg shadow-sm text-center">
-            <span className="text-[11px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">Recommended Solution</span>
-            <h2 className="text-[22px] font-serif text-[#725921] mb-4">Want a Prioritized Action Plan?</h2>
-            <p className="text-[15px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
-              I&apos;ll personally review this report with you on a free 15-minute call and show you:
-            </p>
+            {businessCategory === "local-service" ? (
+              <>
+                <span className="text-[11px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">Local SEO Strategy</span>
+                <h2 className="text-[22px] font-serif text-[#725921] mb-4">Dominate Your Local Market Search</h2>
+                <p className="text-[15px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
+                  Local search is highly competitive. Let's review this report together and build a targeted roadmap to outrank local competitors and capture high-intent service inquiries in your area.
+                </p>
+              </>
+            ) : businessCategory === "ecommerce" ? (
+              <>
+                <span className="text-[11px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">E-Commerce Growth</span>
+                <h2 className="text-[22px] font-serif text-[#725921] mb-4">Optimize Your Store for Conversions</h2>
+                <p className="text-[15px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
+                  Every millisecond of load time impacts your bottom line. Let's review this technical audit to identify the exact performance bottlenecks costing you sales and build a plan to fix them.
+                </p>
+              </>
+            ) : (
+              <>
+                <span className="text-[11px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">Recommended Solution</span>
+                <h2 className="text-[22px] font-serif text-[#725921] mb-4">Want a Prioritized Action Plan?</h2>
+                <p className="text-[15px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
+                  I&apos;ll personally review this report with you on a free 15-minute call and show you:
+                </p>
+              </>
+            )}
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-[580px] mx-auto text-left mb-8 text-[14px] text-[#0D0D0D]">
               <div className="flex items-start gap-2">
                 <span className="text-[#C4A35A] font-bold shrink-0">✓</span> Which recommendations matter most to your business

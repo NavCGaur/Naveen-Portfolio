@@ -9,6 +9,8 @@ function githubHeaders() {
   };
 }
 
+export type DetectionState = boolean | "unverified";
+
 export interface AuditReport {
   id: string;
   url: string;
@@ -35,21 +37,22 @@ export interface AuditReport {
     cachingActive: boolean;
     schemaTypes: string[];
     aiRobotsAllowed: boolean;
+    blockedAiBots?: string[];
     llmsTxtPresent: boolean;
     // Business identification
     businessName?: string;
     businessType?: string;
     // Layer 1 objective facts
-    hasMissingH1?: boolean;
-    hasMissingMetaDesc?: boolean;
-    hasOutdatedCopyright?: boolean;
-    noPhoneNumber?: boolean;
-    noCtaButton?: boolean;
-    noSocialLinks?: boolean;
+    hasMissingH1?: DetectionState;
+    hasMissingMetaDesc?: DetectionState;
+    hasOutdatedCopyright?: DetectionState;
+    noPhoneNumber?: DetectionState;
+    noCtaButton?: DetectionState;
+    noSocialLinks?: DetectionState;
     imagesWithoutAlt?: number;
     // Blog / content analysis
     blog?: {
-      exists: boolean;
+      exists: DetectionState;
       totalPosts: number;
       daysSinceLastPost?: number;
       avgIntervalDays?: number;
@@ -60,53 +63,54 @@ export interface AuditReport {
     // Business credibility score (0–10)
     credibility?: {
       score: number;
-      hasAboutPage: boolean;
-      hasTeamPage: boolean;
-      hasPrivacyPolicy: boolean;
-      hasTerms: boolean;
-      hasTestimonials: boolean;
-      hasReviewSchema: boolean;
-      hasSocialLinks: boolean;
-      hasAddress: boolean;
-      hasPhone: boolean;
+      hasAboutPage: DetectionState;
+      hasTeamPage: DetectionState;
+      hasPrivacyPolicy: DetectionState;
+      hasTerms: DetectionState;
+      hasTestimonials: DetectionState;
+      hasReviewSchema: DetectionState;
+      hasSocialLinks: DetectionState;
+      hasAddress: DetectionState;
+      hasPhone: DetectionState;
     };
     // Local SEO readiness score (0–10)
     localSeo?: {
       score: number;
-      hasPhone: boolean;
-      hasAddress: boolean;
-      hasLocalSchema: boolean;
-      hasMapsEmbed: boolean;
-      hasCityInH1: boolean;
-      hasServiceArea: boolean;
-      hasBusinessHours: boolean;
+      hasPhone: DetectionState;
+      hasAddress: DetectionState;
+      hasLocalSchema: DetectionState;
+      hasMapsEmbed: DetectionState;
+      hasCityInH1: DetectionState;
+      hasServiceArea: DetectionState;
+      hasBusinessHours: DetectionState;
     };
     // Online Authority & Discovery readiness score (0–10)
     onlineAuthority?: {
       score: number;
-      hasAboutOrTeam: boolean;
-      hasTestimonials: boolean;
-      hasReviewSchema: boolean;
-      hasSocialLinks: boolean;
-      hasLegalPages: boolean;
-      hasGoodSpeedOrCache: boolean;
+      hasAboutOrTeam: DetectionState;
+      hasTestimonials: DetectionState;
+      hasReviewSchema: DetectionState;
+      hasSocialLinks: DetectionState;
+      hasLegalPages: DetectionState;
+      hasGoodSpeedOrCache: DetectionState;
     };
     // Testimonial trust signals
     testimonials?: {
-      found: boolean;
+      found: DetectionState;
       count: number;
-      hasNamedAttribution: boolean;
-      hasSchema: boolean;
-      hasPhotos: boolean;
+      hasNamedAttribution: DetectionState;
+      hasSchema: DetectionState;
+      hasPhotos: DetectionState;
+      hasLogoWall?: DetectionState; // Added based on plan
     };
     // Contact accessibility
     contact?: {
-      hasPhone: boolean;
-      hasEmail: boolean;
-      hasForm: boolean;
-      hasAddress: boolean;
-      hasMapsEmbed: boolean;
-      hasBusinessHours: boolean;
+      hasPhone: DetectionState;
+      hasEmail: DetectionState;
+      hasForm: DetectionState;
+      hasAddress: DetectionState;
+      hasMapsEmbed: DetectionState;
+      hasBusinessHours: DetectionState;
     };
   };
   // AI-generated synthesis observations (Gemini)

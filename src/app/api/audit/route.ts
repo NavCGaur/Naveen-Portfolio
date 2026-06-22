@@ -4,7 +4,11 @@ import dns from "dns";
 import { promisify } from "util";
 import crypto from "crypto";
 import { Resend } from "resend";
-import { saveAudit, AuditReport } from "@/lib/github-audits";
+import { saveAudit, AuditReport, DetectionState } from "@/lib/github-audits";
+import robotsParser from "robots-parser";
+import * as cheerio from "cheerio";
+import { parsePhoneNumberFromString } from "libphonenumber-js/max";
+import he from "he";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -286,28 +290,30 @@ export async function POST(request: NextRequest) {
     let businessName: string | undefined;
     let businessType: string | undefined;
     // Layer 1 flags
-    let hasMissingH1 = false;
-    let hasMissingMetaDesc = false;
-    let hasOutdatedCopyright = false;
-    let noPhoneNumber = false;
-    let noCtaButton = false;
-    let noSocialLinks = false;
+    let hasMissingH1: DetectionState = false;
+    let hasMissingMetaDesc: DetectionState = false;
+    let hasOutdatedCopyright: DetectionState = false;
+    let noPhoneNumber: DetectionState = false;
+    let noCtaButton: DetectionState = false;
+    let noSocialLinks: DetectionState = false;
     // Business intelligence
-    let hasAboutPage = false;
-    let hasTeamPage = false;
-    let hasPrivacyPolicy = false;
-    let hasTerms = false;
-    let hasTestimonialsSection = false;
+    let hasAboutPage: DetectionState = false;
+    let hasTeamPage: DetectionState = false;
+    let hasPrivacyPolicy: DetectionState = false;
+    let hasTerms: DetectionState = false;
+    let hasTestimonialsSection: DetectionState = false;
     let testimonialCount = 0;
-    let hasNamedAttribution = false;
-    let hasTestimonialPhotos = false;
-    let hasAddress = false;
-    let hasEmail = false;
-    let hasContactForm = false;
-    let hasMapsEmbed = false;
-    let hasBusinessHours = false;
-    let hasCityInH1 = false;
-    let hasServiceArea = false;
+    let hasNamedAttribution: DetectionState = false;
+    let hasTestimonialPhotos: DetectionState = false;
+    let hasLogoWall: DetectionState = false;
+    let hasAddress: DetectionState = false;
+    let hasEmail: DetectionState = false;
+    let hasContactForm: DetectionState = false;
+    let hasMapsEmbed: DetectionState = false;
+    let hasBusinessHours: DetectionState = false;
+    let hasCityInH1: DetectionState = false;
+    let hasServiceArea: DetectionState = false;
+    let inferredCountryCode: any = "US";
 
     if (htmlRes && htmlRes.ok) {
       const headers = htmlRes.headers;
@@ -320,6 +326,15 @@ export async function POST(request: NextRequest) {
         (headers.get("cache-control")?.toLowerCase().includes("max-age") ?? false);
 
       const html = htmlRes.html;
+      const $ = cheerio.load(html);
+
+      // Determine Region Hint
+      const lang = $('html').attr('lang') || '';
+      if (lang.toLowerCase().includes('en-us') || cleanUrl.endsWith('.us')) inferredCountryCode = 'US';
+      else if (lang.toLowerCase().includes('en-in') || cleanUrl.endsWith('.in')) inferredCountryCode = 'IN';
+      else if (lang.toLowerCase().includes('en-gb') || cleanUrl.endsWith('.uk')) inferredCountryCode = 'GB';
+      else if (lang.toLowerCase().includes('en-au') || cleanUrl.endsWith('.au')) inferredCountryCode = 'AU';
+      else if (lang.toLowerCase().includes('en-ca') || cleanUrl.endsWith('.ca')) inferredCountryCode = 'CA';
 
       // Page builder detection
       if (html.includes("elementor-")) pageBuilder = "Elementor";
@@ -332,116 +347,131 @@ export async function POST(request: NextRequest) {
       if (pluginMatches) pluginCount = new Set(pluginMatches.map((p) => p.split("/")[2])).size;
 
       // Schema extraction
-      const schemaScripts = html.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi);
-      if (schemaScripts) {
-        for (const script of schemaScripts) {
-          try {
-            const content = script.replace(/<script[^>]*>|<\/script>/gi, "").trim();
-            const extractTypes = (obj: unknown): void => {
-              if (obj && typeof obj === "object") {
-                const rec = obj as Record<string, unknown>;
-                if (typeof rec["@type"] === "string") schemaTypes.push(rec["@type"]);
-                Object.values(rec).forEach(extractTypes);
-              }
-            };
-            const parsedSchema = JSON.parse(content);
-            extractTypes(parsedSchema);
-            if (!businessName && parsedSchema && typeof parsedSchema === "object") {
-              const s = parsedSchema as Record<string, unknown>;
-              if (typeof s["name"] === "string" && s["name"]) businessName = s["name"];
-              if (typeof s["@type"] === "string" && s["@type"] && !businessType) businessType = s["@type"];
-              // Address from schema
-              if (s["address"] && typeof s["address"] === "object") hasAddress = true;
-              // Hours from schema
-              if (s["openingHours"] || s["openingHoursSpecification"]) hasBusinessHours = true;
+      $('script[type="application/ld+json"]').each((_, el) => {
+        try {
+          const content = $(el).html();
+          if (!content) return;
+          const parsedSchema = JSON.parse(content);
+          
+          const extractTypes = (obj: unknown): void => {
+            if (obj && typeof obj === "object") {
+              const rec = obj as Record<string, unknown>;
+              if (typeof rec["@type"] === "string") schemaTypes.push(rec["@type"]);
+              Object.values(rec).forEach(extractTypes);
             }
-          } catch { /* skip invalid JSON */ }
-        }
-      }
+          };
+          extractTypes(parsedSchema);
+          
+          if (!businessName && parsedSchema && typeof parsedSchema === "object") {
+             const s = parsedSchema as Record<string, unknown>;
+             if (typeof s["name"] === "string" && s["name"]) businessName = he.decode(s["name"]);
+             if (typeof s["@type"] === "string" && s["@type"] && !businessType) businessType = s["@type"];
+             if (s["address"] && typeof s["address"] === "object") hasAddress = true;
+             if (s["openingHours"] || s["openingHoursSpecification"]) hasBusinessHours = true;
+             if (s["telephone"] && typeof s["telephone"] === "string") noPhoneNumber = false;
+          }
+        } catch { /* skip invalid JSON */ }
+      });
 
       // Business name fallback — title tag
       if (!businessName) {
-        const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
-        if (titleMatch) {
-          const segment = titleMatch[1].trim().split(/\s*[|\u2014\-]\s*/)[0].trim();
-          if (segment.length > 2 && segment.length < 80) businessName = segment;
+        const titleText = $('title').first().text();
+        if (titleText) {
+          const segment = titleText.split(/\s*[|\u2014\-]\s*/)[0].trim();
+          if (segment.length > 2 && segment.length < 80) businessName = he.decode(segment);
         }
       }
       if (!businessName) {
-        const h1Match = html.match(/<h1[^>]*>([^<]{2,80})<\/h1>/i);
-        if (h1Match) businessName = h1Match[1].replace(/<[^>]+>/g, "").trim();
+        const h1Text = $('h1').first().text();
+        if (h1Text && h1Text.length > 2 && h1Text.length < 80) businessName = he.decode(h1Text.trim());
       }
 
       // ── Layer 1: Objective Facts ──
-      hasMissingH1 = !/<h1[\s>]/i.test(html);
-      hasMissingMetaDesc = !/<meta[^>]+name=["']description["'][^>]*content=["'][^"']{10,}/i.test(html);
+      hasMissingH1 = $('h1').length === 0;
+      hasMissingMetaDesc = $('meta[name="description"]').length === 0 || ($('meta[name="description"]').attr('content') || '').length < 10;
+      
       const currentYear = new Date().getFullYear();
       const copyrightMatch = html.match(/[\u00A9&copy;\u00a9]\s*(\d{4})|copyright\s+(\d{4})/i);
       if (copyrightMatch) {
         const foundYear = parseInt(copyrightMatch[1] || copyrightMatch[2], 10);
         if (foundYear > 0 && foundYear < currentYear) hasOutdatedCopyright = true;
       }
-      noPhoneNumber = !/\+?1?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/.test(html);
-      const ctaPattern = /(<button[^>]*>|<a[^>]*>)[^<]*(book|schedule|call|contact|get|buy|order|reserve|start|sign up|free)[^<]*(<\/button>|<\/a>)/i;
-      noCtaButton = !ctaPattern.test(html);
-      noSocialLinks = !/(facebook\.com|instagram\.com|linkedin\.com|twitter\.com|x\.com|youtube\.com)/i.test(html);
+      
+      const allText = $('body').text() || '';
+      let phoneFound = false;
+      const phoneNumber = parsePhoneNumberFromString(allText, inferredCountryCode as any);
+      if (phoneNumber && phoneNumber.isValid()) {
+         phoneFound = true;
+      } else {
+         phoneFound = /\+?1?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/.test(html);
+      }
+      noPhoneNumber = !phoneFound ? "unverified" : false;
+      
+      const ctaPattern = /(book|schedule|call|contact|get|buy|order|reserve|start|sign up|free)/i;
+      let ctaFound = false;
+      $('button, a').each((_, el) => {
+        if (ctaPattern.test($(el).text())) ctaFound = true;
+      });
+      noCtaButton = !ctaFound;
+      noSocialLinks = !/(facebook\.com|instagram\.com|linkedin\.com|twitter\.com|x\.com|youtube\.com)/i.test(html) ? "unverified" : false;
 
       // ── Business Credibility Signals ──
-      // Nav links for about/team/privacy/terms
-      const navLinks = html.match(/href=["'][^"']*["']/gi)?.map(h => h.toLowerCase()) ?? [];
-      hasAboutPage = navLinks.some(h => /\/(about|about-us|our-story|who-we-are)/.test(h));
-      hasTeamPage = navLinks.some(h => /\/(team|our-team|meet-the-team|staff|people)/.test(h));
-      hasPrivacyPolicy = navLinks.some(h => /\/(privacy|privacy-policy)/.test(h));
-      hasTerms = navLinks.some(h => /\/(terms|terms-of-service|tos|legal)/.test(h));
+      hasAboutPage = $('a[href*="/about"], a[href*="/our-story"], a[href*="/who-we-are"]').length > 0 ? true : "unverified";
+      hasTeamPage = $('a[href*="/team"], a[href*="/our-team"], a[href*="/meet-the-team"], a[href*="/staff"], a[href*="/people"]').length > 0 ? true : "unverified";
+      hasPrivacyPolicy = $('a[href*="/privacy"]').length > 0 ? true : "unverified";
+      hasTerms = $('a[href*="/terms"], a[href*="/tos"], a[href*="/legal"]').length > 0 ? true : "unverified";
 
       // Testimonials
-      const testimonialPattern = /class=["'][^"']*(testimonial|review|quote|feedback|client-say)[^"']*["']/i;
-      hasTestimonialsSection = testimonialPattern.test(html) || /<blockquote/i.test(html);
-      if (hasTestimonialsSection) {
-        const testimonialBlocks = html.match(/<blockquote[^>]*>[\s\S]*?<\/blockquote>/gi) ?? [];
-        testimonialCount = testimonialBlocks.length || (html.match(/class=["'][^"']*testimonial[^"']*["']/gi) ?? []).length;
-        // Named attribution: patterns like — Name, - Name, <cite>, <strong> inside testimonial areas
-        hasNamedAttribution = /(<cite|<strong)[^>]*>[A-Z][a-z]+ [A-Z][a-z]+/.test(html) ||
-          /[—\-]\s*[A-Z][a-z]+ [A-Z][a-z]+/.test(html);
-        // Photos near testimonials (img inside blockquote or testimonial divs)
-        hasTestimonialPhotos = /<blockquote[^>]*>[\s\S]*?<img[\s\S]*?<\/blockquote>/i.test(html);
+      hasTestimonialsSection = $('blockquote, [class*="testimonial"], [class*="review"], [class*="quote"], [class*="client-say"]').length > 0 ? true : "unverified";
+      if (hasTestimonialsSection === true) {
+        testimonialCount = $('blockquote').length || $('[class*="testimonial"]').length;
+        hasNamedAttribution = $('cite, strong').filter((_, el) => /[A-Z][a-z]+ [A-Z][a-z]+/.test($(el).text())).length > 0 ? true : "unverified";
+        hasTestimonialPhotos = $('blockquote img, [class*="testimonial"] img').length > 0 ? true : "unverified";
       }
-      const hasReviewSchemaLocal = schemaTypes.some(t => t.toLowerCase().includes("review") || t.toLowerCase().includes("aggregaterating"));
+
+      // Logo wall heuristic
+      let foundLogoWall = false;
+      $('section, div').each((_, el) => {
+        const headingText = $(el).find('h1, h2, h3, h4, h5, h6').first().text();
+        if (/our (valued )?(customers|clients|partners)/i.test(headingText)) {
+          const imgCount = $(el).find('img').length;
+          if (imgCount >= 5) foundLogoWall = true;
+        }
+      });
+      hasLogoWall = foundLogoWall ? true : "unverified";
 
       // ── Contact Analysis ──
-      hasEmail = /mailto:[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/.test(html);
-      hasContactForm = /<form[^>]*>[\s\S]*?<input[^>]*>[\s\S]*?<\/form>/i.test(html);
-      hasMapsEmbed = /(maps\.google\.com|google\.com\/maps|map\.bing\.com)/i.test(html);
-      if (!hasBusinessHours) {
-        hasBusinessHours = /(mon[–\-]fri|open\s+\d|hours?:|monday|9am|10am|we are open)/i.test(html);
+      hasEmail = $('a[href^="mailto:"]').length > 0 ? true : "unverified";
+      hasContactForm = $('form input').length > 0 ? true : "unverified";
+      hasMapsEmbed = $('iframe[src*="maps.google.com"], iframe[src*="google.com/maps"], iframe[src*="map.bing.com"]').length > 0 ? true : "unverified";
+      
+      if ((hasBusinessHours as DetectionState) !== true) {
+        hasBusinessHours = /(mon[–\-]fri|open\s+\d|hours?:|monday|9am|10am|we are open)/i.test(allText) ? true : "unverified";
       }
 
       // ── Local SEO Signals ──
-      const h1Text = (html.match(/<h1[^>]*>([^<]*)<\/h1>/i)?.[1] ?? "").toLowerCase();
-      // City in H1: at least a capitalized word that's not common words
-      hasCityInH1 = /\b[A-Z][a-z]{3,}\b/.test(html.match(/<h1[^>]*>([^<]*)<\/h1>/i)?.[1] ?? "") &&
-        !/^(Welcome|Home|About|Services|Our|The|Get|Book|Free|Best|Top)\b/i.test(h1Text);
-      hasServiceArea = /(serving|we serve|service area|near |in [A-Z][a-z]+,)/i.test(html.substring(0, 5000));
-      if (!hasAddress) {
-        // Street address patterns
-        hasAddress = /\d{2,5}\s+[A-Z][a-z]+\s+(Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Blvd|Lane|Ln)/i.test(html);
+      const h1TextContent = $('h1').first().text().toLowerCase();
+      hasCityInH1 = /\b[A-Z][a-z]{3,}\b/.test($('h1').first().text()) && !/^(Welcome|Home|About|Services|Our|The|Get|Book|Free|Best|Top)\b/i.test(h1TextContent) ? true : "unverified";
+      hasServiceArea = /(serving|we serve|service area|near |in [A-Z][a-z]+,)/i.test(allText.substring(0, 5000)) ? true : "unverified";
+      if ((hasAddress as DetectionState) !== true) {
+        hasAddress = /\d{2,5}\s+[A-Z][a-z]+\s+(Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Blvd|Lane|Ln)/i.test(allText) ? true : "unverified";
       }
     }
 
     // ── Robots.txt Analysis ──────────────────────────────────────────────────
     let aiRobotsAllowed = true;
+    const blockedAiBots: string[] = [];
     if (robotsRes && robotsRes.ok) {
-      const lines = robotsRes.text.split("\n").map((l) => l.trim().toLowerCase());
-      let trackingAI = false;
-      for (const line of lines) {
-        if (line.startsWith("user-agent:")) {
-          const agent = line.replace("user-agent:", "").trim();
-          trackingAI = ["gptbot", "claudebot", "perplexitybot", "*"].includes(agent);
+      const robotsTxtUrl = `${origin}/robots.txt`;
+      const robots = robotsParser(robotsTxtUrl, robotsRes.text);
+      const botsToCheck = ["GPTBot", "ClaudeBot", "PerplexityBot", "Google-Extended"];
+      for (const bot of botsToCheck) {
+        if (robots.isAllowed(cleanUrl, bot) === false) {
+           blockedAiBots.push(bot);
         }
-        if (trackingAI && line.startsWith("disallow:")) {
-          const rule = line.replace("disallow:", "").trim();
-          if (rule === "/" || rule === "") aiRobotsAllowed = false;
-        }
+      }
+      if (blockedAiBots.length > 0 || robots.isAllowed(cleanUrl, "*") === false) {
+        aiRobotsAllowed = false;
       }
     }
     const llmsTxtPresent = robotsRes != null && (llmsRes ?? false);
@@ -515,43 +545,59 @@ export async function POST(request: NextRequest) {
     // ── Scores ───────────────────────────────────────────────────────────────
     const hasLocalSchema = schemaTypes.some(s => s.toLowerCase().includes("localbusiness") || s.toLowerCase().includes("organization"));
     const hasReviewSchemaFlag = schemaTypes.some(s => s.toLowerCase().includes("review") || s.toLowerCase().includes("aggregaterating"));
-    const hasSocialLinks = !noSocialLinks;
-    const hasPhone = !noPhoneNumber;
+    const hasSocialLinksScore: DetectionState = noSocialLinks === false ? true : noSocialLinks;
+    const hasPhoneScore: DetectionState = noPhoneNumber === false ? true : noPhoneNumber;
+
+    const calculateScore = (items: { weight: number; state: DetectionState | boolean }[], ttfbPenalty: boolean = false): number => {
+      let earned = 0;
+      let possible = 0;
+      for (const item of items) {
+        if (item.state === true) {
+          earned += item.weight;
+          possible += item.weight;
+        } else if (item.state === false) {
+          possible += item.weight;
+        }
+      }
+      let percentage = possible > 0 ? (earned / possible) * 100 : 0;
+      if (ttfbPenalty && percentage > 75) percentage = 75;
+      return Math.min(Math.round(percentage / 10), 10);
+    };
 
     // Business Credibility Score (max 10)
-    let credScore = 0;
-    if (hasAboutPage) credScore += 1;
-    if (hasTeamPage) credScore += 1;
-    if (hasPrivacyPolicy) credScore += 1;
-    if (hasTerms) credScore += 0.5;
-    if (hasTestimonialsSection) credScore += 2;
-    if (hasReviewSchemaFlag) credScore += 1.5;
-    if (hasSocialLinks) credScore += 1.5;
-    if (hasAddress) credScore += 1;
-    if (hasPhone) credScore += 1.5;
-    const credibilityScore = Math.min(Math.round(credScore), 10);
+    const credibilityScore = calculateScore([
+      { weight: 1, state: hasAboutPage },
+      { weight: 1, state: hasTeamPage },
+      { weight: 1, state: hasPrivacyPolicy },
+      { weight: 0.5, state: hasTerms },
+      { weight: 2, state: hasTestimonialsSection },
+      { weight: 1.5, state: hasReviewSchemaFlag },
+      { weight: 1.5, state: hasSocialLinksScore },
+      { weight: 1, state: hasAddress },
+      { weight: 1.5, state: hasPhoneScore }
+    ], ttfb > 600);
 
-    // Local SEO Readiness Score (max 8 → normalise to 10)
-    let localScore = 0;
-    if (hasPhone) localScore += 1.5;
-    if (hasAddress) localScore += 1.5;
-    if (hasLocalSchema) localScore += 2;
-    if (hasMapsEmbed) localScore += 1.5;
-    if (hasCityInH1) localScore += 1;
-    if (hasServiceArea) localScore += 1;
-    if (hasBusinessHours) localScore += 1.5;
-    const localSeoScore = Math.min(Math.round((localScore / 10) * 10), 10);
+    // Local SEO Readiness Score (max 8 → normalise to 10 via percentage)
+    const localSeoScore = calculateScore([
+      { weight: 1.5, state: hasPhoneScore },
+      { weight: 1.5, state: hasAddress },
+      { weight: 2, state: hasLocalSchema },
+      { weight: 1.5, state: hasMapsEmbed },
+      { weight: 1, state: hasCityInH1 },
+      { weight: 1, state: hasServiceArea },
+      { weight: 1.5, state: hasBusinessHours }
+    ], ttfb > 600);
 
     // Online Authority Score (max 10)
-    let onlineAuthScore = 0;
-    if (hasAboutPage || hasTeamPage) onlineAuthScore += 2;
-    if (hasTestimonialsSection) onlineAuthScore += 2;
-    if (hasReviewSchemaFlag) onlineAuthScore += 1.5;
-    if (hasSocialLinks) onlineAuthScore += 1.5;
-    if (hasPrivacyPolicy && hasTerms) onlineAuthScore += 1.5;
-    if (ttfb < 500 || cachingActive) onlineAuthScore += 2;
-    if (loadTime < 3.0) onlineAuthScore += 1.5;
-    const onlineAuthorityScore = Math.min(Math.round(onlineAuthScore), 10);
+    const onlineAuthorityScore = calculateScore([
+      { weight: 2, state: hasAboutPage === true || hasTeamPage === true ? true : (hasAboutPage === "unverified" && hasTeamPage === "unverified" ? "unverified" : false) },
+      { weight: 2, state: hasTestimonialsSection },
+      { weight: 1.5, state: hasReviewSchemaFlag },
+      { weight: 1.5, state: hasSocialLinksScore },
+      { weight: 1.5, state: hasPrivacyPolicy === true && hasTerms === true ? true : (hasPrivacyPolicy === "unverified" || hasTerms === "unverified" ? "unverified" : false) },
+      { weight: 2, state: ttfb < 500 || cachingActive },
+      { weight: 1.5, state: loadTime < 3.0 }
+    ], ttfb > 600);
 
     // ── Gemini AI Synthesis ──────────────────────────────────────────────────
     const blogSummary = blogData?.exists
@@ -569,8 +615,8 @@ export async function POST(request: NextRequest) {
       credibilityScore: `${credibilityScore}/10`,
       localSeoScore: `${localSeoScore}/10`,
       onlineAuthorityScore: `${onlineAuthorityScore}/10`,
-      phone: hasPhone,
-      email: hasEmail,
+      phone: hasPhoneScore === true ? true : false,
+      email: hasEmail === true ? true : false,
       address: hasAddress,
       businessHours: hasBusinessHours,
       mapsEmbed: hasMapsEmbed,
@@ -612,30 +658,30 @@ export async function POST(request: NextRequest) {
         pageBuilder: pageBuilder as "Elementor" | "Divi" | "WPBakery" | "Gutenberg" | "None" | "Unknown",
         pluginCount, cachingActive,
         schemaTypes: Array.from(new Set(schemaTypes)),
-        aiRobotsAllowed, llmsTxtPresent,
+        aiRobotsAllowed, blockedAiBots, llmsTxtPresent,
         businessName, businessType,
         hasMissingH1, hasMissingMetaDesc, hasOutdatedCopyright,
         noPhoneNumber, noCtaButton, noSocialLinks, imagesWithoutAlt,
-        blog: blogData,
+        blog: blogData ? { ...blogData, exists: blogData.exists ? true : "unverified" } : undefined,
         credibility: {
           score: credibilityScore,
           hasAboutPage, hasTeamPage, hasPrivacyPolicy, hasTerms,
           hasTestimonials: hasTestimonialsSection,
           hasReviewSchema: hasReviewSchemaFlag,
-          hasSocialLinks, hasAddress, hasPhone,
+          hasSocialLinks: hasSocialLinksScore, hasAddress, hasPhone: hasPhoneScore,
         },
         localSeo: {
           score: localSeoScore,
-          hasPhone, hasAddress,
+          hasPhone: hasPhoneScore, hasAddress,
           hasLocalSchema, hasMapsEmbed, hasCityInH1, hasServiceArea, hasBusinessHours,
         },
         onlineAuthority: {
           score: onlineAuthorityScore,
-          hasAboutOrTeam: hasAboutPage || hasTeamPage,
+          hasAboutOrTeam: hasAboutPage === true || hasTeamPage === true ? true : (hasAboutPage === "unverified" && hasTeamPage === "unverified" ? "unverified" : false),
           hasTestimonials: hasTestimonialsSection,
           hasReviewSchema: hasReviewSchemaFlag,
-          hasSocialLinks,
-          hasLegalPages: hasPrivacyPolicy && hasTerms,
+          hasSocialLinks: hasSocialLinksScore,
+          hasLegalPages: hasPrivacyPolicy === true && hasTerms === true ? true : (hasPrivacyPolicy === "unverified" || hasTerms === "unverified" ? "unverified" : false),
           hasGoodSpeedOrCache: ttfb < 500 || cachingActive,
         },
         testimonials: {
@@ -644,9 +690,10 @@ export async function POST(request: NextRequest) {
           hasNamedAttribution,
           hasSchema: hasReviewSchemaFlag,
           hasPhotos: hasTestimonialPhotos,
+          hasLogoWall,
         },
         contact: {
-          hasPhone, hasEmail, hasForm: hasContactForm,
+          hasPhone: hasPhoneScore, hasEmail, hasForm: hasContactForm,
           hasAddress, hasMapsEmbed, hasBusinessHours,
         },
       },
