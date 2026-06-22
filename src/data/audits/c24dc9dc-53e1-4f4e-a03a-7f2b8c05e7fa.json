@@ -1,0 +1,110 @@
+{
+  "id": "c24dc9dc-53e1-4f4e-a03a-7f2b8c05e7fa",
+  "url": "https://naveengaur.com",
+  "name": "Test Execution",
+  "email": "test@example.com",
+  "status": "completed",
+  "timestamp": "2026-06-22T16:16:54.044Z",
+  "metrics": {
+    "performance": 96,
+    "seo": 100,
+    "bestPractices": 100,
+    "accessibility": 100
+  },
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website has a website foundation score of 99/100. Caching is active, and server response is 4ms. Testimonials were detected on your homepage, and AI search crawler access is enabled.",
+  "aiObservations": [],
+  "details": {
+    "ttfb": 4,
+    "loadTime": 1.99,
+    "lcp": 0.4,
+    "fcp": 0.3,
+    "tbt": 44,
+    "cls": 0,
+    "pageSize": 0.42,
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": true,
+    "schemaTypes": [
+      "Person",
+      "PostalAddress",
+      "VirtualLocation",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "WebPage",
+      "Service",
+      "ProfessionalService",
+      "Country",
+      "OfferCatalog",
+      "Offer",
+      "UnitPriceSpecification",
+      "FAQPage",
+      "Question",
+      "Answer"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": true,
+    "businessName": "Naveen Gaur",
+    "businessType": "Person",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 7,
+      "hasAboutPage": "unverified",
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": "unverified",
+      "hasTerms": "unverified",
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": true,
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 7,
+      "hasPhone": true,
+      "hasAddress": true,
+      "hasLocalSchema": false,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": true,
+      "hasServiceArea": true,
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 8,
+      "hasAboutOrTeam": "unverified",
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": "unverified",
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": "unverified"
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": true,
+      "hasForm": true,
+      "hasAddress": true,
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
