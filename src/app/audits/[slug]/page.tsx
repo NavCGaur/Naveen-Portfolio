@@ -990,82 +990,6 @@ export default async function AuditPage({ params }: Props) {
             </div>
           </details>
 
-          {/* Pillar 3: AI & Discovery Readiness */}
-          <div id="ai-discovery" className="pt-8 border-t border-[#E2E8F0] mt-12 mb-6">
-            <span className="text-[12px] font-bold uppercase tracking-widest text-[#725921] bg-[#725921]/15 px-3 py-1 rounded-sm">Pillar 3: {discoveryLabel}</span>
-            <p className="text-[13px] text-[#475569] mt-2">Rolls up AI chatbot crawl rules, business schemas, and search engine metadata configurations.</p>
-          </div>
-          
-          {/* Section 3: Can AI Recommend Your Business? */}
-          <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
-              6. Can AI Recommend Your Business?
-            </h2>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: {discoveryLabel}</span>
-            </div>
-            <p className="text-[15px] italic text-[#475569] mb-6 font-light">
-              Why this matters: Chatbots like ChatGPT, Claude, and Perplexity crawl root pages to search for verified structured schemas and indexes. If robots.txt blocks them, your company won&apos;t be recommended in AI answer engines.
-            </p>
-            
-            <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
-                <span className="text-[16px] uppercase font-bold text-[#475569]">AI Search &amp; Chatbot Audit</span>
-                <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
-                  hasLocalBusinessSchema && !isAiBlocked
-                    ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                    : !hasLocalBusinessSchema && isAiBlocked
-                    ? "bg-red-50 text-red-700 border-red-200"
-                    : "bg-amber-50 text-amber-700 border-amber-200"
-                }`}>
-                  Status: {hasLocalBusinessSchema && !isAiBlocked ? "Ready" : !hasLocalBusinessSchema && isAiBlocked ? "Missing Signals" : "Partially Ready"}
-                </span>
-              </div>
-              
-              <div className="space-y-6">
-                <div className="flex gap-3">
-                  <span className="text-[19px] leading-none mt-0.5">{hasLocalBusinessSchema ? "✅" : "❌"}</span>
-                  <div>
-                    <h4 className="text-[15px] font-bold text-[#0D0D0D]">Business Entity Schema</h4>
-                    <p className="text-[14.5px] text-[#475569] mt-0.5 leading-[1.6]">
-                      {hasLocalBusinessSchema 
-                        ? "Business schema definitions found. AI engines (like ChatGPT or OpenAI's GPTBot) can successfully identify your operational details."
-                        : "No LocalBusiness or Organization schema detected. AI engines require structured data to fetch details like your hours, location, and services."}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <span className="text-[19px] leading-none mt-0.5">{!isAiBlocked ? "✅" : "❌"}</span>
-                  <div>
-                    <h4 className="text-[15px] font-bold text-[#0D0D0D]">AI Agent Access (robots.txt)</h4>
-                    <p className="text-[14.5px] text-[#475569] mt-0.5 leading-[1.6]">
-                      {!isAiBlocked 
-                        ? "AI crawlers are allowed. ChatGPT, Perplexity, and Claude can read your content and cite your website."
-                        : `Your configuration blocks AI search crawlers. Specifically blocked: ${blockedAiBots.length > 0 ? blockedAiBots.join(', ') : 'All bots'}.`}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <span className="text-[19px] leading-none mt-0.5">{llmsTxtPresent ? "✅" : "⚠️"}</span>
-                  <div>
-                    <h4 className="text-[15px] font-bold text-[#0D0D0D]">AI Context Index File (llms.txt)</h4>
-                    <p className="text-[14.5px] text-[#475569] mt-0.5 leading-[1.6]">
-                      {llmsTxtPresent
-                        ? "llms.txt file is present. AI crawlers have a clear, summarized guide to read your expertise efficiently."
-                        : "No llms.txt file detected. Creating one guides models on how to read and summarize your services without scraping irrelevant layout blocks."}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-[#FAFAF8] border border-black/[0.04] p-4 rounded-lg mt-6 text-[14px] text-[#475569] leading-[1.6]">
-                <strong>Why this matters:</strong> AI search engines bypass traditional keywords. They use structured schemas and accessible index files to verify authority and recommend regional businesses.
-              </div>
-            </div>
-          </section>
-
           {/* Pillar 1: Technical Foundation */}
           <div id="technical-foundation" className="pt-8 border-t border-[#E2E8F0] mt-12 mb-6">
             <span className="text-[12px] font-bold uppercase tracking-widest text-[#725921] bg-[#725921]/15 px-3 py-1 rounded-sm">Pillar 1: Technical Foundation</span>
@@ -1507,6 +1431,82 @@ export default async function AuditPage({ params }: Props) {
               ) : (
                 <p className="text-[14px] text-[#475569]">Contact details analysis not available.</p>
               )}
+            </div>
+          </section>
+
+          {/* Pillar 3: AI & Discovery Readiness */}
+          <div id="ai-discovery" className="pt-8 border-t border-[#E2E8F0] mt-12 mb-6">
+            <span className="text-[12px] font-bold uppercase tracking-widest text-[#725921] bg-[#725921]/15 px-3 py-1 rounded-sm">Pillar 3: {discoveryLabel}</span>
+            <p className="text-[13px] text-[#475569] mt-2">Rolls up AI chatbot crawl rules, business schemas, and search engine metadata configurations.</p>
+          </div>
+          
+          {/* Section 3: Can AI Recommend Your Business? */}
+          <section className="mb-12">
+            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-2">
+              6. Can AI Recommend Your Business?
+            </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-[11px] font-bold uppercase tracking-wide text-[#725921] bg-[#C4A35A]/10 px-2 py-0.5 rounded-sm">Feeds into: {discoveryLabel}</span>
+            </div>
+            <p className="text-[15px] italic text-[#475569] mb-6 font-light">
+              Why this matters: Chatbots like ChatGPT, Claude, and Perplexity crawl root pages to search for verified structured schemas and indexes. If robots.txt blocks them, your company won&apos;t be recommended in AI answer engines.
+            </p>
+            
+            <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
+                <span className="text-[16px] uppercase font-bold text-[#475569]">AI Search &amp; Chatbot Audit</span>
+                <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
+                  hasLocalBusinessSchema && !isAiBlocked
+                    ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                    : !hasLocalBusinessSchema && isAiBlocked
+                    ? "bg-red-50 text-red-700 border-red-200"
+                    : "bg-amber-50 text-amber-700 border-amber-200"
+                }`}>
+                  Status: {hasLocalBusinessSchema && !isAiBlocked ? "Ready" : !hasLocalBusinessSchema && isAiBlocked ? "Missing Signals" : "Partially Ready"}
+                </span>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="flex gap-3">
+                  <span className="text-[19px] leading-none mt-0.5">{hasLocalBusinessSchema ? "✅" : "❌"}</span>
+                  <div>
+                    <h4 className="text-[15px] font-bold text-[#0D0D0D]">Business Entity Schema</h4>
+                    <p className="text-[14.5px] text-[#475569] mt-0.5 leading-[1.6]">
+                      {hasLocalBusinessSchema 
+                        ? "Business schema definitions found. AI engines (like ChatGPT or OpenAI's GPTBot) can successfully identify your operational details."
+                        : "No LocalBusiness or Organization schema detected. AI engines require structured data to fetch details like your hours, location, and services."}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <span className="text-[19px] leading-none mt-0.5">{!isAiBlocked ? "✅" : "❌"}</span>
+                  <div>
+                    <h4 className="text-[15px] font-bold text-[#0D0D0D]">AI Agent Access (robots.txt)</h4>
+                    <p className="text-[14.5px] text-[#475569] mt-0.5 leading-[1.6]">
+                      {!isAiBlocked 
+                        ? "AI crawlers are allowed. ChatGPT, Perplexity, and Claude can read your content and cite your website."
+                        : `Your configuration blocks AI search crawlers. Specifically blocked: ${blockedAiBots.length > 0 ? blockedAiBots.join(', ') : 'All bots'}.`}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <span className="text-[19px] leading-none mt-0.5">{llmsTxtPresent ? "✅" : "⚠️"}</span>
+                  <div>
+                    <h4 className="text-[15px] font-bold text-[#0D0D0D]">AI Context Index File (llms.txt)</h4>
+                    <p className="text-[14.5px] text-[#475569] mt-0.5 leading-[1.6]">
+                      {llmsTxtPresent
+                        ? "llms.txt file is present. AI crawlers have a clear, summarized guide to read your expertise efficiently."
+                        : "No llms.txt file detected. Creating one guides models on how to read and summarize your services without scraping irrelevant layout blocks."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-[#FAFAF8] border border-black/[0.04] p-4 rounded-lg mt-6 text-[14px] text-[#475569] leading-[1.6]">
+                <strong>Why this matters:</strong> AI search engines bypass traditional keywords. They use structured schemas and accessible index files to verify authority and recommend regional businesses.
+              </div>
             </div>
           </section>
 
