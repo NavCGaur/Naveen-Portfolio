@@ -575,7 +575,7 @@ export default async function AuditPage({ params }: Props) {
 
           {/* What We Like — positive observations first to reduce defensiveness */}
           <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs mb-8">
-            <h2 className="text-[14px] font-bold uppercase tracking-wider text-[#725921] mb-5">What We Like About Your Website</h2>
+            <h2 className="text-[18px] font-bold uppercase tracking-wider text-[#725921] mb-5">What We Like About Your Website</h2>
             <div className="space-y-4">
               {/* Positive: server is healthy */}
               {!isTtfbHigh && (
@@ -639,7 +639,7 @@ export default async function AuditPage({ params }: Props) {
           </div>
           {/* Section: What Matters Most & Executive Summary */}
           <div className="bg-[#FAFAF8] border border-black/[0.08] rounded-xl p-7 mb-8 shadow-xs">
-            <h2 className="text-[14px] font-bold uppercase tracking-wider text-[#725921] mb-4">What Matters Most</h2>
+            <h2 className="text-[18px] font-bold uppercase tracking-wider text-[#725921] mb-4">What Matters Most</h2>
             
             {/* Dynamic performance summary */}
             <div className="text-[17px] font-medium text-[#0D0D0D] leading-[1.6] mb-5 font-serif">
@@ -664,7 +664,7 @@ export default async function AuditPage({ params }: Props) {
             {/* Programmatic Contradictions list */}
             {contradictionBullets.length > 0 && (
               <div className="border-t border-black/[0.05] pt-5 space-y-4">
-                <span className="block text-[12px] uppercase font-bold text-[#475569] tracking-wider mb-2">Key Observations</span>
+                <span className="block text-[14px] uppercase font-bold text-[#475569] tracking-wider mb-2">Key Observations</span>
                 {contradictionBullets.map((bullet, idx) => (
                   <div key={idx} className="flex items-start gap-3 text-[14.5px]">
                     <span className="text-[17px] shrink-0 mt-0.5">🔍</span>
@@ -683,7 +683,7 @@ export default async function AuditPage({ params }: Props) {
             <div className="bg-gradient-to-br from-[#725921]/5 via-[#C4A35A]/5 to-[#FAFAF8] border border-[#C4A35A]/30 rounded-xl p-7 shadow-xs mb-8">
               <div className="flex items-center gap-2 mb-6">
                 <span className="text-[19px]">✨</span>
-                <h2 className="text-[14px] font-bold uppercase tracking-wider text-[#725921]">AI Strategic Synthesis</h2>
+                <h2 className="text-[18px] font-bold uppercase tracking-wider text-[#725921]">AI Strategic Synthesis</h2>
                 <span className="ml-auto bg-[#C4A35A]/15 text-[#725921] border border-[#C4A35A]/30 text-[10px] font-bold uppercase tracking-[0.05em] px-2.5 py-0.5 rounded-full">Gemini Insights</span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -704,7 +704,7 @@ export default async function AuditPage({ params }: Props) {
             {/* Card 1: Technical Foundation */}
             <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs text-center flex flex-col justify-between">
               <div>
-                <span className="text-[12px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">Technical Foundation</span>
+                <span className="text-[14px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">Technical Foundation</span>
                 <div className="text-[48px] font-bold font-serif text-[#725921] leading-none my-2">
                   {Math.round((performance + seo + accessibility) / 3)}<span className="text-[21px] font-sans text-[#475569]/60 font-normal">/100</span>
                 </div>
@@ -726,7 +726,7 @@ export default async function AuditPage({ params }: Props) {
             {/* Card 2: Trust & Credibility */}
             <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs text-center flex flex-col justify-between">
               <div>
-                <span className="text-[12px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">Trust &amp; Credibility</span>
+                <span className="text-[14px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">Trust &amp; Credibility</span>
                 <div className="text-[48px] font-bold font-serif text-[#725921] leading-none my-2">
                   {Math.round(calculatedCredibilityScore * 10)}<span className="text-[21px] font-sans text-[#475569]/60 font-normal">/100</span>
                 </div>
@@ -748,7 +748,7 @@ export default async function AuditPage({ params }: Props) {
             {/* Card 3: AI & Discovery Readiness */}
             <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs text-center flex flex-col justify-between">
               <div>
-                <span className="text-[12px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">{discoveryLabel}</span>
+                <span className="text-[14px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">{discoveryLabel}</span>
                 <div className="text-[48px] font-bold font-serif text-[#725921] leading-none my-2">
                   {Math.round(discoveryScore * 10)}<span className="text-[21px] font-sans text-[#475569]/60 font-normal">/100</span>
                 </div>
@@ -774,7 +774,7 @@ export default async function AuditPage({ params }: Props) {
               {/* Credibility card */}
               <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
                 <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
-                  <span className="text-[13px] font-bold uppercase tracking-wider text-[#475569]">Business Credibility</span>
+                  <span className="text-[16px] font-bold uppercase tracking-wider text-[#475569]">Business Credibility</span>
                   <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getScoreLabelColorClass(credibility.score)}`}>
                     {credibility.score}/10 — {getScoreLabel(credibility.score)}
                   </span>
@@ -811,7 +811,7 @@ export default async function AuditPage({ params }: Props) {
               {businessCategory === "local-service" && localSeo ? (
                 <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
                   <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
-                    <span className="text-[13px] font-bold uppercase tracking-wider text-[#475569]">Local Search Readiness</span>
+                    <span className="text-[16px] font-bold uppercase tracking-wider text-[#475569]">Local Search Readiness</span>
                     <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getScoreLabelColorClass(calculatedLocalSeoScore)}`}>
                       {calculatedLocalSeoScore}/10 — {getScoreLabel(calculatedLocalSeoScore)}
                     </span>
@@ -846,7 +846,7 @@ export default async function AuditPage({ params }: Props) {
               ) : (
                 <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
                   <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
-                    <span className="text-[13px] font-bold uppercase tracking-wider text-[#475569]">Authority Signals Checklist</span>
+                    <span className="text-[16px] font-bold uppercase tracking-wider text-[#475569]">Authority Signals Checklist</span>
                     <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getScoreLabelColorClass(calculatedOnlineAuthorityScore)}`}>
                       {calculatedOnlineAuthorityScore}/10 — {getScoreLabel(calculatedOnlineAuthorityScore)}
                     </span>
@@ -885,7 +885,7 @@ export default async function AuditPage({ params }: Props) {
           {/* Top Opportunities */}
           <div className="bg-white border border-[#E2E8F0] rounded-xl shadow-xs mb-10 overflow-hidden">
             <div className="px-7 pt-6 pb-4 border-b border-[#E2E8F0]">
-              <h2 className="text-[15px] font-bold uppercase tracking-wider text-[#725921]">Top Opportunities</h2>
+              <h2 className="text-[18px] font-bold uppercase tracking-wider text-[#725921]">Top Opportunities</h2>
               <p className="text-[14px] text-[#475569] mt-1">Based on your website data, these are the changes most likely to improve customer discovery.</p>
             </div>
             <div className="divide-y divide-[#E2E8F0]">
@@ -952,7 +952,7 @@ export default async function AuditPage({ params }: Props) {
             
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs">
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
-                <span className="text-[14px] uppercase font-bold text-[#475569]">AI Search &amp; Chatbot Audit</span>
+                <span className="text-[16px] uppercase font-bold text-[#475569]">AI Search &amp; Chatbot Audit</span>
                 <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
                   hasLocalBusinessSchema && !isAiBlocked
                     ? "bg-emerald-50 text-emerald-700 border-emerald-200"
@@ -1128,7 +1128,7 @@ export default async function AuditPage({ params }: Props) {
               {blog && blog.exists === true ? (
                 <div>
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
-                    <span className="text-[14px] uppercase font-bold text-[#475569]">Blog / Content Activity</span>
+                    <span className="text-[16px] uppercase font-bold text-[#475569]">Blog / Content Activity</span>
                     <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
                       blog.contentSlowing
                         ? "bg-amber-50 text-amber-700 border-amber-200"
@@ -1233,7 +1233,7 @@ export default async function AuditPage({ params }: Props) {
               {testimonials && testimonials.found === true ? (
                 <div>
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
-                    <span className="text-[14px] uppercase font-bold text-[#475569]">Social Proof Metrics</span>
+                    <span className="text-[16px] uppercase font-bold text-[#475569]">Social Proof Metrics</span>
                     <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
                       testimonials.hasNamedAttribution && testimonials.hasPhotos
                         ? "bg-emerald-50 text-emerald-700 border-emerald-200"
@@ -1348,7 +1348,7 @@ export default async function AuditPage({ params }: Props) {
               {contact ? (
                 <div>
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
-                    <span className="text-[14px] uppercase font-bold text-[#475569]">Contact Channels Audit</span>
+                    <span className="text-[16px] uppercase font-bold text-[#475569]">Contact Channels Audit</span>
                     <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
                       contact.hasPhone && (contact.hasEmail || contact.hasForm)
                         ? "bg-emerald-50 text-emerald-700 border-emerald-200"
