@@ -1,0 +1,104 @@
+{
+  "id": "b9730b79-2115-43bd-ae90-fb90a3f4b3ce",
+  "url": "https://katgrace.com",
+  "name": "Test Execution",
+  "email": "test@example.com",
+  "status": "completed",
+  "timestamp": "2026-06-22T16:17:18.766Z",
+  "metrics": {
+    "performance": 99,
+    "seo": 100,
+    "bestPractices": 96,
+    "accessibility": 81
+  },
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website has a website foundation score of 93/100. Caching is active, and server response is 227ms. Testimonials were detected on your homepage, and AI search crawler access is enabled.",
+  "aiObservations": [],
+  "details": {
+    "ttfb": 227,
+    "loadTime": 1.32,
+    "lcp": 0.47,
+    "fcp": 0.37,
+    "tbt": 0,
+    "cls": 0,
+    "pageSize": 0.67,
+    "pageBuilder": "Elementor",
+    "pluginCount": 5,
+    "cachingActive": true,
+    "schemaTypes": [
+      "ImageObject",
+      "WebSite",
+      "SearchAction",
+      "WebPage",
+      "Person",
+      "Article"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Kat Grace Trauma Healing",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": true,
+      "totalPosts": 10,
+      "daysSinceLastPost": 34,
+      "avgIntervalDays": 4,
+      "recentAvgIntervalDays": 7,
+      "historicAvgIntervalDays": 3,
+      "contentSlowing": false
+    },
+    "credibility": {
+      "score": 7,
+      "hasAboutPage": true,
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": "unverified",
+      "hasTerms": "unverified",
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 6,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": false,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": true,
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 8,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": "unverified",
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": "unverified"
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": true,
+      "hasAddress": "unverified",
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
