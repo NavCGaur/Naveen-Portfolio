@@ -1,0 +1,101 @@
+{
+  "id": "c617f4d2-466a-4d0b-ae13-e41a9f8912ce",
+  "url": "https://motwanedigital.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-22T11:28:36.950Z",
+  "metrics": {
+    "performance": 95,
+    "seo": 92,
+    "bestPractices": 100,
+    "accessibility": 91
+  },
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website has a website foundation score of 93/100. Caching is active, and server response is 730ms. Testimonials were not detected on your homepage, and AI search crawler access is disabled.",
+  "aiObservations": [],
+  "details": {
+    "ttfb": 730,
+    "loadTime": 2.33,
+    "lcp": 0.72,
+    "fcp": 0.48,
+    "tbt": 0,
+    "cls": 0.001,
+    "pageSize": 0.45,
+    "pageBuilder": "Elementor",
+    "pluginCount": 7,
+    "cachingActive": true,
+    "schemaTypes": [
+      "WebPage",
+      "ReadAction",
+      "ImageObject",
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "PropertyValueSpecification",
+      "Organization"
+    ],
+    "aiRobotsAllowed": false,
+    "llmsTxtPresent": true,
+    "businessName": "AI &amp; IoT",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": false,
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 6,
+      "hasAboutPage": true,
+      "hasTeamPage": false,
+      "hasPrivacyPolicy": true,
+      "hasTerms": true,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": false,
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 5,
+      "hasPhone": true,
+      "hasAddress": false,
+      "hasLocalSchema": true,
+      "hasMapsEmbed": false,
+      "hasCityInH1": true,
+      "hasServiceArea": false,
+      "hasBusinessHours": false
+    },
+    "onlineAuthority": {
+      "score": 9,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": true,
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": false,
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": true,
+      "hasForm": true,
+      "hasAddress": false,
+      "hasMapsEmbed": false,
+      "hasBusinessHours": false
+    }
+  }
+}
