@@ -6,6 +6,7 @@ import ProcessBanner from "@/components/sections/ProcessBanner";
 import WhyMe from "@/components/sections/WhyMe";
 import Projects from "@/components/sections/Projects";
 import Testimonials from "@/components/sections/Testimonials";
+import UpworkStats from "@/components/sections/UpworkStats";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
 
@@ -20,6 +21,7 @@ export default function Home() {
         <ProcessBanner />
         <WhyMe />
         <Projects />
+        <UpworkStats />
         <Testimonials />
         <Contact />
       </main>

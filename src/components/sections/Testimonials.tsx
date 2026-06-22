@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const testimonials = [
   {
@@ -60,8 +61,23 @@ function StarRating() {
 }
 
 export default function Testimonials() {
+  const [showAll, setShowAll] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const limit = showAll ? testimonials.length : (isMobile ? 3 : testimonials.length);
+  const visibleTestimonials = testimonials.slice(0, limit);
+
   return (
-    <section id="testimonials" className="py-[100px] px-6 md:px-10 hd:px-14 bg-surface">
+    <section id="testimonials" className="py-[100px] px-6 md:px-10 hd:px-14 bg-[#EBE9E0]">
       <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto">
         <motion.span
           initial={{ opacity: 0, y: 16 }}
@@ -83,41 +99,56 @@ export default function Testimonials() {
         </motion.h2>
 
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={t.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="group relative overflow-hidden break-inside-avoid bg-[#141414] border border-white/[0.07] rounded-xl p-8 hover:border-gold/40 transition-all duration-300 inline-block w-full"
-            >
-              {/* Quote mark */}
-              <span className="relative z-10 font-serif text-[48px] text-gold leading-[0.8] mb-3 block">
-                &ldquo;
-              </span>
+          <AnimatePresence mode="popLayout">
+            {visibleTestimonials.map((t, i) => (
+              <motion.div
+                key={t.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, delay: showAll ? 0 : i * 0.08 }}
+                className="group relative overflow-hidden break-inside-avoid bg-[#141414] border border-white/[0.07] rounded-xl p-8 hover:border-gold/40 transition-all duration-300 inline-block w-full"
+              >
+                {/* Quote mark */}
+                <span className="relative z-10 font-serif text-[48px] text-gold leading-[0.8] mb-3 block">
+                  &ldquo;
+                </span>
 
-              {/* Quote text — white on dark for max contrast */}
-              <p className="relative z-10 text-[17px] text-white/90 leading-[1.75] mb-7 italic font-normal">
-                {t.content}
-              </p>
+                {/* Quote text — white on dark for max contrast */}
+                <p className="relative z-10 text-[17px] text-white/90 leading-[1.75] mb-7 italic font-normal">
+                  {t.content}
+                </p>
 
-              {/* Footer divider + attribution */}
-              <div className="relative z-10 pt-5 border-t border-white/[0.08]">
-                <StarRating />
-                <div className="text-[16px] font-medium text-white">
-                  {t.client}
+                {/* Footer divider + attribution */}
+                <div className="relative z-10 pt-5 border-t border-white/[0.08]">
+                  <StarRating />
+                  <div className="text-[16px] font-medium text-white">
+                    {t.client}
+                  </div>
+                  <div className="text-[13px] text-gold mt-0.5 tracking-wide">
+                    {t.project}
+                  </div>
                 </div>
-                <div className="text-[13px] text-gold mt-0.5 tracking-wide">
-                  {t.project}
-                </div>
-              </div>
 
-              {/* Gold accent line on hover */}
-              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out rounded-b-xl z-20" />
-            </motion.div>
-          ))}
+                {/* Gold accent line on hover */}
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out rounded-b-xl z-20" />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
+
+        {/* Toggle Button for Mobile */}
+        {isMobile && (
+          <div className="flex justify-center mt-12">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="group relative overflow-hidden inline-block bg-ink border border-gold/30 text-gold px-8 py-3 rounded-md text-[15px] font-medium tracking-[0.05em] hover:bg-gold hover:text-ink hover:border-gold transition-all duration-300 shadow-md cursor-pointer"
+            >
+              <span className="relative z-10">{showAll ? "Show Less" : "More Reviews →"}</span>
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
