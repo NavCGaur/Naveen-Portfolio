@@ -39,6 +39,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  strong, b, .font-bold, .font-semibold {
+    letter-spacing: 0.015em;
+  }
 }
 
 /* Smooth anchor scroll offset for fixed nav */
