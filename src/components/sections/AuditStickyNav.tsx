@@ -61,12 +61,12 @@ export default function AuditStickyNav({ discoveryLabel }: AuditStickyNavProps) 
   };
 
   return (
-    <div className="sticky top-[72px] z-40 w-full bg-white/80 backdrop-blur-md border-b border-[#E2E8F0] shadow-xs print:hidden">
+    <div className="fixed top-[72px] z-40 w-full bg-white/90 backdrop-blur-md border-b border-[#E2E8F0] shadow-sm print:hidden">
       <div className="max-w-[1040px] mx-auto px-6 relative flex items-center">
         {/* Navigation scroll container */}
         <div
           ref={navRef}
-          className="flex gap-1.5 overflow-x-auto whitespace-nowrap py-3.5 scrollbar-none w-full scroll-smooth"
+          className="flex gap-5 overflow-x-auto whitespace-nowrap py-4.5 scrollbar-none w-full scroll-smooth"
           style={{ WebkitOverflowScrolling: "touch" }}
         >
           {sections.map((section) => (
@@ -74,9 +74,9 @@ export default function AuditStickyNav({ discoveryLabel }: AuditStickyNavProps) 
               key={section.id}
               id={`nav-link-${section.id}`}
               onClick={() => scrollToSection(section.id)}
-              className={`px-4 py-1.5 rounded-full text-[13px] font-medium transition-all duration-200 cursor-pointer ${
+              className={`px-4.5 py-2 rounded-full text-[14.5px] font-semibold transition-all duration-200 cursor-pointer ${
                 activeSection === section.id
-                  ? "bg-[#C4A35A]/15 text-[#725921] font-semibold border border-[#C4A35A]/30"
+                  ? "bg-[#C4A35A]/15 text-[#725921] font-bold border border-[#C4A35A]/30"
                   : "text-[#475569] hover:text-[#0D0D0D] hover:bg-slate-50 border border-transparent"
               }`}
             >

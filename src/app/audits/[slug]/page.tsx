@@ -431,11 +431,18 @@ export default async function AuditPage({ params }: Props) {
       });
     }
 
-    // Get top 3 opportunities sorted by Impact (High first)
     const sortedOpportunities = opportunitiesList.sort((a, b) => {
       const impactMap: Record<string, number> = { High: 3, Medium: 2, Low: 1 };
       return impactMap[b.impact] - impactMap[a.impact];
     }).slice(0, 3);
+
+    const highImpactCount = sortedOpportunities.filter(o => o.impact === "High").length;
+    let strengthsCount = 0;
+    if (!isTtfbHigh) strengthsCount++;
+    if (!isCachingMissing) strengthsCount++;
+    if (!isAiBlocked) strengthsCount++;
+    if (!isSlow) strengthsCount++;
+    if (hasLocalBusinessSchema) strengthsCount++;
 
     // Assemble dynamic list of recommendations
     const fixFirstRecs = [];
@@ -630,7 +637,7 @@ export default async function AuditPage({ params }: Props) {
     return (
       <div className="min-h-screen bg-[#FAFAF8] text-[#0D0D0D] font-sans antialiased selection:bg-[#C4A35A]/20">
         <Nav />
-        <div className="pt-[72px]">
+        <div className="pt-[140px]">
           <AuditStickyNav discoveryLabel={discoveryLabel} />
 
         <main id="overview" className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6 py-12">
@@ -647,333 +654,224 @@ export default async function AuditPage({ params }: Props) {
             </p>
           </div>
 
-          {/* What We Like — positive observations first to reduce defensiveness */}
-          <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs mb-8">
-            <h2 className="text-[18px] font-bold uppercase tracking-wider text-[#725921] mb-5">What We Like About Your Website</h2>
-            <div className="space-y-4">
-              {/* Positive: server is healthy */}
-              {!isTtfbHigh && (
-                <div className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
-                  <div>
-                    <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Healthy hosting infrastructure</p>
-                    <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your server responds quickly, which is the foundation a well-performing website needs.</p>
-                  </div>
-                </div>
-              )}
-              {/* Positive: caching is on */}
-              {!isCachingMissing && (
-                <div className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
-                  <div>
-                    <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Page caching is active</p>
-                    <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your site is set up to serve pages efficiently, which protects speed under real traffic.</p>
-                  </div>
-                </div>
-              )}
-              {/* Positive: AI crawlers are allowed */}
-              {!isAiBlocked && (
-                <div className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
-                  <div>
-                    <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Open to modern AI search</p>
-                    <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your website allows AI platforms like ChatGPT and Bing to crawl and reference your content.</p>
-                  </div>
-                </div>
-              )}
-              {/* Positive: site loads under 4 seconds */}
-              {!isSlow && (
-                <div className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
-                  <div>
-                    <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Acceptable mobile load speed</p>
-                    <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Your pages load within a reasonable range, meaning most visitors won't immediately drop off.</p>
-                  </div>
-                </div>
-              )}
-              {/* Positive: schema found */}
-              {hasLocalBusinessSchema && (
-                <div className="flex items-start gap-3">
-                  <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
-                  <div>
-                    <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Business identity structured for search</p>
-                    <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">Google and AI tools can identify your business type and core details from your website's code.</p>
-                  </div>
-                </div>
-              )}
-              {/* Fallback positive if all checks pass */}
-              <div className="flex items-start gap-3">
-                <span className="text-emerald-600 font-bold text-[17px] mt-0.5">✓</span>
-                <div>
-                  <p className="text-[15.5px] font-semibold text-[#0D0D0D] leading-snug">Clear, established web presence</p>
-                  <p className="text-[14px] text-[#475569] mt-0.5 leading-[1.5]">You already have a website that represents your business — the optimizations below build on that foundation.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Section: What Matters Most & Executive Summary */}
-          <div className="bg-[#FAFAF8] border border-black/[0.08] rounded-xl p-7 mb-8 shadow-xs">
-            <h2 className="text-[18px] font-bold uppercase tracking-wider text-[#725921] mb-4">What Matters Most</h2>
-            
-            {/* Consolidated narrative summary */}
-            <div className="text-[15.5px] text-[#475569] leading-[1.7] mb-5">
-              <span className="block text-[17px] font-medium text-[#0D0D0D] leading-[1.6] mb-3 font-serif">
-                {foundationScore >= 80 ? (
-                  <>Your website already has a strong technical foundation. The biggest opportunity isn&apos;t speed — it is <strong>visibility and trust</strong>: helping search engines, AI platforms, and prospective clients understand and trust your business more quickly.</>
-                ) : (
-                  <>The primary bottleneck for your website is <strong>technical performance</strong>. Slow mobile loading times create friction for incoming visitors, which needs to be resolved before focusing on visibility and trust.</>
-                )}
-              </span>
-              {executiveSummary && (
-                <p className="mt-3 border-l-2 border-[#C4A35A] pl-4 italic text-[#475569] leading-[1.6]">
-                  "{executiveSummary}"
-                </p>
-              )}
-            </div>
-
-            {/* Programmatic Contradictions list */}
-            {contradictionBullets.length > 0 && (
-              <div className="border-t border-black/[0.05] pt-5 space-y-4">
-                <span className="block text-[14px] uppercase font-bold text-[#475569] tracking-wider mb-2">Key Observations</span>
-                {contradictionBullets.map((bullet, idx) => (
-                  <div key={idx} className="flex items-start gap-3 text-[14.5px]">
-                    <span className="text-[17px] shrink-0 mt-0.5">🔍</span>
-                    <div>
-                      <p className="font-bold text-[#0D0D0D] leading-snug">{bullet.title}</p>
-                      <p className="text-[#475569] mt-0.5 leading-[1.5]">{bullet.body}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* AI Synthesis observations */}
-          {aiObservations && aiObservations.length > 0 && (
-            <div className="bg-gradient-to-br from-[#725921]/5 via-[#C4A35A]/5 to-[#FAFAF8] border border-[#C4A35A]/30 rounded-xl p-7 shadow-xs mb-8">
-              <div className="flex items-center gap-2 mb-6">
-                <span className="text-[19px]">✨</span>
-                <h2 className="text-[18px] font-bold uppercase tracking-wider text-[#725921]">AI Strategic Synthesis</h2>
-                <span className="ml-auto bg-[#C4A35A]/15 text-[#725921] border border-[#C4A35A]/30 text-[10px] font-bold uppercase tracking-[0.05em] px-2.5 py-0.5 rounded-full">Gemini Insights</span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {aiObservations.map((obs, idx) => (
-                  <div key={idx} className="bg-white/80 backdrop-blur-xs border border-black/[0.05] p-5 rounded-lg shadow-xs flex flex-col justify-between">
-                    <div>
-                      <h3 className="text-[15px] font-bold text-[#725921] mb-2 font-serif">{obs.title}</h3>
-                      <p className="text-[14px] text-[#475569] leading-[1.6]">{obs.body}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Growth Audit Score Dashboard */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            {/* Card 1: Technical Foundation */}
-            <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs text-center flex flex-col justify-between">
+          {/* Strengths & Thesis Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {/* Card 1: Strengths */}
+            <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs flex flex-col justify-between">
               <div>
-                <span className="text-[14px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">Technical Foundation</span>
-                <div className="text-[48px] font-bold font-serif text-[#725921] leading-none my-2">
-                  {Math.round((performance + seo + accessibility) / 3)}<span className="text-[21px] font-sans text-[#475569]/60 font-normal">/100</span>
-                </div>
-                <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Speed index, caching status, core web vitals, and search accessibility.</p>
-              </div>
-              <div className="mt-2 text-[12.5px] text-[#725921] font-semibold">
-                Metrics Verified via PageSpeed API
-              </div>
-              <div className="mt-4 pt-3 border-t border-black/[0.04]">
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
-                  Math.round((performance + seo + accessibility) / 3) >= 80 
-                    ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
-                    : Math.round((performance + seo + accessibility) / 3) >= 50
-                    ? "bg-amber-50 text-amber-700 border-amber-200"
-                    : "bg-red-50 text-red-700 border-red-200"
-                }`}>
-                  {Math.round((performance + seo + accessibility) / 3) >= 80 ? "Healthy" : Math.round((performance + seo + accessibility) / 3) >= 50 ? "Needs Work" : "Critical"}
-                </span>
-              </div>
-            </div>
-
-            {/* Card 2: Trust & Credibility */}
-            <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs text-center flex flex-col justify-between">
-              <div>
-                <span className="text-[14px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">Trust &amp; Credibility</span>
-                <div className="text-[48px] font-bold font-serif text-[#725921] leading-none my-2">
-                  {Math.round(calculatedCredibilityScore * 10)}<span className="text-[21px] font-sans text-[#475569]/60 font-normal">/100</span>
-                </div>
-                <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Customer stories, team transparency, social proof, and legal trust pages.</p>
-              </div>
-              <div className="mt-2 text-[12.5px] text-[#725921] font-semibold">
-                {passedTrustChecks} of {activeTrustChecks} checks verified
-              </div>
-              <div className="mt-4 pt-3 border-t border-black/[0.04]">
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
-                  Math.round(calculatedCredibilityScore * 10) >= 70 
-                    ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
-                    : Math.round(calculatedCredibilityScore * 10) >= 40
-                    ? "bg-amber-50 text-amber-700 border-amber-200"
-                    : "bg-red-50 text-red-700 border-red-200"
-                }`}>
-                  {Math.round(calculatedCredibilityScore * 10) >= 70 ? "Strong" : Math.round(calculatedCredibilityScore * 10) >= 40 ? "Moderate" : "Weak"}
-                </span>
-              </div>
-            </div>
-
-            {/* Card 3: AI & Discovery Readiness */}
-            <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs text-center flex flex-col justify-between">
-              <div>
-                <span className="text-[14px] uppercase font-bold text-[#475569] block mb-2 tracking-wide">{discoveryLabel}</span>
-                <div className="text-[48px] font-bold font-serif text-[#725921] leading-none my-2">
-                  {Math.round(discoveryScore * 10)}<span className="text-[21px] font-sans text-[#475569]/60 font-normal">/100</span>
-                </div>
-                <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Structured schema data, AI bot rules, and organic discovery signals.</p>
-              </div>
-              <div className="mt-2 text-[12.5px] text-[#725921] font-semibold">
-                {passedDiscoveryChecks} of {activeDiscoveryChecks} checks verified
-              </div>
-              <div className="mt-4 pt-3 border-t border-black/[0.04]">
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
-                  Math.round(discoveryScore * 10) >= 75 
-                    ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
-                    : Math.round(discoveryScore * 10) >= 45
-                    ? "bg-amber-50 text-amber-700 border-amber-200"
-                    : "bg-red-50 text-red-700 border-red-200"
-                }`}>
-                  {Math.round(discoveryScore * 10) >= 75 ? "Ready" : Math.round(discoveryScore * 10) >= 45 ? "Moderate" : "Weak Signals"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Business Credibility & Local Search / Online Authority Scores */}
-          {credibility && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-              {/* Credibility card */}
-              <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
-                <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
-                  <span className="text-[16px] font-bold uppercase tracking-wider text-[#475569]">Business Credibility</span>
-                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getScoreLabelColorClass(credibility.score)}`}>
-                    {credibility.score}/10 — {getScoreLabel(credibility.score)}
+                <div className="flex items-center justify-between mb-4 border-b border-black/[0.04] pb-2">
+                  <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Strengths</span>
+                  <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold px-2 py-0.5 rounded-full">
+                    {strengthsCount} found
                   </span>
                 </div>
-                <div className="space-y-2 text-[14px]">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[15px] leading-none shrink-0">{credibility.hasAboutPage ? "✓" : "⚠️"}</span>
-                    <span className={credibility.hasAboutPage ? "text-emerald-700 font-semibold" : "text-[#475569]"}>About page linked in navigation</span>
+                <h3 className="text-[20px] font-bold text-[#0D0D0D] mb-4 font-serif">What we like</h3>
+                <div className="space-y-4">
+                  {!isTtfbHigh && (
+                    <div className="flex items-start gap-2.5">
+                      <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                      <div>
+                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">Healthy hosting infrastructure</p>
+                        <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your server responds quickly, which is the foundation a well-performing website needs.</p>
+                      </div>
+                    </div>
+                  )}
+                  {!isCachingMissing && (
+                    <div className="flex items-start gap-2.5">
+                      <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                      <div>
+                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">Page caching is active</p>
+                        <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your site is set up to serve pages efficiently, which protects speed under real traffic.</p>
+                      </div>
+                    </div>
+                  )}
+                  {!isAiBlocked && (
+                    <div className="flex items-start gap-2.5">
+                      <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                      <div>
+                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">Open to modern AI search</p>
+                        <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your website allows AI platforms like ChatGPT and Bing to crawl and reference your content.</p>
+                      </div>
+                    </div>
+                  )}
+                  {!isSlow && (
+                    <div className="flex items-start gap-2.5">
+                      <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                      <div>
+                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">Acceptable mobile load speed</p>
+                        <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Your pages load within a reasonable range, meaning most visitors won&apos;t immediately drop off.</p>
+                      </div>
+                    </div>
+                  )}
+                  {hasLocalBusinessSchema && (
+                    <div className="flex items-start gap-2.5">
+                      <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                      <div>
+                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">Business identity structured for search</p>
+                        <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">Google and AI tools can identify your business type and core details from your website&apos;s code.</p>
+                      </div>
+                    </div>
+                  )}
+                  {strengthsCount === 0 && (
+                    <div className="flex items-start gap-2.5">
+                      <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
+                      <div>
+                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">Clear, established web presence</p>
+                        <p className="text-[13px] text-[#475569] mt-0.5 leading-[1.5]">You already have a website that represents your business — the optimizations below build on that foundation.</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Thesis & Observations */}
+            <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4 border-b border-black/[0.04] pb-2">
+                  <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Thesis</span>
+                  <span className="bg-amber-50 text-amber-700 border border-amber-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                    read this
+                  </span>
+                </div>
+                <h3 className="text-[20px] font-bold text-[#0D0D0D] mb-4 font-serif">What matters most</h3>
+                
+                <div className="text-[15px] text-[#475569] leading-[1.7] mb-6">
+                  {foundationScore >= 80 ? (
+                    <>Your website already has a strong technical foundation. The biggest opportunity isn&apos;t speed — it is <strong>visibility and trust</strong>: helping search engines, AI platforms, and prospective clients understand and trust your business more quickly.</>
+                  ) : (
+                    <>The primary bottleneck for your website is <strong>technical performance</strong>. Slow mobile loading times create friction for incoming visitors, which needs to be resolved before focusing on visibility and trust.</>
+                  )}
+                </div>
+
+                {/* Observations */}
+                {contradictionBullets.length > 0 && (
+                  <div className="border-t border-black/[0.05] pt-4 space-y-3.5">
+                    <span className="block text-[12.5px] uppercase font-bold text-[#475569] tracking-wider mb-2">Key Observations</span>
+                    {contradictionBullets.map((bullet, idx) => (
+                      <div key={idx} className="flex items-start gap-2.5 text-[13.5px]">
+                        <span className="text-[15px] shrink-0 mt-0.5">🔍</span>
+                        <div>
+                          <p className="font-bold text-[#0D0D0D] leading-snug">{bullet.title}</p>
+                          <p className="text-[#475569] mt-0.5 leading-[1.5]">{bullet.body}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[15px] leading-none shrink-0">{credibility.hasTeamPage ? "✓" : "⚠️"}</span>
-                    <span className={credibility.hasTeamPage ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Team / Staff section or page</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Section: Scores */}
+          <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs mb-8">
+            <div className="flex items-center justify-between mb-5 border-b border-black/[0.04] pb-2">
+              <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">The Proof</span>
+              <span className="text-[12.5px] text-[#475569]/80 font-bold uppercase tracking-wider">3 pillars</span>
+            </div>
+            <h2 className="text-[20px] font-bold text-[#0D0D0D] mb-6 font-serif">Scores</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Card 1: Technical Foundation */}
+              <div className="bg-[#FAFAF8] border border-black/[0.04] p-6 rounded-xl text-center flex flex-col justify-between">
+                <div>
+                  <span className="text-[13.5px] uppercase font-bold text-[#475569] block mb-2 tracking-wide font-semibold">Technical Foundation</span>
+                  <div className="text-[44px] font-bold font-serif text-[#725921] leading-none my-2">
+                    {Math.round((performance + seo + accessibility) / 3)}<span className="text-[20px] font-sans text-[#475569]/60 font-normal">/100</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[15px] leading-none shrink-0">{credibility.hasTestimonials ? "✓" : "⚠️"}</span>
-                    <span className={credibility.hasTestimonials ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Customer testimonials visible</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[15px] leading-none shrink-0">{credibility.hasReviewSchema ? "✓" : "⚠️"}</span>
-                    <span className={credibility.hasReviewSchema ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Structured review schema code</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[15px] leading-none shrink-0">{credibility.hasSocialLinks ? "✓" : "⚠️"}</span>
-                    <span className={credibility.hasSocialLinks ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Active social media channels</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[15px] leading-none shrink-0">{credibility.hasPrivacyPolicy && credibility.hasTerms ? "✓" : "⚠️"}</span>
-                    <span className={credibility.hasPrivacyPolicy && credibility.hasTerms ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Standard legal pages (Privacy / Terms)</span>
-                  </div>
+                  <p className="text-[13.5px] text-[#475569] px-2 leading-[1.5]">Speed index, caching status, core web vitals, and search accessibility.</p>
+                </div>
+                <div className="mt-2 text-[12px] text-[#725921] font-semibold">
+                  Metrics Verified via PageSpeed API
+                </div>
+                <div className="mt-4 pt-3 border-t border-black/[0.04]">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                    Math.round((performance + seo + accessibility) / 3) >= 80 
+                      ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                      : Math.round((performance + seo + accessibility) / 3) >= 50
+                      ? "bg-amber-50 text-amber-700 border-amber-200"
+                      : "bg-red-50 text-red-700 border-red-200"
+                  }`}>
+                    {Math.round((performance + seo + accessibility) / 3) >= 80 ? "Healthy" : Math.round((performance + seo + accessibility) / 3) >= 50 ? "Needs Work" : "Critical"}
+                  </span>
                 </div>
               </div>
 
-              {/* Local SEO scorecard OR Online Authority scorecard depending on business category */}
-              {businessCategory === "local-service" && localSeo ? (
-                <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
-                  <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
-                    <span className="text-[16px] font-bold uppercase tracking-wider text-[#475569]">Local Search Readiness</span>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getScoreLabelColorClass(calculatedLocalSeoScore)}`}>
-                      {calculatedLocalSeoScore}/10 — {getScoreLabel(calculatedLocalSeoScore)}
-                    </span>
+              {/* Card 2: Trust & Credibility */}
+              <div className="bg-[#FAFAF8] border border-black/[0.04] p-6 rounded-xl text-center flex flex-col justify-between">
+                <div>
+                  <span className="text-[13.5px] uppercase font-bold text-[#475569] block mb-2 tracking-wide font-semibold">Trust &amp; Credibility</span>
+                  <div className="text-[44px] font-bold font-serif text-[#725921] leading-none my-2">
+                    {Math.round(calculatedCredibilityScore * 10)}<span className="text-[20px] font-sans text-[#475569]/60 font-normal">/100</span>
                   </div>
-                  <div className="space-y-2 text-[14px]">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasLocalSchema ? "✓" : "⚠️"}</span>
-                      <span className={localSeo.hasLocalSchema ? "text-emerald-700 font-semibold" : "text-[#475569]"}>LocalBusiness schema code configured</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasPhone ? "✓" : "⚠️"}</span>
-                      <span className={localSeo.hasPhone ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Phone number visible on homepage</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasAddress ? "✓" : "⚠️"}</span>
-                      <span className={localSeo.hasAddress ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Physical address or location visible</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasMapsEmbed ? "✓" : "⚠️"}</span>
-                      <span className={localSeo.hasMapsEmbed ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Interactive Google Maps embed</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasBusinessHours ? "✓" : "⚠️"}</span>
-                      <span className={localSeo.hasBusinessHours ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Operation hours clearly displayed</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{localSeo.hasCityInH1 || localSeo.hasServiceArea ? "✓" : "⚠️"}</span>
-                      <span className={localSeo.hasCityInH1 || localSeo.hasServiceArea ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Local keyword presence (City / Service Area)</span>
-                    </div>
-                  </div>
+                  <p className="text-[13.5px] text-[#475569] px-2 leading-[1.5]">Customer stories, team transparency, social proof, and legal trust pages.</p>
                 </div>
+                <div className="mt-2 text-[12px] text-[#725921] font-semibold">
+                  {passedTrustChecks} of {activeTrustChecks} checks verified
+                </div>
+                <div className="mt-4 pt-3 border-t border-black/[0.04]">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                    Math.round(calculatedCredibilityScore * 10) >= 70 
+                      ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                      : Math.round(calculatedCredibilityScore * 10) >= 40
+                      ? "bg-amber-50 text-amber-700 border-amber-200"
+                      : "bg-red-50 text-red-700 border-red-200"
+                  }`}>
+                    {Math.round(calculatedCredibilityScore * 10) >= 70 ? "Strong" : Math.round(calculatedCredibilityScore * 10) >= 40 ? "Moderate" : "Weak"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Card 3: AI & Discovery Readiness */}
+              <div className="bg-[#FAFAF8] border border-black/[0.04] p-6 rounded-xl text-center flex flex-col justify-between">
+                <div>
+                  <span className="text-[13.5px] uppercase font-bold text-[#475569] block mb-2 tracking-wide font-semibold">{discoveryLabel}</span>
+                  <div className="text-[44px] font-bold font-serif text-[#725921] leading-none my-2">
+                    {Math.round(discoveryScore * 10)}<span className="text-[20px] font-sans text-[#475569]/60 font-normal">/100</span>
+                  </div>
+                  <p className="text-[13.5px] text-[#475569] px-2 leading-[1.5]">Structured schema data, AI bot rules, and organic discovery signals.</p>
+                </div>
+                <div className="mt-2 text-[12px] text-[#725921] font-semibold">
+                  {passedDiscoveryChecks} of {activeDiscoveryChecks} checks verified
+                </div>
+                <div className="mt-4 pt-3 border-t border-black/[0.04]">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                    Math.round(discoveryScore * 10) >= 75 
+                      ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                      : Math.round(discoveryScore * 10) >= 45
+                      ? "bg-amber-50 text-amber-700 border-amber-200"
+                      : "bg-red-50 text-red-700 border-red-200"
+                  }`}>
+                    {Math.round(discoveryScore * 10) >= 75 ? "Ready" : Math.round(discoveryScore * 10) >= 45 ? "Moderate" : "Weak Signals"}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section: What to fix */}
+          <div id="prioritized-checklist" className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs mb-8 overflow-hidden">
+            <div className="flex items-center justify-between mb-4 border-b border-black/[0.04] pb-2">
+              <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Opportunities</span>
+              {highImpactCount > 0 ? (
+                <span className="bg-red-50 text-red-700 border border-red-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                  {highImpactCount} high impact
+                </span>
               ) : (
-                <div className="bg-white border border-[#E2E8F0] p-6 rounded-xl shadow-xs">
-                  <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] pb-3">
-                    <span className="text-[16px] font-bold uppercase tracking-wider text-[#475569]">Authority Signals Checklist</span>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${getScoreLabelColorClass(calculatedOnlineAuthorityScore)}`}>
-                      {calculatedOnlineAuthorityScore}/10 — {getScoreLabel(calculatedOnlineAuthorityScore)}
-                    </span>
-                  </div>
-                  <div className="space-y-2 text-[14px]">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasAboutOrTeam ? "✓" : "⚠️"}</span>
-                      <span className={onlineAuthority?.hasAboutOrTeam ? "text-emerald-700 font-semibold" : "text-[#475569]"}>About or Team page linked</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasTestimonials ? "✓" : "⚠️"}</span>
-                      <span className={onlineAuthority?.hasTestimonials ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Social proof (testimonials/reviews)</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasReviewSchema ? "✓" : "⚠️"}</span>
-                      <span className={onlineAuthority?.hasReviewSchema ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Aggregate rating / review schema</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasSocialLinks ? "✓" : "⚠️"}</span>
-                      <span className={onlineAuthority?.hasSocialLinks ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Active social profiles linked</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasLegalPages ? "✓" : "⚠️"}</span>
-                      <span className={onlineAuthority?.hasLegalPages ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Legal trust indicators (Privacy &amp; Terms)</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[15px] leading-none shrink-0">{onlineAuthority?.hasGoodSpeedOrCache ? "✓" : "⚠️"}</span>
-                      <span className={onlineAuthority?.hasGoodSpeedOrCache ? "text-emerald-700 font-semibold" : "text-[#475569]"}>Technical caching &amp; response speed</span>
-                    </div>
-                  </div>
-                </div>
+                <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                  No critical gaps
+                </span>
               )}
             </div>
-          )}
+            <h2 className="text-[20px] font-bold text-[#0D0D0D] mb-6 font-serif">What to fix</h2>
 
-          {/* Top Opportunities */}
-          <div className="bg-white border border-[#E2E8F0] rounded-xl shadow-xs mb-10 overflow-hidden">
-            <div className="px-7 pt-6 pb-4 border-b border-[#E2E8F0]">
-              <h2 className="text-[18px] font-bold uppercase tracking-wider text-[#725921]">Top Opportunities</h2>
-              <p className="text-[14px] text-[#475569] mt-1">Based on your website data, these are the changes most likely to improve customer discovery.</p>
-            </div>
             <div className="divide-y divide-[#E2E8F0]">
               {sortedOpportunities.length > 0 ? (
                 sortedOpportunities.map((opp) => (
-                  <div key={opp.id} className="px-7 py-5 grid grid-cols-12 gap-4 items-start">
+                  <div key={opp.id} className="py-5 grid grid-cols-12 gap-4 items-start first:pt-0 last:pb-0">
                     <div className="col-span-12 sm:col-span-7">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-[11px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border ${
+                        <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border ${
                           opp.impact === "High" 
                             ? "text-red-600 bg-red-50 border-red-100" 
                             : "text-amber-700 bg-amber-50 border-amber-100"
@@ -981,26 +879,30 @@ export default async function AuditPage({ params }: Props) {
                           {opp.impact} Impact
                         </span>
                       </div>
-                      <p className="text-[15.5px] font-semibold text-[#0D0D0D]">{opp.title}</p>
-                      <p className="text-[14px] text-[#475569] mt-1 leading-[1.5]">{opp.body}</p>
-                      <p className="text-[12.5px] text-[#725921] italic mt-2">Why we flagged this: {opp.why}</p>
+                      <p className="text-[15px] font-bold text-[#0D0D0D]">{opp.title}</p>
+                      <p className="text-[13.5px] text-[#475569] mt-1 leading-[1.5]">{opp.body}</p>
+                      <p className="text-[12px] text-[#725921] italic mt-2">Why we flagged this: {opp.why}</p>
                     </div>
                     <div className="col-span-12 sm:col-span-5 flex sm:justify-end gap-6 text-center mt-2 sm:mt-0">
                       <div>
-                        <p className="text-[11px] uppercase text-[#475569] font-bold tracking-wider">Difficulty</p>
-                        <p className="text-[14px] font-semibold text-[#0D0D0D] mt-0.5">{opp.difficulty}</p>
+                        <p className="text-[10.5px] uppercase text-[#475569] font-bold tracking-wider font-semibold">Difficulty</p>
+                        <p className="text-[13.5px] font-semibold text-[#0D0D0D] mt-0.5">{opp.difficulty}</p>
                       </div>
                       <div>
-                        <p className="text-[11px] uppercase text-[#475569] font-bold tracking-wider">Est. Time</p>
-                        <p className="text-[14px] font-semibold text-[#0D0D0D] mt-0.5">{opp.time}</p>
+                        <p className="text-[10.5px] uppercase text-[#475569] font-bold tracking-wider font-semibold">Est. Time</p>
+                        <p className="text-[13.5px] font-semibold text-[#0D0D0D] mt-0.5">{opp.time}</p>
                       </div>
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="px-7 py-5">
-                  <p className="text-[15px] font-semibold text-emerald-700">✓ No critical opportunities detected.</p>
-                  <p className="text-[14px] text-[#475569] mt-1">Your website foundation is solid. Consider focusing on content and authority growth.</p>
+                <div className="py-4">
+                  <p className="text-[14.5px] font-bold text-[#0D0D0D] flex items-center gap-2">
+                    <span className="text-emerald-600">✓</span> Your website is in exceptionally good shape.
+                  </p>
+                  <p className="text-[13.5px] text-[#475569] mt-1 leading-relaxed">
+                    There are no high-priority mechanical or technical opportunities remaining. These smaller refinements can help solidify your authority and edge out competitors.
+                  </p>
                 </div>
               )}
             </div>
