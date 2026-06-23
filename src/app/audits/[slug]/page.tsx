@@ -7,6 +7,7 @@ import path from "path";
 import matter from "gray-matter";
 import Link from "next/link";
 import he from "he";
+import { computeCredibilityScore, computeLocalSeoScore, computeOnlineAuthorityScore } from "@/lib/scoring";
 
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
@@ -204,6 +205,8 @@ export default async function AuditPage({ params }: Props) {
     const tbt = details?.tbt ?? 0;
 
     const blog = details?.blog;
+    const isContentSlowing = blog?.contentSlowing || 
+      (blog?.daysSinceLastPost !== undefined && blog?.avgIntervalDays !== undefined && blog.daysSinceLastPost > 14 && blog.daysSinceLastPost > blog.avgIntervalDays * 3);
     const credibility = details?.credibility;
     const localSeo = details?.localSeo;
     const onlineAuthority = details?.onlineAuthority;
@@ -227,42 +230,34 @@ export default async function AuditPage({ params }: Props) {
     const hasAddressValue = credibility?.hasAddress ?? (contact?.hasAddress ?? false);
     const hasPhoneValue = credibility?.hasPhone ?? !noPhoneNumber;
 
-    let calculatedCredibilityScore = credibility?.score;
-    if (calculatedCredibilityScore === undefined || calculatedCredibilityScore === 0) {
-      let credScore = 0;
-      if (hasAboutPage) credScore += 1;
-      if (hasTeamPage) credScore += 1;
-      if (hasPrivacyPolicy) credScore += 1;
-      if (hasTerms) credScore += 0.5;
-      if (hasTestimonialsValue) credScore += 2;
-      if (hasReviewSchemaValue) credScore += 1.5;
-      if (hasSocialLinksValue) credScore += 1.5;
-      if (hasAddressValue) credScore += 1;
-      if (hasPhoneValue) credScore += 1.5;
-      calculatedCredibilityScore = Math.min(Math.round(credScore), 10);
-    }
+    const calculatedCredibilityScore = credibility?.score ?? computeCredibilityScore({
+      hasAboutPage,
+      hasTeamPage,
+      hasPrivacyPolicy,
+      hasTerms,
+      hasTestimonials: hasTestimonialsValue,
+      hasReviewSchema: hasReviewSchemaValue,
+      hasSocialLinks: hasSocialLinksValue,
+      hasAddress: hasAddressValue,
+      hasPhone: hasPhoneValue
+    }, ttfb > 600);
 
-    // Local SEO Score fallback
     const hasLocalSchemaVal = localSeo?.hasLocalSchema ?? (schemaTypes.some(s => s.toLowerCase().includes("localbusiness") || s.toLowerCase().includes("organization")));
     const hasMapsEmbedVal = localSeo?.hasMapsEmbed ?? (contact?.hasMapsEmbed ?? false);
     const hasCityInH1Val = localSeo?.hasCityInH1 ?? false;
     const hasServiceAreaVal = localSeo?.hasServiceArea ?? false;
     const hasBusinessHoursVal = localSeo?.hasBusinessHours ?? (contact?.hasBusinessHours ?? false);
 
-    let calculatedLocalSeoScore = localSeo?.score;
-    if (calculatedLocalSeoScore === undefined || calculatedLocalSeoScore === 0) {
-      let localScore = 0;
-      if (hasPhoneValue) localScore += 1.5;
-      if (hasAddressValue) localScore += 1.5;
-      if (hasLocalSchemaVal) localScore += 2;
-      if (hasMapsEmbedVal) localScore += 1.5;
-      if (hasCityInH1Val) localScore += 1;
-      if (hasServiceAreaVal) localScore += 1;
-      if (hasBusinessHoursVal) localScore += 1.5;
-      calculatedLocalSeoScore = Math.min(Math.round((localScore / 8) * 10), 10);
-    }
+    const calculatedLocalSeoScore = localSeo?.score ?? computeLocalSeoScore({
+      hasPhone: hasPhoneValue,
+      hasAddress: hasAddressValue,
+      hasLocalSchema: hasLocalSchemaVal,
+      hasMapsEmbed: hasMapsEmbedVal,
+      hasCityInH1: hasCityInH1Val,
+      hasServiceArea: hasServiceAreaVal,
+      hasBusinessHours: hasBusinessHoursVal
+    }, ttfb > 600);
 
-    // Online Authority Score fallback
     const hasAboutOrTeamVal = onlineAuthority?.hasAboutOrTeam ?? (hasAboutPage || hasTeamPage);
     const hasTestimonialsVal = onlineAuthority?.hasTestimonials ?? hasTestimonialsValue;
     const hasReviewSchemaVal = onlineAuthority?.hasReviewSchema ?? hasReviewSchemaValue;
@@ -270,18 +265,15 @@ export default async function AuditPage({ params }: Props) {
     const hasLegalPagesVal = onlineAuthority?.hasLegalPages ?? (hasPrivacyPolicy && hasTerms);
     const hasGoodSpeedOrCacheVal = onlineAuthority?.hasGoodSpeedOrCache ?? (ttfb < 500 || cachingActive);
 
-    let calculatedOnlineAuthorityScore = onlineAuthority?.score;
-    if (calculatedOnlineAuthorityScore === undefined || calculatedOnlineAuthorityScore === 0) {
-      let onlineAuthScore = 0;
-      if (hasAboutOrTeamVal) onlineAuthScore += 2;
-      if (hasTestimonialsVal) onlineAuthScore += 2;
-      if (hasReviewSchemaVal) onlineAuthScore += 1.5;
-      if (hasSocialLinksVal) onlineAuthScore += 1.5;
-      if (hasLegalPagesVal) onlineAuthScore += 1.5;
-      if (hasGoodSpeedOrCacheVal) onlineAuthScore += 2;
-      if (loadTime < 3.0) onlineAuthScore += 1.5;
-      calculatedOnlineAuthorityScore = Math.min(Math.round(onlineAuthScore), 10);
-    }
+    const calculatedOnlineAuthorityScore = onlineAuthority?.score ?? computeOnlineAuthorityScore({
+      hasAboutOrTeam: hasAboutOrTeamVal,
+      hasTestimonials: hasTestimonialsVal,
+      hasReviewSchema: hasReviewSchemaVal,
+      hasSocialLinks: hasSocialLinksVal,
+      hasLegalPages: hasLegalPagesVal,
+      hasGoodSpeedOrCache: hasGoodSpeedOrCacheVal,
+      loadTime
+    }, ttfb > 600);
 
     const discoveryScore = businessCategory === "local-service" 
       ? calculatedLocalSeoScore 
@@ -298,10 +290,10 @@ export default async function AuditPage({ params }: Props) {
     const isAiBlocked = !aiRobotsAllowed;
 
     // Verdict helpers for Mobile section
-    const lcpVerdict = lcp === 0 ? null : lcp <= 2.5 ? "good" : lcp <= 4.0 ? "needs-work" : "poor";
-    const tbtVerdict = tbt === 0 ? null : tbt <= 200 ? "good" : tbt <= 600 ? "needs-work" : "poor";
-    const speedVerdict = loadTime === 0 ? null : loadTime <= 3.4 ? "good" : loadTime <= 5.8 ? "needs-work" : "poor";
-    const sizeVerdict = pageSize === 0 ? null : pageSize < 2 ? "good" : pageSize < 5 ? "needs-work" : "poor";
+    const lcpVerdict = details?.lcp === undefined ? null : lcp <= 2.5 ? "good" : lcp <= 4.0 ? "needs-work" : "poor";
+    const tbtVerdict = details?.tbt === undefined ? null : tbt <= 200 ? "good" : tbt <= 600 ? "needs-work" : "poor";
+    const speedVerdict = details?.loadTime === undefined ? null : loadTime <= 3.4 ? "good" : loadTime <= 5.8 ? "needs-work" : "poor";
+    const sizeVerdict = details?.pageSize === undefined ? null : pageSize < 2 ? "good" : pageSize < 5 ? "needs-work" : "poor";
 
     const verdictLabel = (v: string | null) =>
       v === "good" ? "Fast ✓" : v === "needs-work" ? "Needs Improvement ⚠️" : v === "poor" ? "Slow ❌" : "N/A";
@@ -323,18 +315,19 @@ export default async function AuditPage({ params }: Props) {
     const contradictionBullets: Array<{ title: string; body: string }> = [];
 
     // 1. Content Cadence Shift
-    if (blog && blog.exists && blog.contentSlowing) {
-      const bodyText = blog.recentAvgIntervalDays && blog.historicAvgIntervalDays && blog.recentAvgIntervalDays > blog.historicAvgIntervalDays
-        ? `Your website has a solid content footprint of ${blog.totalPosts} articles, but recent publishing intervals show a slowdown (${blog.recentAvgIntervalDays} days average vs. ${blog.historicAvgIntervalDays} days historically). Resuming a regular rhythm keeps search engines crawling your site frequently.`
-        : `Your website has a solid content footprint of ${blog.totalPosts} articles, but it has been ${blog.daysSinceLastPost} days since your last post, which is significantly longer than your average posting interval of ${blog.avgIntervalDays} days. Resuming a regular rhythm keeps search engines crawling your site frequently.`;
+    if (blog && blog.exists && isContentSlowing) {
+      const bodyText = `We found ${blog.totalPosts} recent articles on your site, but you haven't published a new post in a long time. When you stop posting, search engines visit less often, delaying how long it takes for your new updates to show up in search results.`;
       contradictionBullets.push({
-        title: "Strong Content Library, but Publishing Has Slowed",
+        title: "Long Gap Since Your Last Post",
         body: bodyText
       });
     }
 
     // 2. Performance vs Trust
-    const foundationScore = Math.round((performance + seo + accessibility) / 3);
+    let foundationScore = Math.round((performance + seo + accessibility) / 3);
+    if (ttfb > 600 && foundationScore > 75) {
+      foundationScore = 75;
+    }
     if (foundationScore >= 80 && (!testimonials || !testimonials.found || (credibility && credibility.score < 5))) {
       contradictionBullets.push({
         title: "Excellent Performance, but Low Trust Signals",
@@ -393,17 +386,15 @@ export default async function AuditPage({ params }: Props) {
       });
     }
 
-    if (blog && blog.exists && blog.contentSlowing) {
+    if (blog && blog.exists && isContentSlowing) {
       opportunitiesList.push({
         id: "blog-cadence",
-        title: "Resume Consistent Publishing",
+        title: "Restart Your Blog Updates",
         impact: "Medium",
         difficulty: "Medium",
         time: "2–4 hrs",
-        why: blog.recentAvgIntervalDays && blog.historicAvgIntervalDays && blog.recentAvgIntervalDays > blog.historicAvgIntervalDays
-          ? `Recent publishing rhythm has slowed down (${blog.recentAvgIntervalDays} days average vs ${blog.historicAvgIntervalDays} days historically).`
-          : `Long gap since last post (${blog.daysSinceLastPost} days ago vs average interval of ${blog.avgIntervalDays} days).`,
-        body: "Your site has a solid library of content, but publishing has slowed down recently. Setting up a consistent rhythm signals active operations to both Google and AI search engines."
+        why: `There is a long gap of ${blog.daysSinceLastPost} days since your last post, breaking your website's usual rhythm.`,
+        body: "Your website has gone quiet compared to how you used to post. When search engines and AI tools notice that you've stopped sharing fresh updates, they will scan your website less frequently. This makes it harder for new updates or services to get noticed and shown to potential clients."
       });
     }
 
@@ -501,12 +492,10 @@ export default async function AuditPage({ params }: Props) {
       });
     } else if (blog.contentSlowing) {
       fixNextRecs.push({
-        task: "Resume Consistent Blog Cadence",
+        task: "Restart Regular Blog Posts",
         impact: "Medium",
         effort: "Medium",
-        why: blog.recentAvgIntervalDays && blog.historicAvgIntervalDays && blog.recentAvgIntervalDays > blog.historicAvgIntervalDays
-          ? `Recent publishing rhythm slowed down to ${blog.recentAvgIntervalDays} days average interval.`
-          : `Long gap since last post (${blog.daysSinceLastPost} days since last post vs average interval of ${blog.avgIntervalDays} days).`
+        why: `It has been ${blog.daysSinceLastPost} days since your last post, leaving a long gap since your usual publishing schedule.`
       });
     }
     if (!llmsTxtPresent) {
@@ -616,7 +605,7 @@ export default async function AuditPage({ params }: Props) {
       ? [
           localSeo?.hasPhone === "unverified",
           localSeo?.hasAddress === "unverified",
-          false,
+          false, // placeholder: hasLocalBusinessSchema has no unverified state (always boolean)
           localSeo?.hasMapsEmbed === "unverified",
           localSeo?.hasCityInH1 === "unverified",
           localSeo?.hasServiceArea === "unverified",
@@ -629,7 +618,7 @@ export default async function AuditPage({ params }: Props) {
           onlineAuthority?.hasSocialLinks === "unverified",
           onlineAuthority?.hasLegalPages === "unverified",
           onlineAuthority?.hasGoodSpeedOrCache === "unverified",
-          false
+          false // placeholder: loadTime has no unverified state (always numeric)
         ].filter(Boolean).length;
 
     const activeDiscoveryChecks = totalDiscoveryChecks - unverifiedDiscoveryChecks;
@@ -744,6 +733,12 @@ export default async function AuditPage({ params }: Props) {
                   )}
                 </div>
 
+                {executiveSummary && !executiveSummary.includes("website foundation score of") && (
+                  <div className="bg-[#FAFAF8] border-l-4 border-[#C4A35A] p-4 rounded-r-lg mb-6 text-[14.5px] italic text-[#475569] leading-[1.6] print:bg-none print:border-l-2 print:text-black">
+                    "{executiveSummary}"
+                  </div>
+                )}
+
                 {/* Observations */}
                 {contradictionBullets.length > 0 && (
                   <div className="border-t border-black/[0.05] pt-4 space-y-3.5">
@@ -777,7 +772,7 @@ export default async function AuditPage({ params }: Props) {
                 <div>
                   <span className="text-[13.5px] uppercase font-bold text-[#475569] block mb-2 tracking-wide font-semibold">Technical Foundation</span>
                   <div className="text-[44px] font-bold font-serif text-[#725921] leading-none my-2">
-                    {Math.round((performance + seo + accessibility) / 3)}<span className="text-[20px] font-sans text-[#475569]/60 font-normal">/100</span>
+                    {foundationScore}<span className="text-[20px] font-sans text-[#475569]/60 font-normal">/100</span>
                   </div>
                   <p className="text-[13.5px] text-[#475569] px-2 leading-[1.5]">Speed index, caching status, core web vitals, and search accessibility.</p>
                 </div>
@@ -786,13 +781,13 @@ export default async function AuditPage({ params }: Props) {
                 </div>
                 <div className="mt-4 pt-3 border-t border-black/[0.04]">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
-                    Math.round((performance + seo + accessibility) / 3) >= 80 
+                    foundationScore >= 80 
                       ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
-                      : Math.round((performance + seo + accessibility) / 3) >= 50
+                      : foundationScore >= 50
                       ? "bg-amber-50 text-amber-700 border-amber-200"
                       : "bg-red-50 text-red-700 border-red-200"
                   }`}>
-                    {Math.round((performance + seo + accessibility) / 3) >= 80 ? "Healthy" : Math.round((performance + seo + accessibility) / 3) >= 50 ? "Needs Work" : "Critical"}
+                    {foundationScore >= 80 ? "Healthy" : foundationScore >= 50 ? "Needs Work" : "Critical"}
                   </span>
                 </div>
               </div>
@@ -850,7 +845,7 @@ export default async function AuditPage({ params }: Props) {
           </div>
 
           {/* Section: What to fix */}
-          <div id="prioritized-checklist" className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs mb-8 overflow-hidden">
+          <div id="opportunities" className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs mb-8 overflow-hidden">
             <div className="flex items-center justify-between mb-2 border-b border-black/[0.04] pb-2">
               <span className="text-[20px] font-bold uppercase tracking-wider text-[#725921] font-sans">Opportunities</span>
               {highImpactCount > 0 ? (
@@ -908,31 +903,153 @@ export default async function AuditPage({ params }: Props) {
             </div>
           </div>
 
-          {/* AI Strategy Companion — collapsed into a subtle disclosure widget */}
-          <details className="group bg-[#FAFAF8] border border-black/[0.07] rounded-lg mb-12 print:hidden">
-            <summary className="flex items-center gap-2 px-5 py-3.5 cursor-pointer list-none text-[14px] font-semibold text-[#475569] hover:text-[#0D0D0D] transition-colors select-none">
-              <span className="text-[#C4A35A]">💡</span>
-              Want an AI-generated implementation plan?
-              <span className="ml-auto text-[11px] font-bold uppercase tracking-widest text-[#C4A35A] group-open:opacity-0">Show</span>
-            </summary>
-            <div className="px-5 pb-5 pt-1 border-t border-black/[0.05]">
-              <p className="text-[14px] text-[#475569] leading-[1.6] mb-3">
-                This report URL is readable by AI assistants. Share it with <strong>ChatGPT, Gemini, Perplexity, or Claude</strong> to get a tailored developer roadmap.
-              </p>
-              <div className="bg-white border border-black/[0.06] rounded p-3.5 font-mono text-[13px] text-[#475569] select-all cursor-pointer hover:bg-slate-50 transition-colors">
-                "Here is my website audit report: {reportUrl}. Based on these findings, create a step-by-step developer plan to fix the top issues."
+          {/* Section: Action Checklist Card (moved below Opportunities) */}
+          <div id="prioritized-checklist" className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs mb-8 overflow-hidden scroll-mt-24">
+            <div className="flex items-center justify-between mb-2 border-b border-black/[0.04] pb-2">
+              <span className="text-[20px] font-bold uppercase tracking-wider text-[#725921] font-sans">Action Plan</span>
+              <span className="bg-red-50 text-red-700 border border-red-200 text-[11.5px] font-bold px-2.5 py-0.5 rounded-full font-sans">
+                {fixFirstRecs.length} high • {fixNextRecs.length} medium • {fixLaterRecs.length} low
+              </span>
+            </div>
+            <h2 className="text-[16px] font-bold text-[#475569] mb-1 font-sans">Prioritized action checklist</h2>
+            <p className="text-[13.5px] text-[#475569] mb-6 font-sans font-light">What to fix, in order — start with the left column.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Fix First column */}
+              <div className="bg-[#FAFAF8] border border-black/[0.02] rounded-xl p-5 shadow-xs">
+                <div className="flex items-center gap-1.5 mb-4 border-b border-black/[0.04] pb-3">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                  <p className="text-[12px] font-bold uppercase tracking-widest text-red-600">Fix First</p>
+                </div>
+                {fixFirstRecs.length > 0 ? (
+                  <div className="space-y-4">
+                    {fixFirstRecs.map((rec, idx) => (
+                      <div key={idx} className="border-b border-black/[0.03] pb-3 last:border-0 last:pb-0">
+                        <p className="text-[14px] font-bold text-[#0D0D0D] leading-snug">{rec.task}</p>
+                        <p className="text-[12.5px] text-[#475569] mt-1 font-light leading-snug">
+                          {rec.impact} impact • {rec.effort} effort
+                        </p>
+                        {rec.why && (
+                          <p className="text-[11.5px] text-[#725921] italic mt-1 leading-relaxed">
+                            Why: {rec.why}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[13.5px] text-emerald-700 font-semibold leading-relaxed">✓ No high-priority bottlenecks detected.</p>
+                )}
+              </div>
+
+              {/* Fix Next column */}
+              <div className="bg-[#FAFAF8] border border-black/[0.02] rounded-xl p-5 shadow-xs">
+                <div className="flex items-center gap-1.5 mb-4 border-b border-black/[0.04] pb-3">
+                  <span className="h-2.5 w-2.5 rounded-full bg-amber-500"></span>
+                  <p className="text-[12px] font-bold uppercase tracking-widest text-amber-700">Fix Next</p>
+                </div>
+                {fixNextRecs.length > 0 ? (
+                  <div className="space-y-4">
+                    {fixNextRecs.map((rec, idx) => (
+                      <div key={idx} className="border-b border-black/[0.03] pb-3 last:border-0 last:pb-0">
+                        <p className="text-[14px] font-bold text-[#0D0D0D] leading-snug">{rec.task}</p>
+                        <p className="text-[12.5px] text-[#475569] mt-1 font-light leading-snug">
+                          {rec.impact} impact • {rec.effort} effort
+                        </p>
+                        {rec.why && (
+                          <p className="text-[11.5px] text-[#725921] italic mt-1 leading-relaxed">
+                            Why: {rec.why}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[13.5px] text-emerald-700 font-semibold leading-relaxed">✓ No medium-priority bottlenecks detected.</p>
+                )}
+              </div>
+
+              {/* Fix Later column */}
+              <div className="bg-[#FAFAF8] border border-black/[0.02] rounded-xl p-5 shadow-xs">
+                <div className="flex items-center gap-1.5 mb-4 border-b border-black/[0.04] pb-3">
+                  <span className="h-2.5 w-2.5 rounded-full bg-slate-500"></span>
+                  <p className="text-[12px] font-bold uppercase tracking-widest text-[#475569]">Fix Later</p>
+                </div>
+                {fixLaterRecs.length > 0 ? (
+                  <div className="space-y-4">
+                    {fixLaterRecs.map((rec, idx) => (
+                      <div key={idx} className="border-b border-black/[0.03] pb-3 last:border-0 last:pb-0">
+                        <p className="text-[14px] font-bold text-[#0D0D0D] leading-snug">{rec.task}</p>
+                        <p className="text-[12.5px] text-[#475569] mt-1 font-light leading-snug">
+                          {rec.impact} impact • {rec.effort} effort
+                        </p>
+                        {rec.why && (
+                          <p className="text-[11.5px] text-[#725921] italic mt-1 leading-relaxed">
+                            Why: {rec.why}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[13.5px] text-emerald-700 font-semibold leading-relaxed">✓ All minor optimizations are complete.</p>
+                )}
               </div>
             </div>
-          </details>
+          </div>
+
+          {/* Inline CTA Strip (visually interrupts the scroll) */}
+          <div className="bg-[#1E1E1C] border border-[#C4A35A]/20 rounded-xl p-6 mb-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm print:hidden">
+            <p className="text-[17px] text-[#E2E8F0] font-sans leading-relaxed text-center sm:text-left font-medium">
+              Want a professional developer to review these findings and answer your questions?
+            </p>
+            <a 
+              href="https://cal.com/naveengaur/30min" 
+              target="_blank" 
+              rel="noreferrer"
+              className="bg-[#C4A35A] text-[#0D0D0D] px-6 py-3 rounded-sm text-[13.5px] font-bold tracking-[0.05em] uppercase hover:bg-[#d4b46a] transition-colors whitespace-nowrap text-center cursor-pointer font-sans"
+            >
+              Book 15-Min Walkthrough
+            </a>
+          </div>
+
+          {/* AI Strategy Companion Card */}
+          <div className="bg-white border border-[#C4A35A]/40 rounded-xl p-7 shadow-xs mb-12 print:hidden">
+            <div className="flex items-center gap-2 mb-3 border-b border-black/[0.04] pb-2">
+              <span className="text-[20px] font-bold uppercase tracking-wider text-[#725921] font-sans">AI Strategy Partner</span>
+              <span className="bg-amber-50 text-amber-700 border border-amber-200 text-[11.5px] font-bold px-2.5 py-0.5 rounded-full font-sans">
+                Free Developer Roadmap
+              </span>
+            </div>
+            <h3 className="text-[16px] font-bold text-[#475569] mb-3 font-sans">Get a Developer-Ready Implementation Plan</h3>
+            <p className="text-[14.5px] text-[#475569] leading-[1.6] mb-4 font-sans">
+              This report is formatted to be fully readable by modern LLMs. Copy the prompt below and paste it into <strong>ChatGPT, Claude, Gemini, or Perplexity</strong> to instantly get a step-by-step developer plan to fix these issues.
+            </p>
+            <div className="bg-[#FAFAF8] border border-black/[0.06] rounded-lg p-4 font-mono text-[13px] text-[#475569] select-all cursor-pointer hover:bg-slate-50 transition-colors shadow-inner relative group/prompt">
+              <span className="block select-none text-[10px] uppercase font-bold text-[#C4A35A] tracking-wider mb-2 font-sans">Click to Highlight &amp; Copy Prompt</span>
+              "Here is my website audit report: {reportUrl}. Based on these findings, create a step-by-step developer plan to fix the top issues."
+            </div>
+          </div>
+
+          {/* Section: The Full Breakdown Centered Heading */}
+          <div className="text-center mt-24 mb-16 border-b border-black/[0.06] pb-10 print:border-b-2 print:border-black">
+            <span className="text-[12px] font-bold tracking-[0.2em] text-[#C4A35A] uppercase block mb-3 font-sans">Deep-Dive Analysis</span>
+            <h2 className="text-[30px] md:text-[36px] font-sans font-bold text-[#0D0D0D] tracking-tight leading-tight">
+              The Full Breakdown
+            </h2>
+            <p className="text-[15.5px] text-[#475569] max-w-[600px] mx-auto mt-3 font-sans font-light">
+              A detailed audit of your website's performance, credibility signals, and search discovery readiness.
+            </p>
+          </div>
 
           {/* Pillar 1: Technical Foundation */}
           <div id="technical-foundation" className="pt-16 border-t border-[#E2E8F0] mt-16 mb-8">
-            <h2 className="text-[26px] font-serif font-bold text-[#725921] tracking-tight mb-2">Pillar 1: Technical Foundation</h2>
+            <h2 className="text-[22px] font-sans font-bold text-[#725921] uppercase tracking-wide border-b border-black/[0.06] pb-2 mb-2">Pillar 1: Technical Foundation</h2>
             <p className="text-[14.5px] text-[#475569] leading-relaxed">Rolls up all hosting, server response, and mobile speed measurements.</p>
           </div>
           {/* Section 4: Website Performance Check */}
           <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
-            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
+            <h3 className="text-[18px] font-sans font-bold text-[#0D0D0D] mb-2">
               1. Website Performance Check
             </h3>
             <div className="flex items-center gap-2 mb-4">
@@ -994,7 +1111,7 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 5: Mobile Visitor Experience — verdict cards, not raw numbers */}
           <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
-            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
+            <h3 className="text-[18px] font-sans font-bold text-[#0D0D0D] mb-2">
               2. Mobile Visitor Experience
             </h3>
             <div className="flex items-center gap-2 mb-4">
@@ -1055,12 +1172,12 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Pillar 2: Trust & Credibility */}
           <div id="trust-credibility" className="pt-16 border-t border-[#E2E8F0] mt-16 mb-8">
-            <h2 className="text-[26px] font-serif font-bold text-[#725921] tracking-tight mb-2">Pillar 2: Trust &amp; Credibility</h2>
+            <h2 className="text-[22px] font-sans font-bold text-[#725921] uppercase tracking-wide border-b border-black/[0.06] pb-2 mb-2">Pillar 2: Trust &amp; Credibility</h2>
             <p className="text-[14.5px] text-[#475569] leading-relaxed">Rolls up user trust parameters, direct human communication channels, and active resource feeds.</p>
           </div>
           {/* Section 6: Content & Publishing Analysis */}
           <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
-            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
+            <h3 className="text-[18px] font-sans font-bold text-[#0D0D0D] mb-2">
               3. Content &amp; Publishing Analysis
             </h3>
             <div className="flex items-center gap-2 mb-4">
@@ -1075,13 +1192,13 @@ export default async function AuditPage({ params }: Props) {
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
                     <span className="text-[16px] uppercase font-bold text-[#475569]">Blog / Content Activity</span>
                     <span className={`px-3 py-1 rounded-full text-[12px] font-bold border ${
-                      blog.contentSlowing
+                      isContentSlowing
                         ? "bg-amber-50 text-amber-700 border-amber-200"
                         : blog.daysSinceLastPost && blog.daysSinceLastPost > 90
                         ? "bg-red-50 text-red-700 border-red-200"
                         : "bg-emerald-50 text-emerald-700 border-emerald-200"
                     }`}>
-                      {blog.contentSlowing
+                      {isContentSlowing
                         ? "Publishing Slowdown"
                         : blog.daysSinceLastPost && blog.daysSinceLastPost > 90
                         ? "Inactive Content"
@@ -1113,23 +1230,15 @@ export default async function AuditPage({ params }: Props) {
                     </div>
                   </div>
                   <div className="text-[14.5px] text-[#475569] leading-[1.6] space-y-3">
-                    {blog.contentSlowing && (
+                    {isContentSlowing && (
                       <div className="flex gap-2.5 items-start">
                         <span className="text-amber-500 font-bold">⚠️</span>
                         <p>
-                          {blog.recentAvgIntervalDays && blog.historicAvgIntervalDays && blog.recentAvgIntervalDays > blog.historicAvgIntervalDays ? (
-                            <>
-                              <strong>Publishing slowdown detected:</strong> Your recent posting interval has increased to <strong>{blog.recentAvgIntervalDays} days</strong> compared to your historical average of <strong>{blog.historicAvgIntervalDays} days</strong>. Restoring a consistent rhythm signals activity to search engine bots.
-                            </>
-                          ) : (
-                            <>
-                              <strong>Publishing gap detected:</strong> It has been <strong>{blog.daysSinceLastPost} days</strong> since your last post, which is significantly longer than your average posting interval of <strong>{blog.avgIntervalDays} days</strong>. Restoring a consistent rhythm signals activity to search engine bots.
-                            </>
-                          )}
+                          <strong>Long gap since your last post:</strong> It has been <strong>{blog.daysSinceLastPost} days</strong> since your last update, which is a long gap compared to your usual schedule of updating every <strong>{blog.avgIntervalDays} days</strong>. When search engines like Google notice that your website has gone quiet, they will visit and scan your site less frequently. This makes it much harder and slower for any new updates, services, or pages you publish to show up in search results for potential clients.
                         </p>
                       </div>
                     )}
-                    {!blog.contentSlowing && blog.daysSinceLastPost && blog.daysSinceLastPost > 90 && (
+                    {!isContentSlowing && blog.daysSinceLastPost && blog.daysSinceLastPost > 90 && (
                       <div className="flex gap-2.5 items-start">
                         <span className="text-red-500 font-bold">⚠️</span>
                         <p>
@@ -1137,7 +1246,7 @@ export default async function AuditPage({ params }: Props) {
                         </p>
                       </div>
                     )}
-                    {!blog.contentSlowing && (!blog.daysSinceLastPost || blog.daysSinceLastPost <= 90) && (
+                    {!isContentSlowing && (!blog.daysSinceLastPost || blog.daysSinceLastPost <= 90) && (
                       <div className="flex gap-2.5 items-start">
                         <span className="text-emerald-600 font-bold">✓</span>
                         <p>
@@ -1153,17 +1262,19 @@ export default async function AuditPage({ params }: Props) {
                     <span className="text-[14px] uppercase font-bold text-[#475569]">Content Strategy</span>
                     <span className={`px-3 py-1 border rounded-full text-[12px] font-bold ${
                       blog?.exists === "unverified" 
-                        ? "bg-amber-50 text-amber-700 border-amber-200" 
+                        ? "bg-slate-100 text-slate-600 border-slate-200" 
                         : "bg-red-50 text-red-700 border-red-200"
                     }`}>
-                      {blog?.exists === "unverified" ? "Status Unverified" : "No Blog Detected"}
+                      {blog?.exists === "unverified" ? "Not Fully Assessed" : "No Blog Detected"}
                     </span>
                   </div>
                   <div className="flex gap-3 items-start">
-                    <span className={`text-[19px] mt-0.5 ${blog?.exists === "unverified" ? "text-amber-500" : "text-red-500"}`}>⚠️</span>
+                    <span className={`text-[19px] mt-0.5 ${blog?.exists === "unverified" ? "text-slate-400" : "text-red-500"}`}>
+                      {blog?.exists === "unverified" ? "🔍" : "❌"}
+                    </span>
                     <div>
                       <h4 className="text-[15px] font-bold text-[#0D0D0D]">
-                        {blog?.exists === "unverified" ? "Could Not Fully Verify Blog Content" : "Blogging / Articles Section is Missing"}
+                        {blog?.exists === "unverified" ? "Verification Limited (JavaScript Required)" : "Blogging / Articles Section is Missing"}
                       </h4>
                       <p className="text-[14.5px] text-[#475569] mt-1 leading-[1.6]">
                         {blog?.exists === "unverified"
@@ -1179,7 +1290,7 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 7: Trust Signals (Testimonials) */}
           <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
-            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
+            <h3 className="text-[18px] font-sans font-bold text-[#0D0D0D] mb-2">
               4. Trust Signals &amp; Credibility
             </h3>
             <div className="flex items-center gap-2 mb-4">
@@ -1274,17 +1385,19 @@ export default async function AuditPage({ params }: Props) {
                     <span className="text-[14px] uppercase font-bold text-[#475569]">Social Proof Strategy</span>
                     <span className={`px-3 py-1 border rounded-full text-[12px] font-bold ${
                       testimonials?.found === "unverified"
-                        ? "bg-amber-50 text-amber-700 border-amber-200"
+                        ? "bg-slate-100 text-slate-600 border-slate-200"
                         : "bg-red-50 text-red-700 border-red-200"
                     }`}>
-                      {testimonials?.found === "unverified" ? "Status Unverified" : "No Testimonials Found"}
+                      {testimonials?.found === "unverified" ? "Not Fully Assessed" : "No Testimonials Found"}
                     </span>
                   </div>
                   <div className="flex gap-3 items-start">
-                    <span className={`text-[19px] mt-0.5 ${testimonials?.found === "unverified" ? "text-amber-500" : "text-red-500"}`}>⚠️</span>
+                    <span className={`text-[19px] mt-0.5 ${testimonials?.found === "unverified" ? "text-slate-400" : "text-red-500"}`}>
+                      {testimonials?.found === "unverified" ? "🔍" : "❌"}
+                    </span>
                     <div>
                       <h4 className="text-[15px] font-bold text-[#0D0D0D]">
-                        {testimonials?.found === "unverified" ? "Could Not Extract Testimonials" : "Lack of Social Proof on Homepage"}
+                        {testimonials?.found === "unverified" ? "Verification Limited (JavaScript Required)" : "Lack of Social Proof on Homepage"}
                       </h4>
                       <p className="text-[14.5px] text-[#475569] mt-1 leading-[1.6]">
                         {testimonials?.found === "unverified"
@@ -1300,7 +1413,7 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section 8: Contact Accessibility */}
           <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
-            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
+            <h3 className="text-[18px] font-sans font-bold text-[#0D0D0D] mb-2">
               5. Contact &amp; Client Accessibility
             </h3>
             <div className="flex items-center gap-2 mb-4">
@@ -1379,7 +1492,7 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Pillar 3: AI & Discovery Readiness */}
           <div id="ai-discovery" className="pt-16 border-t border-[#E2E8F0] mt-16 mb-8">
-            <h2 className="text-[26px] font-serif font-bold text-[#725921] tracking-tight mb-2">Pillar 3: {discoveryLabel}</h2>
+            <h2 className="text-[22px] font-sans font-bold text-[#725921] uppercase tracking-wide border-b border-black/[0.06] pb-2 mb-2">Pillar 3: {discoveryLabel}</h2>
             <p className="text-[14.5px] text-[#475569] leading-relaxed">
               {isLocal 
                 ? "Rolls up local schema identifiers, map listings, geo-relevance indicators, and AI discovery crawlers."
@@ -1389,7 +1502,7 @@ export default async function AuditPage({ params }: Props) {
           
           {/* Section 3: Can AI Recommend Your Business? */}
           <section className="mb-12 pl-6 border-l-2 border-[#C4A35A]/15">
-            <h3 className="text-[20px] font-serif font-bold text-[#0D0D0D] mb-2">
+            <h3 className="text-[18px] font-sans font-bold text-[#0D0D0D] mb-2">
               6. Can AI Recommend Your Business?
             </h3>
             <div className="flex items-center gap-2 mb-4">
@@ -1457,104 +1570,11 @@ export default async function AuditPage({ params }: Props) {
             </div>
           </section>
 
-          {/* Section 7: Prioritized Action Checklist */}
-          <div id="prioritized-checklist" className="scroll-mt-24"></div>
-          <section className="mb-12">
-            <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
-              7. Prioritized Action Checklist
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Fix First column */}
-              <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
-                <div className="flex items-center gap-1.5 mb-4 border-b border-[#E2E8F0] pb-3">
-                  <span className="h-2.5 w-2.5 rounded-full bg-red-500 animate-pulse"></span>
-                  <p className="text-[12px] font-bold uppercase tracking-widest text-red-600">Fix First (High Priority)</p>
-                </div>
-                {fixFirstRecs.length > 0 ? (
-                  <ul className="space-y-4">
-                    {fixFirstRecs.map((rec, idx) => (
-                      <li key={idx} className="border-b border-black/[0.03] pb-3 last:border-0 last:pb-0">
-                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">→ {rec.task}</p>
-                        <div className="flex gap-1.5 mt-2">
-                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-red-50 text-red-700 border border-red-100">
-                            Impact: {rec.impact}
-                          </span>
-                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-slate-50 text-[#475569] border border-black/[0.04]">
-                            Effort: {rec.effort}
-                          </span>
-                        </div>
-                        <p className="text-[12px] text-[#475569] mt-2 italic leading-relaxed">Why we flagged this: {rec.why}</p>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-[14px] text-emerald-700 font-semibold leading-relaxed">✓ No high-priority bottlenecks detected.</p>
-                )}
-              </div>
-
-              {/* Fix Next column */}
-              <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
-                <div className="flex items-center gap-1.5 mb-4 border-b border-[#E2E8F0] pb-3">
-                  <span className="h-2.5 w-2.5 rounded-full bg-amber-500"></span>
-                  <p className="text-[12px] font-bold uppercase tracking-widest text-amber-700">Fix Next (Medium Priority)</p>
-                </div>
-                {fixNextRecs.length > 0 ? (
-                  <ul className="space-y-4">
-                    {fixNextRecs.map((rec, idx) => (
-                      <li key={idx} className="border-b border-black/[0.03] pb-3 last:border-0 last:pb-0">
-                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">→ {rec.task}</p>
-                        <div className="flex gap-1.5 mt-2">
-                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-amber-50 text-amber-700 border border-amber-100">
-                            Impact: {rec.impact}
-                          </span>
-                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-slate-50 text-[#475569] border border-black/[0.04]">
-                            Effort: {rec.effort}
-                          </span>
-                        </div>
-                        <p className="text-[12px] text-[#475569] mt-2 italic leading-relaxed">Why we flagged this: {rec.why}</p>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-[14px] text-emerald-700 font-semibold leading-relaxed">✓ No medium-priority bottlenecks detected.</p>
-                )}
-              </div>
-
-              {/* Fix Later column */}
-              <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
-                <div className="flex items-center gap-1.5 mb-4 border-b border-[#E2E8F0] pb-3">
-                  <span className="h-2.5 w-2.5 rounded-full bg-slate-500"></span>
-                  <p className="text-[12px] font-bold uppercase tracking-widest text-[#475569]">Fix Later (Low Priority)</p>
-                </div>
-                {fixLaterRecs.length > 0 ? (
-                  <ul className="space-y-4">
-                    {fixLaterRecs.map((rec, idx) => (
-                      <li key={idx} className="border-b border-black/[0.03] pb-3 last:border-0 last:pb-0">
-                        <p className="text-[14.5px] font-bold text-[#0D0D0D] leading-snug">→ {rec.task}</p>
-                        <div className="flex gap-1.5 mt-2">
-                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-slate-100 text-[#475569] border border-slate-200">
-                            Impact: {rec.impact}
-                          </span>
-                          <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold uppercase bg-slate-50 text-[#475569] border border-black/[0.04]">
-                            Effort: {rec.effort}
-                          </span>
-                        </div>
-                        <p className="text-[12px] text-[#475569] mt-2 italic leading-relaxed">Why we flagged this: {rec.why}</p>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-[14px] text-emerald-700 font-semibold leading-relaxed">✓ All minor optimizations are complete.</p>
-                )}
-              </div>
-            </div>
-          </section>
-
           {/* What We Also Noticed — Layer 1 Objective Facts (Alfred-style small observations) */}
           {observedIssues > 0 && (
             <section className="mb-12">
-              <h2 className="text-[20px] font-serif text-[#725921] border-b border-[#E2E8F0] pb-2 mb-6">
-                8. A Few Other Things We Noticed
+              <h2 className="text-[22px] font-sans font-bold text-[#725921] uppercase tracking-wide border-b border-[#E2E8F0] pb-2 mb-6">
+                7. A Few Other Things We Noticed
               </h2>
               <div className="space-y-3">
                 {hasMissingMetaDesc && (
@@ -1633,7 +1653,7 @@ export default async function AuditPage({ params }: Props) {
             {businessCategory === "local-service" ? (
               <>
                 <span className="text-[12px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">Local SEO Strategy</span>
-                <h2 className="text-[23px] font-serif text-[#725921] mb-4">Dominate Your Local Market Search</h2>
+                <h2 className="text-[22px] font-sans font-bold text-[#725921] mb-4">Dominate Your Local Market Search</h2>
                 <p className="text-[16px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
                   Local search is highly competitive. Let's review this report together and build a targeted roadmap to outrank local competitors and capture high-intent service inquiries in your area.
                 </p>
@@ -1641,7 +1661,7 @@ export default async function AuditPage({ params }: Props) {
             ) : businessCategory === "ecommerce" ? (
               <>
                 <span className="text-[12px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">E-Commerce Growth</span>
-                <h2 className="text-[23px] font-serif text-[#725921] mb-4">Optimize Your Store for Conversions</h2>
+                <h2 className="text-[22px] font-sans font-bold text-[#725921] mb-4">Optimize Your Store for Conversions</h2>
                 <p className="text-[16px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
                   Every millisecond of load time impacts your bottom line. Let's review this technical audit to identify the exact performance bottlenecks costing you sales and build a plan to fix them.
                 </p>
@@ -1649,7 +1669,7 @@ export default async function AuditPage({ params }: Props) {
             ) : (
               <>
                 <span className="text-[12px] font-bold tracking-[0.15em] text-[#C4A35A] uppercase block mb-2">Recommended Solution</span>
-                <h2 className="text-[23px] font-serif text-[#725921] mb-4">Want a Prioritized Action Plan?</h2>
+                <h2 className="text-[22px] font-sans font-bold text-[#725921] mb-4">Want a Prioritized Action Plan?</h2>
                 <p className="text-[16px] text-[#475569] leading-[1.7] max-w-[620px] mx-auto mb-8 font-normal">
                   I&apos;ll personally review this report with you on a free 15-minute call and show you:
                 </p>
@@ -1659,7 +1679,7 @@ export default async function AuditPage({ params }: Props) {
             <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch mt-8 max-w-[960px] mx-auto">
               <div className="flex-1 bg-white border border-[#E2E8F0] p-6 rounded-xl text-left flex flex-col justify-between shadow-xs">
                 <div>
-                  <h4 className="text-[16px] font-bold text-[#0D0D0D] mb-3 font-serif">Option A: Walkthrough Call</h4>
+                  <h4 className="text-[16px] font-bold text-[#0D0D0D] mb-3 font-sans">Option A: Walkthrough Call</h4>
                   <p className="text-[14px] text-[#475569] mb-4 leading-[1.6]">
                     Book a free 15-minute walkthrough call. We will review your findings together and cover:
                   </p>

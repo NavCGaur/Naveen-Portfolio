@@ -9,6 +9,7 @@ import robotsParser from "robots-parser";
 import * as cheerio from "cheerio";
 import { parsePhoneNumberFromString } from "libphonenumber-js/max";
 import he from "he";
+import { computeCredibilityScore, computeLocalSeoScore, computeOnlineAuthorityScore } from "@/lib/scoring";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -503,15 +504,62 @@ export async function POST(request: NextRequest) {
       }
 
       // Logo wall heuristic
-      let foundLogoWall = false;
-      $('section, div').each((_, el) => {
+      let foundLogoWall: DetectionState = "unverified";
+      let maxLogosSeen = 0;
+      
+      $('section, div, ul').each((_, el) => {
+        // Option 1: Heading-based logo wall detection (loosened heading match)
         const headingText = $(el).find('h1, h2, h3, h4, h5, h6').first().text();
-        if (/our (valued )?(customers|clients|partners)/i.test(headingText)) {
-          const imgCount = $(el).find('img').length;
-          if (imgCount >= 5) foundLogoWall = true;
+        const hasMatchingHeading = /trusted by|our (valued )?(customers|clients|partners)|industry leaders|who we (work|partner) with|brands we('ve)? work(ed)? with/i.test(headingText);
+        const imgs = $(el).find('img');
+        const imgCount = imgs.length;
+
+        if (hasMatchingHeading) {
+          if (imgCount >= 5) {
+            foundLogoWall = true;
+            return false; // Break loop
+          } else if (imgCount >= 3) {
+            maxLogosSeen = Math.max(maxLogosSeen, imgCount);
+          }
+        }
+
+        // Option 2: Heading-independent structural signals
+        // Look for wrapper containers containing 3+ logo-like images and very little text
+        const paragraphText = $(el).find('p').text().trim();
+        if (imgCount >= 3 && paragraphText.length < 150) {
+          let allSmall = true;
+          imgs.each((_, imgEl) => {
+            const width = $(imgEl).attr('width');
+            const height = $(imgEl).attr('height');
+            const src = $(imgEl).attr('src') || '';
+            const alt = $(imgEl).attr('alt') || '';
+            
+            // Filter out large images like hero photos or full-size content graphics
+            if (
+              (width && parseInt(width) > 320) || 
+              (height && parseInt(height) > 160) ||
+              src.includes('hero') || src.includes('banner') || src.includes('bg') ||
+              alt.toLowerCase().includes('hero') || alt.toLowerCase().includes('banner')
+            ) {
+              allSmall = false;
+            }
+          });
+
+          if (allSmall) {
+            if (imgCount >= 5) {
+              foundLogoWall = true;
+              return false; // Break loop
+            } else {
+              maxLogosSeen = Math.max(maxLogosSeen, imgCount);
+            }
+          }
         }
       });
-      hasLogoWall = foundLogoWall ? true : "unverified";
+
+      if (foundLogoWall !== true) {
+        foundLogoWall = maxLogosSeen >= 3 ? "unverified" : false;
+      }
+      hasLogoWall = foundLogoWall;
 
       // ── Contact Analysis ──
       hasEmail = $('a[href^="mailto:"]').length > 0 ? true : "unverified";
@@ -622,56 +670,40 @@ export async function POST(request: NextRequest) {
     const hasSocialLinksScore: DetectionState = noSocialLinks === false ? true : noSocialLinks;
     const hasPhoneScore: DetectionState = noPhoneNumber === false ? true : noPhoneNumber;
 
-    const calculateScore = (items: { weight: number; state: DetectionState | boolean }[], ttfbPenalty: boolean = false): number => {
-      let earned = 0;
-      let possible = 0;
-      for (const item of items) {
-        if (item.state === true) {
-          earned += item.weight;
-          possible += item.weight;
-        } else if (item.state === false) {
-          possible += item.weight;
-        }
-      }
-      let percentage = possible > 0 ? (earned / possible) * 100 : 0;
-      if (ttfbPenalty && percentage > 75) percentage = 75;
-      return Math.min(Math.round(percentage / 10), 10);
-    };
-
     // Business Credibility Score (max 10)
-    const credibilityScore = calculateScore([
-      { weight: 1, state: hasAboutPage },
-      { weight: 1, state: hasTeamPage },
-      { weight: 1, state: hasPrivacyPolicy },
-      { weight: 0.5, state: hasTerms },
-      { weight: 2, state: hasTestimonialsSection },
-      { weight: 1.5, state: hasReviewSchemaFlag },
-      { weight: 1.5, state: hasSocialLinksScore },
-      { weight: 1, state: hasAddress },
-      { weight: 1.5, state: hasPhoneScore }
-    ], ttfb > 600);
+    const credibilityScore = computeCredibilityScore({
+      hasAboutPage,
+      hasTeamPage,
+      hasPrivacyPolicy,
+      hasTerms,
+      hasTestimonials: hasTestimonialsSection,
+      hasReviewSchema: hasReviewSchemaFlag,
+      hasSocialLinks: hasSocialLinksScore,
+      hasAddress,
+      hasPhone: hasPhoneScore
+    }, ttfb > 600);
 
     // Local SEO Readiness Score (max 8 → normalise to 10 via percentage)
-    const localSeoScore = calculateScore([
-      { weight: 1.5, state: hasPhoneScore },
-      { weight: 1.5, state: hasAddress },
-      { weight: 2, state: hasLocalSchema },
-      { weight: 1.5, state: hasMapsEmbed },
-      { weight: 1, state: hasCityInH1 },
-      { weight: 1, state: hasServiceArea },
-      { weight: 1.5, state: hasBusinessHours }
-    ], ttfb > 600);
+    const localSeoScore = computeLocalSeoScore({
+      hasPhone: hasPhoneScore,
+      hasAddress,
+      hasLocalSchema,
+      hasMapsEmbed,
+      hasCityInH1,
+      hasServiceArea,
+      hasBusinessHours
+    }, ttfb > 600);
 
     // Online Authority Score (max 10)
-    const onlineAuthorityScore = calculateScore([
-      { weight: 2, state: hasAboutPage === true || hasTeamPage === true ? true : (hasAboutPage === "unverified" && hasTeamPage === "unverified" ? "unverified" : false) },
-      { weight: 2, state: hasTestimonialsSection },
-      { weight: 1.5, state: hasReviewSchemaFlag },
-      { weight: 1.5, state: hasSocialLinksScore },
-      { weight: 1.5, state: hasPrivacyPolicy === true && hasTerms === true ? true : (hasPrivacyPolicy === "unverified" || hasTerms === "unverified" ? "unverified" : false) },
-      { weight: 2, state: ttfb < 500 || cachingActive },
-      { weight: 1.5, state: loadTime < 3.0 }
-    ], ttfb > 600);
+    const onlineAuthorityScore = computeOnlineAuthorityScore({
+      hasAboutOrTeam: hasAboutPage === true || hasTeamPage === true ? true : (hasAboutPage === "unverified" && hasTeamPage === "unverified" ? "unverified" : false),
+      hasTestimonials: hasTestimonialsSection,
+      hasReviewSchema: hasReviewSchemaFlag,
+      hasSocialLinks: hasSocialLinksScore,
+      hasLegalPages: hasPrivacyPolicy === true && hasTerms === true ? true : (hasPrivacyPolicy === "unverified" || hasTerms === "unverified" ? "unverified" : false),
+      hasGoodSpeedOrCache: ttfb < 500 || cachingActive,
+      loadTime
+    }, ttfb > 600);
 
     // ── Gemini AI Synthesis ──────────────────────────────────────────────────
     const blogSummary = blogData?.exists
@@ -704,7 +736,9 @@ export async function POST(request: NextRequest) {
 
     let businessCategory: "local-service" | "professional-service" | "ecommerce" | "content-saas" = 
       hasLocalSchema || hasMapsEmbed ? "local-service" : "professional-service";
-    let executiveSummaryText = `Your website has a website foundation score of ${Math.round((performance + seo + accessibility) / 3)}/100. Caching is ${cachingActive ? "active" : "missing"}, and server response is ${ttfb}ms. Testimonials were ${hasTestimonialsSection ? "" : "not "}detected on your homepage, and AI search crawler access is ${aiRobotsAllowed ? "enabled" : "disabled"}.`;
+    const rawFoundationScore = Math.round((performance + seo + accessibility) / 3);
+    const cappedFoundationScore = (ttfb > 600 && rawFoundationScore > 75) ? 75 : rawFoundationScore;
+    let executiveSummaryText = `Your website has a website foundation score of ${cappedFoundationScore}/100. Caching is ${cachingActive ? "active" : "missing"}, and server response is ${ttfb}ms. Testimonials were ${hasTestimonialsSection ? "" : "not "}detected on your homepage, and AI search crawler access is ${aiRobotsAllowed ? "enabled" : "disabled"}.`;
     let aiObs: Array<{ title: string; body: string }> = [];
 
     const aiRes = await generateAiAnalysis(synthesisSummary);
