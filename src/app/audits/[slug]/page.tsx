@@ -632,18 +632,6 @@ export default async function AuditPage({ params }: Props) {
         <Nav />
         <div className="pt-[72px]">
           <AuditStickyNav discoveryLabel={discoveryLabel} />
-          <header className="border-b border-[#E2E8F0] py-6 bg-white shadow-sm">
-            <div className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6 flex justify-between items-center">
-            <div className="flex flex-col">
-              <span className="text-[13px] font-bold tracking-[0.08em] text-[#C4A35A] uppercase">Naveen Gaur</span>
-              <span className="text-[15px] font-semibold text-[#725921]">Client Audit Portal</span>
-            </div>
-            <div className="text-right">
-              <span className="text-[12px] text-[#1E293B] block">Generated for:</span>
-              <span className="text-[14px] font-medium text-[#0D0D0D]">{name}</span>
-            </div>
-          </div>
-        </header>
 
         <main id="overview" className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6 py-12">
           {/* Section 0: Title */}
