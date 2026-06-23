@@ -562,6 +562,20 @@ export default async function AuditPage({ params }: Props) {
       localSeo?.hasPhone === true
     ].filter(Boolean).length;
 
+    const unverifiedTrustChecks = [
+      credibility?.hasAboutPage === "unverified",
+      credibility?.hasTeamPage === "unverified",
+      credibility?.hasPrivacyPolicy === "unverified",
+      credibility?.hasTerms === "unverified",
+      credibility?.hasTestimonials === "unverified",
+      credibility?.hasReviewSchema === "unverified",
+      credibility?.hasSocialLinks === "unverified",
+      localSeo?.hasAddress === "unverified",
+      localSeo?.hasPhone === "unverified"
+    ].filter(Boolean).length;
+
+    const activeTrustChecks = totalTrustChecks - unverifiedTrustChecks;
+
     // Pillar 3 (Local Search / AI & Discovery) checks:
     const totalDiscoveryChecks = 7;
     const passedDiscoveryChecks = isLocal
@@ -583,6 +597,28 @@ export default async function AuditPage({ params }: Props) {
           onlineAuthority?.hasGoodSpeedOrCache === true,
           loadTime < 3.0
         ].filter(Boolean).length;
+
+    const unverifiedDiscoveryChecks = isLocal
+      ? [
+          localSeo?.hasPhone === "unverified",
+          localSeo?.hasAddress === "unverified",
+          false,
+          localSeo?.hasMapsEmbed === "unverified",
+          localSeo?.hasCityInH1 === "unverified",
+          localSeo?.hasServiceArea === "unverified",
+          localSeo?.hasBusinessHours === "unverified"
+        ].filter(Boolean).length
+      : [
+          (credibility?.hasAboutPage === "unverified" || credibility?.hasTeamPage === "unverified"),
+          onlineAuthority?.hasTestimonials === "unverified",
+          onlineAuthority?.hasReviewSchema === "unverified",
+          onlineAuthority?.hasSocialLinks === "unverified",
+          onlineAuthority?.hasLegalPages === "unverified",
+          onlineAuthority?.hasGoodSpeedOrCache === "unverified",
+          false
+        ].filter(Boolean).length;
+
+    const activeDiscoveryChecks = totalDiscoveryChecks - unverifiedDiscoveryChecks;
 
     return (
       <div className="min-h-screen bg-[#FAFAF8] text-[#0D0D0D] font-sans antialiased selection:bg-[#C4A35A]/20">
@@ -773,7 +809,7 @@ export default async function AuditPage({ params }: Props) {
                 <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Customer stories, team transparency, social proof, and legal trust pages.</p>
               </div>
               <div className="mt-2 text-[12.5px] text-[#725921] font-semibold">
-                {passedTrustChecks} of {totalTrustChecks} checks passed
+                {passedTrustChecks} of {activeTrustChecks} checks verified
               </div>
               <div className="mt-4 pt-3 border-t border-black/[0.04]">
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
@@ -798,7 +834,7 @@ export default async function AuditPage({ params }: Props) {
                 <p className="text-[14px] text-[#475569] px-2 leading-[1.5]">Structured schema data, AI bot rules, and organic discovery signals.</p>
               </div>
               <div className="mt-2 text-[12.5px] text-[#725921] font-semibold">
-                {passedDiscoveryChecks} of {totalDiscoveryChecks} checks passed
+                {passedDiscoveryChecks} of {activeDiscoveryChecks} checks verified
               </div>
               <div className="mt-4 pt-3 border-t border-black/[0.04]">
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
@@ -1437,7 +1473,11 @@ export default async function AuditPage({ params }: Props) {
           {/* Pillar 3: AI & Discovery Readiness */}
           <div id="ai-discovery" className="pt-16 border-t border-[#E2E8F0] mt-16 mb-8">
             <h2 className="text-[26px] font-serif font-bold text-[#725921] tracking-tight mb-2">Pillar 3: {discoveryLabel}</h2>
-            <p className="text-[14.5px] text-[#475569] leading-relaxed">Rolls up AI chatbot crawl rules, business schemas, and search engine metadata configurations.</p>
+            <p className="text-[14.5px] text-[#475569] leading-relaxed">
+              {isLocal 
+                ? "Rolls up local schema identifiers, map listings, geo-relevance indicators, and AI discovery crawlers."
+                : "Rolls up AI chatbot crawl rules, business schemas, and search engine metadata configurations."}
+            </p>
           </div>
           
           {/* Section 3: Can AI Recommend Your Business? */}
@@ -1709,28 +1749,24 @@ export default async function AuditPage({ params }: Props) {
               </>
             )}
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-[580px] mx-auto text-left mb-8 text-[15px] text-[#0D0D0D]">
-              <div className="flex items-start gap-2">
-                <span className="text-[#C4A35A] font-bold shrink-0">✓</span> Which recommendations matter most to your business
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-[#C4A35A] font-bold shrink-0">✓</span> Which ones can safely be ignored
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-[#C4A35A] font-bold shrink-0">✓</span> What I&apos;d fix first if this were my website
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-[#C4A35A] font-bold shrink-0">✓</span> Whether these changes are worth investing in
-              </div>
-            </div>
-            
             <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch mt-8 max-w-[960px] mx-auto">
               <div className="flex-1 bg-white border border-[#E2E8F0] p-6 rounded-xl text-left flex flex-col justify-between shadow-xs">
                 <div>
-                  <h4 className="text-[16px] font-bold text-[#0D0D0D] mb-2 font-serif">Option A: Review Report on a Call</h4>
-                  <p className="text-[14px] text-[#475569] mb-6 leading-[1.6]">
-                    Let's walk through these findings together. We can prioritize the next steps, clarify any technical points, and figure out what changes are worth investing in.
+                  <h4 className="text-[16px] font-bold text-[#0D0D0D] mb-3 font-serif">Option A: Walkthrough Call</h4>
+                  <p className="text-[14px] text-[#475569] mb-4 leading-[1.6]">
+                    Book a free 15-minute walkthrough call. We will review your findings together and cover:
                   </p>
+                  <ul className="space-y-2 mb-6 text-[13.5px] text-[#475569]">
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#C4A35A] font-bold shrink-0">✓</span> Which recommendations matter most to your business
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#C4A35A] font-bold shrink-0">✓</span> Which issues can safely be ignored for now
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#C4A35A] font-bold shrink-0">✓</span> What I&apos;d fix first if this were my own website
+                    </li>
+                  </ul>
                 </div>
                 <div>
                   <a 

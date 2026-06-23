@@ -428,6 +428,27 @@ export async function POST(request: NextRequest) {
             }
 
             if (bestSegment.length > 2 && bestSegment.length < 80) {
+              // Apply contiguous domain-matching word filter to clean up taglines
+              if (domainSlug && domainSlug.length > 2) {
+                const cleanSlug = domainSlug.toLowerCase().replace(/[^a-z0-9]/g, "");
+                const words = bestSegment.split(/[\s_]+/).map(w => w.trim()).filter(Boolean);
+                let bestWords: string[] = [];
+                let currentWords: string[] = [];
+                for (const word of words) {
+                  const cleanWord = word.toLowerCase().replace(/[^a-z0-9]/g, "");
+                  if (cleanWord.length === 0) continue;
+                  if (cleanSlug.includes(cleanWord) || cleanWord.includes(cleanSlug)) {
+                    currentWords.push(word);
+                  } else {
+                    if (currentWords.length > bestWords.length) bestWords = currentWords;
+                    currentWords = [];
+                  }
+                }
+                if (currentWords.length > bestWords.length) bestWords = currentWords;
+                if (bestWords.length > 0) {
+                  bestSegment = bestWords.join(" ");
+                }
+              }
               businessName = he.decode(bestSegment);
             }
           }
