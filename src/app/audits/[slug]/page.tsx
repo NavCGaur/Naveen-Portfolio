@@ -659,13 +659,13 @@ export default async function AuditPage({ params }: Props) {
             {/* Card 1: Strengths */}
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-4 border-b border-black/[0.04] pb-2">
-                  <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Strengths</span>
+                <div className="flex items-center justify-between mb-2 border-b border-black/[0.04] pb-2">
+                  <span className="text-[20px] font-bold uppercase tracking-wider text-[#725921] font-sans">Strengths</span>
                   <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold px-2 py-0.5 rounded-full">
                     {strengthsCount} found
                   </span>
                 </div>
-                <h3 className="text-[20px] font-bold text-[#0D0D0D] mb-4 font-serif">What we like</h3>
+                <h3 className="text-[14.5px] font-medium text-[#475569] mb-4 font-sans">What we like</h3>
                 <div className="space-y-4">
                   {!isTtfbHigh && (
                     <div className="flex items-start gap-2.5">
@@ -728,13 +728,13 @@ export default async function AuditPage({ params }: Props) {
             {/* Card 2: Thesis & Observations */}
             <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-4 border-b border-black/[0.04] pb-2">
-                  <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Thesis</span>
+                <div className="flex items-center justify-between mb-2 border-b border-black/[0.04] pb-2">
+                  <span className="text-[20px] font-bold uppercase tracking-wider text-[#725921] font-sans">Thesis</span>
                   <span className="bg-amber-50 text-amber-700 border border-amber-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
                     read this
                   </span>
                 </div>
-                <h3 className="text-[20px] font-bold text-[#0D0D0D] mb-4 font-serif">What matters most</h3>
+                <h3 className="text-[14.5px] font-medium text-[#475569] mb-4 font-sans">What matters most</h3>
                 
                 <div className="text-[15px] text-[#475569] leading-[1.7] mb-6">
                   {foundationScore >= 80 ? (
@@ -765,11 +765,11 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section: Scores */}
           <div className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs mb-8">
-            <div className="flex items-center justify-between mb-5 border-b border-black/[0.04] pb-2">
-              <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">The Proof</span>
-              <span className="text-[12.5px] text-[#475569]/80 font-bold uppercase tracking-wider">3 pillars</span>
+            <div className="flex items-center justify-between mb-2 border-b border-black/[0.04] pb-2">
+              <span className="text-[20px] font-bold uppercase tracking-wider text-[#725921] font-sans">The Proof</span>
+              <span className="text-[12.5px] text-[#475569]/80 font-bold uppercase tracking-wider font-sans">3 pillars</span>
             </div>
-            <h2 className="text-[20px] font-bold text-[#0D0D0D] mb-6 font-serif">Scores</h2>
+            <h2 className="text-[14.5px] font-medium text-[#475569] mb-6 font-sans">Scores</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Card 1: Technical Foundation */}
@@ -851,8 +851,8 @@ export default async function AuditPage({ params }: Props) {
 
           {/* Section: What to fix */}
           <div id="prioritized-checklist" className="bg-white border border-[#E2E8F0] rounded-xl p-7 shadow-xs mb-8 overflow-hidden">
-            <div className="flex items-center justify-between mb-4 border-b border-black/[0.04] pb-2">
-              <span className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Opportunities</span>
+            <div className="flex items-center justify-between mb-2 border-b border-black/[0.04] pb-2">
+              <span className="text-[20px] font-bold uppercase tracking-wider text-[#725921] font-sans">Opportunities</span>
               {highImpactCount > 0 ? (
                 <span className="bg-red-50 text-red-700 border border-red-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
                   {highImpactCount} high impact
@@ -863,7 +863,7 @@ export default async function AuditPage({ params }: Props) {
                 </span>
               )}
             </div>
-            <h2 className="text-[20px] font-bold text-[#0D0D0D] mb-6 font-serif">What to fix</h2>
+            <h2 className="text-[14.5px] font-medium text-[#475569] mb-6 font-sans">What to fix</h2>
 
             <div className="divide-y divide-[#E2E8F0]">
               {sortedOpportunities.length > 0 ? (
