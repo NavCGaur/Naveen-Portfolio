@@ -20,7 +20,7 @@ export default function AuditStickyNav({ discoveryLabel }: AuditStickyNavProps) 
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPos = window.scrollY + 120; // offset for sticky header
+      const scrollPos = window.scrollY + 160; // offset for sticky main nav (72px) + section nav (48px) + breathing room
 
       // Find which section is currently in view
       for (const section of sections) {
@@ -51,7 +51,7 @@ export default function AuditStickyNav({ discoveryLabel }: AuditStickyNavProps) 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      const top = el.offsetTop - 90; // offset for sticky nav header
+      const top = el.offsetTop - 130; // offset for both sticky headers
       window.scrollTo({
         top,
         behavior: "smooth",
@@ -61,7 +61,7 @@ export default function AuditStickyNav({ discoveryLabel }: AuditStickyNavProps) 
   };
 
   return (
-    <div className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-[#E2E8F0] shadow-xs print:hidden">
+    <div className="sticky top-[72px] z-40 w-full bg-white/80 backdrop-blur-md border-b border-[#E2E8F0] shadow-xs print:hidden">
       <div className="max-w-[1040px] mx-auto px-6 relative flex items-center">
         {/* Navigation scroll container */}
         <div

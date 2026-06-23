@@ -570,7 +570,8 @@ export async function POST(request: NextRequest) {
         const historicAvg = historicIntervals.length > 0
           ? Math.round(historicIntervals.reduce((a, b) => a + b, 0) / historicIntervals.length)
           : undefined;
-        const contentSlowing = recentAvg && historicAvg ? (recentAvg > 30 && recentAvg > historicAvg * 2) : false;
+        const contentSlowing = (recentAvg && historicAvg ? (recentAvg > 30 && recentAvg > historicAvg * 2) : false) ||
+                               (daysSinceLastPost > 14 && avgIntervalDays !== undefined && daysSinceLastPost > avgIntervalDays * 3);
         blogData = {
           exists: true,
           totalPosts: dates.length,

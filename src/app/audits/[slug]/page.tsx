@@ -324,9 +324,12 @@ export default async function AuditPage({ params }: Props) {
 
     // 1. Content Cadence Shift
     if (blog && blog.exists && blog.contentSlowing) {
+      const bodyText = blog.recentAvgIntervalDays && blog.historicAvgIntervalDays && blog.recentAvgIntervalDays > blog.historicAvgIntervalDays
+        ? `Your website has a solid content footprint of ${blog.totalPosts} articles, but recent publishing intervals show a slowdown (${blog.recentAvgIntervalDays} days average vs. ${blog.historicAvgIntervalDays} days historically). Resuming a regular rhythm keeps search engines crawling your site frequently.`
+        : `Your website has a solid content footprint of ${blog.totalPosts} articles, but it has been ${blog.daysSinceLastPost} days since your last post, which is significantly longer than your average posting interval of ${blog.avgIntervalDays} days. Resuming a regular rhythm keeps search engines crawling your site frequently.`;
       contradictionBullets.push({
         title: "Strong Content Library, but Publishing Has Slowed",
-        body: `Your website has a solid content footprint of ${blog.totalPosts} articles, but recent publishing intervals show a slowdown (${blog.recentAvgIntervalDays} days average vs. ${blog.historicAvgIntervalDays} days historically). Resuming a regular rhythm keeps search engines crawling your site frequently.`
+        body: bodyText
       });
     }
 
@@ -397,7 +400,9 @@ export default async function AuditPage({ params }: Props) {
         impact: "Medium",
         difficulty: "Medium",
         time: "2–4 hrs",
-        why: `Recent publishing rhythm has slowed down (${blog.recentAvgIntervalDays} days average vs ${blog.historicAvgIntervalDays} days historically).`,
+        why: blog.recentAvgIntervalDays && blog.historicAvgIntervalDays && blog.recentAvgIntervalDays > blog.historicAvgIntervalDays
+          ? `Recent publishing rhythm has slowed down (${blog.recentAvgIntervalDays} days average vs ${blog.historicAvgIntervalDays} days historically).`
+          : `Long gap since last post (${blog.daysSinceLastPost} days ago vs average interval of ${blog.avgIntervalDays} days).`,
         body: "Your site has a solid library of content, but publishing has slowed down recently. Setting up a consistent rhythm signals active operations to both Google and AI search engines."
       });
     }
@@ -492,7 +497,9 @@ export default async function AuditPage({ params }: Props) {
         task: "Resume Consistent Blog Cadence",
         impact: "Medium",
         effort: "Medium",
-        why: `Recent publishing rhythm slowed down to ${blog.recentAvgIntervalDays} days average interval.`
+        why: blog.recentAvgIntervalDays && blog.historicAvgIntervalDays && blog.recentAvgIntervalDays > blog.historicAvgIntervalDays
+          ? `Recent publishing rhythm slowed down to ${blog.recentAvgIntervalDays} days average interval.`
+          : `Long gap since last post (${blog.daysSinceLastPost} days since last post vs average interval of ${blog.avgIntervalDays} days).`
       });
     }
     if (!llmsTxtPresent) {
@@ -622,9 +629,11 @@ export default async function AuditPage({ params }: Props) {
 
     return (
       <div className="min-h-screen bg-[#FAFAF8] text-[#0D0D0D] font-sans antialiased selection:bg-[#C4A35A]/20">
-        <AuditStickyNav discoveryLabel={discoveryLabel} />
-        <header className="border-b border-[#E2E8F0] py-6 bg-white shadow-sm">
-          <div className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6 flex justify-between items-center">
+        <Nav />
+        <div className="pt-[72px]">
+          <AuditStickyNav discoveryLabel={discoveryLabel} />
+          <header className="border-b border-[#E2E8F0] py-6 bg-white shadow-sm">
+            <div className="max-w-[860px] lg:max-w-[1040px] mx-auto px-6 flex justify-between items-center">
             <div className="flex flex-col">
               <span className="text-[13px] font-bold tracking-[0.08em] text-[#C4A35A] uppercase">Naveen Gaur</span>
               <span className="text-[15px] font-semibold text-[#725921]">Client Audit Portal</span>
@@ -1218,7 +1227,15 @@ export default async function AuditPage({ params }: Props) {
                       <div className="flex gap-2.5 items-start">
                         <span className="text-amber-500 font-bold">⚠️</span>
                         <p>
-                          <strong>Publishing slowdown detected:</strong> Your recent posting interval has increased to <strong>{blog.recentAvgIntervalDays} days</strong> compared to your historical average of <strong>{blog.historicAvgIntervalDays} days</strong>. Restoring a consistent rhythm signals activity to search engine bots.
+                          {blog.recentAvgIntervalDays && blog.historicAvgIntervalDays && blog.recentAvgIntervalDays > blog.historicAvgIntervalDays ? (
+                            <>
+                              <strong>Publishing slowdown detected:</strong> Your recent posting interval has increased to <strong>{blog.recentAvgIntervalDays} days</strong> compared to your historical average of <strong>{blog.historicAvgIntervalDays} days</strong>. Restoring a consistent rhythm signals activity to search engine bots.
+                            </>
+                          ) : (
+                            <>
+                              <strong>Publishing gap detected:</strong> It has been <strong>{blog.daysSinceLastPost} days</strong> since your last post, which is significantly longer than your average posting interval of <strong>{blog.avgIntervalDays} days</strong>. Restoring a consistent rhythm signals activity to search engine bots.
+                            </>
+                          )}
                         </p>
                       </div>
                     )}
@@ -1801,6 +1818,7 @@ export default async function AuditPage({ params }: Props) {
             <p>© {new Date().getFullYear()} Naveen Gaur. All rights reserved. Private Client Audit Portal.</p>
           </div>
         </footer>
+        </div>
       </div>
     );
   }
