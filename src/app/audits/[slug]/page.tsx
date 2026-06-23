@@ -665,7 +665,7 @@ export default async function AuditPage({ params }: Props) {
                     {strengthsCount} found
                   </span>
                 </div>
-                <h3 className="text-[14.5px] font-medium text-[#475569] mb-4 font-sans">What we like</h3>
+                <h3 className="text-[16px] font-bold text-[#475569] mb-4 font-sans">What we like</h3>
                 <div className="space-y-4">
                   {!isTtfbHigh && (
                     <div className="flex items-start gap-2.5">
@@ -734,7 +734,7 @@ export default async function AuditPage({ params }: Props) {
                     read this
                   </span>
                 </div>
-                <h3 className="text-[14.5px] font-medium text-[#475569] mb-4 font-sans">What matters most</h3>
+                <h3 className="text-[16px] font-bold text-[#475569] mb-4 font-sans">What matters most</h3>
                 
                 <div className="text-[15px] text-[#475569] leading-[1.7] mb-6">
                   {foundationScore >= 80 ? (
@@ -769,7 +769,7 @@ export default async function AuditPage({ params }: Props) {
               <span className="text-[20px] font-bold uppercase tracking-wider text-[#725921] font-sans">The Proof</span>
               <span className="text-[12.5px] text-[#475569]/80 font-bold uppercase tracking-wider font-sans">3 pillars</span>
             </div>
-            <h2 className="text-[14.5px] font-medium text-[#475569] mb-6 font-sans">Scores</h2>
+            <h2 className="text-[16px] font-bold text-[#475569] mb-6 font-sans">Scores</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Card 1: Technical Foundation */}
@@ -863,7 +863,7 @@ export default async function AuditPage({ params }: Props) {
                 </span>
               )}
             </div>
-            <h2 className="text-[14.5px] font-medium text-[#475569] mb-6 font-sans">What to fix</h2>
+            <h2 className="text-[16px] font-bold text-[#475569] mb-6 font-sans">What to fix</h2>
 
             <div className="divide-y divide-[#E2E8F0]">
               {sortedOpportunities.length > 0 ? (
