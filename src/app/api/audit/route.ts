@@ -283,12 +283,15 @@ export async function POST(request: NextRequest) {
         rawHtmlLoadTime = parseFloat(((globalThis.performance.now() - htmlStart) / 1000).toFixed(2));
         if (!res.ok) {
           rawHtmlFetchFailed = true;
+          const errText = await res.text().catch(() => "");
+          console.error(`Raw HTML fetch for ${cleanUrl} responded with status ${res.status}: ${errText.substring(0, 500)}`);
           return null;
         }
         const html = await res.text();
         return { ok: true, headers: res.headers, html };
-      }).catch(() => {
+      }).catch((err) => {
         rawHtmlFetchFailed = true;
+        console.error(`Raw HTML fetch for ${cleanUrl} failed or timed out:`, err);
         return null;
       }),
 
@@ -307,7 +310,18 @@ export async function POST(request: NextRequest) {
         .catch(() => false),
 
       fetch(`${PAGESPEED_ENDPOINT}?url=${encodeURIComponent(cleanUrl)}&category=performance&category=seo&category=best-practices&category=accessibility&key=${PAGESPEED_API_KEY}`,
-        { signal: AbortSignal.timeout(40000) }).catch(() => null),
+        { signal: AbortSignal.timeout(40000) })
+        .then(async (res) => {
+          if (!res.ok) {
+            const errText = await res.text().catch(() => "");
+            console.error(`PageSpeed API responded with status ${res.status}: ${errText}`);
+          }
+          return res;
+        })
+        .catch((err) => {
+          console.error("PageSpeed API fetch failed / timed out:", err);
+          return null;
+        }),
 
       // RSS blog feed — try common paths
       Promise.any([
