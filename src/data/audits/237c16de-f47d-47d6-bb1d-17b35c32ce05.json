@@ -1,0 +1,98 @@
+{
+  "id": "237c16de-f47d-47d6-bb1d-17b35c32ce05",
+  "url": "https://fabriceabbey.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-24T17:47:11.641Z",
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website currently lacks essential trust-building elements such as testimonials, an about page, and verified contact details like an email address or physical location. Technical performance is hindered by disabled caching, and your content updates have slowed significantly from a nine-day rhythm to over nine months between posts. Additionally, the site is not currently configured to be easily read by modern artificial intelligence tools. These findings indicate a need for foundational updates to improve both your site's reliability and its visibility to automated systems.",
+  "aiObservations": [
+    {
+      "title": "Building Trust and Credibility",
+      "body": "You have a great opportunity to strengthen your reputation by adding customer testimonials and a dedicated about page. These additions will help visitors feel more confident in your services and provide a clearer picture of your business identity."
+    },
+    {
+      "title": "Enhancing Digital Presence",
+      "body": "By adding your physical address, business hours, and a map to your site, you can make it much easier for local clients to find and contact you. These simple updates will help your business appear more accessible and professional to those searching for your services nearby."
+    },
+    {
+      "title": "Optimizing Performance and Reach",
+      "body": "You can improve your website's speed and reach by enabling caching and establishing a more consistent schedule for your blog posts. These steps will ensure your site runs smoothly for visitors while keeping your content fresh and relevant for search engines and artificial intelligence tools."
+    }
+  ],
+  "pageSpeedUnavailable": true,
+  "rawHtmlFetchFailed": true,
+  "details": {
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": false,
+    "schemaTypes": [],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": true,
+      "totalPosts": 5,
+      "daysSinceLastPost": 860,
+      "avgIntervalDays": 205,
+      "recentAvgIntervalDays": 270,
+      "historicAvgIntervalDays": 9,
+      "contentSlowing": true
+    },
+    "credibility": {
+      "score": 3,
+      "hasAboutPage": false,
+      "hasTeamPage": false,
+      "hasPrivacyPolicy": false,
+      "hasTerms": false,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": false,
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 2,
+      "hasPhone": true,
+      "hasAddress": false,
+      "hasLocalSchema": false,
+      "hasMapsEmbed": false,
+      "hasCityInH1": false,
+      "hasServiceArea": false,
+      "hasBusinessHours": false
+    },
+    "onlineAuthority": {
+      "score": 2,
+      "hasAboutOrTeam": false,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": false,
+      "hasGoodSpeedOrCache": "unverified"
+    },
+    "testimonials": {
+      "found": false,
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": false,
+      "hasForm": false,
+      "hasAddress": false,
+      "hasMapsEmbed": false,
+      "hasBusinessHours": false
+    }
+  }
+}
