@@ -1,0 +1,120 @@
+{
+  "id": "91326e58-be7f-40ad-bec8-7130627553f0",
+  "url": "https://modawellness.co.uk",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-24T18:39:44.489Z",
+  "metrics": {
+    "performance": 96,
+    "seo": 100,
+    "bestPractices": 100,
+    "accessibility": 77
+  },
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website currently demonstrates strong technical foundations, including effective mobile performance, active caching, and a high level of readiness for AI-driven search tools. While your online authority and local search presence are well-established, there is a notable absence of customer testimonials and a regular blog rhythm. Addressing these content gaps will help you better showcase your expertise and build deeper trust with your visitors.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Social Proof",
+      "body": "Your website currently lacks visible testimonials, which presents a great opportunity to highlight your patient success stories. By adding a dedicated section for feedback, you can provide prospective clients with the reassurance they need to choose your services."
+    },
+    {
+      "title": "Building Educational Authority",
+      "body": "Since your site does not currently feature a blog, you have a clear path to establish yourself as a thought leader in your field. Sharing regular updates or educational content will help you engage your audience and keep your website feeling fresh and active."
+    },
+    {
+      "title": "Optimizing Contact Information",
+      "body": "While your site is well-optimized for search engines, verifying your physical address and business hours will provide more clarity for your visitors. Ensuring these details are easily accessible will help your business appear more transparent and reliable to those looking for your services."
+    }
+  ],
+  "pageSpeedUnavailable": false,
+  "rawHtmlLoadTime": 0.29,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "ttfb": 216,
+    "loadTime": 1,
+    "lcp": 0.5,
+    "fcp": 0.5,
+    "tbt": 29,
+    "cls": 0.109,
+    "pageSize": 1.4,
+    "pageBuilder": "Elementor",
+    "pluginCount": 1,
+    "cachingActive": true,
+    "schemaTypes": [
+      "WebPage",
+      "ReadAction",
+      "ImageObject",
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "PropertyValueSpecification",
+      "Organization"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Doctor led aesthetics in Wiltshire",
+    "businessType": "WebSite",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 8,
+      "hasAboutPage": true,
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": "unverified",
+      "hasTerms": "unverified",
+      "hasTestimonials": true,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 10,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": true,
+      "hasMapsEmbed": true,
+      "hasCityInH1": true,
+      "hasServiceArea": true,
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 9,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": true,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": "unverified",
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": true,
+      "count": 0,
+      "hasNamedAttribution": "unverified",
+      "hasSchema": false,
+      "hasPhotos": "unverified",
+      "hasLogoWall": true
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": "unverified",
+      "hasAddress": "unverified",
+      "hasMapsEmbed": true,
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
