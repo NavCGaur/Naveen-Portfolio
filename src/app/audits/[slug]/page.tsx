@@ -459,10 +459,10 @@ export default async function AuditPage({ params }: Props) {
 
     const highImpactCount = sortedOpportunities.filter(o => o.impact === "High").length;
     let strengthsCount = 0;
-    if (!isTtfbHigh) strengthsCount++;
+    if (!pageSpeedUnavailable && !isTtfbHigh) strengthsCount++;
     if (!isCachingMissing) strengthsCount++;
     if (!isAiBlocked) strengthsCount++;
-    if (!isSlow) strengthsCount++;
+    if (!pageSpeedUnavailable && !isSlow) strengthsCount++;
     if (hasLocalBusinessSchema) strengthsCount++;
 
     // Assemble dynamic list of recommendations
@@ -695,7 +695,7 @@ export default async function AuditPage({ params }: Props) {
                 </div>
                 <h3 className="text-[16px] font-bold text-[#475569] mb-4 font-sans">What we like</h3>
                 <div className="space-y-4">
-                  {!isTtfbHigh && (
+                  {!pageSpeedUnavailable && !isTtfbHigh && (
                     <div className="flex items-start gap-2.5">
                       <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
                       <div>
@@ -722,7 +722,7 @@ export default async function AuditPage({ params }: Props) {
                       </div>
                     </div>
                   )}
-                  {!isSlow && (
+                  {!pageSpeedUnavailable && !isSlow && (
                     <div className="flex items-start gap-2.5">
                       <span className="text-emerald-600 font-bold text-[16px] mt-0.5">✓</span>
                       <div>
@@ -1431,7 +1431,7 @@ export default async function AuditPage({ params }: Props) {
                         {testimonials.hasPhotos === true ? "Yes ✓" : testimonials.hasPhotos === "unverified" ? "⚠️" : "Missing ⚠️"}
                       </span>
                     </div>
-                    <div className="bg-[#FAFAF8] p-4 rounded-lg border border-black/[0.04]">
+                    <div className="bg-[#FAFAF8] p-4 rounded-lg border border-[#000000]/[0.04]">
                       <span className="block text-[12px] uppercase font-bold text-[#475569] mb-1">Logo Wall</span>
                       <span className="text-[19px] font-semibold text-[#0D0D0D]">
                         {testimonials.hasLogoWall === true ? "Yes ✓" : testimonials.hasLogoWall === "unverified" ? "⚠️" : "Missing ⚠️"}
@@ -1439,7 +1439,7 @@ export default async function AuditPage({ params }: Props) {
                     </div>
                   </div>
                   <div className="text-[14.5px] text-[#475569] leading-[1.6] space-y-3">
-                    {!testimonials.hasNamedAttribution && (
+                    {testimonials.hasNamedAttribution === false && (
                       <div className="flex gap-2.5 items-start">
                         <span className="text-amber-500 font-bold">⚠️</span>
                         <p>
@@ -1447,7 +1447,7 @@ export default async function AuditPage({ params }: Props) {
                         </p>
                       </div>
                     )}
-                    {!testimonials.hasPhotos && (
+                    {testimonials.hasPhotos === false && (
                       <div className="flex gap-2.5 items-start">
                         <span className="text-amber-500 font-bold">⚠️</span>
                         <p>
@@ -1455,7 +1455,7 @@ export default async function AuditPage({ params }: Props) {
                         </p>
                       </div>
                     )}
-                    {!testimonials.hasSchema && (
+                    {testimonials.hasSchema === false && (
                       <div className="flex gap-2.5 items-start">
                         <span className="text-amber-500 font-bold">⚠️</span>
                         <p>
@@ -1552,15 +1552,15 @@ export default async function AuditPage({ params }: Props) {
                       <span className="text-[14px] font-medium text-[#475569]">Contact Form</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[16px]">{contact.hasAddress ? "✓" : "❌"}</span>
+                      <span className="text-[16px]">{contact.hasAddress === true ? "✓" : contact.hasAddress === "unverified" ? "⚠️" : "❌"}</span>
                       <span className="text-[14px] font-medium text-[#475569]">Physical Address</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[16px]">{contact.hasMapsEmbed ? "✓" : "❌"}</span>
+                      <span className="text-[16px]">{contact.hasMapsEmbed === true ? "✓" : contact.hasMapsEmbed === "unverified" ? "⚠️" : "❌"}</span>
                       <span className="text-[14px] font-medium text-[#475569]">Google Maps Embed</span>
                     </div>
                     <div className="flex items-center gap-2.5 bg-[#FAFAF8] p-3 rounded-lg border border-black/[0.04]">
-                      <span className="text-[16px]">{contact.hasBusinessHours ? "✓" : "❌"}</span>
+                      <span className="text-[16px]">{contact.hasBusinessHours === true ? "✓" : contact.hasBusinessHours === "unverified" ? "⚠️" : "❌"}</span>
                       <span className="text-[14px] font-medium text-[#475569]">Business Hours</span>
                     </div>
                   </div>

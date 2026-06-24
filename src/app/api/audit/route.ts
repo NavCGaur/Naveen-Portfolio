@@ -19,7 +19,7 @@ const lookup = promisify(dns.lookup);
 const PAGESPEED_API_KEY = process.env.PAGESPEED_API_KEY;
 const GEMINI_API_KEY = process.env.GOOGLE_GEMINI_API_KEY;
 const PAGESPEED_ENDPOINT = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
-const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
+const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent";
 
 const auditRequestSchema = z.object({
   url: z.string().url("Please enter a valid website URL"),
@@ -97,7 +97,10 @@ interface GeminiAnalysisResponse {
 async function generateAiAnalysis(
   summary: Record<string, unknown>
 ): Promise<GeminiAnalysisResponse | null> {
-  if (!GEMINI_API_KEY) return null;
+  if (!GEMINI_API_KEY) {
+    console.warn("Gemini API key is not configured.");
+    return null;
+  }
   try {
     const prompt = `You are a senior digital consultant reviewing a website audit.
 Analyze the following website findings and output exactly one JSON object.
@@ -133,14 +136,24 @@ Output ONLY a valid JSON object matching this schema:
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: { temperature: 0.1, maxOutputTokens: 800 },
       }),
-      signal: AbortSignal.timeout(7000),
+      signal: AbortSignal.timeout(15000),
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const errBody = await res.text().catch(() => "");
+      console.error(`Gemini API call failed with status ${res.status}: ${errBody}`);
+      return null;
+    }
+
     const data = await res.json();
+    const modelVersion = data?.modelVersion ?? "unknown";
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
     const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) return null;
+    if (!jsonMatch) {
+      console.error(`Gemini API response did not contain a valid JSON block. Model: ${modelVersion}. Raw response text: ${text}`);
+      return null;
+    }
+
     const parsed = JSON.parse(jsonMatch[0]);
     if (
       parsed &&
@@ -149,14 +162,18 @@ Output ONLY a valid JSON object matching this schema:
       typeof parsed.executiveSummary === "string" &&
       Array.isArray(parsed.observations)
     ) {
+      console.log(`Gemini API success | status 200 OK | Model: ${modelVersion} | Category: ${parsed.businessCategory}`);
       return {
         businessCategory: parsed.businessCategory as any,
         executiveSummary: parsed.executiveSummary,
         observations: parsed.observations.slice(0, 3),
       };
     }
+
+    console.error(`Gemini API parsed JSON did not match expected schema. Model: ${modelVersion}. Parsed output:`, parsed);
     return null;
-  } catch {
+  } catch (e) {
+    console.error("Gemini API call critical error / timeout encountered:", e);
     return null;
   }
 }
@@ -279,8 +296,14 @@ export async function POST(request: NextRequest) {
         .then(async (res) => { if (!res.ok) return null; return { ok: true, text: await res.text() }; })
         .catch(() => null),
 
-      fetch(`${origin}/llms.txt`, { signal: AbortSignal.timeout(3000) })
-        .then(async (res) => { if (res.ok) { await res.text(); return true; } return false; })
+      fetch(`${origin}/llms.txt`, { signal: AbortSignal.timeout(5000) })
+        .then(async (res) => {
+          if (res.ok) {
+            const txt = await res.text();
+            return txt.trim().length > 0;
+          }
+          return false;
+        })
         .catch(() => false),
 
       fetch(`${PAGESPEED_ENDPOINT}?url=${encodeURIComponent(cleanUrl)}&category=performance&category=seo&category=best-practices&category=accessibility&key=${PAGESPEED_API_KEY}`,
@@ -576,10 +599,13 @@ export async function POST(request: NextRequest) {
       // ── Contact Analysis ──
       hasEmail = $('a[href^="mailto:"]').length > 0 ? true : "unverified";
       hasContactForm = $('form input').length > 0 ? true : "unverified";
-      hasMapsEmbed = $('iframe[src*="maps.google.com"], iframe[src*="google.com/maps"], iframe[src*="map.bing.com"]').length > 0 ? true : "unverified";
+      hasMapsEmbed = (
+        $('iframe[src*="maps.google.com"], iframe[src*="google.com/maps"], iframe[src*="map.bing.com"]').length > 0 ||
+        $('a[href*="google.com/maps"], a[href*="maps.google.com"], a[href*="goo.gl/maps"], a[href*="maps/dir/"]').length > 0
+      ) ? true : "unverified";
       
       if ((hasBusinessHours as DetectionState) !== true) {
-        hasBusinessHours = /(mon[–\-]fri|open\s+\d|hours?:|monday|9am|10am|we are open)/i.test(allText) ? true : "unverified";
+        hasBusinessHours = /(mon[–\-]fri|open\s+\d|hours?:|monday|9am|10am|we are open|by appointment|appointment only|call (us )?(to|for) (schedule|book))/i.test(allText) ? true : "unverified";
       }
 
       // ── Local SEO Signals ──
@@ -587,7 +613,10 @@ export async function POST(request: NextRequest) {
       hasCityInH1 = /\b[A-Z][a-z]{3,}\b/.test($('h1').first().text()) && !/^(Welcome|Home|About|Services|Our|The|Get|Book|Free|Best|Top)\b/i.test(h1TextContent) ? true : "unverified";
       hasServiceArea = /(serving|we serve|service area|near |in [A-Z][a-z]+,)/i.test(allText.substring(0, 5000)) ? true : "unverified";
       if ((hasAddress as DetectionState) !== true) {
-        hasAddress = /\d{2,5}\s+[A-Z][a-z]+\s+(Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Blvd|Lane|Ln)/i.test(allText) ? true : "unverified";
+        const addressPattern = /\b\d{1,5}\s+([A-Za-z0-9#\s.]+)\s+(Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Blvd|Lane|Ln|Highway|Hwy|Way|Court|Ct|Circle|Cir|Twp\s+Rd|Township\s+Road|R\.R\.|RR|Concession|PO\s+Box|P\.O\.\s+Box)\b/i;
+        const postalPattern = /\b[A-Z][0-9][A-Z]\s*[0-9][A-Z][0-9]\b/i;
+        const zipPattern = /\b[A-Z]{2}\s+\d{5}(-\d{4})?\b/i;
+        hasAddress = addressPattern.test(allText) || postalPattern.test(allText) || zipPattern.test(allText) ? true : "unverified";
       }
     }
 
@@ -607,7 +636,7 @@ export async function POST(request: NextRequest) {
         aiRobotsAllowed = false;
       }
     }
-    const llmsTxtPresent = robotsRes != null && (llmsRes ?? false);
+    const llmsTxtPresent = llmsRes ?? false;
 
     // ── Blog / RSS Analysis ──────────────────────────────────────────────────
     let blogData: { exists: boolean; totalPosts: number; daysSinceLastPost?: number; avgIntervalDays?: number; recentAvgIntervalDays?: number; historicAvgIntervalDays?: number; contentSlowing?: boolean; } | undefined;
