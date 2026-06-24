@@ -261,7 +261,7 @@ export async function POST(request: NextRequest) {
     const [htmlRes, robotsRes, llmsRes, psRes, rssRes] = await Promise.all([
       fetch(cleanUrl, {
         headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" },
-        signal: AbortSignal.timeout(8500),
+        signal: AbortSignal.timeout(15000),
       }).then(async (res) => {
         rawHtmlLoadTime = parseFloat(((globalThis.performance.now() - htmlStart) / 1000).toFixed(2));
         if (!res.ok) {
@@ -284,7 +284,7 @@ export async function POST(request: NextRequest) {
         .catch(() => false),
 
       fetch(`${PAGESPEED_ENDPOINT}?url=${encodeURIComponent(cleanUrl)}&category=performance&category=seo&category=best-practices&category=accessibility&key=${PAGESPEED_API_KEY}`,
-        { signal: AbortSignal.timeout(8500) }).catch(() => null),
+        { signal: AbortSignal.timeout(40000) }).catch(() => null),
 
       // RSS blog feed — try common paths
       Promise.any([
