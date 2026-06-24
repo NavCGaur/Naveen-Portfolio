@@ -404,6 +404,18 @@ export default async function AuditPage({ params }: Props) {
       });
     }
 
+    if (isTtfbHigh) {
+      opportunitiesList.push({
+        id: "server-ttfb",
+        title: "Upgrade Hosting Response (TTFB)",
+        impact: "Medium",
+        difficulty: "Hard",
+        time: "4+ hrs",
+        why: `Your server takes ${ttfb}ms to respond, which is above the 500ms benchmark.`,
+        body: "Even if your page visually loads quickly, your hosting server takes a long time to acknowledge the initial request. Migrating to a higher-performance host or optimizing your server database will establish a stronger, more scalable technical foundation."
+      });
+    }
+
     if (blog && blog.exists && isContentSlowing) {
       opportunitiesList.push({
         id: "blog-cadence",
@@ -493,6 +505,15 @@ export default async function AuditPage({ params }: Props) {
     }
 
     // FIX NEXT
+    if (isTtfbHigh && !isSlow) {
+      fixNextRecs.push({
+        task: "Upgrade Hosting Server (TTFB)",
+        impact: "Medium",
+        effort: "High",
+        why: `Your server takes ${ttfb}ms to respond, dragging down your foundation score.`
+      });
+    }
+
     if (!testimonials || !testimonials.found) {
       fixNextRecs.push({
         task: "Add Social Proof & Reviews",
@@ -746,10 +767,12 @@ export default async function AuditPage({ params }: Props) {
                 <div className="text-[15px] text-[#475569] leading-[1.7] mb-6">
                   {foundationScore === null ? (
                     <>Your website's speed analysis is currently unmeasured because Google's testing tools timed out trying to connect. We recommend resolving host server response delays so your site can be fully benchmarked.</>
-                  ) : foundationScore >= 80 ? (
-                    <>Your website already has a strong technical foundation. The biggest opportunity isn&apos;t speed — it is <strong>visibility and trust</strong>: helping search engines, AI platforms, and prospective clients understand and trust your business more quickly.</>
-                  ) : (
+                  ) : isSlow ? (
                     <>The primary bottleneck for your website is <strong>technical performance</strong>. Slow mobile loading times create friction for incoming visitors, which needs to be resolved before focusing on visibility and trust.</>
+                  ) : isTtfbHigh && foundationScore < 80 ? (
+                    <>Your mobile loading times are surprisingly good, but your <strong>hosting server response (TTFB)</strong> is slow. While visitors see the page quickly today, this underlying server friction holds back your technical foundation score and limits scalability.</>
+                  ) : (
+                    <>Your website already has a strong technical foundation. The biggest opportunity isn&apos;t speed — it is <strong>visibility and trust</strong>: helping search engines, AI platforms, and prospective clients understand and trust your business more quickly.</>
                   )}
                 </div>
 
