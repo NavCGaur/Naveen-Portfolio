@@ -1,0 +1,113 @@
+{
+  "id": "921b06d1-5f76-40f1-b695-e6dfe759ffdb",
+  "url": "https://fabriceabbey.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-24T18:06:45.379Z",
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website currently maintains a strong foundation with active local business details and enabled caching for improved performance. While your content updates have slowed significantly, moving from a nine-day cycle to a 270-day gap, your site remains technically prepared for AI integration. You have 16 testimonials displayed, though these currently lack verified attribution. Overall, the site is well-positioned with current metadata and copyright information.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Trust Through Verification",
+      "body": "You have a solid collection of 16 testimonials that showcase your service quality. By adding verified attribution to these entries, you can further strengthen the credibility of your brand for prospective clients."
+    },
+    {
+      "title": "Revitalizing Your Content Strategy",
+      "body": "Your website has a history of consistent updates, which provides a great base for future growth. Re-establishing a regular posting rhythm will help keep your audience engaged and ensure your site remains a fresh resource for travelers."
+    },
+    {
+      "title": "Leveraging AI Readiness",
+      "body": "Your site is already configured to be easily understood by modern AI tools, which is a significant advantage. You can use this readiness to ensure your business information is accurately represented whenever potential clients search for luxury travel services."
+    }
+  ],
+  "pageSpeedUnavailable": true,
+  "rawHtmlLoadTime": 0.18,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "pageBuilder": "Elementor",
+    "pluginCount": 4,
+    "cachingActive": true,
+    "schemaTypes": [
+      "WebPage",
+      "ReadAction",
+      "ImageObject",
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "PropertyValueSpecification",
+      "Organization",
+      "VideoObject"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Luxury Yacht Charters & Bespoke Travel | Fabrice Abbey",
+    "businessType": "WebSite",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": true,
+      "totalPosts": 5,
+      "daysSinceLastPost": 860,
+      "avgIntervalDays": 205,
+      "recentAvgIntervalDays": 270,
+      "historicAvgIntervalDays": 9,
+      "contentSlowing": true
+    },
+    "credibility": {
+      "score": 8,
+      "hasAboutPage": true,
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": true,
+      "hasTerms": "unverified",
+      "hasTestimonials": true,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": true,
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 10,
+      "hasPhone": true,
+      "hasAddress": true,
+      "hasLocalSchema": true,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": "unverified",
+      "hasServiceArea": true,
+      "hasBusinessHours": true
+    },
+    "onlineAuthority": {
+      "score": 8,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": true,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": "unverified",
+      "hasGoodSpeedOrCache": "unverified"
+    },
+    "testimonials": {
+      "found": true,
+      "count": 16,
+      "hasNamedAttribution": "unverified",
+      "hasSchema": false,
+      "hasPhotos": "unverified",
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": true,
+      "hasAddress": true,
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": true
+    }
+  }
+}
