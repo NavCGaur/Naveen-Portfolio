@@ -59,14 +59,15 @@ async function checkUrlSafety(targetUrl: string): Promise<{ safe: boolean; reaso
   }
 }
 
-// In-memory rate limiter: 2 audits per IP per 24h
+// In-memory rate limiter: 15 audits per IP per 24h (raised for testing)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 function checkRateLimit(ip: string): boolean {
+  if (ip === "127.0.0.1" || ip === "::1" || ip === "localhost") return true;
   const now = Date.now();
   const entry = rateLimitMap.get(ip);
   if (!entry) { rateLimitMap.set(ip, { count: 1, resetTime: now + 86400000 }); return true; }
   if (now > entry.resetTime) { rateLimitMap.set(ip, { count: 1, resetTime: now + 86400000 }); return true; }
-  if (entry.count >= 2) return false;
+  if (entry.count >= 15) return false;
   entry.count += 1;
   return true;
 }
@@ -260,7 +261,7 @@ export async function POST(request: NextRequest) {
     const [htmlRes, robotsRes, llmsRes, psRes, rssRes] = await Promise.all([
       fetch(cleanUrl, {
         headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" },
-        signal: AbortSignal.timeout(15000),
+        signal: AbortSignal.timeout(8500),
       }).then(async (res) => {
         rawHtmlLoadTime = parseFloat(((globalThis.performance.now() - htmlStart) / 1000).toFixed(2));
         if (!res.ok) {
@@ -274,23 +275,23 @@ export async function POST(request: NextRequest) {
         return null;
       }),
 
-      fetch(`${origin}/robots.txt`, { signal: AbortSignal.timeout(5000) })
+      fetch(`${origin}/robots.txt`, { signal: AbortSignal.timeout(3000) })
         .then(async (res) => { if (!res.ok) return null; return { ok: true, text: await res.text() }; })
         .catch(() => null),
 
-      fetch(`${origin}/llms.txt`, { signal: AbortSignal.timeout(5000) })
+      fetch(`${origin}/llms.txt`, { signal: AbortSignal.timeout(3000) })
         .then(async (res) => { if (res.ok) { await res.text(); return true; } return false; })
         .catch(() => false),
 
       fetch(`${PAGESPEED_ENDPOINT}?url=${encodeURIComponent(cleanUrl)}&category=performance&category=seo&category=best-practices&category=accessibility&key=${PAGESPEED_API_KEY}`,
-        { signal: AbortSignal.timeout(48000) }).catch(() => null),
+        { signal: AbortSignal.timeout(8500) }).catch(() => null),
 
       // RSS blog feed — try common paths
       Promise.any([
-        fetch(`${origin}/feed`, { signal: AbortSignal.timeout(6000) }),
-        fetch(`${origin}/rss.xml`, { signal: AbortSignal.timeout(6000) }),
-        fetch(`${origin}/blog/feed`, { signal: AbortSignal.timeout(6000) }),
-        fetch(`${origin}/feed.xml`, { signal: AbortSignal.timeout(6000) }),
+        fetch(`${origin}/feed`, { signal: AbortSignal.timeout(4000) }),
+        fetch(`${origin}/rss.xml`, { signal: AbortSignal.timeout(4000) }),
+        fetch(`${origin}/blog/feed`, { signal: AbortSignal.timeout(4000) }),
+        fetch(`${origin}/feed.xml`, { signal: AbortSignal.timeout(4000) }),
       ]).then(async (res) => res.ok ? res.text() : null).catch(() => null),
     ]);
 
