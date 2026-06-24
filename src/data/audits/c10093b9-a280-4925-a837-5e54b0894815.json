@@ -1,0 +1,82 @@
+{
+  "id": "c10093b9-a280-4925-a837-5e54b0894815",
+  "url": "https://greatescapekayaks.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-24T07:07:58.958Z",
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website's speed analysis is currently unmeasured because Google's testing tools timed out trying to connect. Caching is missing, testimonials were detected on your homepage, and AI search crawler access is enabled.",
+  "aiObservations": [],
+  "pageSpeedUnavailable": true,
+  "rawHtmlLoadTime": 0.17,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": false,
+    "schemaTypes": [],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Great Escape Kayaks",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": true,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 8,
+      "hasAboutPage": true,
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": true,
+      "hasTerms": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": true,
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 7,
+      "hasPhone": true,
+      "hasAddress": true,
+      "hasLocalSchema": false,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": true,
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 8,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": true,
+      "hasGoodSpeedOrCache": "unverified"
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": true,
+      "hasForm": true,
+      "hasAddress": true,
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
