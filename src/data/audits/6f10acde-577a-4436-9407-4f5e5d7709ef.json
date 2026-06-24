@@ -1,0 +1,107 @@
+{
+  "id": "6f10acde-577a-4436-9407-4f5e5d7709ef",
+  "url": "https://modawellness.co.uk",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-24T08:20:27.839Z",
+  "metrics": {
+    "performance": 93,
+    "seo": 100,
+    "bestPractices": 100,
+    "accessibility": 77
+  },
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website has a website foundation score of 90/100. Caching is active, and server response is 210ms. Testimonials were detected on your homepage, and AI search crawler access is enabled.",
+  "aiObservations": [],
+  "pageSpeedUnavailable": false,
+  "rawHtmlLoadTime": 0.28,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "ttfb": 210,
+    "loadTime": 1.28,
+    "lcp": 0.73,
+    "fcp": 0.61,
+    "tbt": 137,
+    "cls": 0.109,
+    "pageSize": 1.4,
+    "pageBuilder": "Elementor",
+    "pluginCount": 1,
+    "cachingActive": true,
+    "schemaTypes": [
+      "WebPage",
+      "ReadAction",
+      "ImageObject",
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "PropertyValueSpecification",
+      "Organization"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Doctor led aesthetics in Wiltshire",
+    "businessType": "WebSite",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 8,
+      "hasAboutPage": true,
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": "unverified",
+      "hasTerms": "unverified",
+      "hasTestimonials": true,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 10,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": true,
+      "hasMapsEmbed": true,
+      "hasCityInH1": true,
+      "hasServiceArea": true,
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 9,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": true,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": "unverified",
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": true,
+      "count": 0,
+      "hasNamedAttribution": "unverified",
+      "hasSchema": false,
+      "hasPhotos": "unverified",
+      "hasLogoWall": true
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": "unverified",
+      "hasAddress": "unverified",
+      "hasMapsEmbed": true,
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
