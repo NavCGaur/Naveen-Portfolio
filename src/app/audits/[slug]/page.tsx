@@ -133,7 +133,7 @@ export default async function AuditPage({ params }: Props) {
     const audit = await getAudit(slug);
     if (!audit) notFound();
 
-    const { url, name, status, timestamp, metrics, details, error } = audit;
+    const { url, name, status, timestamp, metrics, details, error, pageSpeedUnavailable, rawHtmlLoadTime, rawHtmlFetchFailed } = audit;
     const dateStr = new Date(timestamp).toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
@@ -280,9 +280,9 @@ export default async function AuditPage({ params }: Props) {
       : calculatedOnlineAuthorityScore;
     const discoveryLabel = businessCategory === "local-service" ? "Local Search Readiness" : "AI & Discovery Readiness";
 
-    const isSlow = loadTime > 3.0;
-    const isTtfbHigh = ttfb > 500;
-    const isPluginsHigh = pluginCount > 15;
+    const isSlow = !pageSpeedUnavailable && loadTime > 3.0;
+    const isTtfbHigh = !pageSpeedUnavailable && ttfb > 500;
+    const isPluginsHigh = !pageSpeedUnavailable && pluginCount > 15;
     const hasBuilder = pageBuilder !== "None" && pageBuilder !== "Unknown";
     const isCachingMissing = !cachingActive;
     const hasLocalBusinessSchema = schemaTypes.some(s => s.toLowerCase().includes("localbusiness") || s.toLowerCase().includes("organization"));
@@ -296,9 +296,13 @@ export default async function AuditPage({ params }: Props) {
     const sizeVerdict = details?.pageSize === undefined ? null : pageSize < 2 ? "good" : pageSize < 5 ? "needs-work" : "poor";
 
     const verdictLabel = (v: string | null) =>
-      v === "good" ? "Fast ✓" : v === "needs-work" ? "Needs Improvement ⚠️" : v === "poor" ? "Slow ❌" : "N/A";
+      pageSpeedUnavailable
+        ? "Diagnostics Limited"
+        : v === "good" ? "Fast ✓" : v === "needs-work" ? "Needs Improvement ⚠️" : v === "poor" ? "Slow ❌" : "N/A";
     const verdictColor = (v: string | null) =>
-      v === "good" ? "text-emerald-700" : v === "needs-work" ? "text-amber-700" : v === "poor" ? "text-red-700" : "text-[#475569]";
+      pageSpeedUnavailable
+        ? "text-slate-500 bg-slate-100/50 border border-slate-200/50 px-2 py-0.5 rounded-full text-[12px] font-semibold tracking-wide inline-block"
+        : v === "good" ? "text-emerald-700" : v === "needs-work" ? "text-amber-700" : v === "poor" ? "text-red-700" : "text-[#475569]";
 
     // Layer 1 observed facts count
     const observedIssues = [
@@ -314,6 +318,17 @@ export default async function AuditPage({ params }: Props) {
     // Build list of contradictions dynamically based on findings
     const contradictionBullets: Array<{ title: string; body: string }> = [];
 
+    // 0. PageSpeed Timeout Teaser
+    if (pageSpeedUnavailable) {
+      const teaserText = rawHtmlFetchFailed
+        ? "Google's tools and our own server both failed to get a response within 15 seconds — see Technical Foundation for details."
+        : "Your server response time couldn't be measured by Google's tools — see Technical Foundation for details.";
+      contradictionBullets.push({
+        title: "Severely Slow Server Response",
+        body: teaserText
+      });
+    }
+
     // 1. Content Cadence Shift
     if (blog && blog.exists && isContentSlowing) {
       const bodyText = `We found ${blog.totalPosts} recent articles on your site, but you haven't published a new post in a long time. When you stop posting, search engines visit less often, delaying how long it takes for your new updates to show up in search results.`;
@@ -324,15 +339,18 @@ export default async function AuditPage({ params }: Props) {
     }
 
     // 2. Performance vs Trust
-    let foundationScore = Math.round((performance + seo + accessibility) / 3);
-    if (ttfb > 600 && foundationScore > 75) {
-      foundationScore = 75;
-    }
-    if (foundationScore >= 80 && (!testimonials || !testimonials.found || (credibility && credibility.score < 5))) {
-      contradictionBullets.push({
-        title: "Excellent Performance, but Low Trust Signals",
-        body: "Your site loads extremely fast on mobile devices, but it currently lacks visible testimonials or reviews. Adding verified client stories is the single most important factor for converting this fast-loading traffic."
-      });
+    let foundationScore: number | null = null;
+    if (!pageSpeedUnavailable) {
+      foundationScore = Math.round((performance + seo + accessibility) / 3);
+      if (ttfb > 600 && foundationScore > 75) {
+        foundationScore = 75;
+      }
+      if (foundationScore >= 80 && (!testimonials || !testimonials.found || (credibility && credibility.score < 5))) {
+        contradictionBullets.push({
+          title: "Excellent Performance, but Low Trust Signals",
+          body: "Your site loads extremely fast on mobile devices, but it currently lacks visible testimonials or reviews. Adding verified client stories is the single most important factor for converting this fast-loading traffic."
+        });
+      }
     }
 
     // 3. Contactable vs AI Visibility
@@ -726,7 +744,9 @@ export default async function AuditPage({ params }: Props) {
                 <h3 className="text-[16px] font-bold text-[#475569] mb-4 font-sans">What matters most</h3>
                 
                 <div className="text-[15px] text-[#475569] leading-[1.7] mb-6">
-                  {foundationScore >= 80 ? (
+                  {foundationScore === null ? (
+                    <>Your website's speed analysis is currently unmeasured because Google's testing tools timed out trying to connect. We recommend resolving host server response delays so your site can be fully benchmarked.</>
+                  ) : foundationScore >= 80 ? (
                     <>Your website already has a strong technical foundation. The biggest opportunity isn&apos;t speed — it is <strong>visibility and trust</strong>: helping search engines, AI platforms, and prospective clients understand and trust your business more quickly.</>
                   ) : (
                     <>The primary bottleneck for your website is <strong>technical performance</strong>. Slow mobile loading times create friction for incoming visitors, which needs to be resolved before focusing on visibility and trust.</>
@@ -772,23 +792,33 @@ export default async function AuditPage({ params }: Props) {
                 <div>
                   <span className="text-[13.5px] uppercase font-bold text-[#475569] block mb-2 tracking-wide font-semibold">Technical Foundation</span>
                   <div className="text-[44px] font-bold font-serif text-[#725921] leading-none my-2">
-                    {foundationScore}<span className="text-[20px] font-sans text-[#475569]/60 font-normal">/100</span>
+                    {foundationScore !== null ? (
+                      <>{foundationScore}<span className="text-[20px] font-sans text-[#475569]/60 font-normal">/100</span></>
+                    ) : (
+                      <span className="text-[34px] font-sans text-[#475569]/80 font-normal">--</span>
+                    )}
                   </div>
                   <p className="text-[13.5px] text-[#475569] px-2 leading-[1.5]">Speed index, caching status, core web vitals, and search accessibility.</p>
                 </div>
                 <div className="mt-2 text-[12px] text-[#725921] font-semibold">
-                  Metrics Verified via PageSpeed API
+                  {pageSpeedUnavailable ? "PageSpeed Connection Timeout" : "Metrics Verified via PageSpeed API"}
                 </div>
                 <div className="mt-4 pt-3 border-t border-black/[0.04]">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
-                    foundationScore >= 80 
-                      ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
-                      : foundationScore >= 50
-                      ? "bg-amber-50 text-amber-700 border-amber-200"
-                      : "bg-red-50 text-red-700 border-red-200"
-                  }`}>
-                    {foundationScore >= 80 ? "Healthy" : foundationScore >= 50 ? "Needs Work" : "Critical"}
-                  </span>
+                  {pageSpeedUnavailable ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border bg-slate-100 text-slate-600 border-slate-200">
+                      Diagnostics Limited
+                    </span>
+                  ) : (
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                      foundationScore !== null && foundationScore >= 80 
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                        : foundationScore !== null && foundationScore >= 50
+                        ? "bg-amber-50 text-amber-700 border-amber-200"
+                        : "bg-red-50 text-red-700 border-red-200"
+                    }`}>
+                      {foundationScore !== null && foundationScore >= 80 ? "Healthy" : foundationScore !== null && foundationScore >= 50 ? "Needs Work" : "Critical"}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -1120,16 +1150,43 @@ export default async function AuditPage({ params }: Props) {
             <p className="text-[15px] italic text-[#475569] mb-6 font-light">
               Why this matters: Google ranks websites primarily based on mobile loading behavior. Slow page rendering freezes taps and clicks, causing up to 40% of mobile search visitors to drop off.
             </p>
+
+            {pageSpeedUnavailable && (
+              <div className="mb-6 bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-5 text-[14.5px] leading-relaxed">
+                {rawHtmlFetchFailed ? (
+                  <>
+                    <strong>⚠️ Diagnostics Limited: Website response connection timed out.</strong>
+                    <p className="mt-2 text-[#475569]">
+                      Both Google's speed benchmark tools and our own diagnostic servers timed out while attempting to load your homepage (failing to receive a response within 15 seconds). This is a critical infrastructure alert pointing to potential host server overload, DNS misconfiguration, or active blocking of bot crawlers.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <strong>⚠️ Diagnostics Limited: PageSpeed Insights benchmark timed out.</strong>
+                    <p className="mt-2 text-[#475569]">
+                      Google's official tools timed out trying to run performance metrics on your site. Our custom checks successfully loaded your home page, but recorded a severely slow load time of <strong>{rawHtmlLoadTime} seconds</strong>. When a server takes this long just to send raw HTML, automated benchmarking tools abort, search engine crawling drops off, and prospective customers encounter a blank screen.
+                    </p>
+                  </>
+                )}
+              </div>
+            )}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* LCP */}
               <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
                 <p className="text-[12px] uppercase font-bold text-[#475569] tracking-wider mb-2">How fast does your main content appear?</p>
                 <p className={`text-[16px] font-bold mb-1 ${verdictColor(lcpVerdict)}`}>{verdictLabel(lcpVerdict)}</p>
                 <p className="text-[14px] text-[#475569] leading-[1.5]">
-                  {lcpVerdict === "good" && "The main content on your page loads quickly. Visitors on mobile see it within Google's recommended window."}
-                  {lcpVerdict === "needs-work" && `Your page's main content takes ${lcp}s to appear — Google recommends under 2.5s for a good mobile experience.`}
-                  {lcpVerdict === "poor" && `At ${lcp}s, your page is slow to show its main content. Visitors on mobile are likely to leave before it finishes loading.`}
-                  {lcpVerdict === null && "No data available for this metric."}
+                  {pageSpeedUnavailable ? (
+                    "Could not be measured because Google's speed testing tool timed out."
+                  ) : (
+                    <>
+                      {lcpVerdict === "good" && "The main content on your page loads quickly. Visitors on mobile see it within Google's recommended window."}
+                      {lcpVerdict === "needs-work" && `Your page's main content takes ${lcp}s to appear — Google recommends under 2.5s for a good mobile experience.`}
+                      {lcpVerdict === "poor" && `At ${lcp}s, your page is slow to show its main content. Visitors on mobile are likely to leave before it finishes loading.`}
+                      {lcpVerdict === null && "No data available for this metric."}
+                    </>
+                  )}
                 </p>
               </div>
               {/* TBT / Interactivity */}
@@ -1137,10 +1194,16 @@ export default async function AuditPage({ params }: Props) {
                 <p className="text-[12px] uppercase font-bold text-[#475569] tracking-wider mb-2">Can visitors interact without delay?</p>
                 <p className={`text-[16px] font-bold mb-1 ${verdictColor(tbtVerdict)}`}>{verdictLabel(tbtVerdict)}</p>
                 <p className="text-[14px] text-[#475569] leading-[1.5]">
-                  {tbtVerdict === "good" && "Your page responds quickly to taps and clicks. Background scripts are not blocking the user's experience."}
-                  {tbtVerdict === "needs-work" && `Background scripts freeze your page for ${tbt}ms. Visitors may tap buttons and get no response until scripts finish.`}
-                  {tbtVerdict === "poor" && `Your page freezes for ${tbt}ms while scripts load — well above Google's 200ms benchmark. Buttons may feel unresponsive on mobile.`}
-                  {tbtVerdict === null && "No data available for this metric."}
+                  {pageSpeedUnavailable ? (
+                    "Could not be measured because the page response was delayed."
+                  ) : (
+                    <>
+                      {tbtVerdict === "good" && "Your page responds quickly to taps and clicks. Background scripts are not blocking the user's experience."}
+                      {tbtVerdict === "needs-work" && `Background scripts freeze your page for ${tbt}ms. Visitors may tap buttons and get no response until scripts finish.`}
+                      {tbtVerdict === "poor" && `Your page freezes for ${tbt}ms while scripts load — well above Google's 200ms benchmark. Buttons may feel unresponsive on mobile.`}
+                      {tbtVerdict === null && "No data available for this metric."}
+                    </>
+                  )}
                 </p>
               </div>
               {/* Speed Index / Visual fill */}
@@ -1148,23 +1211,39 @@ export default async function AuditPage({ params }: Props) {
                 <p className="text-[12px] uppercase font-bold text-[#475569] tracking-wider mb-2">How quickly does the page look ready?</p>
                 <p className={`text-[16px] font-bold mb-1 ${verdictColor(speedVerdict)}`}>{verdictLabel(speedVerdict)}</p>
                 <p className="text-[14px] text-[#475569] leading-[1.5]">
-                  {speedVerdict === "good" && "Your page fills visually fast — visitors see a fully rendered layout without long blank-screen waits."}
-                  {speedVerdict === "needs-work" && `The page takes ${loadTime}s to look complete. Parts of the screen may appear blank or shift while loading.`}
-                  {speedVerdict === "poor" && `At ${loadTime}s, your page loads significantly slower than industry benchmarks. Most mobile visitors experience a long blank wait.`}
-                  {speedVerdict === null && "No data available for this metric."}
+                  {pageSpeedUnavailable ? (
+                    rawHtmlFetchFailed ? (
+                      "Could not retrieve visual render timing (connection timeout)."
+                    ) : (
+                      `Our server measured raw HTML load time at ${rawHtmlLoadTime}s, but visual metrics timed out.`
+                    )
+                  ) : (
+                    <>
+                      {speedVerdict === "good" && "Your page fills visually fast — visitors see a fully rendered layout without long blank-screen waits."}
+                      {speedVerdict === "needs-work" && `The page takes ${loadTime}s to look complete. Parts of the screen may appear blank or shift while loading.`}
+                      {speedVerdict === "poor" && `At ${loadTime}s, your page loads significantly slower than industry benchmarks. Most mobile visitors experience a long blank wait.`}
+                      {speedVerdict === null && "No data available for this metric."}
+                    </>
+                  )}
                 </p>
               </div>
               {/* Page Weight */}
               <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
                 <p className="text-[12px] uppercase font-bold text-[#475569] tracking-wider mb-2">How much data does your homepage load?</p>
                 <p className={`text-[16px] font-bold mb-1 ${verdictColor(sizeVerdict)}`}>
-                  {sizeVerdict === "good" ? "Lightweight ✓" : sizeVerdict === "needs-work" ? "Moderate ⚠️" : sizeVerdict === "poor" ? "Heavy ❌" : "N/A"}
+                  {pageSpeedUnavailable ? "Diagnostics Limited" : (sizeVerdict === "good" ? "Lightweight ✓" : sizeVerdict === "needs-work" ? "Moderate ⚠️" : sizeVerdict === "poor" ? "Heavy ❌" : "N/A")}
                 </p>
                 <p className="text-[14px] text-[#475569] leading-[1.5]">
-                  {sizeVerdict === "good" && `Your homepage downloads ${pageSize} MB — well within mobile-friendly limits. Visitors on slower connections load it comfortably.`}
-                  {sizeVerdict === "needs-work" && `At ${pageSize} MB, your homepage is moderately sized. Visitors on 4G connections may notice a delay, especially first-time visitors without cached data.`}
-                  {sizeVerdict === "poor" && `Your homepage downloads ${pageSize} MB of data — significantly more than recommended. This increases load time noticeably on mobile networks.`}
-                  {sizeVerdict === null && "No data available for this metric."}
+                  {pageSpeedUnavailable ? (
+                    "Could not measure resource sizes due to connection timeout."
+                  ) : (
+                    <>
+                      {sizeVerdict === "good" && `Your homepage downloads ${pageSize} MB — well within mobile-friendly limits. Visitors on slower connections load it comfortably.`}
+                      {sizeVerdict === "needs-work" && `At ${pageSize} MB, your homepage is moderately sized. Visitors on 4G connections may notice a delay, especially first-time visitors without cached data.`}
+                      {sizeVerdict === "poor" && `Your homepage downloads ${pageSize} MB of data — significantly more than recommended. This increases load time noticeably on mobile networks.`}
+                      {sizeVerdict === null && "No data available for this metric."}
+                    </>
+                  )}
                 </p>
               </div>
             </div>

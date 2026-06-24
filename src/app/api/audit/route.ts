@@ -253,15 +253,26 @@ export async function POST(request: NextRequest) {
     const origin = urlObj.origin;
 
     // ── Fetch all data in parallel ──────────────────────────────────────────
+    let rawHtmlLoadTime: number | undefined = undefined;
+    let rawHtmlFetchFailed = false;
+    const htmlStart = globalThis.performance.now();
+
     const [htmlRes, robotsRes, llmsRes, psRes, rssRes] = await Promise.all([
       fetch(cleanUrl, {
         headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" },
         signal: AbortSignal.timeout(15000),
       }).then(async (res) => {
-        if (!res.ok) return null;
+        rawHtmlLoadTime = parseFloat(((globalThis.performance.now() - htmlStart) / 1000).toFixed(2));
+        if (!res.ok) {
+          rawHtmlFetchFailed = true;
+          return null;
+        }
         const html = await res.text();
         return { ok: true, headers: res.headers, html };
-      }).catch(() => null),
+      }).catch(() => {
+        rawHtmlFetchFailed = true;
+        return null;
+      }),
 
       fetch(`${origin}/robots.txt`, { signal: AbortSignal.timeout(5000) })
         .then(async (res) => { if (!res.ok) return null; return { ok: true, text: await res.text() }; })
@@ -556,7 +567,7 @@ export async function POST(request: NextRequest) {
         }
       });
 
-      if (foundLogoWall !== true) {
+      if ((foundLogoWall as DetectionState) !== true) {
         foundLogoWall = maxLogosSeen >= 3 ? "unverified" : false;
       }
       hasLogoWall = foundLogoWall;
@@ -637,32 +648,47 @@ export async function POST(request: NextRequest) {
     }
 
     // ── PageSpeed Analysis ───────────────────────────────────────────────────
-    if (!psRes?.ok) {
-      await sendAuditErrorEmail(cleanUrl, name, email, "PageSpeed API request timed out or returned error code");
-      return NextResponse.json(
-        { error: "The audit is taking longer than usual due to high traffic. Please try again in a few moments." },
-        { status: 502 }
-      );
-    }
-    const psData = await psRes.json();
-    const lh = psData.lighthouseResult ?? {};
-    const cats = lh.categories ?? {};
-    const audits = lh.audits ?? {};
+    const pageSpeedUnavailable = !psRes || !psRes.ok;
 
-    const performance = Math.round((cats.performance?.score ?? 0) * 100);
-    const seo = Math.round((cats.seo?.score ?? 0) * 100);
-    const bestPractices = Math.round((cats["best-practices"]?.score ?? 0) * 100);
-    const accessibility = Math.round((cats.accessibility?.score ?? 0) * 100);
-    const ttfb = Math.round(audits["server-response-time"]?.numericValue ?? 0);
-    const fcp = parseFloat(((audits["first-contentful-paint"]?.numericValue ?? 0) / 1000).toFixed(2));
-    const lcp = parseFloat(((audits["largest-contentful-paint"]?.numericValue ?? 0) / 1000).toFixed(2));
-    const tbt = Math.round(audits["total-blocking-time"]?.numericValue ?? 0);
-    const cls = parseFloat((audits["cumulative-layout-shift"]?.numericValue ?? 0).toFixed(3));
-    const loadTime = parseFloat(((audits["speed-index"]?.numericValue ?? 0) / 1000).toFixed(2));
-    const networkItems: Array<{ transferSize?: number }> = audits["network-requests"]?.details?.items ?? [];
-    const pageSize = parseFloat((networkItems.reduce((acc, r) => acc + (r.transferSize ?? 0), 0) / 1048576).toFixed(2));
-    // Images missing alt text from PageSpeed
-    const imagesWithoutAlt: number = audits["image-alt"]?.details?.items?.length ?? 0;
+    let performance = 0;
+    let seo = 0;
+    let bestPractices = 0;
+    let accessibility = 0;
+    let ttfb: number | undefined = undefined;
+    let fcp: number | undefined = undefined;
+    let lcp: number | undefined = undefined;
+    let tbt: number | undefined = undefined;
+    let cls: number | undefined = undefined;
+    let loadTime: number | undefined = undefined;
+    let pageSize: number | undefined = undefined;
+    let imagesWithoutAlt = 0;
+
+    if (!pageSpeedUnavailable && psRes) {
+      try {
+        const psData = await psRes.json();
+        const lh = psData.lighthouseResult ?? {};
+        const cats = lh.categories ?? {};
+        const audits = lh.audits ?? {};
+
+        performance = Math.round((cats.performance?.score ?? 0) * 100);
+        seo = Math.round((cats.seo?.score ?? 0) * 100);
+        bestPractices = Math.round((cats["best-practices"]?.score ?? 0) * 100);
+        accessibility = Math.round((cats.accessibility?.score ?? 0) * 100);
+        ttfb = Math.round(audits["server-response-time"]?.numericValue ?? 0);
+        fcp = parseFloat(((audits["first-contentful-paint"]?.numericValue ?? 0) / 1000).toFixed(2));
+        lcp = parseFloat(((audits["largest-contentful-paint"]?.numericValue ?? 0) / 1000).toFixed(2));
+        tbt = Math.round(audits["total-blocking-time"]?.numericValue ?? 0);
+        cls = parseFloat((audits["cumulative-layout-shift"]?.numericValue ?? 0).toFixed(3));
+        loadTime = parseFloat(((audits["speed-index"]?.numericValue ?? 0) / 1000).toFixed(2));
+        const networkItems: Array<{ transferSize?: number }> = audits["network-requests"]?.details?.items ?? [];
+        pageSize = parseFloat((networkItems.reduce((acc, r) => acc + (r.transferSize ?? 0), 0) / 1048576).toFixed(2));
+        imagesWithoutAlt = audits["image-alt"]?.details?.items?.length ?? 0;
+      } catch {
+        // Safe fallback in case of JSON parse errors on PageSpeed response
+      }
+    } else {
+      await sendAuditErrorEmail(cleanUrl, name, email, "PageSpeed API request timed out or returned error code (gracefully handled)");
+    }
 
     // ── Scores ───────────────────────────────────────────────────────────────
     const hasLocalSchema = schemaTypes.some(s => s.toLowerCase().includes("localbusiness") || s.toLowerCase().includes("organization"));
@@ -681,7 +707,7 @@ export async function POST(request: NextRequest) {
       hasSocialLinks: hasSocialLinksScore,
       hasAddress,
       hasPhone: hasPhoneScore
-    }, ttfb > 600);
+    }, !pageSpeedUnavailable && ttfb !== undefined && ttfb > 600);
 
     // Local SEO Readiness Score (max 8 → normalise to 10 via percentage)
     const localSeoScore = computeLocalSeoScore({
@@ -692,7 +718,7 @@ export async function POST(request: NextRequest) {
       hasCityInH1,
       hasServiceArea,
       hasBusinessHours
-    }, ttfb > 600);
+    }, !pageSpeedUnavailable && ttfb !== undefined && ttfb > 600);
 
     // Online Authority Score (max 10)
     const onlineAuthorityScore = computeOnlineAuthorityScore({
@@ -701,9 +727,9 @@ export async function POST(request: NextRequest) {
       hasReviewSchema: hasReviewSchemaFlag,
       hasSocialLinks: hasSocialLinksScore,
       hasLegalPages: hasPrivacyPolicy === true && hasTerms === true ? true : (hasPrivacyPolicy === "unverified" || hasTerms === "unverified" ? "unverified" : false),
-      hasGoodSpeedOrCache: ttfb < 500 || cachingActive,
-      loadTime
-    }, ttfb > 600);
+      hasGoodSpeedOrCache: pageSpeedUnavailable ? "unverified" : ((ttfb !== undefined && ttfb < 500) || cachingActive),
+      loadTime: pageSpeedUnavailable ? undefined : loadTime
+    }, !pageSpeedUnavailable && ttfb !== undefined && ttfb > 600);
 
     // ── Gemini AI Synthesis ──────────────────────────────────────────────────
     const blogSummary = blogData?.exists
@@ -728,7 +754,7 @@ export async function POST(request: NextRequest) {
       mapsEmbed: hasMapsEmbed,
       aboutPage: hasAboutPage,
       aiReadiness: !aiRobotsAllowed ? "blocked" : hasLocalSchema ? "ready" : "missing signals",
-      mobilePerformance: lcp > 4 ? "slow" : lcp > 2.5 ? "moderate" : "good",
+      mobilePerformance: pageSpeedUnavailable ? "diagnostics limited" : (lcp !== undefined && lcp > 4 ? "slow" : lcp !== undefined && lcp > 2.5 ? "moderate" : "good"),
       caching: cachingActive ? "enabled" : "disabled",
       metaDescription: hasMissingMetaDesc ? "missing" : "present",
       copyrightYear: hasOutdatedCopyright ? "outdated" : "current",
@@ -736,9 +762,11 @@ export async function POST(request: NextRequest) {
 
     let businessCategory: "local-service" | "professional-service" | "ecommerce" | "content-saas" = 
       hasLocalSchema || hasMapsEmbed ? "local-service" : "professional-service";
-    const rawFoundationScore = Math.round((performance + seo + accessibility) / 3);
-    const cappedFoundationScore = (ttfb > 600 && rawFoundationScore > 75) ? 75 : rawFoundationScore;
-    let executiveSummaryText = `Your website has a website foundation score of ${cappedFoundationScore}/100. Caching is ${cachingActive ? "active" : "missing"}, and server response is ${ttfb}ms. Testimonials were ${hasTestimonialsSection ? "" : "not "}detected on your homepage, and AI search crawler access is ${aiRobotsAllowed ? "enabled" : "disabled"}.`;
+    const rawFoundationScore = pageSpeedUnavailable ? 0 : Math.round((performance + seo + accessibility) / 3);
+    const cappedFoundationScore = (!pageSpeedUnavailable && ttfb !== undefined && ttfb > 600 && rawFoundationScore > 75) ? 75 : rawFoundationScore;
+    let executiveSummaryText = pageSpeedUnavailable
+      ? `Your website's speed analysis is currently unmeasured because Google's testing tools timed out trying to connect. Caching is ${cachingActive ? "active" : "missing"}, testimonials were ${hasTestimonialsSection ? "" : "not "}detected on your homepage, and AI search crawler access is ${aiRobotsAllowed ? "enabled" : "disabled"}.`
+      : `Your website has a website foundation score of ${cappedFoundationScore}/100. Caching is ${cachingActive ? "active" : "missing"}, and server response is ${ttfb}ms. Testimonials were ${hasTestimonialsSection ? "" : "not "}detected on your homepage, and AI search crawler access is ${aiRobotsAllowed ? "enabled" : "disabled"}.`;
     let aiObs: Array<{ title: string; body: string }> = [];
 
     const aiRes = await generateAiAnalysis(synthesisSummary);
@@ -757,10 +785,13 @@ export async function POST(request: NextRequest) {
       email,
       status: "completed",
       timestamp: new Date().toISOString(),
-      metrics: { performance, seo, bestPractices, accessibility },
+      metrics: pageSpeedUnavailable ? undefined : { performance, seo, bestPractices, accessibility },
       businessCategory,
       executiveSummary: executiveSummaryText,
       aiObservations: aiObs,
+      pageSpeedUnavailable,
+      rawHtmlLoadTime,
+      rawHtmlFetchFailed,
       details: {
         ttfb, loadTime, lcp, fcp, tbt, cls, pageSize,
         pageBuilder: pageBuilder as "Elementor" | "Divi" | "WPBakery" | "Gutenberg" | "None" | "Unknown",
@@ -790,7 +821,7 @@ export async function POST(request: NextRequest) {
           hasReviewSchema: hasReviewSchemaFlag,
           hasSocialLinks: hasSocialLinksScore,
           hasLegalPages: hasPrivacyPolicy === true && hasTerms === true ? true : (hasPrivacyPolicy === "unverified" || hasTerms === "unverified" ? "unverified" : false),
-          hasGoodSpeedOrCache: ttfb < 500 || cachingActive,
+          hasGoodSpeedOrCache: pageSpeedUnavailable ? "unverified" : ((ttfb !== undefined && ttfb < 500) || cachingActive),
         },
         testimonials: {
           found: hasTestimonialsSection,

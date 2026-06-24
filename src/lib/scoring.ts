@@ -74,7 +74,7 @@ export interface OnlineAuthorityScoreInputs {
   hasSocialLinks: DetectionState;
   hasLegalPages: DetectionState;
   hasGoodSpeedOrCache: DetectionState;
-  loadTime: number;
+  loadTime: number | undefined;
 }
 
 export function computeOnlineAuthorityScore(inputs: OnlineAuthorityScoreInputs, ttfbHigh: boolean): number {
@@ -85,6 +85,6 @@ export function computeOnlineAuthorityScore(inputs: OnlineAuthorityScoreInputs, 
     { weight: 1.5, state: inputs.hasSocialLinks },
     { weight: 1.5, state: inputs.hasLegalPages },
     { weight: 2, state: inputs.hasGoodSpeedOrCache },
-    { weight: 1.5, state: inputs.loadTime < 3.0 }
+    { weight: 1.5, state: inputs.loadTime === undefined ? "unverified" : inputs.loadTime < 3.0 }
   ], ttfbHigh);
 }

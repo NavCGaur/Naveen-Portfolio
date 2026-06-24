@@ -24,14 +24,17 @@ export interface AuditReport {
     bestPractices: number;
     accessibility: number;
   };
+  pageSpeedUnavailable?: boolean;
+  rawHtmlLoadTime?: number;
+  rawHtmlFetchFailed?: boolean;
   details?: {
-    ttfb: number; // in ms
-    loadTime: number; // in s
-    lcp: number; // in s
-    fcp: number; // in s
-    tbt: number; // in ms
-    cls: number; // unitless
-    pageSize: number; // in MB
+    ttfb?: number; // in ms
+    loadTime?: number; // in s
+    lcp?: number; // in s
+    fcp?: number; // in s
+    tbt?: number; // in ms
+    cls?: number; // unitless
+    pageSize?: number; // in MB
     pageBuilder: "Elementor" | "Divi" | "WPBakery" | "Gutenberg" | "None" | "Unknown";
     pluginCount: number;
     cachingActive: boolean;
