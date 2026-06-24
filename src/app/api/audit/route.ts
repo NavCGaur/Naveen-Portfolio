@@ -133,7 +133,7 @@ Output ONLY a valid JSON object matching this schema:
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: { temperature: 0.1, maxOutputTokens: 800 },
       }),
-      signal: AbortSignal.timeout(12000),
+      signal: AbortSignal.timeout(7000),
     });
 
     if (!res.ok) return null;
@@ -843,18 +843,16 @@ export async function POST(request: NextRequest) {
     if (!saved) console.error(`Failed to save audit ${reportId} to GitHub`);
     console.log(`Audit complete for ${cleanUrl} | ID: ${reportId} | Saved: ${saved} | Category: ${businessCategory}`);
 
-    // Send notification email with client details and audit link
-    try {
-      const websiteHost = request.headers.get("host") || "naveengaur.com";
-      const protocol = request.headers.get("x-forwarded-proto") || "https";
-      const reportLink = `${protocol}://${websiteHost}/audits/${reportId}`;
-
-      await resend.emails.send({
-        from: "Website Auditor <onboarding@resend.dev>",
-        to: [process.env.CONTACT_EMAIL || "hello@naveengaur.com", "naveencg070@gmail.com"],
-        replyTo: email,
-        subject: `New Website Audit Run: ${cleanUrl}`,
-        html: `
+    // Fire notification email in the background — don't block the response or GitHub save
+    const websiteHost = request.headers.get("host") || "naveengaur.com";
+    const protocol = request.headers.get("x-forwarded-proto") || "https";
+    const reportLink = `${protocol}://${websiteHost}/audits/${reportId}`;
+    void resend.emails.send({
+      from: "Website Auditor <onboarding@resend.dev>",
+      to: [process.env.CONTACT_EMAIL || "hello@naveengaur.com", "naveencg070@gmail.com"],
+      replyTo: email,
+      subject: `New Website Audit Run: ${cleanUrl}`,
+      html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; background: #FAFAF8; border-radius: 8px;">
             <h2 style="color: #725921; font-size: 20px; margin-bottom: 24px; font-weight: bold;">New Website Audit Completed</h2>
             
@@ -894,10 +892,9 @@ export async function POST(request: NextRequest) {
             </div>
           </div>
         `,
-      });
-    } catch (emailErr) {
+    }).catch((emailErr: unknown) => {
       console.error("Failed to send audit notification email:", emailErr);
-    }
+    });
 
     return NextResponse.json({ success: true, id: reportId, report }, { status: 200 });
   } catch (err) {

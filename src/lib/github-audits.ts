@@ -157,25 +157,19 @@ export async function saveAudit(id: string, audit: AuditReport): Promise<boolean
   const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${repoPath}`;
 
   try {
-    // Check if file already exists to get SHA (for updates, though ID is UUID so highly unlikely)
-    const checkRes = await fetch(url, { headers: githubHeaders() });
-    let sha: string | undefined = undefined;
-    if (checkRes.status === 200) {
-      const checkData = await checkRes.json() as { sha: string };
-      sha = checkData.sha;
-    }
-
+    // Skip SHA check — audit IDs are UUIDs so collisions are effectively impossible.
+    // The extra GET call was costing 3–8s of sequential blocking inside Vercel's function budget.
     const encoded = Buffer.from(JSON.stringify(audit, null, 2)).toString("base64");
     const body: Record<string, unknown> = {
       message: `chore: save website audit report ${id}`,
       content: encoded,
     };
-    if (sha) body.sha = sha;
 
     const putRes = await fetch(url, {
       method: "PUT",
       headers: githubHeaders(),
       body: JSON.stringify(body),
+      signal: AbortSignal.timeout(8000),
     });
 
     if (!putRes.ok) {
