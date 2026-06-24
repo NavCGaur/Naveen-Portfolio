@@ -1,0 +1,80 @@
+{
+  "id": "85f5f568-fc3e-4eb4-922b-b077360b9d43",
+  "url": "https://fabriceabbey.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-24T12:42:00.711Z",
+  "businessCategory": "professional-service",
+  "executiveSummary": "Your website's speed analysis is currently unmeasured because Google's testing tools timed out trying to connect. Caching is missing, testimonials were not detected on your homepage, and AI search crawler access is enabled.",
+  "aiObservations": [],
+  "pageSpeedUnavailable": true,
+  "rawHtmlFetchFailed": true,
+  "details": {
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": false,
+    "schemaTypes": [],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 3,
+      "hasAboutPage": false,
+      "hasTeamPage": false,
+      "hasPrivacyPolicy": false,
+      "hasTerms": false,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": false,
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 2,
+      "hasPhone": true,
+      "hasAddress": false,
+      "hasLocalSchema": false,
+      "hasMapsEmbed": false,
+      "hasCityInH1": false,
+      "hasServiceArea": false,
+      "hasBusinessHours": false
+    },
+    "onlineAuthority": {
+      "score": 2,
+      "hasAboutOrTeam": false,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": false,
+      "hasGoodSpeedOrCache": "unverified"
+    },
+    "testimonials": {
+      "found": false,
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": false,
+      "hasForm": false,
+      "hasAddress": false,
+      "hasMapsEmbed": false,
+      "hasBusinessHours": false
+    }
+  }
+}
