@@ -14,11 +14,20 @@ faq:
 
 WhatsApp has become the default operating system for daily communication in regions like India. For modern web platforms—particularly in EdTech, local logistics, or localized services—forcing users to log into a complex desktop portal often results in a steep drop-off in user engagement.
 
-When building [LoopLearnX](/blog/whatsapp-ai-homework-evaluation-gemini) (an automated homework evaluation and tutoring tool for CBSE students), we realized that students rarely log in to a web dashboard on a desktop to upload their homework. Instead, they do their homework on physical notebooks, snap a picture, and expect instant grading.
+When building **LoopLearnX** (an automated homework evaluation and tutoring tool for CBSE students), we realized that students rarely log in to a web dashboard on a desktop to upload their homework. Instead, they do their homework on physical notebooks, snap a picture, and expect instant grading.
 
-Integrating a custom, self-hosted WhatsApp interface directly into our Next.js application was not just a convenience—it was the single most critical driver of student engagement.
+![LoopLearnX AI Homework Evaluation Dashboard](/images/projects/looplearnx.png)
+*Real-world implementation: The LoopLearnX student conversational interface and teacher assessment dashboard, driven by the custom Baileys gateway.*
 
-This guide details the technical blueprint of how we built a resilient, memory-aware **WhatsApp AI Bot** using `@whiskeysockets/baileys` and Next.js, hosted on an Oracle Cloud VPS. We will cover the exact production failures we encountered, learnings learned, and why custom self-hosting beats off-the-shelf agent frameworks.
+### The LoopLearnX CBSE Evaluation Flow
+1. **WhatsApp Submission**: A student takes a photo of their handwritten maths or science homework and sends it directly to our WhatsApp bot JID.
+2. **Buffer Stream Downloader**: The headless Baileys daemon running on our Oracle VPS intercepts the payload, downloads the encrypted media buffer from WhatsApp servers, and streams it as a base64 payload to our serverless Next.js endpoint.
+3. **Gemini AI Vision Evaluation**: The serverless Next.js route triggers the Gemini-2.5-Flash API, feeding the base64 image along with structured CBSE grading schema. The model parses handwritten math symbols, evaluates correctness, and isolates the specific steps where the student made mistakes.
+4. **Resilient Queued Delivery**: The JSON response is saved to Supabase and dispatched back to the VPS queue, which uses a random 1.5–3.0 second human-like delay to send the homework feedback card to the student.
+
+Integrating this custom, self-hosted WhatsApp interface directly into our Next.js application was not just a convenience—it was the single most critical driver of student engagement.
+
+This guide details the technical blueprint of how we built a resilient, memory-aware **WhatsApp AI Bot** using `@whiskeysockets/baileys` and Next.js, hosted on an Oracle Cloud VPS. We will cover the exact production failures we encountered, lessons learned, and why custom self-hosting beats off-the-shelf agent frameworks.
 
 > [!NOTE]
 > **Quick Answer (TL;DR):** Setting up `@whiskeysockets/baileys` in production requires:
