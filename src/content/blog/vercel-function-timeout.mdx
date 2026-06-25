@@ -1,0 +1,797 @@
+---
+title: "Why Your Vercel Function Still Times Out at 60 Seconds (Even Though the Real Limit Is Much Higher)"
+description: "A real production debugging story covering Vercel Function Timeout, Fluid Compute, maxDuration, AbortSignal.timeout(), and how I fixed timeout issues while building an AI-powered Website Audit Tool using Next.js."
+date: "2026-06-25"
+category: "Web Development"
+faq:
+  - question: "How do I increase Vercel function timeout?"
+    answer: "You can increase the Vercel function timeout by setting the maxDuration config variable in your route file (e.g., export const maxDuration = 120; for Next.js App Router) or by configuring maxDuration in your vercel.json file under the functions settings."
+  - question: "Why does my Vercel function still timeout after increasing maxDuration?"
+    answer: "If your Vercel function still times out, it is usually because an application-level timeout is lower than maxDuration. Check for things like AbortSignal.timeout(ms) in fetch, custom axios timeout configurations, database query connection timeouts, or third-party API limits."
+---
+
+# How I Solved a Vercel Function Timeout While Building an AI Website Audit Tool
+
+While building my **AI-powered Website Audit Tool**, I ran into a production issue that only appeared on a handful of unusually slow websites.
+
+Most audit reports completed successfully.
+
+A few didn't.
+
+They consistently failed with a timeout.
+
+At first, I blamed Vercel.
+
+More specifically, I blamed what I believed was Vercel's famous **60-second serverless function limit**.
+
+It turned out I was chasing the wrong problem.
+
+The actual culprit was hiding inside my own code, and fixing it taught me several lessons about **Vercel Fluid Compute**, **`maxDuration`**, application-level timeouts, and why blindly trusting old documentation—or even AI-generated advice—can send you down the wrong debugging path.
+
+This article walks through the entire debugging journey, including the mistakes I made, the experiments that failed, and the final solution.
+
+---
+
+> **Try the application that uncovered this issue**
+>
+> The timeout described in this article occurred while generating real reports in my **[Free AI Website Audit Tool](/free-audit)**.
+>
+> It analyzes websites using Google PageSpeed Insights, Lighthouse metrics, and AI-generated recommendations to produce business-friendly Website Growth Opportunity Reports.
+>
+> **🔗 [Try the Free AI Website Audit Tool](/free-audit)**
+>
+> This wasn't a demo project or a toy example—it was discovered while building and testing a real production application.
+
+---
+
+## What You'll Learn
+
+By the end of this article you'll understand:
+
+- Why many developers still believe Vercel has a hard 60-second limit
+- What **Fluid Compute** changed
+- How to correctly configure `maxDuration`
+- Why increasing `maxDuration` alone may not fix your timeout
+- How `AbortSignal.timeout()` can silently override your server timeout
+- How I diagnosed the issue using production logs
+- Why reducing work is often better than increasing limits
+
+---
+
+# The AI Website Audit Tool
+
+The application itself is fairly straightforward.
+
+A visitor enters a website URL.
+
+Behind the scenes the application performs multiple operations before producing a downloadable audit report.
+
+```text
+                User
+                  │
+                  ▼
+      AI Website Audit Tool (Next.js)
+                  │
+                  ▼
+      Vercel Serverless Function
+                  │
+                  ▼
+   Google PageSpeed Insights API
+                  │
+                  ▼
+      Lighthouse Processing
+                  │
+                  ▼
+   AI Recommendation Generation
+                  │
+                  ▼
+ Website Growth Opportunity Report
+```
+
+Unlike a simple API request, Google PageSpeed Insights first performs a complete Lighthouse analysis before returning results.
+
+For fast websites, this usually isn't a problem.
+
+For slower websites, however, Lighthouse itself can take significantly longer to finish.
+
+Since my application has to wait for Google's response before generating the report, the execution time depends entirely on how long Lighthouse takes.
+
+Most websites completed in under 20 seconds.
+
+A handful took much longer.
+
+Those were the ones exposing the problem.
+
+---
+
+# Production Environment
+
+For anyone trying to reproduce this issue, here's the exact environment.
+
+| Component     | Technology                |
+| ------------- | ------------------------- |
+| Framework     | Next.js                   |
+| Runtime       | Node.js                   |
+| Hosting       | Vercel                    |
+| External API  | Google PageSpeed Insights |
+| Report Engine | AI Website Audit Tool     |
+| Deployment    | Production                |
+| Runtime Type  | Serverless Function       |
+
+Symptoms:
+
+- Fast websites worked perfectly.
+- Slow websites randomly failed.
+- Only certain domains triggered the timeout.
+- Local development rarely reproduced the issue.
+
+Those last two points made debugging especially frustrating.
+
+---
+
+# The First Production Failure
+
+The issue didn't appear during development.
+
+It wasn't caught by unit tests.
+
+It wasn't caused by a deployment.
+
+Instead, it appeared while testing the AI Website Audit Tool against dozens of real business websites.
+
+Some reports generated perfectly.
+
+Others consistently failed.
+
+One particularly slow website triggered the following error.
+
+```text
+TimeoutError: The operation was aborted due to timeout
+
+AbortSignal.timeout()
+
+Elapsed Time:
+41.6 seconds
+
+Request Cancelled
+```
+
+At that moment I immediately jumped to the conclusion most developers probably would.
+
+> "This must be Vercel's 60-second timeout."
+
+It seemed logical.
+
+The internet is full of articles mentioning Vercel's 60-second execution limit.
+
+Stack Overflow answers mention it.
+
+Older blog posts mention it.
+
+Even AI coding assistants often reference it because it was true for years.
+
+So I started optimizing the application to fit inside what I assumed was a fixed platform limit.
+
+That assumption turned out to be wrong.
+
+---
+
+# My Debugging Timeline
+
+Real debugging is rarely a straight line.
+
+Here's roughly how the investigation unfolded.
+
+| Time         | Investigation                                                         | Result                                                              |
+| ------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| **9:14 AM**  | First production timeout while generating a report                    | Only affected a few slow websites                                   |
+| **9:22 AM**  | Checked Vercel deployment logs                                        | Function terminated before completing PageSpeed request             |
+| **9:38 AM**  | Assumed Vercel's 60-second execution limit                            | Started looking for ways to optimize within 60 seconds              |
+| **10:05 AM** | Added detailed timing logs around external API calls                  | Confirmed PageSpeed was the slowest operation                       |
+| **10:31 AM** | Reduced unnecessary Lighthouse categories                             | Slight improvement but timeout still occurred                       |
+| **10:48 AM** | Reviewed the latest Vercel documentation instead of relying on memory | Discovered Fluid Compute had fundamentally changed execution limits |
+| **11:07 AM** | Verified project settings                                             | Found additional configuration options I'd overlooked               |
+| **11:34 AM** | Increased function execution limit                                    | Timeout still occurred                                              |
+| **11:43 AM** | Inspected my own fetch configuration                                  | Found the real cause                                                |
+
+Notice something interesting.
+
+Nearly two hours of debugging had nothing to do with writing code.
+
+Most of it involved verifying assumptions.
+
+That's often where the real engineering work happens.
+
+---
+
+# The Assumption That Sent Me in the Wrong Direction
+
+For years, Vercel's traditional Serverless Functions had relatively short execution limits.
+
+That information spread everywhere.
+
+Blog posts.
+
+YouTube tutorials.
+
+Stack Overflow answers.
+
+GitHub discussions.
+
+AI assistants trained on older information.
+
+So naturally, when I saw a timeout, I assumed I had reached the platform limit.
+
+I started asking questions like:
+
+- Can I make Lighthouse faster?
+- Can I split the request?
+- Can I cache more aggressively?
+- Should I move everything into background jobs?
+
+Those are good optimization questions.
+
+They just weren't solving the right problem.
+
+Before spending another hour rewriting code, I decided to stop relying on memory and read the latest Vercel documentation.
+
+That decision completely changed the direction of the investigation.
+
+---
+
+# What Changed? Vercel Fluid Compute
+
+The biggest surprise wasn't discovering a bug.
+
+It was discovering that my understanding of Vercel's execution model was outdated.
+
+Vercel introduced **Fluid Compute**, a newer execution model designed to improve resource utilization and support longer-running workloads.
+
+One of the biggest changes was function execution duration.
+
+Instead of the old assumptions many developers still quote, projects using Fluid Compute can support significantly longer execution times.
+
+At that point I realized I wasn't necessarily hitting a hard platform ceiling at all.
+
+Instead, I needed to verify:
+
+1. Was Fluid Compute enabled?
+2. What was my configured `maxDuration`?
+3. Was something else terminating the request first?
+
+Those questions turned out to be far more useful than asking how to squeeze everything under an arbitrary 60-second limit.
+
+---
+
+# A Lesson About Engineering Assumptions
+
+One lesson from this debugging session extends far beyond Vercel.
+
+Technology changes quickly.
+
+Platform limits change.
+
+Framework APIs evolve.
+
+Documentation gets updated.
+
+Articles written two years ago may no longer reflect current behavior.
+
+Even AI assistants can confidently repeat information that was once correct but has since changed.
+
+That doesn't mean the advice is bad—it simply means cloud platforms evolve faster than static knowledge.
+
+Whenever you're debugging infrastructure-related issues, it's worth asking:
+
+> **"Am I solving today's problem using yesterday's assumptions?"**
+
+That single question saved me from spending hours optimizing code for a limitation that no longer existed.
+
+---
+
+# Moving from Diagnosis to Implementation
+
+Now that we have established that my original assumption was wrong—and the issue wasn't simply that "Vercel has a hard 60-second limit"—the next step was figuring out exactly **where** the timeout was actually occurring.
+
+As it turns out, multiple timeout mechanisms can exist within a single request context. Understanding exactly which layer is firing makes all the difference when moving from a high-level diagnosis to a real production fix.
+
+---
+
+# The Real Fix: `maxDuration`, `AbortSignal.timeout()`, and the Mistake That Actually Caused the Timeout
+
+The first thing I checked was whether my function was actually allowed to run long enough.
+
+Earlier, we established that my original assumption was wrong.
+
+The issue wasn't simply "Vercel has a 60-second limit."
+
+The next step was figuring out **where** the timeout was actually occurring.
+
+As it turns out, multiple timeout mechanisms can exist in a single request.
+
+Understanding which one is firing makes all the difference.
+
+---
+
+# Step 1 — Verify Your Function Configuration
+
+The first thing I checked was whether my function was actually allowed to run long enough.
+
+If you're using the Next.js App Router, configuring the maximum execution time is straightforward.
+
+```ts
+export const maxDuration = 120;
+```
+
+That tells Vercel the function is allowed to run for up to **120 seconds**, assuming your plan supports it.
+
+For projects using other frameworks or older Next.js versions, the same configuration can be placed inside `vercel.json`.
+
+```json
+{
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 120
+    }
+  }
+}
+```
+
+After deploying this change, I expected the issue to disappear.
+
+It didn't.
+
+The function still failed.
+
+That was my first clue that Vercel itself might not be the component terminating the request.
+
+---
+
+# Step 2 — Read the Logs, Not Your Assumptions
+
+Instead of making another code change, I added timing information around every significant operation.
+
+Something as simple as this quickly narrows down the bottleneck.
+
+```ts
+const start = performance.now();
+
+const response = await fetch(url);
+
+console.log(`Completed in ${Math.round(performance.now() - start)} ms`);
+```
+
+I logged:
+
+- Request start
+- PageSpeed API call
+- Response received
+- AI analysis
+- Report generation
+- Total execution time
+
+Very quickly a pattern emerged.
+
+Everything after the Google PageSpeed request executed almost instantly.
+
+Nearly all of the request time was spent waiting for Lighthouse.
+
+That was expected.
+
+The strange part was this:
+
+The request wasn't reaching 120 seconds.
+
+It wasn't even reaching 60 seconds.
+
+It was failing much earlier.
+
+That meant something else was cancelling the request.
+
+---
+
+# Step 3 — The Hidden Timeout
+
+After tracing every asynchronous call, I eventually found this line.
+
+```ts
+signal: AbortSignal.timeout(40000);
+```
+
+There it was.
+
+A timeout I had completely forgotten about.
+
+I had originally added it as a safety mechanism.
+
+The idea was simple:
+
+> "If Google doesn't respond within 40 seconds, cancel the request."
+
+It made perfect sense while developing.
+
+But once I increased the server execution limit, that 40-second timeout became the new bottleneck.
+
+The request was never reaching Vercel's limit.
+
+My own code was cancelling it first.
+
+---
+
+# Why Increasing `maxDuration` Didn't Help
+
+This is probably the most important takeaway from the entire article.
+
+There are multiple layers of timeouts.
+
+Think of them like this.
+
+```text
+Client Request
+      │
+      ▼
+Vercel Function
+      │
+      ▼
+fetch()
+      │
+      ▼
+AbortSignal.timeout()
+      │
+      ▼
+Google PageSpeed API
+```
+
+Increasing the outer timeout doesn't automatically increase the inner ones.
+
+Imagine setting your function to 120 seconds.
+
+```
+Vercel Function
+120 seconds
+```
+
+But inside that function you still have:
+
+```
+AbortSignal.timeout(40000)
+```
+
+The request will still stop after 40 seconds.
+
+Not because Vercel stopped it.
+
+Because **your own application did.**
+
+---
+
+# The Fix
+
+Once I found the real bottleneck, the fix was almost embarrassingly simple.
+
+Before:
+
+```ts
+const response = await fetch(apiUrl, {
+  signal: AbortSignal.timeout(40000),
+});
+```
+
+After:
+
+```ts
+const response = await fetch(apiUrl, {
+  signal: AbortSignal.timeout(100000),
+});
+```
+
+Combined with:
+
+```ts
+export const maxDuration = 120;
+```
+
+The application immediately started completing reports that had previously failed.
+
+Sometimes the hardest bugs don't require complicated solutions.
+
+They require finding the correct layer.
+
+---
+
+# Why Only Certain Websites Failed
+
+One question still remained.
+
+Why did most websites work perfectly?
+
+The answer lies in Google PageSpeed Insights itself.
+
+Lighthouse doesn't spend the same amount of time analyzing every website.
+
+Some sites are lightweight.
+
+Some are extremely heavy.
+
+For example:
+
+| Website Type                 | Approximate Processing Time |
+| ---------------------------- | --------------------------: |
+| Simple landing page          |                8–12 seconds |
+| Business website             |               15–25 seconds |
+| WooCommerce store            |               20–35 seconds |
+| Large JavaScript application |              35–60+ seconds |
+
+My AI Website Audit Tool waits for Google's Lighthouse analysis to finish before generating recommendations.
+
+That means I don't control this part of the execution time.
+
+The slower Google's analysis is, the longer my server function waits.
+
+That's exactly why only a few websites exposed the issue.
+
+---
+
+# The Better Optimization
+
+Increasing the timeout solved the symptom.
+
+Reducing unnecessary work improved the application.
+
+Originally, my audit requested every Lighthouse category.
+
+```text
+Performance
+Accessibility
+SEO
+Best Practices
+```
+
+That isn't always necessary.
+
+If your application only needs performance metrics, requesting fewer categories reduces the amount of work Google has to perform.
+
+Less work means:
+
+- Faster responses
+- Lower server execution time
+- Lower infrastructure costs
+- Better user experience
+
+Longer timeouts should be your safety net.
+
+Not your first optimization strategy.
+
+---
+
+# Another Real-World Gotcha
+
+While researching this issue, I came across developers who had:
+
+- Enabled Fluid Compute
+- Increased `maxDuration`
+- Configured higher limits in the Vercel dashboard
+
+...and were **still** hitting 60-second timeouts.
+
+The reason?
+
+Certain route types or framework integrations may have their own execution behavior or separate configuration paths.
+
+The important lesson is this:
+
+If your function still times out after increasing every documented limit, don't immediately assume Vercel is ignoring your configuration.
+
+Instead, ask:
+
+- Is this really a standard API route?
+- Is another library enforcing its own timeout?
+- Is a proxy terminating the request?
+- Is the external API itself closing the connection?
+- Am I cancelling the request somewhere else?
+
+Always verify where the timeout originates before changing infrastructure settings.
+
+---
+
+# My Before vs After
+
+Here's what actually changed.
+
+| Configuration        | Before               | After                      |
+| -------------------- | -------------------- | -------------------------- |
+| Function maxDuration | Default              | 120 seconds                |
+| AbortSignal timeout  | 40 seconds           | 100 seconds                |
+| Logging              | Minimal              | Detailed timing logs       |
+| Lighthouse requests  | Broad                | More selective             |
+| Success rate         | Failed on slow sites | Reliable across test cases |
+
+Interestingly, increasing the timeout wasn't even the biggest improvement.
+
+The detailed logging was.
+
+Once every operation had timestamps, the problem almost revealed itself.
+
+---
+
+# Lessons Learned
+
+Looking back, there were several important engineering lessons.
+
+### 1. Verify assumptions first
+
+Most of my debugging time wasn't spent fixing code.
+
+It was spent challenging assumptions.
+
+---
+
+### 2. Infrastructure changes over time
+
+Cloud platforms evolve constantly.
+
+Limits that were true two years ago may no longer exist.
+
+Always verify current documentation.
+
+---
+
+### 3. AI is a great assistant—not an authority
+
+I used AI during this debugging session.
+
+It was incredibly useful for brainstorming and reviewing code.
+
+But it also initially treated the old 60-second limit as a fixed constraint because that information had been widely repeated for years.
+
+That wasn't an AI failure.
+
+It was a reminder that platform-specific behavior changes over time, and the official documentation should always be the final reference.
+
+---
+
+### 4. Every timeout has an owner
+
+When a request fails, ask:
+
+> **Who actually cancelled this request?**
+
+The answer might be:
+
+- Your code
+- Your framework
+- Your hosting platform
+- A reverse proxy
+- A load balancer
+- The external API
+
+Finding the owner is often more valuable than increasing every timeout value.
+
+---
+
+### 5. Better logging beats better guessing
+
+Adding timing information around every asynchronous operation solved this bug faster than any optimization attempt.
+
+Logs don't make assumptions.
+
+Developers do.
+
+---
+
+# Quick Debugging Checklist
+
+If you're facing a **Vercel Function Timeout**, here's the checklist I wish I'd followed from the beginning.
+
+✅ Verify `maxDuration`
+
+✅ Confirm Fluid Compute is enabled
+
+✅ Read the latest Vercel documentation
+
+✅ Add timing logs around every external API call
+
+✅ Check `AbortSignal.timeout()`
+
+✅ Check Axios or fetch timeout settings
+
+✅ Review proxy and CDN timeouts
+
+✅ Optimize the amount of work instead of only increasing limits
+
+---
+
+## FAQ: Troubleshooting Vercel Function Timeouts
+
+### How do I increase Vercel function timeout?
+
+To increase the execution limit of your Vercel functions, you can configure the `maxDuration` property. Depending on your framework and project setup, you can do this in two ways:
+
+1. **Next.js App Router (Route-level configuration)**:
+   Export a `maxDuration` constant directly from your API route or page file:
+   ```ts
+   export const maxDuration = 120; // set limit to 120 seconds
+   ```
+2. **Vercel Configuration File (`vercel.json`)**:
+   Define the duration globally or for specific patterns in the `functions` property:
+   ```json
+   {
+     "functions": {
+       "api/**/*.js": {
+         "maxDuration": 120
+       }
+     }
+   }
+   ```
+*Note: The maximum allowable limit depends on your Vercel plan (Hobby: 10s, Pro: up to 300s, Enterprise: up to 900s).*
+
+### Why does my Vercel function still timeout after increasing maxDuration?
+
+If you've successfully increased Vercel's `maxDuration` in your configuration, but still experience a 504 Gateway Timeout or an aborted request, the issue lies in one of the following layers:
+
+1. **Application-level Fetch Timeouts**: Look for `AbortSignal.timeout(ms)` or third-party HTTP client options (like Axios's `timeout` option) that abort the request early.
+2. **Database Query Timeouts**: Some database clients have separate connection and query timeout settings (e.g., Prisma or pg pool configurations) that default to 30 seconds.
+3. **External API Boundaries**: The third-party API you are calling might be terminating the connection on their end, or they might take too long to start streaming the response back.
+4. **Platform Execution Limits**: If you are on a Vercel Hobby plan, the hard maximum limit is 10 seconds regardless of what you set `maxDuration` to. Ensure you are on a Pro or Enterprise plan if you need larger limits.
+
+---
+
+# Final Thoughts
+
+What started as a seemingly simple timeout turned into a useful reminder about modern cloud development.
+
+The bug wasn't caused by Vercel.
+
+It wasn't caused by Next.js.
+
+It wasn't even caused by Google PageSpeed Insights.
+
+It was caused by a forgotten timeout configuration inside my own application—combined with an outdated assumption about how Vercel functions work today.
+
+Once I increased the function's execution limit, updated the application's own timeout, and reduced unnecessary work, the AI Website Audit Tool began generating reports reliably, even for websites that had previously failed.
+
+Sometimes the best debugging technique isn't writing more code.
+
+It's asking whether you're solving the right problem.
+
+---
+
+# Try the AI Website Audit Tool
+
+The production issue described in this article was discovered while building my **[Free AI Website Audit Tool](/free-audit)**.
+
+It analyzes websites using Google PageSpeed Insights and AI-generated recommendations to produce detailed Website Growth Opportunity Reports covering:
+
+- Performance
+- SEO
+- Accessibility
+- Best Practices
+- Technical Foundation
+- AI Search Readiness
+- Trust & Credibility
+- Actionable improvement recommendations
+
+**🔗 [Try the Free AI Website Audit Tool](/free-audit)**
+
+If you're building with **Next.js**, **Vercel**, or integrating external APIs like Google PageSpeed Insights and are facing similar production issues, I hope this debugging journey saves you a few hours—and perhaps a few incorrect assumptions.
+
+---
+
+## Related Articles
+
+If you enjoyed this case study, you might also like:
+
+- [Google's New PageSpeed Agentic Browsing Score: Why Your Website May Be Invisible to AI](/blog/google-pagespeed-agenticai-score)
+- [How to Analyze Your Google Analytics Data with AI: GA4 AI Agent Guide](/blog/google-analytics-ai-agent)
+- [WordPress PageSpeed Optimization: How We Improved Mobile Performance from 56 to 98](/blog/wordpress-pagespeed-optimization-case-study)
+
+<ArticleCTALink slug="vercel-function-timeout" />
+
+---
+
+### About the Author
+
+Hi, I'm **Naveen Gaur**, a Full-Stack Developer specializing in **Next.js, React, Node.js, WordPress, SEO, and AI-powered web applications**.
+
+I enjoy building practical tools that solve real business problems—from AI-powered Website Audit platforms to custom web applications and automation workflows. Whenever I encounter an interesting engineering challenge in production, I document the debugging process so others can learn from it too.
+
