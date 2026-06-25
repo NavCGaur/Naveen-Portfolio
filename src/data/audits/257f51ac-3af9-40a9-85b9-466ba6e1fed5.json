@@ -1,0 +1,98 @@
+{
+  "id": "257f51ac-3af9-40a9-85b9-466ba6e1fed5",
+  "url": "https://www.groflegacytrainingadria.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-25T04:05:53.737Z",
+  "businessCategory": "professional-service",
+  "executiveSummary": "Your website currently lacks a blog, testimonials, and verified business location details such as an address or operating hours. Technical diagnostics indicate that caching is disabled and there are no signals present to help artificial intelligence tools interpret your site content. While your meta descriptions are up to date, the site is missing key elements that establish public credibility and operational transparency.",
+  "aiObservations": [
+    {
+      "title": "Building Trust Through Social Proof",
+      "body": "You have a strong foundation with your current credibility score, which provides a great base to build upon. By adding testimonials and a dedicated about page, you can further showcase your expertise and help visitors feel more confident in your services."
+    },
+    {
+      "title": "Enhancing Local Visibility",
+      "body": "Your business has the opportunity to become more accessible to local clients by verifying your address and business hours. Integrating a map and contact information will make it much easier for potential clients to find and connect with your team."
+    },
+    {
+      "title": "Optimizing for Modern Discovery",
+      "body": "You can improve how your business is discovered by enabling website caching and adding signals for artificial intelligence tools. These updates will help your site load more efficiently and ensure that modern search technologies can accurately represent your business information."
+    }
+  ],
+  "pageSpeedUnavailable": true,
+  "rawHtmlLoadTime": 0.11,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": false,
+    "schemaTypes": [
+      "WebSite"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Grof Legacy Training Adria",
+    "businessType": "WebSite",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 8,
+      "hasAboutPage": "unverified",
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": true,
+      "hasTerms": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 6,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": false,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": true,
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 7,
+      "hasAboutOrTeam": "unverified",
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": true,
+      "hasGoodSpeedOrCache": "unverified"
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": "unverified",
+      "hasAddress": "unverified",
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
