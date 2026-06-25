@@ -1,0 +1,111 @@
+{
+  "id": "0909e900-c500-4a88-ba71-f85abeed0a7c",
+  "url": "https://www.groflegacytrainingadria.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-25T05:28:32.258Z",
+  "metrics": {
+    "performance": 89,
+    "seo": 92,
+    "bestPractices": 100,
+    "accessibility": 88
+  },
+  "businessCategory": "professional-service",
+  "executiveSummary": "Your website currently maintains a strong mobile performance and a solid foundation with active meta descriptions and current copyright information. However, there are notable gaps in content engagement, as the site lacks a blog, testimonials, and verified business contact details. Additionally, the site is currently missing automated caching features and signals that would allow AI tools to properly index your business information.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Trust and Social Proof",
+      "body": "You have a great opportunity to build deeper connections with your visitors by showcasing client feedback and sharing your professional story. Adding testimonials and a dedicated about page will help potential clients feel more confident in your expertise."
+    },
+    {
+      "title": "Optimizing Digital Presence and Accessibility",
+      "body": "By verifying your business address, hours, and contact methods, you can make it much easier for local clients to find and reach you. Ensuring these details are clearly displayed will improve your visibility and help your business stand out in local searches."
+    },
+    {
+      "title": "Improving Technical Efficiency and Reach",
+      "body": "You can improve your site's responsiveness by enabling caching, which helps pages load more smoothly for your visitors. Furthermore, adding a blog and clear signals for AI tools will help your business stay relevant and accessible to modern search technologies."
+    }
+  ],
+  "pageSpeedUnavailable": false,
+  "rawHtmlLoadTime": 0.08,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "ttfb": 78,
+    "loadTime": 1.29,
+    "lcp": 1.06,
+    "fcp": 0.85,
+    "tbt": 224,
+    "cls": 0.029,
+    "pageSize": 1.97,
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": false,
+    "schemaTypes": [
+      "WebSite"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Grof Legacy Training Adria",
+    "businessType": "WebSite",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 8,
+      "hasAboutPage": "unverified",
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": true,
+      "hasTerms": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 6,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": false,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": true,
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 8,
+      "hasAboutOrTeam": "unverified",
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": true,
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": "unverified",
+      "hasAddress": "unverified",
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
