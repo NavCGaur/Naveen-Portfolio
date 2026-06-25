@@ -13,7 +13,7 @@ import { computeCredibilityScore, computeLocalSeoScore, computeOnlineAuthoritySc
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 const lookup = promisify(dns.lookup);
 const PAGESPEED_API_KEY = process.env.PAGESPEED_API_KEY;
@@ -310,7 +310,7 @@ export async function POST(request: NextRequest) {
         .catch(() => false),
 
       fetch(`${PAGESPEED_ENDPOINT}?url=${encodeURIComponent(cleanUrl)}&category=performance&category=seo&category=best-practices&category=accessibility&key=${PAGESPEED_API_KEY}`,
-        { signal: AbortSignal.timeout(40000) })
+        { signal: AbortSignal.timeout(100000) })
         .then(async (res) => {
           if (!res.ok) {
             const errText = await res.text().catch(() => "");
