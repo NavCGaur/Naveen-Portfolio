@@ -1,0 +1,107 @@
+{
+  "id": "515ff0cf-9eea-4074-bc25-7e877c20c134",
+  "url": "https://thejobsearchcoach.net",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-26T13:37:22.066Z",
+  "businessCategory": "professional-service",
+  "executiveSummary": "Your website currently features enabled caching and is prepared for AI integration, though mobile performance diagnostics remain limited. While your meta descriptions are present and your credibility score is high, there is currently no blog content or visible customer testimonials on the site. Additionally, the copyright year is outdated, and several contact and location details remain unverified.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Social Proof",
+      "body": "You have a strong foundation for credibility, which provides a great opportunity to showcase your expertise. By adding a section for client testimonials, you can highlight the value you provide to your professional clients."
+    },
+    {
+      "title": "Building Authority Through Content",
+      "body": "Your business is well-positioned to share industry insights, yet there is currently no blog presence. Starting a regular rhythm of articles will allow you to demonstrate your knowledge and help your business stand out in your field."
+    },
+    {
+      "title": "Strengthening Business Presence",
+      "body": "Updating your copyright year and verifying your contact details will ensure your website reflects a current and professional image. These small adjustments will help provide a more polished experience for anyone visiting your site."
+    }
+  ],
+  "pageSpeedUnavailable": true,
+  "rawHtmlLoadTime": 0.9,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "pageBuilder": "Unknown",
+    "pluginCount": 2,
+    "cachingActive": true,
+    "schemaTypes": [
+      "WebPage",
+      "ReadAction",
+      "ImageObject",
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "PropertyValueSpecification",
+      "Organization"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Australia's #1 Professional Resume CV & LinkedIn Writing Service",
+    "businessType": "WebSite",
+    "hasMissingH1": true,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": true,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 8,
+      "hasAboutPage": true,
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": "unverified",
+      "hasTerms": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 10,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": true,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": "unverified",
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 7,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": "unverified",
+      "hasGoodSpeedOrCache": "unverified"
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": true
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": true,
+      "hasAddress": "unverified",
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
