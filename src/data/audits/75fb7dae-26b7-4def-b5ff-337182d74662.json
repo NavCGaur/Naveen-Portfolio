@@ -1,0 +1,120 @@
+{
+  "id": "75fb7dae-26b7-4def-b5ff-337182d74662",
+  "url": "https://thejobsearchcoach.net",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-26T13:46:50.570Z",
+  "metrics": {
+    "performance": 64,
+    "seo": 92,
+    "bestPractices": 77,
+    "accessibility": 78
+  },
+  "businessCategory": "professional-service",
+  "executiveSummary": "Your website currently features enabled caching and is prepared for AI integration, though mobile performance is only at a moderate level. There is currently no active blog rhythm to support your online presence, and no testimonials are displayed on the site. Additionally, the copyright information is outdated, and several contact and location details remain unverified.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Trust Through Social Proof",
+      "body": "You have a strong foundation for your professional services, which provides a great opportunity to showcase client success. By adding a dedicated section for testimonials, you can highlight the value you provide and build immediate confidence with your visitors."
+    },
+    {
+      "title": "Strengthening Your Digital Presence",
+      "body": "Your website is well-positioned for future growth, and you can further improve your authority by updating your business details and copyright year. Ensuring your contact information and location are clearly verified will help visitors connect with your business more easily."
+    },
+    {
+      "title": "Expanding Your Content Strategy",
+      "body": "Since your site is already prepared for modern AI tools, you have a unique opportunity to start a blog to share your expertise. Establishing a regular rhythm of content will help you engage your audience and demonstrate your industry knowledge more effectively."
+    }
+  ],
+  "pageSpeedUnavailable": false,
+  "rawHtmlLoadTime": 0.9,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "ttfb": 4,
+    "loadTime": 5.77,
+    "lcp": 3.96,
+    "fcp": 0.55,
+    "tbt": 185,
+    "cls": 0.006,
+    "pageSize": 8.45,
+    "pageBuilder": "Unknown",
+    "pluginCount": 2,
+    "cachingActive": true,
+    "schemaTypes": [
+      "WebPage",
+      "ReadAction",
+      "ImageObject",
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "PropertyValueSpecification",
+      "Organization"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Australia's #1 Professional Resume CV & LinkedIn Writing Service",
+    "businessType": "WebSite",
+    "hasMissingH1": true,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": true,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 8,
+      "hasAboutPage": true,
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": "unverified",
+      "hasTerms": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 10,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": true,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": "unverified",
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 6,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": "unverified",
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": true
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": true,
+      "hasAddress": "unverified",
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
