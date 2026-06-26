@@ -1,0 +1,106 @@
+{
+  "id": "eecdd1ff-223d-45b3-a475-423ed0b75d58",
+  "url": "https://pradeepo.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-26T04:10:46.854Z",
+  "metrics": {
+    "performance": 70,
+    "seo": 100,
+    "bestPractices": 100,
+    "accessibility": 92
+  },
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website currently lacks essential trust-building elements such as testimonials, an about page, and contact details like an address or email. While your mobile performance is functioning well, the site is missing automated caching, which impacts how efficiently your pages load. Additionally, there is no active blog content or signals to help artificial intelligence tools interpret your business information.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Trust and Credibility",
+      "body": "You have a great opportunity to build stronger connections with your visitors by adding testimonials and a dedicated about page. Sharing your business story and customer experiences will help your website feel more welcoming and reliable."
+    },
+    {
+      "title": "Improving Local Visibility",
+      "body": "By adding your physical address, business hours, and a map to your site, you can make it much easier for nearby customers to find you. These simple updates will help your business appear more prominently when people search for services in your area."
+    },
+    {
+      "title": "Optimizing Performance and Reach",
+      "body": "You can improve your site's efficiency by enabling caching, which helps your pages load more smoothly for every visitor. Furthermore, creating a blog and providing clear information for artificial intelligence tools will help your business stay relevant and discoverable online."
+    }
+  ],
+  "pageSpeedUnavailable": false,
+  "rawHtmlFetchFailed": true,
+  "details": {
+    "ttfb": 18,
+    "loadTime": 1,
+    "lcp": 0.74,
+    "fcp": 0.32,
+    "tbt": 1532,
+    "cls": 0,
+    "pageSize": 1.57,
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": false,
+    "schemaTypes": [],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": true,
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 3,
+      "hasAboutPage": false,
+      "hasTeamPage": false,
+      "hasPrivacyPolicy": false,
+      "hasTerms": false,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": false,
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 2,
+      "hasPhone": true,
+      "hasAddress": false,
+      "hasLocalSchema": false,
+      "hasMapsEmbed": false,
+      "hasCityInH1": false,
+      "hasServiceArea": false,
+      "hasBusinessHours": false
+    },
+    "onlineAuthority": {
+      "score": 4,
+      "hasAboutOrTeam": false,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": false,
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": false,
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": false,
+      "hasForm": false,
+      "hasAddress": false,
+      "hasMapsEmbed": false,
+      "hasBusinessHours": false
+    }
+  }
+}
