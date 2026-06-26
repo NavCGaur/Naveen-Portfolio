@@ -294,7 +294,7 @@ export default function SankeyFlow({ sessions = [] }: SankeyFlowProps) {
                     fill="none"
                     stroke={color}
                     strokeOpacity={0.3}
-                    strokeWidth={Math.max(2, width)}
+                    strokeWidth={typeof width === "number" && !isNaN(width) ? Math.max(2, width) : 2}
                     style={{ transition: "stroke-opacity 0.15s ease-in-out", cursor: "pointer" }}
                     onMouseEnter={(e) => {
                       (e.target as SVGPathElement).setAttribute("stroke-opacity", "0.75");
