@@ -1,0 +1,118 @@
+{
+  "id": "cc2aee71-e306-495c-95e1-665c6e8425d9",
+  "url": "https://beastskins.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-26T11:29:55.624Z",
+  "metrics": {
+    "performance": 97,
+    "seo": 92,
+    "bestPractices": 100,
+    "accessibility": 96
+  },
+  "businessCategory": "content-saas",
+  "executiveSummary": "Your website currently features enabled caching and good mobile performance, providing a solid foundation for user experience. However, the site lacks a blog, testimonials, and clear signals for AI accessibility. Additionally, the copyright information is outdated, and there is no verified local business presence such as an address or map integration.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Trust and Social Proof",
+      "body": "You have a strong foundation for your online authority, which you can further build upon by adding customer testimonials. Showcasing user feedback will help visitors feel more confident when using your name generation tools."
+    },
+    {
+      "title": "Expanding Your Content Strategy",
+      "body": "Starting a blog offers a great opportunity to share helpful content related to your naming tools. This will help you engage your audience more deeply and provide more reasons for users to return to your site."
+    },
+    {
+      "title": "Modernizing Your Digital Presence",
+      "body": "Updating your copyright year and establishing clear signals for AI tools will ensure your website feels current and accessible to modern technology. These small adjustments will help maintain a professional image as your platform grows."
+    }
+  ],
+  "pageSpeedUnavailable": false,
+  "rawHtmlLoadTime": 0.89,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "ttfb": 149,
+    "loadTime": 1.67,
+    "lcp": 0.77,
+    "fcp": 0.77,
+    "tbt": 0,
+    "cls": 0,
+    "pageSize": 0.89,
+    "pageBuilder": "Elementor",
+    "pluginCount": 5,
+    "cachingActive": true,
+    "schemaTypes": [
+      "WebPage",
+      "ReadAction",
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "PropertyValueSpecification"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": true,
+    "businessName": "Free Name Generator Tool for Unique Names Online",
+    "businessType": "WebSite",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": true,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": "unverified",
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 7,
+      "hasAboutPage": true,
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": true,
+      "hasTerms": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": "unverified",
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 4,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": false,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": "unverified",
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 8,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": "unverified",
+      "hasLegalPages": true,
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": "unverified",
+      "hasAddress": "unverified",
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
