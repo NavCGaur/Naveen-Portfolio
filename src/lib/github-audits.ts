@@ -183,3 +183,75 @@ export async function saveAudit(id: string, audit: AuditReport): Promise<boolean
     return false;
   }
 }
+
+/**
+ * List all audit reports stored in src/data/audits/ on GitHub.
+ * Uses the Contents API to list the directory, then batch-fetches
+ * each file in parallel (10 at a time) to avoid rate limits.
+ * Returns reports sorted newest-first by timestamp.
+ */
+export async function listAudits(): Promise<AuditReport[]> {
+  const owner = process.env.GITHUB_OWNER;
+  const repo = process.env.GITHUB_REPO;
+
+  try {
+    // Step 1: list directory contents
+    const dirUrl = `${GITHUB_API}/repos/${owner}/${repo}/contents/src/data/audits`;
+    const dirRes = await fetch(dirUrl, {
+      headers: githubHeaders(),
+      next: { revalidate: 0 },
+    });
+
+    if (dirRes.status === 404) return []; // directory doesn't exist yet
+    if (!dirRes.ok) {
+      console.error("GitHub dir list failed:", dirRes.status, await dirRes.text());
+      return [];
+    }
+
+    const entries = await dirRes.json() as Array<{
+      name: string;
+      type: string;
+      download_url: string;
+      url: string;
+    }>;
+
+    const jsonEntries = entries.filter(
+      (e) => e.type === "file" && e.name.endsWith(".json")
+    );
+
+    if (jsonEntries.length === 0) return [];
+
+    // Step 2: fetch each file in parallel batches of 10
+    const BATCH = 10;
+    const reports: AuditReport[] = [];
+
+    for (let i = 0; i < jsonEntries.length; i += BATCH) {
+      const batch = jsonEntries.slice(i, i + BATCH);
+      const results = await Promise.allSettled(
+        batch.map(async (entry) => {
+          // Use download_url for raw content — avoids base64 decode step
+          const res = await fetch(entry.download_url, {
+            next: { revalidate: 0 },
+          });
+          if (!res.ok) return null;
+          return await res.json() as AuditReport;
+        })
+      );
+      for (const result of results) {
+        if (result.status === "fulfilled" && result.value) {
+          reports.push(result.value);
+        }
+      }
+    }
+
+    // Sort newest-first
+    return reports.sort(
+      (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    );
+  } catch (error) {
+    console.error("Error listing audits from GitHub:", error);
+    return [];
+  }
+}
+
+

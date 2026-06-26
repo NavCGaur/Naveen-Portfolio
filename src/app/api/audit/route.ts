@@ -59,7 +59,7 @@ async function checkUrlSafety(targetUrl: string): Promise<{ safe: boolean; reaso
   }
 }
 
-// In-memory rate limiter: 15 audits per IP per 24h (raised for testing)
+// In-memory rate limiter: 2 audits per IP per 24h
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 function checkRateLimit(ip: string): boolean {
   if (ip === "127.0.0.1" || ip === "::1" || ip === "localhost") return true;
@@ -67,10 +67,11 @@ function checkRateLimit(ip: string): boolean {
   const entry = rateLimitMap.get(ip);
   if (!entry) { rateLimitMap.set(ip, { count: 1, resetTime: now + 86400000 }); return true; }
   if (now > entry.resetTime) { rateLimitMap.set(ip, { count: 1, resetTime: now + 86400000 }); return true; }
-  if (entry.count >= 15) return false;
+  if (entry.count >= 2) return false;
   entry.count += 1;
   return true;
 }
+
 
 // Parse RSS/Atom feed XML to extract pubDates
 function parseRssDates(xml: string): Date[] {
