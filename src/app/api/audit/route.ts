@@ -11,7 +11,7 @@ import { parsePhoneNumberFromString } from "libphonenumber-js/max";
 import he from "he";
 import { computeCredibilityScore, computeLocalSeoScore, computeOnlineAuthorityScore } from "@/lib/scoring";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || "dummy_key");
 
 export const maxDuration = 120;
 

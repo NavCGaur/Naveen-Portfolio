@@ -3,7 +3,7 @@ import { SignJWT } from "jose";
 import { Resend } from "resend";
 import { z } from "zod";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || "dummy_key");
 
 const commentSchema = z.object({
   slug: z.string().min(1),

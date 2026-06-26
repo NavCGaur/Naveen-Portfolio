@@ -4,7 +4,7 @@ import { Resend } from "resend";
 import { appendApprovedComment, appendReplyToComment } from "@/lib/github-comments";
 import type { CommentNode } from "@/lib/github-comments";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || "dummy_key");
 
 function htmlPage(title: string, message: string, color: string) {
   return new NextResponse(
