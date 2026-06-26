@@ -16,11 +16,12 @@ import {
 } from "lucide-react";
 import { AnalyticsData, VisitorSession } from "./types";
 import { mockData, SITE_OPTIONS } from "./mockData";
+import SankeyFlow from "./SankeyFlow";
 
 // ─────────────────────────────────────────────
 // Constants
 // ─────────────────────────────────────────────
-const TABS = ["Overview", "Sources", "Devices", "Top Pages", "Events", "Visitors"] as const;
+const TABS = ["Overview", "Sources", "Devices", "Top Pages", "Events", "Visitors", "User Flows"] as const;
 type Tab = typeof TABS[number];
 
 const TIME_RANGES = ["24h", "7d", "30d", "Custom"] as const;
@@ -985,6 +986,13 @@ export default function AnalyticsDashboard() {
                       </table>
                     </div>
                   )}
+                </div>
+              )}
+
+              {/* ════════ USER FLOWS ════════ */}
+              {activeTab === "User Flows" && (
+                <div className="dash-section">
+                  <SankeyFlow sessions={data.sessions ?? []} />
                 </div>
               )}
 

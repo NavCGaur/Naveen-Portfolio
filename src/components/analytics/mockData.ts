@@ -86,6 +86,16 @@ export const mockData: AnalyticsData = {
     { id: "e7", name: "github_link_click", count: 76, page: "/blog/baileys-whatsapp-bot-developer-guide", lastSeen: "1 hr ago" },
     { id: "e8", name: "audit_result_download", count: 54, page: "/free-audit", lastSeen: "2 hr ago" },
   ],
+  sessions: [
+    { ip: "106.76.190.*", country: "India", countryCode: "IN", city: "Thrissur", isp: "Idea Cellular Limited", device: "Desktop", browser: "Firefox", pages: ["/", "/blog/baileys-whatsapp-bot-developer-guide", "/free-audit"], duration: 247, lastActive: new Date(Date.now() - 1000 * 60 * 5).toISOString() },
+    { ip: "192.168.1.*", country: "United States", countryCode: "US", city: "Dallas", isp: "AT&T Internet", device: "Desktop", browser: "Chrome", pages: ["/", "/blog/baileys-whatsapp-bot-developer-guide", "/free-audit"], duration: 310, lastActive: new Date(Date.now() - 1000 * 60 * 12).toISOString() },
+    { ip: "122.164.22.*", country: "India", countryCode: "IN", city: "Chennai", isp: "Airtel Fiber", device: "Mobile", browser: "Chrome", pages: ["/", "/blog/ai-automation-freelancing"], duration: 94, lastActive: new Date(Date.now() - 1000 * 60 * 18).toISOString() },
+    { ip: "73.4.19.*", country: "United States", countryCode: "US", city: "Atlanta", isp: "Comcast", device: "Mobile", browser: "Safari", pages: ["/", "/contact"], duration: 45, lastActive: new Date(Date.now() - 1000 * 60 * 25).toISOString() },
+    { ip: "95.111.4.*", country: "Germany", countryCode: "DE", city: "Frankfurt", isp: "Deutsche Telekom", device: "Desktop", browser: "Chrome", pages: ["/blog/next-js-seo-guide", "/free-audit"], duration: 185, lastActive: new Date(Date.now() - 1000 * 60 * 42).toISOString() },
+    { ip: "108.162.2.*", country: "United Kingdom", countryCode: "GB", city: "London", isp: "British Telecom", device: "Desktop", browser: "Safari", pages: ["/", "/blog/baileys-whatsapp-bot-developer-guide", "/blog/whatsapp-crm-integration"], duration: 320, lastActive: new Date(Date.now() - 1000 * 60 * 55).toISOString() },
+    { ip: "109.112.5.*", country: "Canada", countryCode: "CA", city: "Toronto", isp: "Rogers Communications", device: "Mobile", browser: "Safari", pages: ["/free-audit"], duration: 12, lastActive: new Date(Date.now() - 1000 * 60 * 70).toISOString() },
+    { ip: "27.12.98.*", country: "Australia", countryCode: "AU", city: "Sydney", isp: "Telstra", device: "Tablet", browser: "Chrome", pages: ["/", "/blog/ai-automation-freelancing", "/contact"], duration: 140, lastActive: new Date(Date.now() - 1000 * 60 * 95).toISOString() }
+  ]
 };
 
 export const SITE_OPTIONS = [
