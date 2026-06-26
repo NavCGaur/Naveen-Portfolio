@@ -51,6 +51,23 @@ const getPageColor = (name: string) => {
   return PAGE_COLORS[path] || PALETTE.blue;
 };
 
+const LINK_COLORS: Record<string, string> = {
+  "/": "#FF79B0",                // Pastel neon pink
+  "/blog": "#A78BFA",            // Pastel purple
+  "/free-audit": "#34D399",      // Bright green/teal
+  "/hosting-automation": "#FBBF24", // Bright gold
+  "/whatsapp-automation": "#60A5FA", // Light blue
+  "/how-it-works": "#2DD4BF",
+  "/migration": "#F472B6",
+  "exit": "#9CA3AF"
+};
+
+const getLinkColor = (name: string) => {
+  const path = name.substring(name.indexOf(" ") + 1).trim();
+  if (path.toLowerCase().includes("exit")) return "#4B5563"; // slate gray
+  return LINK_COLORS[path] || "#9CA3AF";
+};
+
 // ─── Custom CustomSankeyNode ───
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomSankeyNode = (props: any) => {
@@ -282,7 +299,7 @@ export default function SankeyFlow({ sessions = [] }: SankeyFlowProps) {
               nodePadding={24}
               link={(linkProps: any) => {
                 const { sourceX, sourceY, targetX, targetY, sy, ty, width, payload } = linkProps;
-                const color = getPageColor(payload.source.name);
+                const color = getLinkColor(payload.source.name);
                 return (
                   <path
                     d={`
@@ -293,14 +310,14 @@ export default function SankeyFlow({ sessions = [] }: SankeyFlowProps) {
                     `}
                     fill="none"
                     stroke={color}
-                    strokeOpacity={0.3}
+                    strokeOpacity={0.55}
                     strokeWidth={typeof width === "number" && !isNaN(width) ? Math.max(2, width) : 2}
                     style={{ transition: "stroke-opacity 0.15s ease-in-out", cursor: "pointer" }}
                     onMouseEnter={(e) => {
-                      (e.target as SVGPathElement).setAttribute("stroke-opacity", "0.75");
+                      (e.target as SVGPathElement).setAttribute("stroke-opacity", "0.9");
                     }}
                     onMouseLeave={(e) => {
-                      (e.target as SVGPathElement).setAttribute("stroke-opacity", "0.3");
+                      (e.target as SVGPathElement).setAttribute("stroke-opacity", "0.55");
                     }}
                   />
                 );
