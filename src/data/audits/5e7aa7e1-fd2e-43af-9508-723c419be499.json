@@ -1,0 +1,134 @@
+{
+  "id": "5e7aa7e1-fd2e-43af-9508-723c419be499",
+  "url": "https://pradeepo.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-06-26T09:17:52.329Z",
+  "metrics": {
+    "performance": 99,
+    "seo": 100,
+    "bestPractices": 100,
+    "accessibility": 92
+  },
+  "businessCategory": "professional-service",
+  "executiveSummary": "Your website currently maintains a strong foundation with accurate contact information and a current copyright date. While mobile performance is solid, the site lacks active caching, a blog, and visible testimonials. Additionally, there are no signals present to help artificial intelligence tools interpret your business information correctly.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Trust and Social Proof",
+      "body": "You have a great opportunity to showcase your expertise by adding a section for client feedback. Displaying testimonials will help visitors feel more confident in your services when they land on your page."
+    },
+    {
+      "title": "Improving Site Efficiency",
+      "body": "By enabling caching, you can ensure your website loads even more smoothly for your visitors. This simple update helps your pages stay responsive and provides a better experience for everyone who visits your site."
+    },
+    {
+      "title": "Expanding Your Digital Reach",
+      "body": "You can grow your online presence by starting a blog and updating your business information for modern search tools. These additions will help your business stay relevant and easily discoverable by new audiences."
+    }
+  ],
+  "pageSpeedUnavailable": false,
+  "rawHtmlLoadTime": 0.09,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "ttfb": 18,
+    "loadTime": 0.5,
+    "lcp": 0.91,
+    "fcp": 0.28,
+    "tbt": 81,
+    "cls": 0,
+    "pageSize": 0.36,
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": false,
+    "schemaTypes": [
+      "Person",
+      "ImageObject",
+      "Occupation",
+      "Country",
+      "ContactPoint",
+      "PostalAddress",
+      "AdministrativeArea",
+      "OfferCatalog",
+      "Offer",
+      "Service",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "WebPage",
+      "SpeakableSpecification",
+      "BreadcrumbList",
+      "ListItem",
+      "ItemList",
+      "FAQPage",
+      "Question",
+      "Answer",
+      "ProfilePage",
+      "ProfessionalService",
+      "AggregateRating"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": true,
+    "businessName": "Pradeep O",
+    "businessType": "WebSite",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": "unverified",
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 10,
+      "hasAboutPage": true,
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": true,
+      "hasTerms": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": true,
+      "hasSocialLinks": true,
+      "hasAddress": true,
+      "hasPhone": "unverified"
+    },
+    "localSeo": {
+      "score": 6,
+      "hasPhone": "unverified",
+      "hasAddress": true,
+      "hasLocalSchema": false,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": true,
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 10,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": true,
+      "hasSocialLinks": true,
+      "hasLegalPages": true,
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": true,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": "unverified",
+      "hasEmail": true,
+      "hasForm": "unverified",
+      "hasAddress": true,
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
