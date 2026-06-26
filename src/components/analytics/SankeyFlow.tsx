@@ -280,7 +280,31 @@ export default function SankeyFlow({ sessions = [] }: SankeyFlowProps) {
               data={sankeyData}
               node={<CustomSankeyNode containerWidth={800} />}
               nodePadding={24}
-              link={{ stroke: "rgba(255,255,255,0.08)", strokeOpacity: 0.4 }}
+              link={(linkProps: any) => {
+                const { sourceX, sourceY, targetX, targetY, sy, ty, width, payload } = linkProps;
+                const color = getPageColor(payload.source.name);
+                return (
+                  <path
+                    d={`
+                      M ${sourceX} ${sy}
+                      C ${(sourceX + targetX) / 2} ${sy},
+                        ${(sourceX + targetX) / 2} ${ty},
+                        ${targetX} ${ty}
+                    `}
+                    fill="none"
+                    stroke={color}
+                    strokeOpacity={0.3}
+                    strokeWidth={Math.max(2, width)}
+                    style={{ transition: "stroke-opacity 0.15s ease-in-out", cursor: "pointer" }}
+                    onMouseEnter={(e) => {
+                      (e.target as SVGPathElement).setAttribute("stroke-opacity", "0.75");
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.target as SVGPathElement).setAttribute("stroke-opacity", "0.3");
+                    }}
+                  />
+                );
+              }}
               margin={{ top: 12, right: 120, bottom: 12, left: 16 }}
             >
               <Tooltip content={<CustomSankeyTooltip />} />
