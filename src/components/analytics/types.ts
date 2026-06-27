@@ -46,6 +46,12 @@ export interface CustomEvent {
   sampleIps?: string[];
 }
 
+export interface PageVisit {
+  path: string;
+  enteredAt: string; // ISO timestamp
+  duration?: number; // seconds; undefined = still on page / unknown
+}
+
 export interface VisitorSession {
   ip: string;
   country: string;
@@ -54,9 +60,17 @@ export interface VisitorSession {
   isp: string;
   device: string;
   browser: string;
-  pages: string[];
+  pages: string[] | PageVisit[];
   duration: number;
   lastActive: string;
+}
+
+export function normalizePages(pages: VisitorSession["pages"]): PageVisit[] {
+  if (!pages || pages.length === 0) return [];
+  if (typeof pages[0] === "string") {
+    return (pages as string[]).map((path) => ({ path, enteredAt: "" }));
+  }
+  return pages as PageVisit[];
 }
 
 export interface AnalyticsData {

@@ -14,9 +14,10 @@ import {
   Activity, BarChart2, Zap, RefreshCw,
   ExternalLink, Check, Copy, Loader, Wifi, WifiOff,
 } from "lucide-react";
-import { AnalyticsData, VisitorSession } from "./types";
+import { AnalyticsData, VisitorSession, normalizePages } from "./types";
 import { mockData, SITE_OPTIONS } from "./mockData";
 import SankeyFlow from "./SankeyFlow";
+import VisitorJourney from "./VisitorJourney";
 
 // ─────────────────────────────────────────────
 // Constants
@@ -152,6 +153,7 @@ export default function AnalyticsDashboard() {
   const [isFetching, setIsFetching] = useState(false);
   const [liveError, setLiveError] = useState<string | null>(null);
   const [lastFetched, setLastFetched] = useState<string | null>(null);
+  const [selectedSession, setSelectedSession] = useState<VisitorSession | null>(null);
 
   const fetchLiveData = useCallback(async (site: string, period: string) => {
     setIsFetching(true);
@@ -927,6 +929,9 @@ export default function AnalyticsDashboard() {
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               transition={{ delay: i * 0.025 }}
+                              onClick={() => setSelectedSession(s)}
+                              style={{ cursor: "pointer" }}
+                              className="dash-visitor-row"
                             >
                               <td>
                                 <code className="dash-ip-code">{s.ip}</code>
@@ -961,11 +966,13 @@ export default function AnalyticsDashboard() {
                               </td>
                               <td>
                                 <div className="dash-pages-list">
-                                  {s.pages.slice(0, 3).map((p, pi) => (
-                                    <span key={pi} className="dash-page-chip" title={p}>{p.length > 28 ? p.slice(0, 28) + '…' : p}</span>
+                                  {normalizePages(s.pages).slice(0, 3).map((p, pi) => (
+                                    <span key={pi} className="dash-page-chip" title={p.path}>
+                                      {p.path.length > 28 ? p.path.slice(0, 28) + '…' : p.path}
+                                    </span>
                                   ))}
-                                  {s.pages.length > 3 && (
-                                    <span className="dash-page-chip dash-page-chip-more">+{s.pages.length - 3}</span>
+                                  {normalizePages(s.pages).length > 3 && (
+                                    <span className="dash-page-chip dash-page-chip-more">+{normalizePages(s.pages).length - 3}</span>
                                   )}
                                 </div>
                               </td>
@@ -1006,6 +1013,13 @@ export default function AnalyticsDashboard() {
           <span>·</span>
           <span>Import your <code>.json</code> export to visualize live data</span>
         </footer>
+
+        {selectedSession && (
+          <VisitorJourney
+            session={selectedSession}
+            onClose={() => setSelectedSession(null)}
+          />
+        )}
       </div>
     </>
   );
@@ -1793,5 +1807,9 @@ const dashStyles = `
     padding: 60px 20px;
     color: #6b7280;
     text-align: center;
+  }
+
+  .dash-visitor-row:hover td {
+    background: rgba(255,0,122,0.04) !important;
   }
 `;

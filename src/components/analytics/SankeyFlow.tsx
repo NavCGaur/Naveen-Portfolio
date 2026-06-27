@@ -1,28 +1,25 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Sankey, Tooltip, ResponsiveContainer } from "recharts";
-import { VisitorSession } from "./types";
-import { motion } from "framer-motion";
+import { useMemo, useState } from "react";
+import { sankey, sankeyLinkHorizontal } from "d3-sankey";
+import type { SankeyNodeMinimal, SankeyLinkMinimal } from "d3-sankey";
+import type { VisitorSession } from "./types";
+import { normalizePages } from "./types";
 import { Filter, GitCommit, Info } from "lucide-react";
 
 interface SankeyFlowProps {
   sessions: VisitorSession[];
 }
 
-interface SankeyNode {
+// ─── d3-sankey node/link shapes ───
+interface FlowNode extends SankeyNodeMinimal<FlowNode, FlowLink> {
   name: string;
-  depth?: number;
-  value?: number;
 }
-
-interface SankeyLink {
-  source: number;
-  target: number;
+interface FlowLink extends SankeyLinkMinimal<FlowNode, FlowLink> {
   value: number;
 }
 
-// Accent colors matching our dark modern theme
+// ─── Color palette matching our dark modern theme ───
 const PALETTE = {
   accent: "#FF007A",
   accent2: "#7B5CF0",
@@ -30,7 +27,6 @@ const PALETTE = {
   accent4: "#F59E0B",
   blue: "#3B82F6",
   slate: "#6B7280",
-  red: "#EF4444"
 };
 
 const PAGE_COLORS: Record<string, string> = {
@@ -41,16 +37,10 @@ const PAGE_COLORS: Record<string, string> = {
   "/whatsapp-automation": PALETTE.blue,
   "/how-it-works": "#14B8A6",
   "/migration": "#EC4899",
-  "exit": "#374151"
+  exit: "#374151",
 };
 
-const getPageColor = (name: string) => {
-  // strip step prefix (e.g. "1. /" -> "/")
-  const path = name.substring(name.indexOf(" ") + 1).trim();
-  if (path.toLowerCase().includes("exit")) return PALETTE.slate;
-  return PAGE_COLORS[path] || PALETTE.blue;
-};
-
+// Pastel/neon palette specifically for light curves on dark backgrounds
 const LINK_COLORS: Record<string, string> = {
   "/": "#FF79B0",                // Pastel neon pink
   "/blog": "#A78BFA",            // Pastel purple
@@ -62,61 +52,74 @@ const LINK_COLORS: Record<string, string> = {
   "exit": "#9CA3AF"
 };
 
+const FALLBACK_COLORS = [
+  "#FF007A", "#7B5CF0", "#00C9A7", "#F59E0B", "#3B82F6",
+  "#EC4899", "#14B8A6", "#A78BFA", "#34D399", "#FBBF24",
+  "#60A5FA", "#F472B6", "#2DD4BF", "#FB923C", "#818CF8",
+];
+
+const stripStepPrefix = (name: string) => {
+  const dot = name.indexOf(". ");
+  return dot !== -1 ? name.slice(dot + 2).trim() : name.trim();
+};
+
+/**
+ * Builds a stable color map for the set of distinct page paths present in
+ * the current graph. Cycles fallback colors for unknown pages.
+ */
+function buildColorMap(paths: string[]): Map<string, string> {
+  const map = new Map<string, string>();
+  let cycleIdx = 0;
+  const usedColors = new Set<string>(Object.values(PAGE_COLORS));
+
+  paths.forEach((path) => {
+    if (map.has(path)) return;
+    if (path.toLowerCase().includes("exit")) {
+      map.set(path, PALETTE.slate);
+      return;
+    }
+    if (PAGE_COLORS[path]) {
+      map.set(path, PAGE_COLORS[path]);
+      return;
+    }
+    let attempts = 0;
+    while (usedColors.has(FALLBACK_COLORS[cycleIdx % FALLBACK_COLORS.length]) && attempts < FALLBACK_COLORS.length) {
+      cycleIdx++;
+      attempts++;
+    }
+    const color = FALLBACK_COLORS[cycleIdx % FALLBACK_COLORS.length];
+    usedColors.add(color);
+    map.set(path, color);
+    cycleIdx++;
+  });
+
+  return map;
+}
+
 const getLinkColor = (name: string) => {
-  const path = name.substring(name.indexOf(" ") + 1).trim();
+  const path = stripStepPrefix(name);
   if (path.toLowerCase().includes("exit")) return "#4B5563"; // slate gray
   return LINK_COLORS[path] || "#9CA3AF";
 };
 
-// ─── Custom CustomSankeyNode ───
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CustomSankeyNode = (props: any) => {
-  const { x, y, width, height, index, payload, containerWidth } = props;
-  const isOut = x + width + 6 > containerWidth;
-  const color = getPageColor(payload.name);
-
-  return (
-    <g>
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={color}
-        fillOpacity={0.85}
-        rx={3}
-        ry={3}
-        stroke="rgba(255,255,255,0.12)"
-        strokeWidth={1}
-      />
-      <text
-        x={isOut ? x - 8 : x + width + 8}
-        y={y + height / 2 + 4}
-        textAnchor={isOut ? "end" : "start"}
-        fontSize={11}
-        fontWeight="600"
-        fill="#e5e7eb"
-      >
-        {payload.name}
-      </text>
-      <text
-        x={isOut ? x - 8 : x + width + 8}
-        y={y + height / 2 + 15}
-        textAnchor={isOut ? "end" : "start"}
-        fontSize={9.5}
-        fill="#9ca3af"
-      >
-        {payload.value} visits
-      </text>
-    </g>
-  );
-};
-
+// ─────────────────────────────────────────────
+// Component
+// ─────────────────────────────────────────────
 export default function SankeyFlow({ sessions = [] }: SankeyFlowProps) {
   const [maxSteps, setMaxSteps] = useState<number>(4);
   const [deviceFilter, setDeviceFilter] = useState<string>("All");
+  const [hoveredLink, setHoveredLink] = useState<number | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<number | null>(null);
+  const [tooltip, setTooltip] = useState<{
+    x: number;
+    y: number;
+    kind: "node" | "link";
+    title: string;
+    sub?: string;
+    value: number;
+    color: string;
+  } | null>(null);
 
-  // Get unique device list from sessions
   const devices = useMemo(() => {
     const set = new Set<string>();
     sessions.forEach((s) => {
@@ -125,126 +128,121 @@ export default function SankeyFlow({ sessions = [] }: SankeyFlowProps) {
     return Array.from(set);
   }, [sessions]);
 
-  // 1. Process Sessions to build Sankey nodes & links
-  const sankeyData = useMemo(() => {
-    if (!sessions || sessions.length === 0) {
-      return { nodes: [], links: [] };
-    }
+  // ── Build raw node/link graph ──
+  const graph = useMemo(() => {
+    const filtered = sessions.filter((s) => deviceFilter === "All" || s.device === deviceFilter);
+    if (filtered.length === 0) return { nodes: [] as FlowNode[], links: [] as FlowLink[] };
 
-    // Filter by device if set
-    const filtered = sessions.filter((s) => {
-      if (deviceFilter === "All") return true;
-      return s.device === deviceFilter;
+    const rawCounts = new Map<string, number>();
+    filtered.forEach((session) => {
+      const path = normalizePages(session.pages).map((p) => p.path);
+      const stepsCount = Math.min(path.length, maxSteps);
+      for (let i = 0; i < stepsCount; i++) {
+        const label = `${i + 1}. ${path[i]}`;
+        rawCounts.set(label, (rawCounts.get(label) || 0) + 1);
+      }
     });
 
-    const nodesList: string[] = [];
-    const linkMap = new Map<string, number>(); // key: "sourceIndex->targetIndex", value: weight
+    const MIN_VISITS_TO_SHOW = Math.max(2, Math.floor(filtered.length * 0.04));
+    const resolveLabel = (stepNum: number, rawPath: string) => {
+      const label = `${stepNum}. ${rawPath}`;
+      const count = rawCounts.get(label) || 0;
+      return count < MIN_VISITS_TO_SHOW ? `${stepNum}. Other pages` : label;
+    };
 
-    const addNode = (nodeName: string): number => {
-      let idx = nodesList.indexOf(nodeName);
-      if (idx === -1) {
-        nodesList.push(nodeName);
-        idx = nodesList.length - 1;
+    const nodeNames: string[] = [];
+    const nodeIndex = new Map<string, number>();
+    const linkMap = new Map<string, number>();
+
+    const addNode = (name: string): number => {
+      let idx = nodeIndex.get(name);
+      if (idx === undefined) {
+        idx = nodeNames.length;
+        nodeNames.push(name);
+        nodeIndex.set(name, idx);
       }
       return idx;
     };
 
     filtered.forEach((session) => {
-      // session.pages is an array of page paths visited in sequence
-      const path = session.pages || [];
+      const path = normalizePages(session.pages).map((p) => p.path);
       if (path.length === 0) return;
-
       const stepsCount = Math.min(path.length, maxSteps);
 
       for (let i = 0; i < stepsCount; i++) {
         const stepNum = i + 1;
-        const currentPath = path[i];
-        const currentNodeName = `${stepNum}. ${currentPath}`;
+        const currentNodeName = resolveLabel(stepNum, path[i]);
         const sourceIdx = addNode(currentNodeName);
 
-        // Check if there is a next step
         if (i < stepsCount - 1 && path[i + 1]) {
-          const nextStepNum = stepNum + 1;
-          const nextPath = path[i + 1];
-          const nextNodeName = `${nextStepNum}. ${nextPath}`;
-          const targetIdx = addNode(nextNodeName);
-
+          const targetIdx = addNode(resolveLabel(stepNum + 1, path[i + 1]));
           const key = `${sourceIdx}->${targetIdx}`;
           linkMap.set(key, (linkMap.get(key) || 0) + 1);
         } else {
-          // If no next page, flow exits at this step
-          const exitNodeName = `Exit (Step ${stepNum})`;
-          const targetIdx = addNode(exitNodeName);
-
+          const targetIdx = addNode(`Exit (Step ${stepNum})`);
           const key = `${sourceIdx}->${targetIdx}`;
           linkMap.set(key, (linkMap.get(key) || 0) + 1);
         }
       }
     });
 
-    // Format for Recharts Sankey
-    const nodes = nodesList.map((name) => ({ name }));
-    const links: SankeyLink[] = [];
-
+    const nodes: FlowNode[] = nodeNames.map((name) => ({ name } as FlowNode));
+    const links: FlowLink[] = [];
     linkMap.forEach((val, key) => {
-      const [sourceStr, targetStr] = key.split("->");
-      links.push({
-        source: parseInt(sourceStr, 10),
-        target: parseInt(targetStr, 10),
-        value: val
-      });
+      const [s, t] = key.split("->").map(Number);
+      if (s === t || s < 0 || t < 0 || s >= nodes.length || t >= nodes.length) return;
+      links.push({ source: s, target: t, value: val } as FlowLink);
     });
 
-    // Recharts requires nodes to be non-empty and links to connect valid node indices
     return { nodes, links };
   }, [sessions, maxSteps, deviceFilter]);
 
-  const hasData = sankeyData.nodes.length > 0 && sankeyData.links.length > 0;
+  const hasData = graph.nodes.length > 0 && graph.links.length > 0;
 
-  // Custom tooltips
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const CustomSankeyTooltip = ({ active, payload }: any) => {
-    if (!active || !payload || !payload.length) return null;
-    const item = payload[0];
+  // Distinct colors per distinct path
+  const colorMap = useMemo(() => {
+    const paths = graph.nodes.map((n) => stripStepPrefix(n.name));
+    return buildColorMap(paths);
+  }, [graph]);
 
-    // Check if it's a link tooltip or node tooltip
-    if (item.payload.source !== undefined && item.payload.target !== undefined) {
-      // Transition link
-      const sourceNode = item.payload.source.name;
-      const targetNode = item.payload.target.name;
-      const val = item.value;
-      return (
-        <div className="dash-tooltip" style={{ maxWidth: 300 }}>
-          <p className="dash-tooltip-label">Transition Flow</p>
-          <div className="text-sm font-semibold mb-1" style={{ color: getPageColor(sourceNode) }}>
-            {sourceNode}
-          </div>
-          <div className="text-xs text-gray-500 mb-1">→ moves to →</div>
-          <div className="text-sm font-semibold mb-2" style={{ color: getPageColor(targetNode) }}>
-            {targetNode}
-          </div>
-          <div className="flex justify-between items-center border-t border-white/5 pt-2 text-xs">
-            <span className="text-gray-400">Volume:</span>
-            <strong className="text-white font-bold">{val} visitors</strong>
-          </div>
-        </div>
-      );
-    }
-
-    // Otherwise it's a node
-    return (
-      <div className="dash-tooltip">
-        <p className="dash-tooltip-label">Page Node</p>
-        <div className="text-sm font-semibold mb-1" style={{ color: getPageColor(item.name) }}>
-          {item.name}
-        </div>
-        <div className="flex justify-between items-center text-xs mt-2">
-          <span className="text-gray-400">Total Visits:</span>
-          <strong className="text-white font-bold">{item.value}</strong>
-        </div>
-      </div>
-    );
+  const getNodeColor = (name: string): string => {
+    const path = stripStepPrefix(name);
+    return colorMap.get(path) || PALETTE.blue;
   };
+
+  // Layout dimensions
+  const width = 1000;
+  const height = Math.max(420, Math.min(900, graph.nodes.length * 34));
+
+  // Run layout
+  const layout = useMemo(() => {
+    if (!hasData) return null;
+    const sankeyGenerator = sankey<FlowNode, FlowLink>()
+      .nodeWidth(14)
+      .nodePadding(14)
+      .extent([
+        [1, 24],
+        [width - 1, height - 24],
+      ]);
+
+    const nodesCopy = graph.nodes.map((d) => ({ ...d }));
+    const linksCopy = graph.links.map((d) => ({ ...d }));
+
+    try {
+      return sankeyGenerator({ nodes: nodesCopy, links: linksCopy as any });
+    } catch {
+      return null;
+    }
+  }, [graph, hasData, height]);
+
+  const linkPathGen = sankeyLinkHorizontal();
+
+  const sankeyColumnGap = useMemo(() => {
+    if (!layout || layout.nodes.length === 0) return 160;
+    const maxDepth = Math.max(...layout.nodes.map((n: any) => n.depth ?? 0));
+    const usableWidth = width - 2;
+    return maxDepth > 0 ? usableWidth / (maxDepth + 1) : usableWidth;
+  }, [layout, width]);
 
   return (
     <div className="dash-chart-card flex flex-col gap-4">
@@ -254,9 +252,7 @@ export default function SankeyFlow({ sessions = [] }: SankeyFlowProps) {
           <p className="dash-chart-sub">Visualizing sequential traffic transitions and dropout steps</p>
         </div>
 
-        {/* Filters */}
         <div className="flex items-center gap-3">
-          {/* Device filter */}
           <div className="dash-select-wrap">
             <Filter size={12} className="dash-select-icon" />
             <select
@@ -273,7 +269,6 @@ export default function SankeyFlow({ sessions = [] }: SankeyFlowProps) {
             </select>
           </div>
 
-          {/* Max steps */}
           <div className="dash-select-wrap">
             <GitCommit size={12} className="dash-select-icon" />
             <select
@@ -290,43 +285,197 @@ export default function SankeyFlow({ sessions = [] }: SankeyFlowProps) {
         </div>
       </div>
 
-      {hasData ? (
-        <div style={{ width: "100%", height: 420, position: "relative" }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <Sankey
-              data={sankeyData}
-              node={<CustomSankeyNode containerWidth={800} />}
-              nodePadding={24}
-              link={(linkProps: any) => {
-                const { sourceX, sourceY, targetX, targetY, sy, ty, width, payload } = linkProps;
-                const color = getLinkColor(payload.source.name);
+      {hasData && layout ? (
+        <div style={{ width: "100%", position: "relative" }}>
+          <svg
+            viewBox={`0 0 ${width} ${height}`}
+            width="100%"
+            height={height}
+            style={{ overflow: "visible" }}
+            onMouseLeave={() => {
+              setHoveredLink(null);
+              setHoveredNode(null);
+              setTooltip(null);
+            }}
+          >
+            {/* ── Links ── */}
+            <g>
+              {layout.links.map((link: any, i: number) => {
+                const sourceName = (link.source as FlowNode).name;
+                const color = getLinkColor(sourceName);
+                const isDimmed =
+                  (hoveredLink !== null && hoveredLink !== i) ||
+                  (hoveredNode !== null &&
+                    (link.source as FlowNode).index !== hoveredNode &&
+                    (link.target as FlowNode).index !== hoveredNode);
+                const path = linkPathGen(link) || undefined;
+                if (!path) return null;
                 return (
                   <path
-                    d={`
-                      M ${sourceX} ${sy}
-                      C ${(sourceX + targetX) / 2} ${sy},
-                        ${(sourceX + targetX) / 2} ${ty},
-                        ${targetX} ${ty}
-                    `}
+                    key={i}
+                    d={path}
                     fill="none"
                     stroke={color}
-                    strokeOpacity={0.55}
-                    strokeWidth={typeof width === "number" && !isNaN(width) ? Math.max(2, width) : 2}
+                    strokeOpacity={isDimmed ? 0.12 : hoveredLink === i ? 0.9 : 0.55}
+                    strokeWidth={Math.max(1.5, link.width || 1.5)}
                     style={{ transition: "stroke-opacity 0.15s ease-in-out", cursor: "pointer" }}
                     onMouseEnter={(e) => {
-                      (e.target as SVGPathElement).setAttribute("stroke-opacity", "0.9");
+                      setHoveredLink(i);
+                      const rect = (e.target as SVGPathElement).ownerSVGElement?.getBoundingClientRect();
+                      setTooltip({
+                        x: e.clientX - (rect?.left || 0),
+                        y: e.clientY - (rect?.top || 0),
+                        kind: "link",
+                        title: sourceName,
+                        sub: (link.target as FlowNode).name,
+                        value: link.value,
+                        color,
+                      });
                     }}
-                    onMouseLeave={(e) => {
-                      (e.target as SVGPathElement).setAttribute("stroke-opacity", "0.55");
+                    onMouseMove={(e) => {
+                      const rect = (e.target as SVGPathElement).ownerSVGElement?.getBoundingClientRect();
+                      setTooltip((prev) =>
+                        prev
+                           ? { ...prev, x: e.clientX - (rect?.left || 0), y: e.clientY - (rect?.top || 0) }
+                           : prev
+                      );
+                    }}
+                    onMouseLeave={() => {
+                      setHoveredLink(null);
+                      setTooltip(null);
                     }}
                   />
                 );
+              })}
+            </g>
+
+            {/* ── Nodes ── */}
+            <g>
+              {layout.nodes.map((node: any, i: number) => {
+                const color = getNodeColor(node.name);
+                const x0 = node.x0 ?? 0;
+                const x1 = node.x1 ?? 0;
+                const y0 = node.y0 ?? 0;
+                const y1 = node.y1 ?? 0;
+                const nodeHeight = Math.max(y1 - y0, 3);
+                const isOut = x1 + 130 > width;
+                const isDimmed = hoveredNode !== null && hoveredNode !== i;
+
+                const colGap = sankeyColumnGap;
+                const maxLabelPx = isOut ? x0 - 14 : Math.max(colGap - 24, 40);
+                const charPx = 6.4;
+                const maxChars = Math.max(6, Math.floor(maxLabelPx / charPx));
+                const label =
+                  node.name.length > maxChars
+                    ? node.name.slice(0, maxChars - 1) + "\u2026"
+                    : node.name;
+
+                return (
+                  <g
+                    key={i}
+                    onMouseEnter={(e) => {
+                      setHoveredNode(i);
+                      const rect = (e.target as SVGElement).ownerSVGElement?.getBoundingClientRect();
+                      setTooltip({
+                        x: e.clientX - (rect?.left || 0),
+                        y: e.clientY - (rect?.top || 0),
+                        kind: "node",
+                        title: node.name,
+                        value: node.value || 0,
+                        color,
+                      });
+                    }}
+                    onMouseMove={(e) => {
+                      const rect = (e.target as SVGElement).ownerSVGElement?.getBoundingClientRect();
+                      setTooltip((prev) =>
+                        prev
+                          ? { ...prev, x: e.clientX - (rect?.left || 0), y: e.clientY - (rect?.top || 0) }
+                          : prev
+                      );
+                    }}
+                    onMouseLeave={() => {
+                      setHoveredNode(null);
+                      setTooltip(null);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <rect
+                      x={x0}
+                      y={y0}
+                      width={Math.max(x1 - x0, 2)}
+                      height={nodeHeight}
+                      fill={color}
+                      fillOpacity={isDimmed ? 0.35 : 0.9}
+                      rx={2.5}
+                      ry={2.5}
+                      stroke="rgba(255,255,255,0.18)"
+                      strokeWidth={1}
+                      style={{ transition: "fill-opacity 0.15s ease-in-out" }}
+                    />
+                    <title>{node.name}</title>
+                    <text
+                      x={isOut ? x0 - 8 : x1 + 8}
+                      y={y0 + nodeHeight / 2 - 2}
+                      textAnchor={isOut ? "end" : "start"}
+                      fontSize={11}
+                      fontWeight={600}
+                      fill={isDimmed ? "#6b7280" : "#e5e7eb"}
+                    >
+                      {label}
+                    </text>
+                    <text
+                      x={isOut ? x0 - 8 : x1 + 8}
+                      y={y0 + nodeHeight / 2 + 11}
+                      textAnchor={isOut ? "end" : "start"}
+                      fontSize={9.5}
+                      fill={isDimmed ? "#4b5563" : "#9ca3af"}
+                    >
+                      {node.value} visits
+                    </text>
+                  </g>
+                );
+              })}
+            </g>
+          </svg>
+
+          {/* ── Tooltip ── */}
+          {tooltip && (
+            <div
+              className="dash-tooltip"
+              style={{
+                position: "absolute",
+                left: Math.min(tooltip.x + 14, width - 200),
+                top: Math.max(tooltip.y - 10, 0),
+                maxWidth: 280,
+                pointerEvents: "none",
+                zIndex: 20,
               }}
-              margin={{ top: 12, right: 120, bottom: 12, left: 16 }}
             >
-              <Tooltip content={<CustomSankeyTooltip />} />
-            </Sankey>
-          </ResponsiveContainer>
+              <p className="dash-tooltip-label">
+                {tooltip.kind === "link" ? "Transition Flow" : "Page Node"}
+              </p>
+              <div className="text-sm font-semibold mb-1" style={{ color: tooltip.color }}>
+                {tooltip.title}
+              </div>
+              {tooltip.sub && (
+                <>
+                  <div className="text-xs text-gray-500 mb-1">→ moves to →</div>
+                  <div className="text-sm font-semibold mb-2" style={{ color: getNodeColor(tooltip.sub) }}>
+                    {tooltip.sub}
+                  </div>
+                </>
+              )}
+              <div
+                className="flex justify-between items-center border-t border-white/5 pt-2 text-xs"
+                style={{ marginTop: 6 }}
+              >
+                <span className="text-gray-400">{tooltip.kind === "link" ? "Volume:" : "Total Visits:"}</span>
+                <strong className="text-white font-bold">
+                  {tooltip.value} {tooltip.kind === "link" ? "visitors" : ""}
+                </strong>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="dash-empty-state">
@@ -338,7 +487,9 @@ export default function SankeyFlow({ sessions = [] }: SankeyFlowProps) {
       <div className="dash-export-hint mt-2">
         <Info size={14} className="text-gray-400" />
         <span>
-          Sankey flow visualizes step-by-step navigation. <strong>Exit (Step N)</strong> indicates where users dropped off and ended their session.
+          Sankey flow visualizes step-by-step navigation. <strong>Exit (Step N)</strong> indicates where users
+          dropped off and ended their session. Low-traffic pages are grouped into <strong>Other pages</strong> per
+          step to keep the diagram readable. Hover a node or ribbon to isolate it.
         </span>
       </div>
     </div>
