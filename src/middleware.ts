@@ -15,17 +15,24 @@ export function middleware(request: NextRequest) {
   const ip = request.headers.get('x-real-ip') || request.headers.get('x-forwarded-for') || '';
   const referrer = request.headers.get('referer') || '';
   
-  const visitorType = AI_BOTS_REGEX.test(userAgent) ? 'AI_BOT' : 'HUMAN';
+  // Detect Next.js Link prefetching requests and skip logging to prevent traffic pollution
+  const isPrefetch = request.headers.get('purpose') === 'prefetch' ||
+                     request.headers.get('x-middleware-prefetch') === '1' ||
+                     request.headers.get('next-router-prefetch') === '1';
   
-  // Log in a specific format that our collector script can easily parse
-  console.log(`[TRAFFIC_LOG]:${JSON.stringify({
-    type: visitorType,
-    path,
-    userAgent,
-    ip,
-    referrer,
-    timestamp: Date.now()
-  })}`);
+  if (!isPrefetch) {
+    const visitorType = AI_BOTS_REGEX.test(userAgent) ? 'AI_BOT' : 'HUMAN';
+    
+    // Log in a specific format that our collector script can easily parse
+    console.log(`[TRAFFIC_LOG]:${JSON.stringify({
+      type: visitorType,
+      path,
+      userAgent,
+      ip,
+      referrer,
+      timestamp: Date.now()
+    })}`);
+  }
   
   return response;
 }
