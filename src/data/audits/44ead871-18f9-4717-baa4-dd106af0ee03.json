@@ -1,0 +1,108 @@
+{
+  "id": "44ead871-18f9-4717-baa4-dd106af0ee03",
+  "url": "https://google.com",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-07-04T22:57:15.620Z",
+  "metrics": {
+    "performance": 95,
+    "seo": 83,
+    "bestPractices": 96,
+    "accessibility": 93
+  },
+  "businessCategory": "professional-service",
+  "executiveSummary": "Your website currently maintains good mobile performance and has caching enabled to support efficient loading. However, there is no active blog or visible testimonial section present on the site. Additionally, the site lacks specific signals for AI accessibility, and several administrative details like the meta description and copyright year require updates.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Trust and Social Proof",
+      "body": "You have a strong foundation for your online authority, which provides a great opportunity to showcase your reputation. By adding a dedicated section for client testimonials, you can highlight your expertise and build deeper confidence with your visitors."
+    },
+    {
+      "title": "Strengthening Your Digital Presence",
+      "body": "Your website is currently performing well on mobile devices, which is a significant advantage for your business. You can further improve your visibility by updating your copyright information and adding descriptive summaries to your pages to help search engines better understand your services."
+    },
+    {
+      "title": "Expanding Your Content Strategy",
+      "body": "You have the opportunity to establish your business as an industry leader by introducing a regular blog. This addition would allow you to share your insights more frequently and ensure your website remains a current and helpful resource for your audience."
+    }
+  ],
+  "pageSpeedUnavailable": false,
+  "rawHtmlLoadTime": 0.18,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "ttfb": 18,
+    "loadTime": 0.93,
+    "lcp": 0.97,
+    "fcp": 0.82,
+    "tbt": 140,
+    "cls": 0,
+    "pageSize": 1.18,
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": true,
+    "schemaTypes": [],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Google",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": true,
+    "hasOutdatedCopyright": true,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": "unverified",
+    "imagesWithoutAlt": 1,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 8,
+      "hasAboutPage": true,
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": true,
+      "hasTerms": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": "unverified",
+      "hasAddress": true,
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 7,
+      "hasPhone": true,
+      "hasAddress": true,
+      "hasLocalSchema": false,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": true,
+      "hasServiceArea": true,
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 8,
+      "hasAboutOrTeam": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": "unverified",
+      "hasLegalPages": true,
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": true
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": true,
+      "hasAddress": true,
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
