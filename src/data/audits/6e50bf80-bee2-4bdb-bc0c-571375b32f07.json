@@ -1,0 +1,107 @@
+{
+  "id": "6e50bf80-bee2-4bdb-bc0c-571375b32f07",
+  "url": "https://indesignmarketingservices.com.sg",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-07-13T04:04:53.647Z",
+  "metrics": {
+    "performance": 100,
+    "seo": 40,
+    "bestPractices": 96,
+    "accessibility": 90
+  },
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website currently lacks essential trust-building elements such as testimonials, an about page, and contact details like an email address or physical location. While your mobile performance is currently good, the site lacks a blog to provide regular updates and has caching disabled, which affects how efficiently the site loads. Additionally, the site is not currently configured to be easily read or interpreted by modern artificial intelligence tools.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Trust and Credibility",
+      "body": "You have a significant opportunity to build stronger relationships with your visitors by adding testimonials and a dedicated about page. Sharing your business location and contact information will help your audience feel more confident in your services."
+    },
+    {
+      "title": "Optimizing Site Efficiency",
+      "body": "By enabling caching on your website, you can ensure that your pages load more smoothly for returning visitors. This simple adjustment helps your site run more efficiently and provides a more consistent experience for your audience."
+    },
+    {
+      "title": "Expanding Your Digital Presence",
+      "body": "Starting a blog and updating your site to be more accessible to artificial intelligence tools will help you reach a wider audience. These additions allow you to share your expertise more effectively and ensure your business remains visible in modern search environments."
+    }
+  ],
+  "pageSpeedUnavailable": false,
+  "rawHtmlLoadTime": 0.12,
+  "rawHtmlFetchFailed": true,
+  "details": {
+    "ttfb": 1,
+    "loadTime": 0.38,
+    "lcp": 0.66,
+    "fcp": 0.21,
+    "tbt": 54,
+    "cls": 0.001,
+    "pageSize": 0.52,
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": false,
+    "schemaTypes": [],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": false,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 3,
+      "hasAboutPage": false,
+      "hasTeamPage": false,
+      "hasPrivacyPolicy": false,
+      "hasTerms": false,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": false,
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 2,
+      "hasPhone": true,
+      "hasAddress": false,
+      "hasLocalSchema": false,
+      "hasMapsEmbed": false,
+      "hasCityInH1": false,
+      "hasServiceArea": false,
+      "hasBusinessHours": false
+    },
+    "onlineAuthority": {
+      "score": 4,
+      "hasAboutOrTeam": false,
+      "hasTestimonials": false,
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": false,
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": false,
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": false,
+      "hasForm": false,
+      "hasAddress": false,
+      "hasMapsEmbed": false,
+      "hasBusinessHours": false
+    }
+  }
+}
