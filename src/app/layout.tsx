@@ -3,6 +3,7 @@ import { DM_Serif_Display, Inter } from "next/font/google";
 import "./globals.css";
 import JsonLd from "@/components/JsonLd";
 import GoogleAnalyticsDeferred from "@/components/GoogleAnalyticsDeferred";
+import AnalyticsTracker from "@/components/analytics/AnalyticsTracker";
 import { ProjectModalProvider } from "@/hooks/use-project-modal";
 import { ProjectModal } from "@/components/project-modal";
 
@@ -88,7 +89,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.google-analytics.com" />
       </head>
       <body className="overflow-x-hidden antialiased bg-surface text-ink font-sans">
-        {GA_ID && <GoogleAnalyticsDeferred gaId={GA_ID} />}
+        <GoogleAnalyticsDeferred gaId={GA_ID} />
+        <AnalyticsTracker />
         <JsonLd />
         <ProjectModalProvider>
           {children}
