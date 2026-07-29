@@ -1,0 +1,119 @@
+{
+  "id": "1f7dfb8f-7d84-4e41-ae19-6d716ac2d270",
+  "url": "https://unique-waescherei.de",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-07-29T04:21:56.035Z",
+  "metrics": {
+    "performance": 85,
+    "seo": 100,
+    "bestPractices": 100,
+    "accessibility": 90
+  },
+  "businessCategory": "local-service",
+  "executiveSummary": "Your website currently lacks a dedicated blog section and does not feature customer testimonials. While mobile performance is rated as good and your meta descriptions are present, caching is currently disabled on the site. Additionally, there are missing signals regarding artificial intelligence access and certain address details remain unverified.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Visitor Confidence",
+      "body": "Your website currently does not feature customer testimonials or a documented blog section. Adding these elements provides a great opportunity to showcase customer satisfaction and share helpful cleaning tips with your audience."
+    },
+    {
+      "title": "Optimizing Site Performance",
+      "body": "While your mobile performance is performing well, caching is currently disabled on your website. Enabling caching presents an opportunity to further improve how quickly your pages load for visitors browsing on their phones and computers."
+    },
+    {
+      "title": "Expanding Digital Visibility",
+      "body": "Your online authority and local search scores show strong potential, though your address and business hours are currently unverified and artificial intelligence access signals are missing. Updating these location details and opening your site to modern search technologies offers a wonderful way to connect with more local customers."
+    }
+  ],
+  "pageSpeedUnavailable": false,
+  "rawHtmlLoadTime": 0.78,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "ttfb": 111,
+    "loadTime": 2.19,
+    "lcp": 2.11,
+    "fcp": 0.43,
+    "tbt": 76,
+    "cls": 0.004,
+    "pageSize": 3.31,
+    "pageBuilder": "WPBakery",
+    "pluginCount": 2,
+    "cachingActive": false,
+    "schemaTypes": [
+      "WebPage",
+      "ReadAction",
+      "ImageObject",
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite",
+      "SearchAction",
+      "EntryPoint",
+      "PropertyValueSpecification"
+    ],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": false,
+    "businessName": "Teppichwäscherei Hamburg / Teppichreinigung Unique Hamburg",
+    "businessType": "WebSite",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": true,
+    "noSocialLinks": false,
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 7,
+      "hasAboutPage": "unverified",
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": "unverified",
+      "hasTerms": "unverified",
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 7,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": false,
+      "hasMapsEmbed": true,
+      "hasCityInH1": true,
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 8,
+      "hasAboutOrTeam": "unverified",
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": true,
+      "hasLegalPages": "unverified",
+      "hasGoodSpeedOrCache": true
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": true,
+      "hasForm": true,
+      "hasAddress": "unverified",
+      "hasMapsEmbed": true,
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
