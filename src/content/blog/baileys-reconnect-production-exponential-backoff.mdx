@@ -12,11 +12,20 @@ faq:
     answer: "It is an algorithm that increases the waiting time between retries after each consecutive failure (e.g., 5s, 10s, 20s, 40s), preventing your system from overwhelming the target server."
 ---
 
-When your Node.js WhatsApp bot loses its connection to the internet, its default behavior is usually to immediately try connecting again. If the internet is down for 10 minutes, your bot might send hundreds of rapid-fire connection requests to WhatsApp's servers.
+When building a Baileys WhatsApp bot, everything works perfectly on your local machine. But what happens in **Week 4 of production**?
 
-To WhatsApp's automated security systems, this looks exactly like a malicious DDoS attack or a spam script. The result? A permanent ban on your phone number.
+Here is a true story from our LoopLearnX deployment:
+1. Our Oracle VPS host required a mandatory restart at 3:00 AM.
+2. The server booted back up, but the network interface was slow to initialize.
+3. Our Node.js bot aggressively tried to reconnect to WhatsApp's WebSocket.
+4. Because the network was down, it failed. So it tried again. And again.
+5. Within 10 minutes, the bot had sent over 500 rapid-fire connection requests.
+6. WhatsApp's automated anti-spam systems flagged our IP as a DDoS threat.
+7. We woke up to a permanently banned business phone number and corrupted session keys.
 
-In this guide, we'll implement **Exponential Backoff with Jitter**—the industry standard for safe session recovery.
+This is the **Reconnect Storm**. 
+
+In this guide, we'll implement **Exponential Backoff with Jitter**—the industry standard for safe session recovery that prevents automated bans during infrastructure outages.
 
 ---
 

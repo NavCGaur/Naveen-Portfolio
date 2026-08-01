@@ -1,5 +1,5 @@
 ---
-title: "WhatsApp WebSocket Reliability: Defeating the Zombie Socket"
+title: "Fixing Silent WebSocket Disconnects in Baileys (The Zombie Socket Problem)"
 description: "How to detect silent connection drops (zombie sockets) in Node.js WebSocket apps. Move from heuristic message counting to strict socket polling."
 date: "2026-08-01"
 category: "WhatsApp & Automation"
@@ -12,9 +12,11 @@ faq:
 
 If you run a WebSocket-based service long enough, you will eventually encounter the most frustrating bug in distributed systems: **The Zombie Socket**.
 
-In the context of a Baileys WhatsApp bot, a zombie socket occurs when the bot's logs proudly state `Status: Connected`, but zero messages are coming in, and outgoing messages disappear into the void.
+In **Week 4** of our LoopLearnX production deployment, we encountered a bizarre issue. The PM2 logs proudly stated `Status: Connected`. The Baileys library was throwing zero errors. But students were complaining that their messages were being ignored, and outgoing replies were disappearing into the void.
 
-In this guide, we will break down why WhatsApp connections silently die, why "message counting" is a bad monitoring heuristic, and how to implement strict socket polling to keep your bot responsive.
+The TCP connection technically remained open at the OS level, but the application layer had silently stalled. The session was a zombie.
+
+In this guide, we will break down why WhatsApp connections silently die, why "message counting" is a bad monitoring heuristic, and how to implement strict socket polling to resurrect dead sessions instantly.
 
 ---
 
