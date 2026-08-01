@@ -1,0 +1,115 @@
+---
+title: "Gemini Vision Integration: Evaluating Messy Handwriting via API"
+description: "How to use Google's Gemini-2.5-Flash Vision model to parse handwritten math homework from WhatsApp images and return structured JSON."
+date: "2026-08-01"
+category: "WhatsApp & Automation"
+image: "/images/blog/baileys-whatsapp-bot.png"
+tags: ["Gemini AI", "WhatsApp Bot", "OCR", "Next.js", "AI Evaluation"]
+faq:
+  - question: "Can Gemini read messy handwritten math equations?"
+    answer: "Yes, Gemini-2.5-Flash has state-of-the-art vision capabilities and can parse complex handwritten mathematical symbols (like integrals, fractions, and matrices) much better than traditional OCR engines like Tesseract."
+  - question: "How do I force Gemini to return JSON?"
+    answer: "You must use Structured Outputs (schema enforcement) provided by the Google GenAI SDK. Passing a Zod schema ensures the model returns a perfectly formatted JSON object that your application can parse without regex hacking."
+---
+
+When building **LoopLearnX**, our primary challenge wasn't receiving the WhatsApp image—it was figuring out how to read it.
+
+Students don't write clean, digital math equations. They write messy, scribbled fractions on crumpled notebook paper, often photographed with poor lighting. Traditional OCR (Optical Character Recognition) engines like Tesseract completely fail on this type of unstructured visual data.
+
+The solution is Multimodal AI. In this guide, we will look at the exact prompt engineering and API implementation required to feed a base64 image from WhatsApp into Google's **Gemini-2.5-Flash** and extract structured grading data.
+
+---
+
+## 1. The Google GenAI SDK
+
+First, we use the official `@google/genai` SDK in our Next.js backend. 
+
+```javascript
+import { GoogleGenAI, Type, Schema } from '@google/genai';
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+```
+
+## 2. Enforcing Structured Output (JSON Schema)
+
+If you just ask an LLM to "grade this paper," it will reply with a long, chatty paragraph: *"Hello! I have reviewed the math homework. The student did a great job, but missed question 2..."*
+
+You cannot save a chatty paragraph to a Postgres database. We need a strict, predictable JSON object. We do this by passing a `responseSchema`.
+
+```typescript
+const HomeworkSchema: Schema = {
+    type: Type.OBJECT,
+    properties: {
+        score: { 
+            type: Type.INTEGER, 
+            description: "The percentage score (0-100)" 
+        },
+        mistakes: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING },
+            description: "List of specific steps where the student made an error."
+        },
+        feedbackText: { 
+            type: Type.STRING, 
+            description: "A short, encouraging WhatsApp reply in Hinglish." 
+        }
+    },
+    required: ["score", "mistakes", "feedbackText"],
+};
+```
+
+## 3. The Prompt Engineering
+
+Prompting for vision models requires setting strict roles and operational boundaries. Because we are returning a message directly to WhatsApp, we must instruct the model to adopt the persona of a teacher.
+
+```typescript
+const systemInstruction = `
+You are a CBSE high school mathematics evaluator.
+You will receive an image of handwritten homework.
+1. Transcribe the math equations mentally.
+2. Verify the mathematical logic step-by-step.
+3. If there is a mistake, isolate the exact line it occurred on.
+4. Provide feedback in friendly, direct Hinglish (e.g., 'Aapne step 2 mein addition galat kiya hai.').
+5. DO NOT provide the direct answer. Guide them to solve it.
+`;
+```
+
+## 4. The API Execution
+
+Finally, we construct the API call, combining the base64 image string received from our Baileys VPS gateway with the schema and instructions.
+
+```typescript
+const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: [
+        {
+            role: 'user',
+            parts: [
+                { text: "Evaluate this homework submission." },
+                {
+                    inlineData: {
+                        data: imageBase64String, 
+                        mimeType: "image/jpeg"
+                    }
+                }
+            ]
+        }
+    ],
+    config: {
+        systemInstruction,
+        responseMimeType: 'application/json',
+        responseSchema: HomeworkSchema,
+        temperature: 0.2, // Low temperature for factual accuracy
+    }
+});
+
+// The response is guaranteed to be a JSON string matching our schema
+const evaluation = JSON.parse(response.text());
+console.log(`Student Score: ${evaluation.score}`);
+```
+
+## Summary
+
+By combining a headless WhatsApp gateway with the Gemini Vision API, you bypass the need for custom mobile apps or complex web portals. Students interact purely with the camera app and WhatsApp, while the AI does the heavy lifting of unstructured data extraction behind the scenes.
+
+<ArticleCTALink slug="gemini-vision-homework-evaluation" />

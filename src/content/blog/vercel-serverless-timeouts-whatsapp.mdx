@@ -1,0 +1,104 @@
+---
+title: "Handling Vercel Timeouts for Long-Running WhatsApp APIs"
+description: "How to prevent Vercel Serverless functions from silently killing long-running tasks like AI evaluation in your WhatsApp bot using maxDuration and Promise.race."
+date: "2026-08-01"
+category: "WhatsApp & Automation"
+image: "/images/blog/baileys-whatsapp-bot.png"
+tags: ["Next.js", "Vercel", "Serverless", "WhatsApp Bot", "API"]
+faq:
+  - question: "Why does Vercel timeout my Next.js API route?"
+    answer: "Serverless platforms limit how long a function can run to prevent runaway compute costs. On Vercel, the default timeout is 10s for Hobby plans and 15s for Pro plans unless explicitly overridden."
+  - question: "How do I increase the Vercel API timeout in Next.js App Router?"
+    answer: "You must explicitly export a `maxDuration` constant at the top of your `route.ts` file (e.g., `export const maxDuration = 120;`). Note that the maximum allowed duration depends on your Vercel billing plan."
+---
+
+If you use a two-tier architecture for your WhatsApp bot—where a VPS handles the WebSockets and passes the message to a Vercel Next.js API for processing—you are racing a hidden clock.
+
+For simple text replies, the API responds in milliseconds. But for the **LoopLearnX** bot, a student uploads an image of handwritten math homework, which our Next.js API sends to the Gemini-2.5-Flash Vision model for grading. 
+
+This AI evaluation can take 30 to 45 seconds. And suddenly, students started complaining that the bot was ignoring them.
+
+The problem? Vercel was silently killing our API routes.
+
+---
+
+## 1. The Silent Killer: Default `maxDuration`
+
+Serverless functions are not traditional servers; they are ephemeral compute containers. To protect their infrastructure (and your wallet), platforms like Vercel enforce strict execution limits. 
+
+If your code doesn't return a response within the limit, Vercel pulls the plug. Hard. No error is returned to your VPS; the connection simply drops.
+
+### Step 1: Explicitly Increase `maxDuration`
+
+In the Next.js App Router, you can override the default limit by exporting a `maxDuration` variable at the top of your route file.
+
+```typescript
+// src/app/api/whatsapp/receive/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+// Increase timeout to 120 seconds (Requires Vercel Pro)
+export const maxDuration = 120; 
+
+export async function POST(req: NextRequest) {
+    // ... API logic
+}
+```
+
+*Note: Hobby plans are capped at 10s or 60s depending on recent Vercel updates. Pro plans can go up to 300s.*
+
+## 2. The Graceful Fallback: `Promise.race`
+
+Just because Vercel *allows* your function to run for 120 seconds doesn't mean you should let a user wait that long in silence. 
+
+If an API takes longer than 50 seconds on WhatsApp, the user assumes the bot is broken and sends another message, compounding the bottleneck. Worse, if the function *does* hit the 120s hard limit, it crashes completely, and you lose the opportunity to send an error message.
+
+### Step 2: Implement a Timeout Race
+
+We must wrap our heavy workload in a `Promise.race`. We race the AI evaluation against a simple Javascript timeout (set slightly lower than our `maxDuration`). Whichever finishes first, wins.
+
+```typescript
+export async function POST(req: NextRequest) {
+    const { phone, images } = await req.json();
+    
+    // We set our code timeout to 55s, safely below the 120s Vercel hard kill
+    const timeoutMs = 55000; 
+
+    try {
+        // Race the heavy AI task against the clock
+        const result = await Promise.race([
+            evaluateHomeworkWithGemini(images),
+            new Promise<never>((_, reject) =>
+                setTimeout(() => reject(new Error('EVALUATION_TIMEOUT')), timeoutMs)
+            )
+        ]);
+        
+        // If Gemini wins, return the actual feedback
+        return NextResponse.json({ 
+            success: true, 
+            replyText: result.feedback 
+        });
+
+    } catch (error: any) {
+        // If the clock wins, send a graceful fallback message
+        if (error.message === 'EVALUATION_TIMEOUT') {
+            console.error(`[API] Image processing timed out for ${phone}`);
+            return NextResponse.json({
+                success: false,
+                replyText: '⏳ This is a tough one! Evaluation is taking longer than usual. Please type DONE again in a few seconds.',
+            });
+        }
+        
+        // Handle standard errors
+        return NextResponse.json({
+            success: false,
+            replyText: '⚠️ A system error occurred. Please try again.',
+        });
+    }
+}
+```
+
+## Summary
+
+Never let the platform dictate your user experience. By manually expanding the serverless container limit (`maxDuration`) and implementing your own software-level boundary (`Promise.race`), you guarantee that your WhatsApp bot will always provide a response—even if that response is just asking for a little more time.
+
+<ArticleCTALink slug="vercel-serverless-timeouts-whatsapp" />

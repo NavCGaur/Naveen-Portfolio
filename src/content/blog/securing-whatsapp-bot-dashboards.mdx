@@ -1,0 +1,112 @@
+---
+title: "Securing WhatsApp Bot Utility Dashboards (Basic Auth)"
+description: "Never expose your VPS utility dashboards to the public internet. Learn how to secure your Express.js status pages with Basic Authentication middleware."
+date: "2026-08-01"
+category: "WhatsApp & Automation"
+image: "/images/blog/baileys-whatsapp-bot.png"
+tags: ["Security", "WhatsApp Bot", "Node.js", "Express", "Production Setup"]
+faq:
+  - question: "Why is it dangerous to leave an Express status page open on a VPS?"
+    answer: "Publicly accessible status pages often leak sensitive information like active phone numbers, internal server paths, or bot health. Malicious bots constantly scan public IP addresses for open ports and vulnerable endpoints."
+  - question: "What is Basic Authentication?"
+    answer: "Basic Auth is the simplest form of HTTP authentication. It forces the browser to prompt the user for a username and password before loading the page. The credentials are sent in the HTTP headers encoded in Base64."
+---
+
+When running a Node.js WhatsApp bot on a headless VPS (like an Oracle Ampere instance), you have no GUI. If you want to check if the bot is connected or if you need to scan a new QR code, SSH-ing into the server to read PM2 logs is tedious.
+
+The standard solution is to mount a tiny Express.js server alongside your Baileys instance to serve a web-based "Command Center".
+
+However, the moment you open port `3000` on your VPS firewall, your dashboard is live to the entire internet. Anyone who types your IP address into their browser can view your QR codes, session status, or API health.
+
+In this short security guide, we'll implement HTTP Basic Authentication to lock down your utility dashboard.
+
+---
+
+## 1. The Vulnerability
+
+A typical bare-minimum Express status page looks like this:
+
+```javascript
+app.get('/api/status', (req, res) => {
+    res.json({
+        status: botStatus,
+        uptime: process.uptime(),
+        totalMessages: messagesProcessed
+    });
+});
+```
+
+Because there is no authentication, automated internet scanners (like Shodan) will index this endpoint.
+
+## 2. Implementing Basic Auth Middleware
+
+We don't need a complex JWT or OAuth setup for a simple utility dashboard. HTTP Basic Auth is perfect because the browser natively handles the UI (the classic popup box asking for a username and password).
+
+First, define your credentials securely in your `.env` file on the VPS:
+
+```bash
+# .env
+DASHBOARD_USERNAME=admin
+DASHBOARD_PASSWORD=super_secret_password_2026
+```
+
+Next, create the middleware function in your Node.js application:
+
+```javascript
+const DASHBOARD_USER = process.env.DASHBOARD_USERNAME;
+const DASHBOARD_PASS = process.env.DASHBOARD_PASSWORD;
+
+function basicAuth(req, res, next) {
+    // 1. Skip auth if no password is set (useful for local development)
+    if (!DASHBOARD_PASS) return next(); 
+    
+    // 2. Check for the Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Basic ')) {
+        // Trigger the browser's native login popup
+        res.setHeader('WWW-Authenticate', 'Basic realm="Bot Command Center"');
+        return res.status(401).send('Authentication required.');
+    }
+    
+    // 3. Decode the Base64 credentials
+    const decoded = Buffer.from(authHeader.slice(6), 'base64').toString();
+    const colonIdx = decoded.indexOf(':');
+    const user = decoded.slice(0, colonIdx);
+    const pass = decoded.slice(colonIdx + 1);
+    
+    // 4. Verify
+    if (user !== DASHBOARD_USER || pass !== DASHBOARD_PASS) {
+        res.setHeader('WWW-Authenticate', 'Basic realm="Bot Command Center"');
+        return res.status(401).send('Invalid credentials.');
+    }
+    
+    // 5. Success
+    next();
+}
+```
+
+## 3. Protecting the Routes
+
+Apply the middleware globally to your Express app before defining your routes. This guarantees that no endpoint is accidentally left exposed.
+
+```javascript
+const express = require('express');
+const app = express();
+
+// Apply auth to EVERYTHING
+app.use(basicAuth);
+
+app.get('/', (req, res) => {
+    res.send(`<h1>Command Center</h1>`);
+});
+
+app.get('/api/status', (req, res) => {
+    // ...
+});
+```
+
+## Summary
+
+Security by obscurity (hoping nobody finds your IP address) is not a strategy. Adding 20 lines of Basic Auth middleware guarantees that your sensitive WhatsApp operational data remains entirely private, while still granting you the convenience of a web-based dashboard.
+
+<ArticleCTALink slug="securing-whatsapp-bot-dashboards" />

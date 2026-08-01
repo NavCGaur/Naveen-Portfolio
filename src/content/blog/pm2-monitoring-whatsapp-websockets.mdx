@@ -1,0 +1,94 @@
+---
+title: "Monitoring WhatsApp WebSockets with PM2"
+description: "How to configure PM2 for a Baileys Node.js WhatsApp bot. Learn how to manage memory limits, avoid cluster mode crashes, and rotate logs."
+date: "2026-08-01"
+category: "WhatsApp & Automation"
+image: "/images/blog/baileys-whatsapp-bot.png"
+tags: ["Baileys", "WhatsApp Bot", "Node.js", "PM2", "DevOps"]
+faq:
+  - question: "Can I use PM2 cluster mode with Baileys WhatsApp library?"
+    answer: "No. Baileys uses file-based authentication states. If you run multiple instances in cluster mode, they will try to read/write the same cryptographic keys simultaneously, causing file lock errors and invalidating your WhatsApp session."
+  - question: "How do I prevent my PM2 logs from filling up my VPS disk?"
+    answer: "You must install the `pm2-logrotate` module to automatically compress and delete old log files. Baileys can be very verbose, and unmanaged logs will eventually crash your server by consuming 100% of your disk space."
+---
+
+Once you've deployed your Node.js WhatsApp bot to a VPS, you need a way to keep it running 24/7. **PM2** is the industry standard process manager for Node.js, but using its default settings with a WebSocket-heavy, file-state-dependent library like `@whiskeysockets/baileys` will lead to disaster.
+
+In this guide, we'll cover the exact PM2 configuration required to run a WhatsApp gateway reliably.
+
+---
+
+## 1. The Golden Rule: No Cluster Mode
+
+PM2's most famous feature is `cluster mode` (`pm2 start app.js -i max`), which spawns multiple instances of your app to utilize all CPU cores.
+
+**You cannot use cluster mode with Baileys.**
+
+Baileys maintains its session via cryptographic keys saved in a local folder (e.g., `./auth_info`). If multiple PM2 instances run simultaneously, they will race to overwrite these files. Your session will corrupt, WhatsApp will disconnect, and you will be forced to rescan the QR code.
+
+You must run a single `fork` instance.
+
+## 2. The Ecosystem Configuration
+
+Instead of running PM2 directly from the CLI, create an `ecosystem.config.js` file in your project root. This ensures your configuration is version-controlled and reproducible.
+
+```javascript
+// ecosystem.config.js
+module.exports = {
+  apps: [
+    {
+      name: "whatsapp-gateway",
+      script: "index.js",
+      instances: 1,           // Strictly 1 instance
+      exec_mode: "fork",      // Use fork, not cluster
+      autorestart: true,      // Restart if the app crashes
+      watch: false,           // NEVER watch in production (causes infinite restart loops on auth file writes)
+      max_memory_restart: "500M", // Hard limit: Restart if memory leaks beyond 500MB
+      restart_delay: 5000,    // Wait 5 seconds before restarting to prevent rapid crash loops
+      env: {
+        NODE_ENV: "production",
+      }
+    }
+  ]
+}
+```
+
+### Why `watch: false` is Critical
+If you enable PM2's `watch` feature, it restarts your app every time a file in the directory changes. Because Baileys updates the `./auth_info` files every few seconds, PM2 will restart your bot infinitely, getting you banned from WhatsApp instantly.
+
+## 3. Starting and Saving the Process
+
+Start the application using the ecosystem file:
+```bash
+pm2 start ecosystem.config.js
+```
+
+To ensure PM2 boots up automatically if your VPS restarts (e.g., due to a host reboot):
+```bash
+pm2 startup
+# Run the command PM2 outputs to the console, then:
+pm2 save
+```
+
+## 4. Taming the Logs with Logrotate
+
+Baileys is a chatty library. Even if you silence the internal logger, your `console.log` statements for incoming messages will add up. A 24/7 bot can generate gigabytes of logs, eventually crashing your VPS with a "Disk Full" error.
+
+You must install PM2's log rotation module:
+
+```bash
+pm2 install pm2-logrotate
+```
+
+Configure it to compress logs daily and keep only the last 7 days:
+```bash
+pm2 set pm2-logrotate:max_size 50M
+pm2 set pm2-logrotate:retain 7
+pm2 set pm2-logrotate:compress true
+```
+
+## Summary
+
+A WhatsApp bot is not a standard REST API. It is a stateful WebSocket connection tied to local cryptographic files. By restricting PM2 to a single instance, setting memory boundaries, and rotating logs, you isolate the fragility of the protocol and ensure your bot stays online for months without manual intervention.
+
+<ArticleCTALink slug="pm2-monitoring-whatsapp-websockets" />

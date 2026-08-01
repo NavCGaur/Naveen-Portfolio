@@ -1,0 +1,99 @@
+---
+title: "Deploying a WhatsApp Bot on Oracle Cloud VPS"
+description: "A step-by-step guide to provisioning, securing, and deploying a Node.js Baileys WhatsApp bot on Oracle Cloud's Always Free tier."
+date: "2026-08-01"
+category: "WhatsApp & Automation"
+image: "/images/blog/baileys-whatsapp-bot.png"
+tags: ["Baileys", "WhatsApp Bot", "Node.js", "Oracle VPS", "Deployment"]
+faq:
+  - question: "Can I run a WhatsApp bot on Vercel or Netlify?"
+    answer: "No. Vercel and Netlify are serverless platforms. WhatsApp bots using Baileys require a persistent WebSocket connection, which serverless functions terminate after a few seconds. You must use a VPS like Oracle Cloud, DigitalOcean, or AWS EC2."
+  - question: "Is Oracle Cloud's Always Free tier good enough for a WhatsApp bot?"
+    answer: "Yes. The ARM Ampere A1 compute instances provide up to 4 cores and 24GB of RAM, which is massively overpowered for a simple Node.js WebSocket gateway."
+---
+
+When building a WhatsApp bot with `@whiskeysockets/baileys`, you quickly hit a wall: **Serverless environments don't support persistent WebSockets.** 
+
+If you deploy Baileys to Vercel, AWS Lambda, or Netlify, the platform will terminate your function after 10 seconds, instantly killing your WhatsApp connection. 
+
+To maintain a 24/7 connection, you need a Virtual Private Server (VPS). In this guide, we'll walk through deploying a Node.js WhatsApp gateway on the **Oracle Cloud Always Free Tier**, which offers generous ARM compute instances perfectly suited for this task.
+
+---
+
+## 1. Why Oracle Cloud?
+
+While DigitalOcean ($4/mo) and Hetzner ($4/mo) are great, Oracle Cloud offers an "Always Free" tier that includes an ARM Ampere A1 compute instance with up to 4 OCPUs and 24GB of RAM. For a lightweight Node.js gateway that uses < 100MB of RAM, this is exceptional value.
+
+## 2. Provisioning the Instance
+
+1. Sign up for Oracle Cloud and navigate to **Compute > Instances**.
+2. Click **Create Instance**.
+3. **Image:** Select Ubuntu 22.04 or 24.04.
+4. **Shape:** Select `VM.Standard.A1.Flex` (ARM architecture). Allocate 1 OCPU and 6GB RAM (more than enough).
+5. **Networking:** Ensure it attaches to a public subnet and assign a public IPv4 address.
+6. **SSH Keys:** Generate or upload your SSH public key.
+7. Click **Create**.
+
+## 3. Configuring the Firewall (Ingress Rules)
+
+By default, Oracle blocks almost all inbound traffic. If you plan to run a status dashboard or webhook receiver on your VPS (e.g., on port 3000), you must open the port.
+
+1. Go to your Instance details.
+2. Click on the attached **Subnet**, then click the **Default Security List**.
+3. Add an **Ingress Rule**:
+   - Source CIDR: `0.0.0.0/0`
+   - IP Protocol: `TCP`
+   - Destination Port Range: `3000` (or your chosen port)
+
+You must also open the port in Ubuntu's `iptables`:
+```bash
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 3000 -j ACCEPT
+sudo netfilter-persistent save
+```
+
+## 4. Setting Up the Node.js Environment
+
+SSH into your new instance:
+```bash
+ssh -i /path/to/key.pem ubuntu@YOUR_INSTANCE_IP
+```
+
+Install Node.js (v20+ recommended) and Git:
+```bash
+# Update system
+sudo apt update && sudo apt upgrade -y
+
+# Install Node Version Manager (NVM)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.bashrc
+
+# Install Node.js
+nvm install 20
+
+# Verify installation
+node -v
+npm -v
+```
+
+## 5. Deploying the Bot
+
+Clone your repository and install dependencies:
+```bash
+git clone https://github.com/your-username/your-whatsapp-bot.git
+cd your-whatsapp-bot
+npm install
+```
+
+Set up your `.env` file securely:
+```bash
+nano .env
+# Add your API keys and secrets, then save (Ctrl+O, Enter, Ctrl+X)
+```
+
+## 6. Keeping it Alive
+
+If you start your bot with `node index.js`, it will die the moment you close your SSH terminal. You must use a process manager like **PM2**.
+
+[See our deep-dive on PM2 Monitoring for WebSockets](/blog/pm2-monitoring-whatsapp-websockets) for the exact `ecosystem.config.js` setup required to run Baileys safely in the background.
+
+<ArticleCTALink slug="oracle-vps-whatsapp-bot-deployment" />

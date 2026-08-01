@@ -1,0 +1,98 @@
+---
+title: "WhatsApp Session Recovery: Implementing Exponential Backoff"
+description: "Learn how to prevent WhatsApp account bans by implementing exponential backoff and circuit breakers for your Baileys bot during network outages."
+date: "2026-08-01"
+category: "WhatsApp & Automation"
+image: "/images/blog/baileys-whatsapp-bot.png"
+tags: ["Baileys", "WhatsApp Bot", "Node.js", "Production Setup", "Reliability"]
+faq:
+  - question: "Why does my WhatsApp bot get banned during server outages?"
+    answer: "If your server loses internet, your bot may attempt to reconnect hundreds of times per minute. This aggressive behavior triggers WhatsApp's anti-spam algorithms, resulting in an automated ban."
+  - question: "What is exponential backoff?"
+    answer: "It is an algorithm that increases the waiting time between retries after each consecutive failure (e.g., 5s, 10s, 20s, 40s), preventing your system from overwhelming the target server."
+---
+
+When your Node.js WhatsApp bot loses its connection to the internet, its default behavior is usually to immediately try connecting again. If the internet is down for 10 minutes, your bot might send hundreds of rapid-fire connection requests to WhatsApp's servers.
+
+To WhatsApp's automated security systems, this looks exactly like a malicious DDoS attack or a spam script. The result? A permanent ban on your phone number.
+
+In this guide, we'll implement **Exponential Backoff with Jitter**—the industry standard for safe session recovery.
+
+---
+
+## 1. The Problem: Aggressive Reconnection Loops
+
+A naive reconnection strategy looks like this:
+
+```javascript
+// DANGEROUS: Fixed fast retry loop
+if (connection === 'close') {
+    console.log('Connection closed. Reconnecting in 2 seconds...');
+    setTimeout(startWhatsApp, 2000); 
+}
+```
+
+If the network is down, this loop fires infinitely. 
+
+## 2. The Solution: Exponential Backoff
+
+Exponential backoff means that with every failed attempt, the wait time doubles. We also cap the maximum wait time (e.g., 2 minutes) and set a "circuit breaker" limit (e.g., 10 attempts) where the bot simply gives up and alerts an admin.
+
+### Step 1: Track Attempts and Calculate Delay
+We need a function to calculate the delay. We also add "Jitter" (a small random millisecond variation) to prevent the "thundering herd" problem where multiple bots reconnect at the exact same millisecond.
+
+```javascript
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 10;
+
+function getReconnectDelay() {
+    const baseDelay = 5000; // Start at 5 seconds
+    // 5s -> 10s -> 20s -> 40s -> 80s, capped at 120s
+    const delay = Math.min(baseDelay * Math.pow(2, reconnectAttempts), 120000);
+    
+    // Add up to 1 second of random jitter
+    return delay + Math.random() * 1000; 
+}
+```
+
+### Step 2: The Circuit Breaker
+
+Instead of calling `startWhatsApp` directly, we route disconnections through a scheduler:
+
+```javascript
+function scheduleReconnect() {
+    reconnectAttempts++;
+    
+    if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
+        console.error(`🚨 Circuit breaker triggered. Manual restart required.`);
+        // Call your alerting function here (e.g., send an email to the admin)
+        sendAdminAlert('WhatsApp Bot is offline. Max retries exceeded.');
+        return; 
+    }
+    
+    const delay = getReconnectDelay();
+    console.log(`[Reconnect] Attempt ${reconnectAttempts} in ${Math.round(delay/1000)}s...`);
+    
+    setTimeout(startWhatsApp, delay);
+}
+```
+
+### Step 3: Resetting on Success
+
+If the bot successfully connects, you must reset the counter so future temporary drops don't trigger the circuit breaker.
+
+```javascript
+sock.ev.on('connection.update', (update) => {
+    const { connection } = update;
+    if (connection === 'open') {
+        reconnectAttempts = 0; // Reset the breaker!
+        console.log('✅ Connected successfully!');
+    } else if (connection === 'close') {
+        scheduleReconnect();
+    }
+});
+```
+
+By implementing this pattern, your bot will gracefully weather server outages and network blips without sacrificing its WhatsApp account to the ban-hammer.
+
+<ArticleCTALink slug="whatsapp-session-recovery-backoff" />
