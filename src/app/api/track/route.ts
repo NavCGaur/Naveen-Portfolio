@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     
     // Pass along the client IP from Vercel headers if available
-    const ip = req.headers.get("x-forwarded-for") || req.ip || "Unknown";
+    const ip = req.headers.get("x-forwarded-for") || "Unknown";
     const userAgent = req.headers.get("user-agent") || "Unknown";
     
     const eventLog = {
