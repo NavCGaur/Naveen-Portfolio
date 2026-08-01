@@ -10,6 +10,7 @@ export interface TopPage {
   pageviews: number;
   avgDuration: number;
   bounceRate: number;
+  exitRate?: number;
 }
 
 export interface ReferrerSource {
@@ -63,6 +64,7 @@ export interface VisitorSession {
   pages: string[] | PageVisit[];
   duration: number;
   lastActive: string;
+  trafficType?: string;
 }
 
 export function normalizePages(pages: VisitorSession["pages"]): PageVisit[] {
@@ -87,6 +89,10 @@ export interface AnalyticsData {
     prevPageviews: number;
     prevBounceRate: number;
     prevAvgSessionDuration: number;
+    engagementRate?: number;
+    prevEngagementRate?: number;
+    medianSessionDuration?: number;
+    prevMedianSessionDuration?: number;
   };
   trafficOverTime: TrafficDataPoint[];
   topPages: TopPage[];
@@ -96,4 +102,10 @@ export interface AnalyticsData {
   geolocations: GeoLocation[];
   events: CustomEvent[];
   sessions?: VisitorSession[];
+  newVsReturning?: {
+    new: number;
+    returning: number;
+    prevNew?: number;
+    prevReturning?: number;
+  };
 }

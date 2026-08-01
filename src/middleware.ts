@@ -15,10 +15,12 @@ export function middleware(request: NextRequest) {
   const ip = request.headers.get('x-real-ip') || request.headers.get('x-forwarded-for') || '';
   const referrer = request.headers.get('referer') || '';
   
-  // Detect Next.js Link prefetching requests and skip logging to prevent traffic pollution
+  // Detect Next.js Link prefetching requests, RSC payload updates, and data fetches
   const isPrefetch = request.headers.get('purpose') === 'prefetch' ||
                      request.headers.get('x-middleware-prefetch') === '1' ||
-                     request.headers.get('next-router-prefetch') === '1';
+                     request.headers.get('next-router-prefetch') === '1' ||
+                     request.nextUrl.searchParams.has('_rsc') ||
+                     request.nextUrl.searchParams.has('_data');
   
   if (!isPrefetch) {
     const visitorType = AI_BOTS_REGEX.test(userAgent) ? 'AI_BOT' : 'HUMAN';

@@ -34,16 +34,20 @@ export const mockData: AnalyticsData = {
     prevPageviews: 2874,
     prevBounceRate: 48.1,
     prevAvgSessionDuration: 164,
+    engagementRate: 57.7,
+    prevEngagementRate: 51.9,
+    medianSessionDuration: 135,
+    prevMedianSessionDuration: 118,
   },
   trafficOverTime: generateDailyData(30),
   topPages: [
-    { path: "/blog/baileys-whatsapp-bot-developer-guide", pageviews: 843, avgDuration: 312, bounceRate: 34.2 },
-    { path: "/", pageviews: 712, avgDuration: 145, bounceRate: 51.4 },
-    { path: "/blog/ai-automation-freelancing", pageviews: 498, avgDuration: 267, bounceRate: 38.9 },
-    { path: "/free-audit", pageviews: 384, avgDuration: 223, bounceRate: 29.1 },
-    { path: "/blog/next-js-seo-guide", pageviews: 301, avgDuration: 198, bounceRate: 44.7 },
-    { path: "/contact", pageviews: 187, avgDuration: 89, bounceRate: 62.3 },
-    { path: "/blog/whatsapp-crm-integration", pageviews: 166, avgDuration: 245, bounceRate: 36.8 },
+    { path: "/blog/baileys-whatsapp-bot-developer-guide", pageviews: 843, avgDuration: 312, bounceRate: 34.2, exitRate: 20.5 },
+    { path: "/", pageviews: 712, avgDuration: 145, bounceRate: 51.4, exitRate: 35.8 },
+    { path: "/blog/ai-automation-freelancing", pageviews: 498, avgDuration: 267, bounceRate: 38.9, exitRate: 24.1 },
+    { path: "/free-audit", pageviews: 384, avgDuration: 223, bounceRate: 29.1, exitRate: 15.2 },
+    { path: "/blog/next-js-seo-guide", pageviews: 301, avgDuration: 198, bounceRate: 44.7, exitRate: 28.9 },
+    { path: "/contact", pageviews: 187, avgDuration: 89, bounceRate: 62.3, exitRate: 55.4 },
+    { path: "/blog/whatsapp-crm-integration", pageviews: 166, avgDuration: 245, bounceRate: 36.8, exitRate: 22.1 },
   ],
   referrers: [
     { source: "Organic Search", visits: 782, percentage: 42.3 },
@@ -87,15 +91,21 @@ export const mockData: AnalyticsData = {
     { id: "e8", name: "audit_result_download", count: 54, page: "/free-audit", lastSeen: "2 hr ago" },
   ],
   sessions: [
-    { ip: "106.76.190.*", country: "India", countryCode: "IN", city: "Thrissur", isp: "Idea Cellular Limited", device: "Desktop", browser: "Firefox", pages: ["/", "/blog/baileys-whatsapp-bot-developer-guide", "/free-audit"], duration: 247, lastActive: new Date(Date.now() - 1000 * 60 * 5).toISOString() },
-    { ip: "192.168.1.*", country: "United States", countryCode: "US", city: "Dallas", isp: "AT&T Internet", device: "Desktop", browser: "Chrome", pages: ["/", "/blog/baileys-whatsapp-bot-developer-guide", "/free-audit"], duration: 310, lastActive: new Date(Date.now() - 1000 * 60 * 12).toISOString() },
-    { ip: "122.164.22.*", country: "India", countryCode: "IN", city: "Chennai", isp: "Airtel Fiber", device: "Mobile", browser: "Chrome", pages: ["/", "/blog/ai-automation-freelancing"], duration: 94, lastActive: new Date(Date.now() - 1000 * 60 * 18).toISOString() },
-    { ip: "73.4.19.*", country: "United States", countryCode: "US", city: "Atlanta", isp: "Comcast", device: "Mobile", browser: "Safari", pages: ["/", "/contact"], duration: 45, lastActive: new Date(Date.now() - 1000 * 60 * 25).toISOString() },
-    { ip: "95.111.4.*", country: "Germany", countryCode: "DE", city: "Frankfurt", isp: "Deutsche Telekom", device: "Desktop", browser: "Chrome", pages: ["/blog/next-js-seo-guide", "/free-audit"], duration: 185, lastActive: new Date(Date.now() - 1000 * 60 * 42).toISOString() },
-    { ip: "108.162.2.*", country: "United Kingdom", countryCode: "GB", city: "London", isp: "British Telecom", device: "Desktop", browser: "Safari", pages: ["/", "/blog/baileys-whatsapp-bot-developer-guide", "/blog/whatsapp-crm-integration"], duration: 320, lastActive: new Date(Date.now() - 1000 * 60 * 55).toISOString() },
-    { ip: "109.112.5.*", country: "Canada", countryCode: "CA", city: "Toronto", isp: "Rogers Communications", device: "Mobile", browser: "Safari", pages: ["/free-audit"], duration: 12, lastActive: new Date(Date.now() - 1000 * 60 * 70).toISOString() },
-    { ip: "27.12.98.*", country: "Australia", countryCode: "AU", city: "Sydney", isp: "Telstra", device: "Tablet", browser: "Chrome", pages: ["/", "/blog/ai-automation-freelancing", "/contact"], duration: 140, lastActive: new Date(Date.now() - 1000 * 60 * 95).toISOString() }
-  ]
+    { ip: "106.76.190.*", country: "India", countryCode: "IN", city: "Thrissur", isp: "Idea Cellular Limited", device: "Desktop", browser: "Firefox", pages: ["/", "/blog/baileys-whatsapp-bot-developer-guide", "/free-audit"], duration: 247, lastActive: new Date(Date.now() - 1000 * 60 * 5).toISOString(), trafficType: "human" },
+    { ip: "192.168.1.*", country: "United States", countryCode: "US", city: "Dallas", isp: "AT&T Internet", device: "Desktop", browser: "Chrome", pages: ["/", "/blog/baileys-whatsapp-bot-developer-guide", "/free-audit"], duration: 310, lastActive: new Date(Date.now() - 1000 * 60 * 12).toISOString(), trafficType: "human" },
+    { ip: "122.164.22.*", country: "India", countryCode: "IN", city: "Chennai", isp: "Airtel Fiber", device: "Mobile", browser: "Chrome", pages: ["/", "/blog/ai-automation-freelancing"], duration: 94, lastActive: new Date(Date.now() - 1000 * 60 * 18).toISOString(), trafficType: "human" },
+    { ip: "73.4.19.*", country: "United States", countryCode: "US", city: "Atlanta", isp: "Comcast", device: "Mobile", browser: "Safari", pages: ["/", "/contact"], duration: 45, lastActive: new Date(Date.now() - 1000 * 60 * 25).toISOString(), trafficType: "human" },
+    { ip: "95.111.4.*", country: "Germany", countryCode: "DE", city: "Frankfurt", isp: "Deutsche Telekom", device: "Desktop", browser: "Chrome", pages: ["/blog/next-js-seo-guide", "/free-audit"], duration: 185, lastActive: new Date(Date.now() - 1000 * 60 * 42).toISOString(), trafficType: "human" },
+    { ip: "108.162.2.*", country: "United Kingdom", countryCode: "GB", city: "London", isp: "British Telecom", device: "Desktop", browser: "Safari", pages: ["/", "/blog/baileys-whatsapp-bot-developer-guide", "/blog/whatsapp-crm-integration"], duration: 320, lastActive: new Date(Date.now() - 1000 * 60 * 55).toISOString(), trafficType: "human" },
+    { ip: "109.112.5.*", country: "Canada", countryCode: "CA", city: "Toronto", isp: "Rogers Communications", device: "Mobile", browser: "Safari", pages: ["/free-audit"], duration: 12, lastActive: new Date(Date.now() - 1000 * 60 * 70).toISOString(), trafficType: "human" },
+    { ip: "27.12.98.*", country: "Australia", countryCode: "AU", city: "Sydney", isp: "Telstra", device: "Tablet", browser: "Chrome", pages: ["/", "/blog/ai-automation-freelancing", "/contact"], duration: 140, lastActive: new Date(Date.now() - 1000 * 60 * 95).toISOString(), trafficType: "human" }
+  ],
+  newVsReturning: {
+    new: 742,
+    returning: 462,
+    prevNew: 654,
+    prevReturning: 364,
+  }
 };
 
 export const SITE_OPTIONS = [

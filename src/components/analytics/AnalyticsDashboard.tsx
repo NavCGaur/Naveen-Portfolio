@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LineChart, Line, AreaChart, Area, PieChart, Pie, Cell,
@@ -154,6 +154,16 @@ export default function AnalyticsDashboard() {
   const [liveError, setLiveError] = useState<string | null>(null);
   const [lastFetched, setLastFetched] = useState<string | null>(null);
   const [selectedSession, setSelectedSession] = useState<VisitorSession | null>(null);
+  const [trafficFilter, setTrafficFilter] = useState<"all" | "human" | "non-human">("human");
+
+  const filteredSessions = useMemo(() => {
+    if (!data.sessions) return [];
+    return data.sessions.filter((s) => {
+      if (trafficFilter === "human") return s.trafficType === "human" || !s.trafficType;
+      if (trafficFilter === "non-human") return s.trafficType && s.trafficType !== "human";
+      return true; // all
+    });
+  }, [data.sessions, trafficFilter]);
 
   const fetchLiveData = useCallback(async (site: string, period: string) => {
     setIsFetching(true);
@@ -418,19 +428,26 @@ export default function AnalyticsDashboard() {
                       color={ACCENT_3}
                     />
                     <MetricCard
-                      label="Bounce Rate"
-                      value={`${data.overview.bounceRate}%`}
-                      current={data.overview.bounceRate}
-                      prev={data.overview.prevBounceRate}
-                      icon={<RefreshCw size={16} />}
+                      label="Engagement Rate"
+                      value={`${data.overview.engagementRate ?? Math.round(100 - data.overview.bounceRate)}%`}
+                      current={data.overview.engagementRate ?? (100 - data.overview.bounceRate)}
+                      prev={data.overview.prevEngagementRate ?? (100 - data.overview.prevBounceRate)}
+                      icon={<Zap size={16} />}
                       color={ACCENT_4}
-                      invertGood
                     />
                     <MetricCard
                       label="Avg. Session"
                       value={formatDuration(data.overview.avgSessionDuration)}
                       current={data.overview.avgSessionDuration}
                       prev={data.overview.prevAvgSessionDuration}
+                      icon={<Clock size={16} />}
+                      color="#8B5CF6"
+                    />
+                    <MetricCard
+                      label="Median Session"
+                      value={formatDuration(data.overview.medianSessionDuration ?? data.overview.avgSessionDuration)}
+                      current={data.overview.medianSessionDuration ?? data.overview.avgSessionDuration}
+                      prev={data.overview.prevMedianSessionDuration ?? data.overview.prevAvgSessionDuration}
                       icon={<Clock size={16} />}
                       color="#3B82F6"
                     />
@@ -527,6 +544,58 @@ export default function AnalyticsDashboard() {
                             </div>
                           ))}
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom row 2: new vs returning + device breakdown */}
+                  <div className="dash-two-col mt-4">
+                    {/* New vs Returning split */}
+                    {data.newVsReturning && (
+                      <div className="dash-chart-card">
+                        <h3 className="dash-chart-title mb-4">New vs. Returning Visitors</h3>
+                        <div className="flex flex-col justify-center h-full pb-4">
+                          <div className="flex justify-between items-center text-sm mb-3">
+                            <span className="text-gray-400">New Visitors</span>
+                            <strong className="text-white font-bold">{data.newVsReturning.new} ({Math.round(data.newVsReturning.new / Math.max(data.newVsReturning.new + data.newVsReturning.returning, 1) * 100)}%)</strong>
+                          </div>
+                          <div className="flex justify-between items-center text-sm mb-4">
+                            <span className="text-gray-400">Returning Visitors</span>
+                            <strong className="text-white font-bold">{data.newVsReturning.returning} ({Math.round(data.newVsReturning.returning / Math.max(data.newVsReturning.new + data.newVsReturning.returning, 1) * 100)}%)</strong>
+                          </div>
+                          
+                          {/* Visual split progress bar */}
+                          <div className="h-3 rounded-full overflow-hidden flex bg-white/5 mb-4">
+                            <div style={{ width: `${(data.newVsReturning.new / Math.max(data.newVsReturning.new + data.newVsReturning.returning, 1)) * 100}%`, background: ACCENT }} />
+                            <div style={{ width: `${(data.newVsReturning.returning / Math.max(data.newVsReturning.new + data.newVsReturning.returning, 1)) * 100}%`, background: ACCENT_2 }} />
+                          </div>
+                          <div className="flex gap-4 text-xs text-gray-400">
+                            <div className="flex items-center gap-1.5">
+                              <span className="w-2.5 h-2.5 rounded-full" style={{ background: ACCENT }} />
+                              New ({data.newVsReturning.new})
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="w-2.5 h-2.5 rounded-full" style={{ background: ACCENT_2 }} />
+                              Returning ({data.newVsReturning.returning})
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Devices overview */}
+                    <div className="dash-chart-card">
+                      <h3 className="dash-chart-title mb-4">Device Distribution</h3>
+                      <div className="dash-geo-list">
+                        {data.devices.slice(0, 3).map((dev, i) => (
+                          <div key={dev.device} className="dash-geo-row">
+                            <span className="dash-geo-rank">{i + 1}</span>
+                            <span className="dash-geo-country" style={{ minWidth: 80 }}>{dev.device}</span>
+                            <MiniBar value={dev.visits} max={data.devices[0]?.visits || 1} color={ACCENT_3} />
+                            <span className="dash-geo-val">{formatNumber(dev.visits)}</span>
+                            <span className="dash-geo-pct">{dev.percentage}%</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -746,7 +815,8 @@ export default function AnalyticsDashboard() {
                           <th>Page</th>
                           <th>Pageviews</th>
                           <th>Avg Duration</th>
-                          <th>Bounce Rate</th>
+                          <th>Engagement Rate</th>
+                          <th>Exit Rate</th>
                           <th>Traffic</th>
                         </tr>
                       </thead>
@@ -773,7 +843,12 @@ export default function AnalyticsDashboard() {
                             <td>{formatDuration(page.avgDuration)}</td>
                             <td>
                               <span className={`dash-bounce-badge ${page.bounceRate < 40 ? "good" : page.bounceRate < 55 ? "mid" : "bad"}`}>
-                                {page.bounceRate}%
+                                {Math.round(100 - page.bounceRate)}%
+                              </span>
+                            </td>
+                            <td>
+                              <span className="dash-isp-text">
+                                {page.exitRate !== undefined ? `${page.exitRate}%` : "—"}
                               </span>
                             </td>
                             <td style={{ width: 120 }}>
@@ -896,16 +971,32 @@ export default function AnalyticsDashboard() {
                 <div className="dash-section">
                   <div className="dash-events-header">
                     <h2 className="dash-section-title">Visitor Sessions</h2>
-                    <span className="dash-events-count">
-                      {(data.sessions ?? []).length} sessions
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <div className="dash-select-wrap">
+                        <Filter size={12} className="dash-select-icon" />
+                        <select
+                          className="dash-select"
+                          value={trafficFilter}
+                          onChange={(e) => setTrafficFilter(e.target.value as any)}
+                          style={{ paddingRight: 24 }}
+                        >
+                          <option value="human">Humans Only (Clean)</option>
+                          <option value="non-human">Bots & Scanners</option>
+                          <option value="all">All Traffic</option>
+                        </select>
+                        <ChevronDown size={12} className="dash-select-chevron" />
+                      </div>
+                      <span className="dash-events-count">
+                        {filteredSessions.length} sessions
+                      </span>
+                    </div>
                   </div>
 
-                  {(!data.sessions || data.sessions.length === 0) ? (
+                  {(filteredSessions.length === 0) ? (
                     <div className="dash-empty-state">
                       <Globe size={32} style={{ opacity: 0.3 }} />
-                      <p>No session data yet.</p>
-                      <p style={{ fontSize: 13, color: '#6b7280' }}>Click <strong style={{ color: '#FF007A' }}>Load Live Data</strong> to fetch from VPS.</p>
+                      <p>No session data matching the filter.</p>
+                      <p style={{ fontSize: 13, color: '#6b7280' }}>Try switching the traffic filter or loading live data.</p>
                     </div>
                   ) : (
                     <div className="dash-chart-card" style={{ overflowX: 'auto' }}>
@@ -923,7 +1014,7 @@ export default function AnalyticsDashboard() {
                           </tr>
                         </thead>
                         <tbody>
-                          {(data.sessions as VisitorSession[]).map((s, i) => (
+                          {(filteredSessions as VisitorSession[]).map((s, i) => (
                             <motion.tr
                               key={`${s.ip}-${i}`}
                               initial={{ opacity: 0 }}
@@ -999,7 +1090,7 @@ export default function AnalyticsDashboard() {
               {/* ════════ USER FLOWS ════════ */}
               {activeTab === "User Flows" && (
                 <div className="dash-section">
-                  <SankeyFlow sessions={data.sessions ?? []} />
+                  <SankeyFlow sessions={filteredSessions} />
                 </div>
               )}
 
