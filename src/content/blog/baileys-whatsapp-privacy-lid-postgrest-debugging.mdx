@@ -1,0 +1,158 @@
+---
+title: "Debugging Production WhatsApp Bots: Privacy LIDs, PostgREST Query Escaping, and Multi-Page State Machines"
+description: "Architectural insights on resolving WhatsApp Limited Identifiers (@lid), Supabase PostgREST query parameter mutations, and multi-page batch session state."
+date: "2026-08-03"
+category: "WhatsApp & Automation"
+image: "/images/blog/baileys-whatsapp-bot.png"
+tags: ["Baileys", "WhatsApp Bot", "Supabase", "PostgreSQL", "Next.js", "Production Setup"]
+faq:
+  - question: "Why does my WhatsApp bot fail to find user profiles when messages arrive from @lid handles?"
+    answer: "WhatsApp Meta privacy updates frequently suppress standard E.164 phone numbers, delivering Limited Identifiers (@lid) instead. Searching E.164 phone columns with raw LID digits corrupts database lookups. Instead, enforce strict LID-only queries on the LID branch."
+  - question: "Why do E.164 phone numbers with plus signs (+91) fail in Supabase .or() queries?"
+    answer: "PostgREST translates JS .or() filter strings into HTTP GET query parameters. During transit, unescaped + signs are URL-decoded into spaces, corrupting PostgreSQL equality checks. Using set-based .in() array queries avoids URL parameter mutation."
+---
+
+Deploying a prototype WhatsApp integration using `@whiskeysockets/baileys` and Node.js can be completed in an afternoon. Operating a production-grade automated evaluation system that handles thousands of multi-page image submissions, WhatsApp privacy handle changes, and AI vision inference timeouts requires continuous architectural refinement.
+
+In our production deployment (**LoopLearnX**)—which bridges an Oracle Cloud VPS Baileys daemon with a Next.js serverless webhook on Vercel and Supabase PostgreSQL—we recently encountered three non-obvious production failure modes.
+
+This article details the real-world root causes, technical resolutions, and architectural decisions made to resolve them without breaking existing production sockets.
+
+*(Part of our definitive series on production WhatsApp infrastructure. See our main blueprint: **[Production WhatsApp Automation: The Definitive Guide](/blog/production-whatsapp-automation-baileys)**)*.
+
+---
+
+## 1. Navigating WhatsApp Privacy LIDs (`@lid` vs `@s.whatsapp.net`)
+
+### The Symptom
+Recent platform updates to WhatsApp’s client privacy layer frequently suppress a user's standard E.164 phone number. Incoming messages arrive with a **Limited Identifier (`@lid`)** handle (e.g., `167005575475380@lid`) rather than standard E.164 phone JIDs (`919920899845@s.whatsapp.net`).
+
+A common anti-pattern is attempting to extract digits from a raw `@lid` handle and searching `whatsapp_phone`. Because `@lid` values are arbitrary privacy tokens rather than E.164 phone numbers, doing so corrupts database state and creates duplicate unlinked profiles.
+
+### The Architectural Resolution
+Enforce **Strict Route Isolation** between `@lid` privacy handles and E.164 phone numbers:
+
+1. **Schema Separation:** Maintain a dedicated, indexed `whatsapp_lid` string column in your user profiles table alongside `whatsapp_phone`.
+2. **Gateway Packet Inspection:** Inspect the incoming remote JID at the gateway level. If `jid.endsWith('@lid')`, flag `isLid: true` in the webhook payload.
+3. **Strict Route Branching:**
+   - On the `isLid: true` branch, **only** query `whatsapp_lid`. Never search `whatsapp_phone` using LID digits.
+   - On standard E.164 branches, query `whatsapp_phone`.
+   - If an LID handle is unlinked, prompt the user for a one-time verification to bind their `@lid` to their profile permanently.
+
+```typescript
+// Strict Route Isolation (Production Code)
+let student = null;
+const cleanPhone = params.phone.replace(/\D/g, '');
+
+if (params.isLid) {
+    // STRICT: Only query whatsapp_lid column. Never fall back to phone queries with LID digits.
+    const { data } = await adminClient
+        .from('profiles')
+        .select('id, display_name, class_standard, whatsapp_phone, whatsapp_lid')
+        .eq('whatsapp_lid', cleanPhone)
+        .maybeSingle();
+    student = data;
+} else {
+    // Standard E.164 Phone Branch
+    const last10 = cleanPhone.slice(-10);
+    const candidates = [`+91${last10}`, `91${last10}`, last10, `+${cleanPhone}`, cleanPhone];
+    const { data } = await adminClient
+        .from('profiles')
+        .select('id, display_name, class_standard, whatsapp_phone, whatsapp_lid')
+        .in('whatsapp_phone', candidates)
+        .maybeSingle();
+    student = data;
+}
+```
+
+---
+
+## 2. Preventing PostgREST URL Query Encoding Failures in Supabase
+
+### The Symptom
+When querying E.164 phone variants in Supabase using string-concatenated `.or()`, passing raw plus signs (e.g., `+919920899845`) resulted in null query returns despite matching records existing in PostgreSQL.
+
+### Root Cause
+PostgREST converts JavaScript `.or('whatsapp_phone.eq.+919920899845')` filter logic into raw HTTP GET query parameters. During transit, standard HTTP servers decode unescaped `+` characters into literal spaces (` 919920899845`), breaking PostgreSQL string equality checks.
+
+### The Fix
+Avoid raw string-concatenated `.or()` filters when dealing with E.164 numbers. Use explicit set-based `.in()` array parameters instead:
+
+```typescript
+// SAFE: Set-based array query avoids URL parameter decoding corruption
+const last10 = cleanPhone.slice(-10);
+const candidates = [
+    `+91${last10}`,
+    `91${last10}`,
+    last10,
+    `+${cleanPhone}`,
+    cleanPhone
+];
+
+const { data: student } = await adminClient
+    .from('profiles')
+    .select('id, display_name, class_standard')
+    .in('whatsapp_phone', candidates)
+    .maybeSingle();
+```
+
+---
+
+## 3. Multi-Page Batch Submission State Machine
+
+### The Constraint
+User submissions are rarely single images. Students upload 2 to 8 consecutive pages per assignment. Invoking multimodal AI vision routines (such as Gemini 2.5 Flash) on Page 1 while Pages 2 and 3 are uploading creates race conditions, duplicated API evaluations, and fragmented user feedback.
+
+### Session Lifecycle Architecture
+
+```
+  [ Incoming Image ]
+          │
+          ▼
+   Active Session? ─── NO ───► Create New Session (Status: 'active')
+          │                                  │
+         YES                                 │
+          │                                  │
+          ▼                                  ▼
+   Append Image Page              Ack: "1 page received (Total: X)"
+          │
+          ▼
+   User types 'DONE' ────────► Update Status: 'processing'
+                                             │
+                                             ▼
+                                  Execute Gemini Vision AI
+                                             │
+                                             ▼
+                                  Update Status: 'completed'
+```
+
+### Self-Healing Orphan Cleanup
+If a mobile network disconnects mid-submission, sessions can become stuck in `'processing'`. To prevent permanent user lockouts, implement an automated background cleanup in your session manager that sweeps any session stuck in `'processing'` for longer than 5 minutes back to `'completed'`:
+
+```typescript
+// src/app/actions/sessions.ts - Production Orphan Sweep
+export async function getActiveSession(studentId: string): Promise<SubmissionSession | null> {
+    const admin = createAdminClient();
+
+    // Auto-abandon any sessions stuck in 'processing' for > 5 minutes
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+    await admin
+        .from('whatsapp_submission_sessions')
+        .update({ status: 'completed' })
+        .eq('student_id', studentId)
+        .eq('status', 'processing')
+        .lt('updated_at', fiveMinutesAgo);
+
+    // Fetch current active or needs_reupload session...
+}
+```
+
+---
+
+## Key Takeaways
+
+1. **Never Query Phone Columns with LID Digits:** Enforce strict route isolation between `@lid` privacy handles and E.164 phone numbers to prevent database profile contamination.
+2. **Beware URL Parameter Encoding in PostgREST:** Use `.in()` arrays instead of string-concatenated `.or()` filters when querying strings containing E.164 plus signs (`+`).
+3. **Isolate Multi-Page Batch Operations:** Use explicit session state machines with automated orphan cleanup thresholds to deliver reliable multi-image AI workflows.
+
+<ArticleCTALink slug="production-whatsapp-automation-baileys" />
