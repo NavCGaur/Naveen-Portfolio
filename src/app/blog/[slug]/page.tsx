@@ -11,6 +11,7 @@ import Footer from "@/components/layout/Footer";
 import ArticleTracker from "@/components/ArticleTracker";
 import ArticleShareButtons from "@/components/ArticleShareButtons";
 import ArticleCTALink from "@/components/ArticleCTALink";
+import DynamicArticleCTA from "@/components/DynamicArticleCTA";
 import LinkedInCTA from "@/components/LinkedInCTA";
 import CommentsList from "@/components/CommentsList";
 import CommentForm from "@/components/CommentForm";
@@ -262,16 +263,7 @@ export default async function BlogPost({ params }: Props) {
         {/* CTA Footer */}
         <section className="pb-24 px-6 md:px-10 hd:px-14">
           <div className="max-w-[760px] hd:max-w-[1200px] mx-auto">
-            <div className="blog-card border blog-border rounded-xl p-10 text-center">
-              <h2 className="font-serif text-[clamp(22px,3vw,32px)] blog-heading mb-4">
-                Need help with your WordPress site?
-              </h2>
-              <p className="text-[16px] blog-text-muted max-w-[420px] mx-auto leading-[1.7] mb-8">
-                I fix WordPress crashes, remove malware, and optimize performance for small
-                businesses. Fast turnaround, direct access, no agency overhead.
-              </p>
-              <ArticleCTALink slug={post.slug} />
-            </div>
+            <DynamicArticleCTA post={post} />
           </div>
         </section>
       </main>
