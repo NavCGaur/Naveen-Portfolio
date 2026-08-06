@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { trackOutboundClick } from "@/lib/ga";
 import type { BlogPost } from "@/lib/blog";
@@ -42,8 +43,21 @@ export default function DynamicArticleCTA({ post }: Props) {
   const encodedWhatsAppUrl = `https://wa.me/919920899845?text=${encodeURIComponent(whatsappMessage)}`;
   const encodedEmailUrl = `mailto:hello@naveengaur.com?subject=${encodeURIComponent(emailSubject)}`;
 
+  const [copied, setCopied] = useState(false);
+
+  const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    trackOutboundClick("email_article_cta", post.slug);
+    try {
+      navigator.clipboard.writeText("hello@naveengaur.com");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3500);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <div className="blog-card border blog-border rounded-xl p-8 md:p-10 text-center shadow-lg bg-[#141414]/80 backdrop-blur-sm">
+    <div className="blog-card border blog-border rounded-xl p-8 md:p-10 text-center shadow-lg bg-[#141414]/80 backdrop-blur-sm relative">
       <span className="inline-block text-[12px] font-bold tracking-[0.08em] uppercase text-[#C4A35A] px-3 py-1 rounded-sm bg-[#C4A35A]/10 border border-[#C4A35A]/20 mb-4">
         {isWhatsApp ? "WhatsApp & Automation Consulting" : isWordPress ? "WordPress Specialist" : "Full-Stack & Cloud Architecture"}
       </span>
@@ -70,15 +84,21 @@ export default function DynamicArticleCTA({ post }: Props) {
 
         <a
           href={encodedEmailUrl}
-          onClick={() => trackOutboundClick("email_article_cta", post.slug)}
+          onClick={handleEmailClick}
           className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#C4A35A] text-[#0D0D0D] py-3.5 px-6 rounded-sm text-[15px] font-bold uppercase tracking-[0.05em] hover:bg-[#d4b46a] transition-all duration-300 shadow-md hover:scale-[1.02]"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
-          Send Email Inquiry
+          {copied ? "Email Copied!" : "Send Email Inquiry"}
         </a>
       </div>
+
+      {copied && (
+        <div className="mt-4 p-2 bg-[#C4A35A]/20 border border-[#C4A35A]/40 rounded text-[13px] text-[#C4A35A] font-medium">
+          ✅ hello@naveengaur.com copied to clipboard! (Opening email client...)
+        </div>
+      )}
 
       <div className="mt-6 pt-4 border-t border-white/5 text-[13px] text-white/40 flex items-center justify-center gap-2">
         <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
