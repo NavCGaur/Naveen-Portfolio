@@ -93,23 +93,29 @@ export default function DynamicArticleCTA({ post }: Props) {
       </div>
 
       {copied && (
-        <div className="mt-4 p-4 bg-[#C4A35A]/15 border border-[#C4A35A]/30 rounded-md text-[14px] text-white font-medium max-w-[560px] mx-auto text-center shadow-lg">
-          <div className="text-[#C4A35A] font-bold mb-1">✅ Email address copied to clipboard!</div>
-          <div className="text-white/90 text-[13px] mb-2">
-            <strong className="text-[#C4A35A]">hello@naveengaur.com</strong>
+        <div className="mt-4 p-4 bg-[#C4A35A]/15 border border-[#C4A35A]/40 rounded-md text-[14px] text-[#0D0D0D] dark:text-white font-medium max-w-[560px] mx-auto text-center shadow-lg">
+          <div className="text-[#725921] dark:text-[#C4A35A] font-bold mb-1">✅ Email address copied to clipboard!</div>
+          <div className="text-[#2A2A2A] dark:text-white/90 text-[13px] mb-3">
+            <strong className="text-[#725921] dark:text-[#C4A35A]">hello@naveengaur.com</strong>
           </div>
-          <div className="flex justify-center gap-3 mt-3">
+          <div className="flex flex-wrap justify-center gap-3">
             <a
               href={gmailWebUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 bg-[#EA4335] text-white px-3 py-1.5 rounded text-[12px] font-bold hover:bg-[#d93025] transition-colors"
+              className="inline-flex items-center gap-1.5 bg-[#EA4335] text-white px-3.5 py-2 rounded text-[13px] font-bold hover:bg-[#d93025] transition-colors shadow-sm"
             >
-              Open in Web Gmail →
+              ✉️ Open in Web Gmail (Browser) →
+            </a>
+            <a
+              href={encodedEmailUrl}
+              className="inline-flex items-center gap-1.5 bg-[#0D0D0D] dark:bg-white/10 text-white px-3.5 py-2 rounded text-[13px] font-bold hover:bg-black/80 transition-colors shadow-sm"
+            >
+              📬 Open Mail App →
             </a>
             <button
               onClick={() => setCopied(false)}
-              className="text-[12px] text-white/60 underline hover:text-white"
+              className="text-[12px] text-[#4A4A4A] dark:text-white/60 underline hover:text-[#0D0D0D] dark:hover:text-white self-center"
             >
               Dismiss
             </button>
@@ -117,7 +123,7 @@ export default function DynamicArticleCTA({ post }: Props) {
         </div>
       )}
 
-      <div className="mt-6 pt-4 border-t blog-border text-[14px] font-semibold blog-heading flex items-center justify-center gap-2">
+      <div className="mt-6 pt-4 border-t border-black/10 dark:border-white/10 text-[14px] font-bold text-[#0D0D0D] dark:text-white flex items-center justify-center gap-2">
         <span className="w-2.5 h-2.5 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)] animate-pulse"></span>
         <span>Direct access to Naveen Gaur • Response within 24 hours</span>
       </div>
