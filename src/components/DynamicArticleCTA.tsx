@@ -42,22 +42,20 @@ export default function DynamicArticleCTA({ post }: Props) {
 
   const encodedWhatsAppUrl = `https://wa.me/919920899845?text=${encodeURIComponent(whatsappMessage)}`;
   const encodedEmailUrl = `mailto:hello@naveengaur.com?subject=${encodeURIComponent(emailSubject)}`;
-
-  const [copied, setCopied] = useState(false);
+  const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=hello@naveengaur.com&su=${encodeURIComponent(emailSubject)}`;
 
   const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     trackOutboundClick("email_article_cta", post.slug);
     try {
       navigator.clipboard.writeText("hello@naveengaur.com");
       setCopied(true);
-      setTimeout(() => setCopied(false), 3500);
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <div className="blog-card border blog-border rounded-xl p-8 md:p-10 text-center shadow-lg bg-[#141414]/80 backdrop-blur-sm relative">
+    <div className="blog-card border blog-border rounded-xl p-8 md:p-10 text-center shadow-lg bg-[#141414]/90 backdrop-blur-sm relative">
       <span className="inline-block text-[12px] font-bold tracking-[0.08em] uppercase text-[#C4A35A] px-3 py-1 rounded-sm bg-[#C4A35A]/10 border border-[#C4A35A]/20 mb-4">
         {isWhatsApp ? "WhatsApp & Automation Consulting" : isWordPress ? "WordPress Specialist" : "Full-Stack & Cloud Architecture"}
       </span>
@@ -95,13 +93,32 @@ export default function DynamicArticleCTA({ post }: Props) {
       </div>
 
       {copied && (
-        <div className="mt-4 p-2 bg-[#C4A35A]/20 border border-[#C4A35A]/40 rounded text-[13px] text-[#C4A35A] font-medium">
-          ✅ hello@naveengaur.com copied to clipboard! (Opening email client...)
+        <div className="mt-4 p-4 bg-[#C4A35A]/15 border border-[#C4A35A]/30 rounded-md text-[14px] text-white font-medium max-w-[560px] mx-auto text-center shadow-lg">
+          <div className="text-[#C4A35A] font-bold mb-1">✅ Email address copied to clipboard!</div>
+          <div className="text-white/90 text-[13px] mb-2">
+            <strong className="text-[#C4A35A]">hello@naveengaur.com</strong>
+          </div>
+          <div className="flex justify-center gap-3 mt-3">
+            <a
+              href={gmailWebUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 bg-[#EA4335] text-white px-3 py-1.5 rounded text-[12px] font-bold hover:bg-[#d93025] transition-colors"
+            >
+              Open in Web Gmail →
+            </a>
+            <button
+              onClick={() => setCopied(false)}
+              className="text-[12px] text-white/60 underline hover:text-white"
+            >
+              Dismiss
+            </button>
+          </div>
         </div>
       )}
 
-      <div className="mt-6 pt-4 border-t border-white/5 text-[13px] text-white/40 flex items-center justify-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
+      <div className="mt-6 pt-4 border-t border-white/10 text-[14px] text-[#E5E5E5] font-medium flex items-center justify-center gap-2">
+        <span className="w-2.5 h-2.5 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)] animate-pulse"></span>
         <span>Direct access to Naveen Gaur • Response within 24 hours</span>
       </div>
     </div>
