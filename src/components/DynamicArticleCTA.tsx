@@ -81,49 +81,41 @@ export default function DynamicArticleCTA({ post }: Props) {
         </a>
 
         <a
-          href={encodedEmailUrl}
-          onClick={handleEmailClick}
+          href={gmailWebUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => {
+            trackOutboundClick("email_article_cta", post.slug);
+            try { navigator.clipboard.writeText("hello@naveengaur.com"); } catch (e) {}
+            setCopied(true);
+          }}
           className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#C4A35A] text-[#0D0D0D] py-3.5 px-6 rounded-sm text-[15px] font-bold uppercase tracking-[0.05em] hover:bg-[#d4b46a] transition-all duration-300 shadow-md hover:scale-[1.02]"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
-          {copied ? "Email Copied!" : "Send Email Inquiry"}
+          Send Email Inquiry
         </a>
       </div>
 
       {copied && (
-        <div className="mt-4 p-4 bg-[#C4A35A]/15 border border-[#C4A35A]/40 rounded-md text-[14px] text-[#0D0D0D] dark:text-white font-medium max-w-[560px] mx-auto text-center shadow-lg">
-          <div className="text-[#725921] dark:text-[#C4A35A] font-bold mb-1">✅ Email address copied to clipboard!</div>
-          <div className="text-[#2A2A2A] dark:text-white/90 text-[13px] mb-3">
-            <strong className="text-[#725921] dark:text-[#C4A35A]">hello@naveengaur.com</strong>
+        <div className="mt-4 p-4 bg-[#C4A35A]/15 border border-[#C4A35A]/40 rounded-md text-[14px] text-[#0D0D0D] font-medium max-w-[560px] mx-auto text-center shadow-lg">
+          <div className="text-[#725921] font-bold mb-1">✅ Opening Web Gmail & Copied to Clipboard!</div>
+          <div className="text-[#2A2A2A] text-[13px] mb-2">
+            Direct Email: <strong className="text-[#725921] underline">hello@naveengaur.com</strong>
           </div>
-          <div className="flex flex-wrap justify-center gap-3">
-            <a
-              href={gmailWebUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 bg-[#EA4335] text-white px-3.5 py-2 rounded text-[13px] font-bold hover:bg-[#d93025] transition-colors shadow-sm"
-            >
-              ✉️ Open in Web Gmail (Browser) →
-            </a>
+          <div className="flex justify-center gap-3 mt-2">
             <a
               href={encodedEmailUrl}
-              className="inline-flex items-center gap-1.5 bg-[#0D0D0D] dark:bg-white/10 text-white px-3.5 py-2 rounded text-[13px] font-bold hover:bg-black/80 transition-colors shadow-sm"
+              className="text-[12px] text-[#725921] font-bold underline hover:text-black"
             >
-              📬 Open Mail App →
+              Prefer Desktop Mail App? Click here
             </a>
-            <button
-              onClick={() => setCopied(false)}
-              className="text-[12px] text-[#4A4A4A] dark:text-white/60 underline hover:text-[#0D0D0D] dark:hover:text-white self-center"
-            >
-              Dismiss
-            </button>
           </div>
         </div>
       )}
 
-      <div className="mt-6 pt-4 border-t border-black/10 dark:border-white/10 text-[14px] font-bold text-[#0D0D0D] dark:text-white flex items-center justify-center gap-2">
+      <div className="mt-6 pt-4 border-t border-black/10 text-[14px] font-bold text-[#0D0D0D] flex items-center justify-center gap-2">
         <span className="w-2.5 h-2.5 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)] animate-pulse"></span>
         <span>Direct access to Naveen Gaur • Response within 24 hours</span>
       </div>
