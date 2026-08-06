@@ -44,15 +44,7 @@ export default function DynamicArticleCTA({ post }: Props) {
   const encodedEmailUrl = `mailto:hello@naveengaur.com?subject=${encodeURIComponent(emailSubject)}`;
   const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=hello@naveengaur.com&su=${encodeURIComponent(emailSubject)}`;
 
-  const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    trackOutboundClick("email_article_cta", post.slug);
-    try {
-      navigator.clipboard.writeText("hello@naveengaur.com");
-      setCopied(true);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const [copied, setCopied] = useState(false);
 
   return (
     <div className="blog-card border blog-border rounded-xl p-8 md:p-10 text-center shadow-lg relative">
