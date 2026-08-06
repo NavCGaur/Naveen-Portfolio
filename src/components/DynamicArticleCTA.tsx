@@ -55,7 +55,7 @@ export default function DynamicArticleCTA({ post }: Props) {
   };
 
   return (
-    <div className="blog-card border blog-border rounded-xl p-8 md:p-10 text-center shadow-lg bg-[#141414]/90 backdrop-blur-sm relative">
+    <div className="blog-card border blog-border rounded-xl p-8 md:p-10 text-center shadow-lg relative">
       <span className="inline-block text-[12px] font-bold tracking-[0.08em] uppercase text-[#C4A35A] px-3 py-1 rounded-sm bg-[#C4A35A]/10 border border-[#C4A35A]/20 mb-4">
         {isWhatsApp ? "WhatsApp & Automation Consulting" : isWordPress ? "WordPress Specialist" : "Full-Stack & Cloud Architecture"}
       </span>
@@ -117,7 +117,7 @@ export default function DynamicArticleCTA({ post }: Props) {
         </div>
       )}
 
-      <div className="mt-6 pt-4 border-t border-white/10 text-[14px] text-[#E5E5E5] font-medium flex items-center justify-center gap-2">
+      <div className="mt-6 pt-4 border-t blog-border text-[14px] font-semibold blog-heading flex items-center justify-center gap-2">
         <span className="w-2.5 h-2.5 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)] animate-pulse"></span>
         <span>Direct access to Naveen Gaur • Response within 24 hours</span>
       </div>
