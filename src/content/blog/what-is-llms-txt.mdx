@@ -1,0 +1,109 @@
+---
+title: "What Is llms.txt? Why It Matters, and How to Set One Up"
+description: "Learn what llms.txt is, why Google added an Agentic Browsing score in PageSpeed Insights, and follow a step-by-step guide to setting up an llms.txt file to get cited by ChatGPT, Perplexity & Gemini."
+date: "2026-08-11"
+category: "Analytics & SEO"
+---
+
+If you've run a PageSpeed Insights report recently, you may have noticed a new score sitting next to Performance, Accessibility, Best Practices, and SEO: **Agentic Browsing**. Unlike the others, it's not a number out of 100 — it's shown as a ratio, like 2/3 or 3/3. And one of the fastest ways to move that ratio up is a small text file called `llms.txt`.
+
+Here's what it is, why Google added a score for it, and how to set one up on your own website.
+
+---
+
+## What llms.txt Actually Is
+
+`llms.txt` is a plain text file that sits at your domain's root — `yoursite.com/llms.txt` — the same way `robots.txt` does. Instead of talking to traditional search engine crawlers, it is written specifically for Large Language Model (LLM) systems: AI chatbots, conversational search engines, and AI browsing agents that fetch and read your site on someone's behalf.
+
+It serves as a short, structured summary of what your business does, what services or products it offers, and which pages matter most — formatted so an AI model can quickly understand your website without having to piece it together from complex navigation menus, client-side JavaScript, or human-targeted marketing copy.
+
+---
+
+## Why Google Added This to PageSpeed Insights
+
+Agentic Browsing audits were introduced to Lighthouse in May 2026, and Google PageSpeed Insights incorporated them shortly after. The reasoning is straightforward: a rapidly growing share of web traffic today isn't a person clicking around search results — it's an AI agent browsing on their behalf to research, compare providers, or complete tasks. Adobe Analytics reported AI-driven referral traffic to online businesses grew by **393% year-over-year** in Q1 2026 alone.
+
+Google's Agentic Browsing score evaluates three core criteria:
+
+1. **Accessibility Tree Validity**: Whether screen readers and AI parsing agents can read your DOM elements cleanly.
+2. **Layout Stability**: Low Cumulative Layout Shift (CLS), ensuring elements don't move unpredictably while agents attempt interactions.
+3. **Presence of `llms.txt`**: Whether an `llms.txt` file exists at your domain root and passes structural validation checks.
+
+A missing or unreadable `llms.txt` file is the single most common reason a website scores **2/3** instead of **3/3** on Google's Agentic Browsing checks. For a deeper breakdown of these AI audits, see our guide on [Google's PageSpeed Agentic Browsing Score](/blog/google-pagespeed-agenticai-score).
+
+---
+
+## Why It's Worth Doing (Even Beyond PageSpeed Scores)
+
+Setting the PageSpeed metric aside, there is a fundamental business reason to implement this file: **AI assistants are increasingly the first place potential customers ask questions** — *"who does X near me,"* *"what is the best option for Y,"* or *"recommend a specialist for Z."*
+
+When conversational AI models like ChatGPT, Perplexity, or Gemini answer those queries, they rely on structured context they can crawl and synthesize quickly. A clear, accurate `llms.txt` file ensures your business is:
+
+- **Accurately summarized** rather than hallucinated or misconstrued.
+- **Directly cited** when recommendations are displayed.
+- **Included in category queries** rather than skipped in favor of competitors whose sites are easier for AI to digest.
+
+If your site is also experiencing traditional search ranking issues, check our guide on [why your WordPress site is not ranking on Google](/blog/why-wordpress-site-not-ranking-on-google).
+
+---
+
+## Step-by-Step: How to Create and Publish llms.txt
+
+### 1. Write a Factual Business Summary
+Skip corporate taglines and buzzwords. State plainly what the business does, target audience, credentials, service areas, and pricing models so an AI model can quote these details directly.
+
+### 2. List Your Primary Pages with One-Line Descriptions
+Pull key URLs from your navigation menu — Home, Services, Pricing, About, Contact. Provide full canonical HTTPS URLs for each.
+
+### 3. State Service Boundaries and Contact Info
+Specify whether you operate locally, nationally, or remotely. Ambiguity forces AI models to guess — and guessing often leads to incorrect recommendations.
+
+### 4. Format Links in Standard Markdown
+The audit specifically checks for Markdown link syntax: `[Page Name](https://example.com/page)`, not plain-text URLs (`Page Name: https://example.com/page`). Plain URLs will fail validation checks.
+
+### 5. Upload to Your Domain Root
+`llms.txt` must be placed directly at `yoursite.com/llms.txt`, not inside plugin directories or subfolders. On WordPress, this requires uploading the file via cPanel File Manager, hPanel, or SFTP into your `public_html` directory.
+
+### 6. Verify Live Access
+Open `yoursite.com/llms.txt` directly in your browser. Ensure it returns HTTP 200 with raw text, rather than a 404 error page or a redirected homepage.
+
+---
+
+## A Ready-to-Use llms.txt Template
+
+```markdown
+# Business Name
+
+> Factual one-line summary of what the business does and who it serves.
+
+Two to three sentences of specific, checkable details — services offered, credentials, location/service area, and booking process.
+
+## Main Pages
+- [Home](https://example.com/)
+- [Services](https://example.com/services/)
+- [About Us](https://example.com/about/)
+- [Contact](https://example.com/contact/)
+
+## Contact & Location
+- Location: City, State (or Fully Remote)
+- Email: hello@example.com
+- [Book an Appointment](https://example.com/booking)
+```
+
+---
+
+## Don't Want to Handle Technical Setup Yourself?
+
+If you prefer to avoid editing root server directories, configuring SFTP, or debugging validation errors, we offer a complete done-for-you service.
+
+We write, format, upload, and verify your website's `llms.txt` file live on your site within 48 hours for **$10**.
+
+👉 **[Get Your Custom llms.txt Setup Service ($10)](/llms-txt)**
+
+---
+
+<ArticleCTALink slug="what-is-llms-txt" />
+
+---
+
+*Related Reading: [Google's New PageSpeed Agentic Browsing Score Explained](/blog/google-pagespeed-agenticai-score) | [Why Your WordPress Site Is Not Ranking on Google](/blog/why-wordpress-site-not-ranking-on-google) | [WordPress PageSpeed Optimization Case Study](/blog/wordpress-pagespeed-optimization-case-study)*
