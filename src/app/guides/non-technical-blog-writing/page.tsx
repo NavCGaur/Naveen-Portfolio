@@ -10,11 +10,11 @@ function GuideContent() {
   const [unlocked, setUnlocked] = useState(false);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sentEmail, setSentEmail] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    // Check URL search params for direct unlock token/flag or local verification
+    // Only unlock if arriving directly via verified email link with access=granted token
     const access = searchParams?.get("access");
     if (access === "granted") {
       setUnlocked(true);
@@ -32,7 +32,7 @@ function GuideContent() {
     setErrorMsg("");
 
     try {
-      // 1. Submit lead to API
+      // 1. Submit lead to API (sends access email to recipient)
       const res = await fetch("/api/guide-optin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,10 +43,10 @@ function GuideContent() {
         throw new Error("Failed to process opt-in");
       }
 
-      // 2. Fire event on existing site analytics pipeline (GA + console logger)
+      // 2. Fire custom event on site analytics pipeline
       if (typeof window !== "undefined") {
         if ((window as any).gtag) {
-          (window as any).gtag("event", "guide_unlocked", {
+          (window as any).gtag("event", "guide_optin_requested", {
             event_category: "lead_generation",
             event_label: "non_technical_blog_writing_guide",
             email_domain: email.split("@")[1] || "unknown",
@@ -57,15 +57,14 @@ function GuideContent() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            event: "guide_unlocked",
+            event: "guide_optin_requested",
             page: "/guides/non-technical-blog-writing",
             data: { emailDomain: email.split("@")[1] || "unknown" },
           }),
         }).catch(() => {});
       }
 
-      setSentEmail(true);
-      setUnlocked(true);
+      setSubmitted(true);
     } catch (err: any) {
       setErrorMsg("Something went wrong. Please try again or check your connection.");
     } finally {
@@ -88,63 +87,80 @@ function GuideContent() {
         </p>
       </div>
 
-      {/* Lock Gate Overlay vs Unlocked Guide */}
+      {/* Lock Gate vs Email Sent Confirmation vs Unlocked Content */}
       {!unlocked ? (
         <div className="bg-[#171717] border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden my-8">
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#C4A35A]/10 rounded-full blur-3xl -z-0 pointer-events-none" />
 
           <div className="relative z-10 max-w-[560px] mx-auto text-center">
-            <div className="w-14 h-14 bg-[#C4A35A]/20 border border-[#C4A35A]/40 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl">
-              🔒
-            </div>
-            <h2 className="text-2xl md:text-3xl font-serif font-bold text-white mb-3">
-              Unlock the 11-Step Guide
-            </h2>
-            <p className="text-white/70 text-base leading-relaxed mb-8">
-              To prevent spam and deliver the instant access link directly to your inbox, enter your email below. We'll unlock the guide on this page immediately and email you a direct link for future reference.
-            </p>
+            {!submitted ? (
+              <>
+                <div className="w-14 h-14 bg-[#C4A35A]/20 border border-[#C4A35A]/40 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl">
+                  ✉️
+                </div>
+                <h2 className="text-2xl md:text-3xl font-serif font-bold text-white mb-3">
+                  Receive the Guide via Email
+                </h2>
+                <p className="text-white/70 text-base leading-relaxed mb-8">
+                  Enter your email address below to receive a direct access link to the full 11-step Blog Writing Guide in your inbox.
+                </p>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-left">
-              <div>
-                <label htmlFor="email" className="block text-xs uppercase tracking-wider text-white/60 mb-2 font-medium">
-                  Your Email Address
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full bg-[#0D0D0D] border border-white/20 rounded-xl px-4 py-3.5 text-white placeholder-white/40 focus:outline-none focus:border-[#C4A35A] transition-colors"
-                />
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-left">
+                  <div>
+                    <label htmlFor="email" className="block text-xs uppercase tracking-wider text-white/60 mb-2 font-medium">
+                      Your Email Address
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      className="w-full bg-[#0D0D0D] border border-white/20 rounded-xl px-4 py-3.5 text-white placeholder-white/40 focus:outline-none focus:border-[#C4A35A] transition-colors"
+                    />
+                  </div>
+
+                  {errorMsg && (
+                    <p className="text-red-400 text-sm font-medium">{errorMsg}</p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-[#C4A35A] text-[#0D0D0D] font-bold py-3.5 px-6 rounded-xl hover:bg-[#d6b76e] transition-all transform active:scale-[0.99] disabled:opacity-50 text-sm uppercase tracking-wider mt-2 shadow-lg shadow-[#C4A35A]/20"
+                  >
+                    {loading ? "Sending Access Link..." : "Send Me the Guide →"}
+                  </button>
+                </form>
+
+                <p className="text-xs text-white/40 mt-6">
+                  No spam ever. We only send the direct guide link to your email.
+                </p>
+              </>
+            ) : (
+              <div className="py-6 space-y-4">
+                <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-500/40 rounded-full flex items-center justify-center mx-auto text-3xl text-emerald-400">
+                  ✓
+                </div>
+                <h2 className="text-2xl font-serif font-bold text-white">
+                  Check Your Inbox!
+                </h2>
+                <p className="text-white/80 text-base leading-relaxed max-w-[460px] mx-auto">
+                  We've sent a direct access link to <strong>{email}</strong>. Click the link inside the email to view the complete guide.
+                </p>
+                <p className="text-xs text-white/40 pt-2">
+                  (If you don't see it within a minute, check your spam or promotions folder.)
+                </p>
               </div>
-
-              {errorMsg && (
-                <p className="text-red-400 text-sm font-medium">{errorMsg}</p>
-              )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-[#C4A35A] text-[#0D0D0D] font-bold py-3.5 px-6 rounded-xl hover:bg-[#d6b76e] transition-all transform active:scale-[0.99] disabled:opacity-50 text-sm uppercase tracking-wider mt-2 shadow-lg shadow-[#C4A35A]/20"
-              >
-                {loading ? "Verifying & Accessing..." : "Get Instant Access →"}
-              </button>
-            </form>
-
-            <p className="text-xs text-white/40 mt-6">
-              No spam ever. Zero keyword density jargon. Pure actionable framework.
-            </p>
+            )}
           </div>
         </div>
       ) : (
         <div className="space-y-12 animate-fadeIn">
-          {sentEmail && (
-            <div className="bg-[#C4A35A]/15 border border-[#C4A35A]/30 text-[#C4A35A] p-4 rounded-xl text-sm flex items-center justify-between">
-              <span>✓ Guide unlocked! A direct access link has also been sent to <strong>{email}</strong>.</span>
-            </div>
-          )}
+          <div className="bg-[#C4A35A]/15 border border-[#C4A35A]/30 text-[#C4A35A] p-4 rounded-xl text-sm flex items-center justify-between">
+            <span>✓ Verified Email Access — Full Guide Unlocked</span>
+          </div>
 
           <div className="bg-[#171717] border border-white/10 rounded-2xl p-6 md:p-10 text-white/90 space-y-8 leading-relaxed">
             <div className="border-b border-white/10 pb-6">
