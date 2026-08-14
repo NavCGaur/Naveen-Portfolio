@@ -91,6 +91,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: "https://naveengaur.com/guides/non-technical-blog-writing",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     // Category pages
     ...categoryUrls,
     // Individual blog posts
