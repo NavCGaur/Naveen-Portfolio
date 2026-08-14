@@ -39,8 +39,10 @@ function GuideContent() {
         body: JSON.stringify({ email }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        throw new Error("Failed to process opt-in");
+        throw new Error(data.error || "Failed to process opt-in");
       }
 
       // 2. Fire custom event on site analytics pipeline
@@ -66,7 +68,7 @@ function GuideContent() {
 
       setSubmitted(true);
     } catch (err: any) {
-      setErrorMsg("Something went wrong. Please try again or check your connection.");
+      setErrorMsg(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
