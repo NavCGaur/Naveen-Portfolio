@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     const guideUrl = "https://naveengaur.com/guides/non-technical-blog-writing?access=granted";
 
     const { data: guideData, error: guideError } = await resend.emails.send({
-      from: "Portfolio Guide <onboarding@resend.dev>",
+      from: "Naveen Gaur <hello@send.naveengaur.com>",
       to: email,
       subject: "Your Non-Technical Blog Writing Guide — naveengaur.com",
       html: `
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     // Also alert site owner of new lead capture
     if (process.env.RESEND_API_KEY) {
       await resend.emails.send({
-        from: "Portfolio Lead <onboarding@resend.dev>",
+        from: "Portfolio Lead <leads@send.naveengaur.com>",
         to: process.env.CONTACT_EMAIL || "hello@naveengaur.com",
         subject: `New Lead: Blog Writing Guide unlocked by ${email}`,
         html: `<p>New subscriber requested the Blog Writing Guide: <strong>${email}</strong></p>`,
