@@ -1,0 +1,187 @@
+---
+title: "WordPress Error - How to Fix 'TypeError: substr(): Argument #1 ($string) must be of type string, int given' in WP Rocket"
+description: "WordPress site crashed with a critical error after updating to WordPress 7.1? Learn how to diagnose, bypass, and patch the WP Rocket Cloudflare.php TypeError."
+date: "2026-08-20"
+category: "WordPress"
+howto:
+  name: "How to Fix WP Rocket TypeError substr() after WordPress 7.1 Update"
+  description: "Diagnose and resolve the critical PHP Fatal error in WP Rocket's Cloudflare.php CDN integration after upgrading WordPress."
+  steps:
+    - name: "Identify the PHP TypeError"
+      text: "Check your server error_log for 'Uncaught TypeError: substr(): Argument #1 ($string) must be of type string, int given in Cloudflare.php'."
+    - name: "Bypass the Critical Error via FTP or cPanel"
+      text: "Deactivate the plugin by navigating to wp-content/plugins/ and renaming the wp-rocket folder to wp-rocket-disabled."
+    - name: "Apply the is_string() Code Guard"
+      text: "Open Cloudflare.php, locate the foreach loop in the unregister_callback method, and add an is_string($key) type check."
+    - name: "Reactivate and Verify"
+      text: "Rename the plugin folder back to wp-rocket and reactivate it from the WordPress dashboard, confirming the site loads with zero errors."
+---
+
+If you updated your WordPress core to **WordPress 7.1** and your site immediately crashed with the standard WordPress critical error screen:
+
+```text
+There has been a critical error on this website. Learn more about troubleshooting WordPress.
+```
+
+And your PHP `error_log` displays a traceback pointing to WP Rocket's Cloudflare integration:
+
+```text
+PHP Fatal error: Uncaught TypeError: substr(): Argument #1 ($string) must be of type string, int given in /public_html/wp-content/plugins/wp-rocket/inc/ThirdParty/Plugins/CDN/Cloudflare.php on line 496
+```
+
+Do not panic. Your database is completely safe, and your custom caching configurations are intact. This is a known, live compatibility bug between WordPress 7.1's updated hook architecture and WP Rocket's Cloudflare integration.
+
+Here is the exact technical explanation of why this error happens and the step-by-step workflow to restore your site immediately.
+
+---
+
+## The Technical Root Cause
+
+To understand why this error crashes both your frontend and the `/wp-admin/` login panel, we have to look at how WordPress 7.1 handles action and filter hooks.
+
+### 1. Hook Callback ID Shift
+WordPress manages action callbacks internally via the `$wp_filter` global array. Before version 7.1, WordPress used the `spl_object_hash()` PHP function to generate unique alphanumeric **string** keys for object-based callbacks.
+
+In WordPress 7.1, the core code optimized hook registry lookups by switching to `spl_object_id()`, which returns unique **integers** instead of strings.
+
+### 2. Strict Types vs. PHP 8.x
+WP Rocket’s Cloudflare integration script (`Cloudflare.php`) declares strict typing at the top of the file:
+```php
+declare(strict_types=1);
+```
+During initialization, the plugin loops through the registered callbacks on your posts to unregister cache-clearing hooks. It uses the PHP `substr()` function to match the callback's key:
+```php
+if ( substr( $key, - strlen( $method ) ) !== $method ) {
+    continue;
+}
+```
+Because strict typing is enabled, PHP expects `$key` to be a string. When WordPress 7.1 passes an integer key from its new hook registry, PHP 8+ immediately throws a fatal `TypeError` rather than converting the type implicitly.
+
+---
+
+## How to Fix the Crash (Step-by-Step)
+
+Since the critical error locks you out of the WordPress dashboard, you must perform the fix using your hosting File Manager or FTP.
+
+### Step 1: Deactivate the Plugin (Bypass the White Screen)
+1. Log into your hosting control panel (such as Hostinger hPanel or Namecheap cPanel) and open **File Manager** (or connect via FTP/SFTP).
+2. Navigate to `public_html/wp-content/plugins/`.
+3. Locate the `wp-rocket` folder.
+4. **Rename the folder** to `wp-rocket-disabled`.
+5. Refresh your website. The error will immediately clear, and your dashboard access will be restored.
+
+---
+
+### Step 2: Apply the Code Guard Hotfix
+If you cannot update the plugin immediately (e.g., if you are running an older stable version like `3.18.x` or your license is currently inactive), you can patch the code manually in less than a minute.
+
+1. Open `/wp-content/plugins/wp-rocket-disabled/inc/ThirdParty/Plugins/CDN/Cloudflare.php` in your File Manager editor.
+2. Search for the `unregister_callback` method (typically located near the bottom of the file).
+3. Find the `foreach` loop that checks the `$key`:
+```php
+foreach ( $original_wp_filter[ $priority ] as $key => $config ) {
+
+    if ( substr( $key, - strlen( $method ) ) !== $method ) {
+        continue;
+    }
+
+    unset( $wp_filter[ $hook ]->callbacks[ $priority ][ $key ] );
+}
+```
+4. Insert the `is_string($key)` check right after the `foreach` statement to skip numeric hook IDs:
+```php
+foreach ( $original_wp_filter[ $priority ] as $key => $config ) {
+
+    // Add this type-check guard for WordPress 7.1 compatibility:
+    if ( ! is_string( $key ) ) {
+        continue;
+    }
+
+    if ( substr( $key, - strlen( $method ) ) !== $method ) {
+        continue;
+    }
+
+    unset( $wp_filter[ $hook ]->callbacks[ $priority ][ $key ] );
+}
+```
+5. Save the file.
+6. Rename the folder back to `wp-rocket` and click **Activate** in the WordPress Plugins page.
+
+---
+
+<div style={{
+  background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(196, 163, 90, 0.08) 100%)',
+  border: '1px solid rgba(59, 130, 246, 0.2)',
+  borderRadius: '12px',
+  padding: '24px 28px',
+  margin: '2em 0',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px'
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <span style={{ fontSize: '22px' }}>💡</span>
+    <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: 'var(--bt-heading)' }}>
+      The Permanent Solution
+    </h3>
+  </div>
+  <p style={{ margin: 0, fontSize: '14.5px', color: 'var(--bt-text-muted)', lineHeight: '1.6' }}>
+    While this manual code guard solves the immediate crash, the permanent solution is updating WP Rocket to <b>version 3.23.2.2 or higher</b>. Once you have regained access to your dashboard, run the plugin updater. The update will safely overwrite your temporary patch with the developer's official compatibility fix.
+  </p>
+</div>
+
+---
+
+## Tradeoffs and Operational Impact
+
+| Metric | Running in Disabled State | Running with the Hotfix / Updated |
+| :--- | :--- | :--- |
+| **Site Load Speeds** | 📉 Slower. Assets are served unminified and uncompressed. | ⚡ Instant. Pre-rendered HTML cache files serve immediately. |
+| **Server CPU Load** | ⚠️ High. Direct database and PHP hits per request (risk of host suspension). | 🟢 Low. Minimal server-side compilation required. |
+| **Cloudflare Desync** | No cache purges happen during content edits. | Cloudflare cache automatically flushes when articles or products are updated. |
+
+---
+
+<div style={{
+  background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(196, 163, 90, 0.08) 100%)',
+  border: '1px solid rgba(239, 68, 68, 0.2)',
+  borderRadius: '12px',
+  padding: '28px 32px',
+  margin: '2.5em 0',
+  boxShadow: '0 10px 30px -10px rgba(239, 68, 68, 0.15)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+    <span style={{ fontSize: '24px' }}>🛠️</span>
+    <h3 style={{ margin: 0, fontSize: '19px', fontWeight: 'bold', color: 'var(--bt-heading)', fontFamily: 'var(--font-dm-sans)' }}>
+      WordPress Critical Recovery and Infrastructure Management
+    </h3>
+  </div>
+  <p style={{ margin: 0, fontSize: '15px', color: 'var(--bt-text-muted)', lineHeight: '1.6' }}>
+    Unplanned downtime damages user experience and costs active conversions. I specialize in WordPress performance engineering, server resource optimization, and rapid crash recovery. If you are struggling with persistent plugin conflicts or want to transition to a safe, staging-tested managed care plan, let's connect.
+  </p>
+  <div style={{ marginTop: '8px' }}>
+    <a href="/?utm_source=article&utm_medium=blog&utm_campaign=wp-rocket-wordpress-7-1#contact" style={{
+      display: 'inline-block',
+      background: '#C4A35A',
+      color: '#0D0D0D',
+      padding: '12px 24px',
+      borderRadius: '6px',
+      fontWeight: 'bold',
+      fontSize: '13px',
+      textTransform: 'uppercase',
+      letterSpacing: '0.08em',
+      textDecoration: 'none',
+      transition: 'all 0.3s ease',
+      boxShadow: '0 4px 12px rgba(196, 163, 90, 0.25)'
+    }}>
+      Get Emergency WordPress Support →
+    </a>
+  </div>
+</div>
+
+---
+
+*Naveen Gaur is a WordPress Performance Specialist & Full-Stack Consultant helping business owners and agencies build, fix, and maintain high-performing web platforms.*
