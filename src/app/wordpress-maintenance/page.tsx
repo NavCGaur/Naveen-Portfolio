@@ -28,8 +28,7 @@ export default async function WordPressMaintenancePage({ searchParams }: PagePro
               Website Care & Support Services
             </span>
             <h1 className="font-serif text-[clamp(36px,5vw,64px)] tracking-[-0.025em] leading-[1.1] text-white mb-6">
-              Proactive WordPress Support <br />
-              <span className="text-[#C4A35A]">Stops Fires Before They Start</span>.
+              Professional WordPress Maintenance Retainers &amp; Support
             </h1>
             <p className="text-[18px] text-white/60 max-w-[650px] leading-[1.7] font-light mb-10">
               Stop treating your WordPress site reactively. Secure a dedicated developer retainer to handle supervised updates, off-site backups, and real-time security anomalies with zero auto-update breakage.

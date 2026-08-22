@@ -77,6 +77,8 @@ export const metadata: Metadata = {
   },
 };
 
+import FloatingContactWidget from "@/components/layout/FloatingContactWidget";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -96,6 +98,7 @@ export default function RootLayout({
           {children}
           <ProjectModal />
         </ProjectModalProvider>
+        <FloatingContactWidget />
       </body>
     </html>
   );

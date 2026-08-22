@@ -23,8 +23,7 @@ export default function WhatsAppAutomationPage() {
               B2B Enterprise Automation
             </span>
             <h1 className="font-serif text-[clamp(36px,5vw,64px)] tracking-[-0.025em] leading-[1.1] text-white mb-6">
-              Bespoke WhatsApp Systems <br />
-              <span className="text-[#C4A35A]">Integrated Directly into Your Stack</span>.
+              Custom WhatsApp Automation &amp; CRM Development Services
             </h1>
             <p className="text-[18px] text-white/60 max-w-[650px] leading-[1.7] font-light mb-10">
               Expose custom API gateways, automate CRM pipelines, and integrate conversational AI agents natively. Scale your messaging systems with absolute data sovereignty and predictable infrastructure models.

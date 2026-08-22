@@ -23,8 +23,7 @@ export default function HostingAutomationPage() {
               B2B Infrastructure Orchestration
             </span>
             <h1 className="font-serif text-[clamp(36px,5vw,64px)] tracking-[-0.025em] leading-[1.1] text-white mb-6">
-              Automated Server Provisioning <br />
-              <span className="text-[#C4A35A]">Without the Legacy SaaS Licensing Tax</span>.
+              Bespoke Web Hosting Automation &amp; CRM Provisioning Services
             </h1>
             <p className="text-[18px] text-white/60 max-w-[650px] leading-[1.7] font-light mb-10">
               Decouple your hosting engines from bloated billing panels. Build beautiful, modern client areas, automate domain registrations, and orchestrate server REST APIs with absolute database sovereignty and zero-data-loss billing controls.
