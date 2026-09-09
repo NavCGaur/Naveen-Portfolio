@@ -1,0 +1,95 @@
+{
+  "id": "199d61d4-e6ae-424e-9d40-8ce4847638aa",
+  "url": "https://www.lordobitotech.xyz",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-09-09T14:22:02.642Z",
+  "businessCategory": "professional-service",
+  "executiveSummary": "Your website currently has caching enabled and includes a meta description with a current copyright year, while mobile performance diagnostics remain limited. The site lacks a detected blog, customer testimonials, and an email address, though a phone number is present with unverified business hours and address details. Additionally, AI readiness signals are currently missing from your setup.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Your Digital Presence",
+      "body": "Your website benefits from having a current copyright year and an active phone number for direct contact. By expanding your foundational business details like your address and business hours, you have a great opportunity to build even stronger trust with your visitors."
+    },
+    {
+      "title": "Showcasing Social Proof and Insights",
+      "body": "While your site currently lacks a blog and customer testimonials, this presents an exciting opportunity to introduce engaging content and client success stories. Adding these elements can help showcase your expertise and keep your audience more engaged when they visit your pages."
+    },
+    {
+      "title": "Optimizing for Modern Discovery",
+      "body": "Your website has caching enabled and features a helpful meta description to support your online visibility. You can further expand your digital reach by implementing modern AI readiness signals to ensure your business is easily discoverable across emerging platforms."
+    }
+  ],
+  "pageSpeedUnavailable": true,
+  "rawHtmlLoadTime": 0.21,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": true,
+    "schemaTypes": [],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": true,
+    "businessName": "Jean Steph Dev",
+    "hasMissingH1": true,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": true,
+    "noSocialLinks": "unverified",
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 5,
+      "hasAboutPage": "unverified",
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": "unverified",
+      "hasTerms": "unverified",
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": "unverified",
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 4,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": false,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": "unverified",
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 0,
+      "hasAboutOrTeam": "unverified",
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": "unverified",
+      "hasLegalPages": "unverified",
+      "hasGoodSpeedOrCache": "unverified"
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": "unverified",
+      "hasAddress": "unverified",
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
