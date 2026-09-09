@@ -1,0 +1,95 @@
+{
+  "id": "ca236c61-d26a-4eaa-8d76-dc711b9a52b2",
+  "url": "https://blog.lordobitotech.xyz",
+  "name": "Anonymous Visitor",
+  "email": "anonymous@naveengaur.com",
+  "status": "completed",
+  "timestamp": "2026-09-09T14:25:04.671Z",
+  "businessCategory": "content-saas",
+  "executiveSummary": "Your website currently has caching enabled and features a present meta description with a current copyright year. The audit reveals that no blog is detected, no testimonials were found, and AI access signals are missing. Additionally, your online authority score stands at 5 out of 10, with a credibility score of 7 out of 10 and a local SEO score of 6 out of 10.",
+  "aiObservations": [
+    {
+      "title": "Enhancing Your Digital Presence",
+      "body": "Your website currently benefits from enabled caching and a proper copyright year to maintain a stable foundation. You have a great opportunity to introduce a regular publishing rhythm through a blog to share fresh updates and engage your audience more deeply. Adding customer testimonials will further showcase your strengths and build even stronger trust with your visitors."
+    },
+    {
+      "title": "Strengthening Audience Connection",
+      "body": "Your foundational setup includes a present meta description, giving you a solid baseline for search visibility. There is a wonderful chance to prepare your website for modern AI tools by making your content easily accessible to emerging platforms. Expanding your published feedback and articles will help elevate your overall online authority and credibility scores."
+    },
+    {
+      "title": "Unlocking Growth Potential",
+      "body": "Your current credibility and local SEO scores indicate a stable starting point for your digital journey. By incorporating customer success stories and fresh content directly onto your pages, you can provide visitors with a richer experience. These enhancements will naturally support your business goals and help you connect more effectively with your audience."
+    }
+  ],
+  "pageSpeedUnavailable": true,
+  "rawHtmlLoadTime": 0.28,
+  "rawHtmlFetchFailed": false,
+  "details": {
+    "pageBuilder": "None",
+    "pluginCount": 0,
+    "cachingActive": true,
+    "schemaTypes": [],
+    "aiRobotsAllowed": true,
+    "blockedAiBots": [],
+    "llmsTxtPresent": true,
+    "businessName": "Blog",
+    "hasMissingH1": false,
+    "hasMissingMetaDesc": false,
+    "hasOutdatedCopyright": false,
+    "noPhoneNumber": false,
+    "noCtaButton": true,
+    "noSocialLinks": "unverified",
+    "imagesWithoutAlt": 0,
+    "blog": {
+      "exists": "unverified",
+      "totalPosts": 0
+    },
+    "credibility": {
+      "score": 7,
+      "hasAboutPage": "unverified",
+      "hasTeamPage": "unverified",
+      "hasPrivacyPolicy": true,
+      "hasTerms": true,
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": "unverified",
+      "hasAddress": "unverified",
+      "hasPhone": true
+    },
+    "localSeo": {
+      "score": 6,
+      "hasPhone": true,
+      "hasAddress": "unverified",
+      "hasLocalSchema": false,
+      "hasMapsEmbed": "unverified",
+      "hasCityInH1": true,
+      "hasServiceArea": "unverified",
+      "hasBusinessHours": "unverified"
+    },
+    "onlineAuthority": {
+      "score": 5,
+      "hasAboutOrTeam": "unverified",
+      "hasTestimonials": "unverified",
+      "hasReviewSchema": false,
+      "hasSocialLinks": "unverified",
+      "hasLegalPages": true,
+      "hasGoodSpeedOrCache": "unverified"
+    },
+    "testimonials": {
+      "found": "unverified",
+      "count": 0,
+      "hasNamedAttribution": false,
+      "hasSchema": false,
+      "hasPhotos": false,
+      "hasLogoWall": false
+    },
+    "contact": {
+      "hasPhone": true,
+      "hasEmail": "unverified",
+      "hasForm": "unverified",
+      "hasAddress": "unverified",
+      "hasMapsEmbed": "unverified",
+      "hasBusinessHours": "unverified"
+    }
+  }
+}
