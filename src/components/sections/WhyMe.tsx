@@ -21,13 +21,31 @@ const differentiators = [
   {
     num: "04",
     title: "I tell you what you need, not what costs more",
-    body: "If the $29 plan is right for your situation, I'll say so. I'm building long-term relationships, not short-term invoices. Honesty keeps clients around.",
+    body: "If the $49 plan is right for your situation, I'll say so. I'm building long-term relationships, not short-term invoices.",
   },
 ];
 
 const techBadges = [
   "WordPress", "WooCommerce", "PHP", "MySQL",
   "Linux / Nginx", "JavaScript", "REST APIs",
+];
+
+const statsCards = [
+  {
+    num: "Top Rated",
+    title: "Top Rated on Upwork",
+    sub: "Trusted by founders worldwide",
+  },
+  {
+    num: "24hr",
+    title: "24hr Emergency Support",
+    sub: "Urgent fixes when things break",
+  },
+  {
+    num: "Full-Stack",
+    title: "Full-Stack Development",
+    sub: "Server → database → frontend",
+  },
 ];
 
 export default function WhyMe() {
@@ -48,12 +66,12 @@ export default function WhyMe() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.05 }}
-          className="font-serif font-bold text-[clamp(28px,4vw,40px)] tracking-[-0.01em] leading-[1.1] text-ink mb-14"
+          className="font-serif font-bold text-[clamp(28px,4vw,40px)] tracking-[-0.01em] leading-[1.1] text-ink mb-12"
         >
           Not another plugin-pusher
         </motion.h2>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+        <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
           {/* Left — Differentiators */}
           <div>
             {differentiators.map((d, i) => (
@@ -114,6 +132,46 @@ export default function WhyMe() {
             </div>
           </motion.div>
         </div>
+
+        {/* 3 Key Feature Cards (Warm Gold Banner Container) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="mt-16  bg-[#121211] border border-gold/40 rounded-xl p-6 sm:p-8 relative overflow-hidden shadow-sm"
+        >
+          {/* Top Gold Accent Bar */}
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-gold via-gold-dark to-gold" />
+          
+          <div className="text-[12px] font-medium tracking-[0.1em] uppercase text-white mb-5 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-white" />
+            Track Record &amp; Guarantees
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {statsCards.map((s, i) => (
+              <motion.div
+                key={s.title}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="group relative bg-white border border-gold/30 rounded-lg p-6 hover:border-gold hover:shadow-md transition-all duration-300"
+              >
+                <div className="font-serif text-[30px] text-gold-dark leading-none tracking-[-0.02em] mb-2.5">
+                  {s.num}
+                </div>
+                <div className="text-[15.5px] font-semibold text-ink mb-1">
+                  {s.title}
+                </div>
+                <div className="text-[13.5px] text-ink-muted leading-snug">
+                  {s.sub}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

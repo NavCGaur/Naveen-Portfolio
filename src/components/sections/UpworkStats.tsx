@@ -28,24 +28,24 @@ const stats = [
 
 export default function UpworkStats() {
   return (
-    <section id="upwork-stats" className="py-16 px-6 md:px-10 hd:px-14 bg-surface border-y border-black/[0.04]">
+    <section id="upwork-stats" className="pt-8 md:pt-10 pb-12 md:pb-16 px-6 md:px-10 hd:px-14 bg-[#F4F2EB] border-y border-black/[0.06]">
       <div className="max-w-[1000px] mx-auto">
         
         {/* Header with Clean Upwork Logo */}
-        <div className="flex flex-col items-center text-center mb-8">
+        <div className="flex flex-col items-center text-center mb-6">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="mb-6 flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity"
+            className="mb-3 flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity"
           >
             <Image
               src="/images/projects/upwork-logo.png"
               alt="Upwork"
               width={85}
               height={26}
-              className="object-contain" // The black logo will display cleanly on the cream background
+              className="object-contain"
             />
           </motion.div>
           
@@ -54,24 +54,14 @@ export default function UpworkStats() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.05 }}
-            className="font-serif font-bold text-[clamp(26px,3.8vw,36px)] tracking-wide leading-[1.1] text-ink mb-4 max-w-none"
+            className="font-serif font-bold text-[clamp(24px,3.5vw,34px)] tracking-wide leading-[1.1] text-ink max-w-none"
           >
             Trusted by founders across 50+ projects
           </motion.h2>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="text-[17px] text-ink-muted leading-[1.7] max-w-[500px]"
-          >
-            Verified directly through Upwork&apos;s client feedback system.
-          </motion.p>
         </div>
 
         {/* Stats Grid - Light background cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {stats.map((s, i) => (
             <motion.div
               key={s.num}
@@ -79,14 +69,14 @@ export default function UpworkStats() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="group relative overflow-hidden bg-white border border-black/[0.04] shadow-sm rounded-xl p-8 hover:border-gold/30 hover:shadow-md transition-all duration-300 flex flex-col justify-center min-h-[170px]"
+              className="group relative overflow-hidden bg-white border border-black/[0.04] shadow-sm rounded-xl p-5 hover:border-gold/30 hover:shadow-md transition-all duration-300 flex flex-col justify-center min-h-[120px]"
             >
               {/* Highlight accent line */}
               <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out rounded-b-xl z-20" />
 
               {/* Number and optional Stars */}
-              <div className="flex items-baseline gap-2 mb-2.5 flex-wrap">
-                <span className="font-serif text-[38px] font-bold text-ink tracking-tight leading-none group-hover:text-gold-dark transition-colors duration-200">
+              <div className="flex items-baseline gap-2 mb-2 flex-wrap">
+                <span className="font-serif text-[34px] font-bold text-ink tracking-tight leading-none group-hover:text-gold-dark transition-colors duration-200">
                   {s.num}
                 </span>
                 
@@ -102,25 +92,12 @@ export default function UpworkStats() {
               </div>
 
               {/* Label */}
-              <p className="text-[12px] text-ink-muted tracking-widest uppercase font-semibold leading-relaxed">
+              <p className="text-[11.5px] text-ink-muted tracking-widest uppercase font-semibold leading-relaxed">
                 {s.label}
               </p>
             </motion.div>
           ))}
         </div>
-
-        {/* Footnote */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.35 }}
-          className="mt-6 text-center"
-        >
-          <p className="text-[13.5px] text-ink-faint max-w-none mx-auto leading-relaxed">
-            * <strong className="text-ink-muted">JSS Job Success Score:</strong> Upwork&apos;s own metric for on-time, on-specification delivery across every contract.
-          </p>
-        </motion.div>
 
       </div>
     </section>

@@ -16,12 +16,12 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <UpworkStats />
         <Problems />
         <Services />
         <ProcessBanner />
         <WhyMe />
         <Projects />
-        <UpworkStats />
         <Testimonials />
         <Contact />
       </main>
