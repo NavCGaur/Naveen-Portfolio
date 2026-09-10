@@ -37,22 +37,13 @@ export default function Hero() {
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center animate-fade-up animate-delay-300">
               <a
-                href="/free-audit"
+                href="#contact"
                 id="hero-cta-services"
-                onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Free Website & AI Audit" })}
+                onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Improve My Website" })}
                 className="group relative overflow-hidden inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] border border-ink w-full sm:w-auto text-center transition-all duration-300"
               >
                 <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
-                <span className="relative z-10">Free Website &amp; AI Audit</span>
-              </a>
-              <a
-                href="#contact"
-                id="hero-cta-primary"
-                onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Let's Talk" })}
-                className="group relative overflow-hidden inline-block text-ink px-7 py-3.5 rounded-sm text-[15px] font-medium border border-black/[0.18] hover:border-ink hover:bg-black/[0.02] w-full sm:w-auto text-center transition-all duration-300"
-              >
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold-dark to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
-                <span className="relative z-10">Let&apos;s Talk →</span>
+                <span className="relative z-10">Improve My Website →</span>
               </a>
             </div>
           </div>

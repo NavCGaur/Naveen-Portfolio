@@ -20,7 +20,8 @@ export default function Nav() {
   const isBlogPage = pathname ? pathname.startsWith("/blog") : false;
   const isAuditsPage = pathname ? pathname.startsWith("/audits") : false;
   const isFreeAuditPage = pathname ? pathname.startsWith("/free-audit") : false;
-  const isDarkPage = pathname ? (pathname !== "/" && !isBlogPage && !isAuditsPage && !isFreeAuditPage) : true;
+  const isSecurityAuditPage = pathname ? pathname.startsWith("/security-audit") : false;
+  const isDarkPage = pathname ? (pathname !== "/" && !isBlogPage && !isAuditsPage && !isFreeAuditPage && !isSecurityAuditPage) : true;
   const isTextLight = isDarkPage && !scrolled;
 
   useEffect(() => {
@@ -77,16 +78,16 @@ export default function Nav() {
           ))}
           <li>
             <a
-              href="/free-audit"
-              onClick={() => ga.event({ action: "nav_cta_click", category: "conversion", label: "Nav - Run AI Audit" })}
+              href="/#contact"
+              onClick={() => ga.event({ action: "nav_cta_click", category: "conversion", label: "Nav - Start a conversation" })}
               className={`text-[15px] font-medium px-[20px] py-2.5 rounded-sm transition-colors ${isTextLight ? "bg-white text-ink hover:bg-[#C4A35A]" : "bg-ink text-white hover:bg-gold-dark"
                 }`}
             >
-              Run AI Audit
+              Start a conversation
             </a>
           </li>
         </ul>
- 
+
         {/* Mobile Hamburger */}
         <button
           id="mobile-menu-toggle"
@@ -109,7 +110,7 @@ export default function Nav() {
           />
         </button>
       </div>
- 
+
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-surface border-t border-black/[0.08] px-6 py-4 flex flex-col gap-4">
@@ -124,11 +125,11 @@ export default function Nav() {
             </a>
           ))}
           <a
-            href="/free-audit"
-            onClick={() => handleLinkClick("Mobile Nav - Run AI Audit")}
+            href="/#contact"
+            onClick={() => handleLinkClick("Mobile Nav - Start a conversation")}
             className="text-[15px] font-medium bg-ink text-white px-4 py-2.5 rounded-sm text-center hover:bg-gold-dark transition-colors"
           >
-            Run AI Audit
+            Start a conversation
           </a>
         </div>
       )}

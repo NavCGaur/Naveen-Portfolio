@@ -77,12 +77,12 @@ export default function Contact() {
           <span className="block text-[13px] font-medium tracking-[0.08em] uppercase text-gold mb-3">
             Work Together
           </span>
-          <h2 className="font-serif font-bold text-[clamp(30px,4.2vw,44px)] tracking-[-0.01em] leading-[1.1] mb-4 max-w-[640px] mx-auto">
-            Got a problem? Let&apos;s talk honestly about it.
+          <h2 className="font-serif font-bold text-[clamp(30px,4.2vw,44px)] tracking-[-0.01em] leading-[1.1] mb-4 max-w-[680px] mx-auto">
+            Want to get more out of your website for your business? Let&apos;s make it happen.
           </h2>
           {/* Reassurance line */}
-          <p className="text-[16.5px] text-white/75 leading-[1.65] font-normal max-w-[540px] mx-auto mb-8">
-            You don&apos;t need to know technical details — tell me what you&apos;re trying to achieve or fix, and I&apos;ll give you a clear, honest plan and price.
+          <p className="text-[16.5px] text-white/80 leading-[1.65] font-normal max-w-[620px] mx-auto mb-8">
+            Whether you need a quick fix, faster loading times, better Google traffic, or peace of mind — tell me what you&apos;d like to improve and I&apos;ll take care of everything.
           </p>
 
           {/* Contact Action Buttons Grid (WhatsApp + Book Call) */}

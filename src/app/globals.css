@@ -138,6 +138,13 @@
   transition: color 0.2s;
 }
 .prose-blog a:hover { color: var(--bt-gold-hover); }
+.prose-blog a.cta-btn {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+.prose-blog a.cta-btn:hover {
+  color: #ffffff !important;
+}
 
 .prose-blog strong {
   color: var(--bt-heading);

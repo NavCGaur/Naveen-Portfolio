@@ -88,6 +88,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: "https://naveengaur.com/security-audit",
+      lastModified: latestSiteDate,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: "https://naveengaur.com/how-it-works",
       lastModified: latestSiteDate,
       changeFrequency: "monthly",
