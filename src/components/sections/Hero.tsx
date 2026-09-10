@@ -10,16 +10,16 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-[60fr_40fr] gap-8 items-center">
 
           {/* ── LEFT COLUMN ── */}
-          <div className="max-w-[700px] relative z-10">
+          <div className="max-w-[700px] relative z-10 min-h-[calc(100dvh-130px)] sm:min-h-0 flex flex-col justify-between items-start sm:block py-2 sm:py-0">
 
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2.5 text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-7 sm:mb-8 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full animate-fade-up">
+            <div className="mt-4 sm:mt-0 inline-flex items-center gap-2.5 text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-0 sm:mb-6 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full animate-fade-up">
               <span className="w-2 h-2 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)] animate-pulse" />
               WordPress &amp; Full-Stack Developer
             </div>
 
             {/* Headline - "work for you," alone on second line */}
-            <h1 className="font-serif text-[clamp(42px,5.2vw,74px)] leading-[1.06] tracking-[-0.03em] text-ink mb-7 sm:mb-6 animate-fade-up animate-delay-100">
+            <h1 className="font-serif text-[clamp(56px,8.5vw,74px)] leading-[1.2] sm:leading-[1.06] tracking-[-0.03em] text-ink my-auto sm:my-0 sm:mb-6 animate-fade-up animate-delay-100 py-3 sm:py-0">
               Your website should
               <br />
               <em className="italic text-gold-dark">work for you,</em>
@@ -28,19 +28,19 @@ export default function Hero() {
             </h1>
 
             {/* Sub */}
-            <p className="text-[15px] sm:text-[17px] text-ink-muted max-w-[490px] leading-[1.8] sm:leading-[1.7] mb-12 sm:mb-10 font-normal animate-fade-up animate-delay-200">
+            <p className="text-[16px] sm:text-[17px] text-ink-muted max-w-[490px] leading-[1.8] sm:leading-[1.7] mb-0 sm:mb-10 font-normal animate-fade-up animate-delay-200">
               I build, fix, and maintain WordPress sites for small businesses and
               founders who are tired of slow pages, surprise downtime, and
               developers who disappear.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center animate-fade-up animate-delay-300">
+            <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-4 items-stretch sm:items-center animate-fade-up animate-delay-300 mt-auto mb-8 sm:mt-0 pt-4 sm:pt-0">
               <a
                 href="#contact"
                 id="hero-cta-services"
                 onClick={() => ga.event({ action: "click", category: "engagement", label: "Hero - Improve My Website" })}
-                className="group relative overflow-hidden inline-block bg-ink text-white px-7 py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] border border-ink w-full sm:w-auto text-center transition-all duration-300"
+                className="group relative overflow-hidden inline-block bg-ink text-white px-7 py-4 sm:py-3.5 rounded-sm text-[15px] font-medium tracking-[0.02em] border border-ink w-full sm:w-auto text-center transition-all duration-300"
               >
                 <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0" />
                 <span className="relative z-10">Improve My Website →</span>
@@ -49,7 +49,7 @@ export default function Hero() {
           </div>
 
           {/* ── RIGHT COLUMN ── */}
-          <div className="relative flex justify-center lg:justify-end items-center min-h-[340px] sm:min-h-[480px] lg:min-h-[540px] mt-6 lg:mt-0 animate-fade-up animate-delay-200">
+          <div className="relative flex justify-center lg:justify-end items-center min-h-[340px] sm:min-h-[480px] lg:min-h-[540px] mt-0 lg:mt-0 animate-fade-up animate-delay-200">
 
             {/* 1. Large organic background blob (Responsive height for mobile) */}
             <div
