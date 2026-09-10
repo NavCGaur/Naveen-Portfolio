@@ -13,13 +13,13 @@ export default function Hero() {
           <div className="max-w-[700px] relative z-10">
 
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2.5 text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-8 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full animate-fade-up">
+            <div className="inline-flex items-center gap-2.5 text-[12px] font-medium tracking-[0.12em] uppercase text-gold-dark mb-7 sm:mb-8 px-3.5 py-1.5 border border-gold bg-gold-light rounded-full animate-fade-up">
               <span className="w-2 h-2 rounded-full bg-[#25D366] shadow-[0_0_8px_rgba(37,211,102,0.6)] animate-pulse" />
               WordPress &amp; Full-Stack Developer
             </div>
 
             {/* Headline - "work for you," alone on second line */}
-            <h1 className="font-serif text-[clamp(42px,5.2vw,74px)] leading-[1.06] tracking-[-0.03em] text-ink mb-6 animate-fade-up animate-delay-100">
+            <h1 className="font-serif text-[clamp(42px,5.2vw,74px)] leading-[1.06] tracking-[-0.03em] text-ink mb-7 sm:mb-6 animate-fade-up animate-delay-100">
               Your website should
               <br />
               <em className="italic text-gold-dark">work for you,</em>
@@ -28,7 +28,7 @@ export default function Hero() {
             </h1>
 
             {/* Sub */}
-            <p className="text-[14px] sm:text-[17px] text-ink-muted max-w-[490px] leading-[1.65] sm:leading-[1.7] mb-8 sm:mb-10 font-normal animate-fade-up animate-delay-200">
+            <p className="text-[15px] sm:text-[17px] text-ink-muted max-w-[490px] leading-[1.8] sm:leading-[1.7] mb-12 sm:mb-10 font-normal animate-fade-up animate-delay-200">
               I build, fix, and maintain WordPress sites for small businesses and
               founders who are tired of slow pages, surprise downtime, and
               developers who disappear.
