@@ -2,38 +2,13 @@ import { Project } from "@/hooks/use-project-modal"
 
 export const projectsData: Project[] = [
   {
-    slug: "looplearnx",
-    title: "LoopLearnX — AI-Powered Adaptive Learning Platform",
-    date: "2026-05-11",
-    description:
-      "An intelligent educational platform using Next.js 16 and Gemini 2.5 Flash to master subjects through Spaced Repetition (SRS), Vision AI grading, and PWA support.",
-    cover: "/images/projects/looplearnx.png",
-    client: "LoopLearnX",
-    industry: "EdTech / AI",
-    liveUrl: "https://looplearnx.com",
-    repoUrl: "",
-    role: "Full Stack Developer",
-    techStack: ["Next.js 16", "React 19", "Tailwind CSS 4", "Supabase", "Google Gemini 2.5 Flash", "PWA", "Vitest"],
-    images: [
-      "/images/projects/looplearnx.png"
-    ],
-    overview:
-      "LoopLearnX is a modern educational application built to help students master subjects efficiently. It leverages algorithmic question scheduling (SRS) and multimodal AI to provide personalized feedback and automated content generation.",
-    challenge:
-      "Implementing complex Spaced Repetition logic with offline support (PWA) and building high-precision AI features like handwritten answer grading and PDF-based question grounding.",
-    solution:
-      "Developed a cutting-edge stack using Next.js 16 App Router and Supabase. Integrated Gemini 2.5 Flash via Server Actions for secure, multimodal processing. Built a custom SRS engine and a robust Service Worker for offline quiz capabilities.",
-    results:
-      "A feature-rich platform supporting Vision AI grading, automated teacher dashboards, Hinglish feedback modes, and a seamless mobile-first learning experience that counteracts the 'forgetting curve'.",
-  },
-  {
     slug: "robyn-usa",
-    title: "Robyn USA — WordPress Stabilisation",
+    title: "Wandering Toward the Light — WordPress Stabilisation",
     date: "2026-04-12",
     description:
       "Diagnosed and resolved severe server resource abuse issues for a US-based motivational speaker's WordPress site, transitioning to a stable monthly retainer.",
     cover: "/images/projects/robyn_usa.png",
-    client: "Robyn Stimac",
+    client: "Wandering Toward the Light",
     industry: "Personal Branding / Wellness",
     liveUrl: "https://wanderingtowardthelight.com",
     repoUrl: "",
@@ -105,12 +80,12 @@ export const projectsData: Project[] = [
   },
   {
     slug: "ghost-cms-management",
-    title: "Ghost CMS Management — Political Blog",
+    title: "The Sinic — Ghost CMS Management",
     date: "2026-01-15",
     description:
-      "Frontend improvements for Ghost Blog – TheSinic. Applied HTML & CSS fixes, added author boxes, and integrated sidebar layouts for a modern look.",
+      "Frontend improvements for Ghost Blog – The Sinic. Applied HTML & CSS fixes, added author boxes, and integrated sidebar layouts for a modern look.",
     cover: "/images/projects/thesinicfirst.png",
-    client: "TheSinic",
+    client: "The Sinic",
     industry: "Blogging / Publishing",
     liveUrl: "https://www.thesinic.com",
     repoUrl: "",
@@ -122,7 +97,7 @@ export const projectsData: Project[] = [
       "/images/projects/thesinicthird.png",
     ],
     overview:
-      "Applied HTML & CSS fixes to improve layout, spacing, and color hierarchy using Inter and Helvetica fonts for TheSinic blog.",
+      "Applied HTML & CSS fixes to improve layout, spacing, and color hierarchy using Inter and Helvetica fonts for The Sinic blog.",
     challenge:
       "The blog needed UI customization and layout improvements to enhance user experience and readability, specifically around the author representation and content structure.",
     solution:
@@ -131,13 +106,38 @@ export const projectsData: Project[] = [
       "Delivered a responsive, clean, and modern blog layout that improved overall UX with better spacing, clear typography, and a professional aesthetic.",
   },
   {
+    slug: "looplearnx",
+    title: "LoopLearnX — AI-Powered Adaptive Learning Platform",
+    date: "2026-05-11",
+    description:
+      "An intelligent educational platform using Next.js 16 and Gemini 2.5 Flash to master subjects through Spaced Repetition (SRS), Vision AI grading, and PWA support.",
+    cover: "/images/projects/looplearnx.png",
+    client: "LoopLearnX",
+    industry: "EdTech / AI",
+    liveUrl: "https://looplearnx.com",
+    repoUrl: "",
+    role: "Full Stack Developer",
+    techStack: ["Next.js 16", "React 19", "Tailwind CSS 4", "Supabase", "Google Gemini 2.5 Flash", "PWA", "Vitest"],
+    images: [
+      "/images/projects/looplearnx.png"
+    ],
+    overview:
+      "LoopLearnX is a modern educational application built to help students master subjects efficiently. It leverages algorithmic question scheduling (SRS) and multimodal AI to provide personalized feedback and automated content generation.",
+    challenge:
+      "Implementing complex Spaced Repetition logic with offline support (PWA) and building high-precision AI features like handwritten answer grading and PDF-based question grounding.",
+    solution:
+      "Developed a cutting-edge stack using Next.js 16 App Router and Supabase. Integrated Gemini 2.5 Flash via Server Actions for secure, multimodal processing. Built a custom SRS engine and a robust Service Worker for offline quiz capabilities.",
+    results:
+      "A feature-rich platform supporting Vision AI grading, automated teacher dashboards, Hinglish feedback modes, and a seamless mobile-first learning experience that counteracts the 'forgetting curve'.",
+  },
+  {
     slug: "real-estate-crm",
-    title: "Custom Real Estate CRM SaaS",
+    title: "Closalty — Custom Real Estate CRM SaaS",
     date: "2025-10-15",
     description:
       "Custom CRM SaaS for real estate deal and contact management. Transformed Lovable AI mockups into secure, scalable dashboards with full backend logic and interactive UI.",
     cover: "/images/projects/closalty01.jpg",
-    client: "Closalty (Real Estate)",
+    client: "Closalty",
     industry: "Real Estate",
     liveUrl: "https://www.closalty.com",
     repoUrl: "",
@@ -186,4 +186,4 @@ export const projectsData: Project[] = [
     results:
       "Delivered a feature-rich platform with real-time pronunciation feedback, personalized learning paths, Stripe subscriptions, and secure Firebase authentication.",
   },
-]
+];
