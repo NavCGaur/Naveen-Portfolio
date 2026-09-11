@@ -10,6 +10,13 @@ const oneTimeServices = [
       "Site down, hacked, or host suspended — I find the cause, fix it, and prevent it from happening again.",
     price: "$60–$150",
     sub: "Response within 4 hours",
+    isUrgent: true,
+    badge: "Fastest Response",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#E53E3E" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+      </svg>
+    ),
   },
   {
     id: "audit",
@@ -18,6 +25,15 @@ const oneTimeServices = [
       "I examine your speed, SEO health, security posture, and plugin architecture — then give you a specific, prioritised action plan with honest ROI estimates.",
     price: "$150",
     sub: "Delivered in 3–5 days",
+    isUrgent: false,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C4A35A" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        <line x1="11" y1="8" x2="11" y2="14" />
+        <line x1="8" y1="11" x2="14" y2="11" />
+      </svg>
+    ),
   },
   {
     id: "custom-dev",
@@ -26,6 +42,13 @@ const oneTimeServices = [
       "Features, integrations, or builds that plugins can't do cleanly. Quoted per project after a free scoping call.",
     price: "Custom",
     sub: "Free scoping call",
+    isUrgent: false,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C4A35A" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+    ),
   },
 ];
 
@@ -98,15 +121,48 @@ export default function Services() {
             {oneTimeServices.map((s, i) => (
               <li
                 key={s.id}
-                className={`group relative overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-12 items-start md:items-center px-6 md:px-8 py-6 md:py-7 bg-white hover:bg-gold-light/50 transition-colors duration-300 ${i < oneTimeServices.length - 1 ? "border-b border-black/[0.09]" : ""}`}
+                className={`group relative overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-12 items-start md:items-center px-6 md:px-8 py-6 md:py-7 transition-colors duration-300 ${
+                  s.isUrgent
+                    ? "bg-[#FFFDF9] border-l-4 border-l-[#E53E3E] hover:bg-[#FFF8EE]"
+                    : "bg-white hover:bg-gold-light/50"
+                } ${i < oneTimeServices.length - 1 ? "border-b border-black/[0.09]" : ""}`}
               >
-                {/* Gold accent line on hover */}
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-10" />
-                <div>
-                  <div className="text-[20px] font-medium text-ink mb-1">{s.name}</div>
-                  <div className="text-[15px] text-ink-muted font-normal">{s.detail}</div>
+                {/* Accent line on hover */}
+                <div
+                  className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r ${
+                    s.isUrgent
+                      ? "from-transparent via-[#E53E3E] to-transparent"
+                      : "from-transparent via-gold to-transparent"
+                  } scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-10`}
+                />
+                
+                <div className="flex items-start gap-4">
+                  {/* Service Icon Box */}
+                  <div
+                    className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center mt-0.5 ${
+                      s.isUrgent
+                        ? "bg-[#FEF2F2] border border-[#FECACA]"
+                        : "bg-gold-light/70 border border-gold/30"
+                    }`}
+                  >
+                    {s.icon}
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-3 mb-1 flex-wrap">
+                      <div className="text-[20px] font-medium text-ink">{s.name}</div>
+                      {s.badge && (
+                        <span className="inline-flex items-center gap-1.5 bg-[#FEF2F2] text-[#DC2626] border border-[#FCA5A5] text-[11px] font-semibold tracking-[0.04em] uppercase px-2.5 py-0.5 rounded-full">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#EF4444] animate-pulse" />
+                          {s.badge}
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-[15px] text-ink-muted font-normal leading-relaxed">{s.detail}</div>
+                  </div>
                 </div>
-                <div className="md:text-right">
+
+                <div className="md:text-right pl-14 md:pl-0">
                   <div className="font-serif text-[22px] text-ink whitespace-nowrap">{s.price}</div>
                   <div className="text-[14px] text-ink-faint font-sans mt-0.5">{s.sub}</div>
                 </div>
