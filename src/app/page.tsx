@@ -18,11 +18,11 @@ export default function Home() {
         <Hero />
         <UpworkStats />
         <Problems />
-        <Services />
-        <ProcessBanner />
-        <WhyMe />
         <Projects />
         <Testimonials />
+        <WhyMe />
+        <Services />
+        <ProcessBanner />
         <Contact />
       </main>
       <Footer />

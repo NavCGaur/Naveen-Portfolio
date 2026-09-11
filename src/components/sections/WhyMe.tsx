@@ -10,16 +10,21 @@ const differentiators = [
   },
   {
     num: "02",
+    title: "24hr Emergency Support",
+    body: "Most agencies take days to even acknowledge an emergency ticket. I guarantee a response within 24 hours — often sooner — because a broken site is a business emergency, not a queue item.",
+  },
+  {
+    num: "03",
     title: "I don't install a plugin for everything",
     body: "Plugins are often the right answer — but not always. I know when to use one and when to write lean custom code instead. Fewer plugins means a faster, more secure site.",
   },
   {
-    num: "03",
+    num: "04",
     title: "You talk to me directly, always",
     body: "No account managers, no ticketing system, no three-day delays. When you reach out, you reach me. That's a deliberate choice — it's how I keep quality high.",
   },
   {
-    num: "04",
+    num: "05",
     title: "I tell you what you need, not what costs more",
     body: "If the $49 plan is right for your situation, I'll say so. I'm building long-term relationships, not short-term invoices.",
   },
@@ -133,7 +138,8 @@ export default function WhyMe() {
           </motion.div>
         </div>
 
-        {/* 3 Key Feature Cards (Warm Gold Banner Container) */}
+        {/* 3 Key Feature Cards (Track Record & Guarantees) - Hidden per request */}
+        {/* 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -141,7 +147,6 @@ export default function WhyMe() {
           transition={{ duration: 0.4 }}
           className="mt-16  bg-[#121211] border border-gold/40 rounded-xl p-6 sm:p-8 relative overflow-hidden shadow-sm"
         >
-          {/* Top Gold Accent Bar */}
           <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-gold via-gold-dark to-gold" />
           
           <div className="text-[12px] font-medium tracking-[0.1em] uppercase text-white mb-5 flex items-center gap-2">
@@ -168,10 +173,11 @@ export default function WhyMe() {
                 <div className="text-[13.5px] text-ink-muted leading-snug">
                   {s.sub}
                 </div>
-              </motion.div>
+                </motion.div>
             ))}
           </div>
         </motion.div>
+        */}
       </div>
     </section>
   );

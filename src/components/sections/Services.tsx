@@ -8,8 +8,8 @@ const oneTimeServices = [
     name: "Emergency Fix & Recovery",
     detail:
       "Site down, hacked, or host suspended — I find the cause, fix it, and prevent it from happening again.",
-    price: "From $60",
-    sub: "Rapid response",
+    price: "$60–$150",
+    sub: "Response within 4 hours",
   },
   {
     id: "audit",
@@ -30,9 +30,9 @@ const oneTimeServices = [
 ];
 
 const essentialFeatures = [
-  "Supervised theme & plugin updates (Staging first)",
-  "AI-Native security & speed monitoring",
-  "Weekly off-site encrypted backups",
+  "Updates tested safely before they touch your live site",
+  "Round-the-clock monitoring so problems get caught before your customers notice",
+  "Weekly off-site encrypted backups - Your site can always be restored, even in a worst-case scenario",
   "No-Hack Guarantee (Free cleanup if breached)",
   "Monthly Executive Health Report",
 ];
@@ -40,8 +40,8 @@ const essentialFeatures = [
 const growthFeatures = [
   "Everything in Professional",
   "Priority 12-hour response guarantee",
-  "Continuous Core Web Vitals optimization",
-  "SEO Health Guard & monthly insights",
+  "Ongoing speed tuning so Google keeps ranking you well",  
+  "Monthly report flagging anything hurting your search visibility",
   "1 hr/month of custom dev / strategy calls",
 ];
 
@@ -160,7 +160,12 @@ export default function Services() {
               <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out rounded-b-lg z-10" />
               <div className="text-[15px] font-medium tracking-[0.05em] uppercase text-ink-faint mb-4">Professional</div>
               <div className="font-serif font-bold text-[48px] tracking-[-0.02em] text-ink leading-none mb-1.5">$49</div>
-              <div className="text-[15px] text-ink-faint mb-7">per month</div>
+              <div className="text-[15px] text-ink-faint mb-7">
+                per month
+                <span className="block text-[13px] text-ink-faint/80 mt-1 font-normal">
+                  No contracts — cancel anytime
+                </span>
+              </div>
               <div className="text-[15px] font-medium text-ink mb-2 leading-[1.4]">
                 Proactive stability and security for your business site.
               </div>
@@ -193,12 +198,17 @@ export default function Services() {
               </span>
               <div className="text-[15px] font-medium tracking-[0.05em] uppercase text-white/60 mb-4">Expert Consulting</div>
               <div className="font-serif font-bold text-[48px] tracking-[-0.02em] text-gold leading-none mb-1.5">$149</div>
-              <div className="text-[15px] text-white/60 mb-7">per month</div>
+              <div className="text-[15px] text-white/60 mb-7">
+                per month
+                <span className="block text-[13px] text-white/50 mt-1 font-normal">
+                  No contracts — cancel anytime
+                </span>
+              </div>
               <div className="text-[15px] font-medium text-white mb-2 leading-[1.4]">
-                High-performance management for growing founders.
+                Active work to bring you more calls and bookings.
               </div>
               <div className="text-[14px] text-white/70 mb-7 leading-[1.6]">
-                Ideal for e-commerce or high-traffic sites where speed, rankings, and priority access matter most.
+                For consultants and coaches building toward their next level — more visibility, more bookings, more reach.
               </div>
               <div className="h-px bg-white/10 mb-6" />
               <ul className="flex flex-col gap-3">
