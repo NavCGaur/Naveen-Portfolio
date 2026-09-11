@@ -2,6 +2,31 @@ import { Project } from "@/hooks/use-project-modal"
 
 export const projectsData: Project[] = [
   {
+    slug: "kat-grace",
+    title: "Kat Grace — WordPress Website Redesign & Growth",
+    date: "2026-04-20",
+    description:
+      "Transformed Kat Grace’s WordPress website into a clearer, faster, and more conversion-focused platform for her trauma healing practice, while building the SEO, local presence, and technical foundation for long-term growth.",
+    cover: "/images/projects/Katgrace.com.png",
+    client: "Kat Grace",
+    industry: "Health & Wellness / Trauma Healing",
+    liveUrl: "https://katgrace.com",
+    repoUrl: "",
+    role: "WordPress Developer & Website Growth Partner",
+    techStack: ["WordPress", "Elementor", "Rank Math Pro", "LiteSpeed Cache", "SEO & AEO", "Google Business Profile"],
+    images: [
+      "/images/projects/Katgrace.com.png"
+    ],
+    overview:
+      "Kat Grace is a trauma healing practitioner offering trauma-informed coaching, intuitive work, energy healing, Reiki, Quantum-Touch healing, shamanic practice, and integrative support through virtual and in-person sessions. The project involved redesigning her existing WordPress website to better communicate her work, make her services easier to understand, and create a stronger foundation for attracting and converting the right clients. The work has since evolved into an ongoing website growth and maintenance partnership.",
+    challenge:
+      "The existing website needed a clearer structure and stronger user journey to help visitors understand Kat’s different services and determine which type of support was right for them. Beyond the visual redesign, the website also needed improvements across mobile responsiveness, performance, technical reliability, SEO, content structure, and integrations. As Kat's practice evolved, her service structure also needed to become clearer — particularly the distinction between focused Energy Healing and her broader Private Integration work.",
+    solution:
+      "I redesigned and restructured the WordPress website around a clearer visitor journey, with stronger service presentation, calls to action, mobile responsiveness, and a more cohesive visual experience. I also optimized the site's technical foundation, including performance optimization, image optimization, caching, SEO configuration, analytics, Search Console, forms, email delivery, backups, and third-party integrations. As part of the ongoing engagement, I also helped refine Kat's service structure, updated the Energy Healing offering, established a Google Business Profile, and began aligning the website and supporting content around local SEO and Answer Engine Optimization (AEO). The website is now maintained as an ongoing growth platform rather than treated as a one-time development project.",
+    results:
+      "A faster, clearer, more reliable WordPress website with a stronger SEO/local-search foundation and an ongoing system for content, maintenance, and growth. Key outcomes include: Clearer service structure and visitor journey, improved mobile experience across the website, performance optimization through caching and technical tuning, local SEO foundation established around Georgetown, Texas with Google Business Profile integration, and an ongoing maintenance workflow.",
+  },
+  {
     slug: "robyn-usa",
     title: "Wandering Toward the Light — WordPress Stabilisation",
     date: "2026-04-12",
@@ -157,31 +182,6 @@ export const projectsData: Project[] = [
       "Rebuilt AI mockups into real, interactive dashboards. Integrated Supabase for authentication and RBAC. Built multi-role dashboards for Superadmin, Admin, Agents, and Assistants. Added in-app Gmail API integration for direct client communication.",
     results:
       "Successfully deployed to a custom GoDaddy domain via GitHub CI/CD and Vercel. Delivered a high-performance system for managing deals, contacts, and emails securely.",
-  },
-  {
-    slug: "kat-grace",
-    title: "Kat Grace — WordPress Website Redesign & Growth",
-    date: "2026-04-20",
-    description:
-      "Transformed Kat Grace’s WordPress website into a clearer, faster, and more conversion-focused platform for her trauma healing practice, while building the SEO, local presence, and technical foundation for long-term growth.",
-    cover: "/images/projects/Katgrace.com.png",
-    client: "Kat Grace",
-    industry: "Health & Wellness / Trauma Healing",
-    liveUrl: "https://katgrace.com",
-    repoUrl: "",
-    role: "WordPress Developer & Website Growth Partner",
-    techStack: ["WordPress", "Elementor", "Rank Math Pro", "LiteSpeed Cache", "SEO & AEO", "Google Business Profile"],
-    images: [
-      "/images/projects/Katgrace.com.png"
-    ],
-    overview:
-      "Kat Grace is a trauma healing practitioner offering trauma-informed coaching, intuitive work, energy healing, Reiki, Quantum-Touch healing, shamanic practice, and integrative support through virtual and in-person sessions. The project involved redesigning her existing WordPress website to better communicate her work, make her services easier to understand, and create a stronger foundation for attracting and converting the right clients. The work has since evolved into an ongoing website growth and maintenance partnership.",
-    challenge:
-      "The existing website needed a clearer structure and stronger user journey to help visitors understand Kat’s different services and determine which type of support was right for them. Beyond the visual redesign, the website also needed improvements across mobile responsiveness, performance, technical reliability, SEO, content structure, and integrations. As Kat's practice evolved, her service structure also needed to become clearer — particularly the distinction between focused Energy Healing and her broader Private Integration work.",
-    solution:
-      "I redesigned and restructured the WordPress website around a clearer visitor journey, with stronger service presentation, calls to action, mobile responsiveness, and a more cohesive visual experience. I also optimized the site's technical foundation, including performance optimization, image optimization, caching, SEO configuration, analytics, Search Console, forms, email delivery, backups, and third-party integrations. As part of the ongoing engagement, I also helped refine Kat's service structure, updated the Energy Healing offering, established a Google Business Profile, and began aligning the website and supporting content around local SEO and Answer Engine Optimization (AEO). The website is now maintained as an ongoing growth platform rather than treated as a one-time development project.",
-    results:
-      "A faster, clearer, more reliable WordPress website with a stronger SEO/local-search foundation and an ongoing system for content, maintenance, and growth. Key outcomes include: Clearer service structure and visitor journey, improved mobile experience across the website, performance optimization through caching and technical tuning, local SEO foundation established around Georgetown, Texas with Google Business Profile integration, and an ongoing maintenance workflow.",
   },
   {
     slug: "neurolingva",
