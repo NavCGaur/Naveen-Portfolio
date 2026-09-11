@@ -5,6 +5,16 @@ import * as ga from "@/lib/ga";
 
 const problems = [
   {
+    id: "outdated",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C4A35A" strokeWidth="1.5" strokeLinecap="round" className="w-5 h-5">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" />
+      </svg>
+    ),
+    title: "Your website isn't bringing you enough business",
+    desc: "Not enough traffic, enquiries, calls, or sales? I find what's holding your website back and fix it.",
+  },
+  {
     id: "crashed",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="#C4A35A" strokeWidth="1.5" strokeLinecap="round" className="w-5 h-5">
@@ -13,7 +23,7 @@ const problems = [
         <line x1="12" y1="16" x2="12.01" y2="16" />
       </svg>
     ),
-    title: "My site crashed and I don't know why",
+    title: "Your site crashed — and you don't know why",
     desc: "A plugin update, a bad host migration, a conflict you never saw coming. I diagnose fast and get you back online.",
   },
   {
@@ -23,7 +33,7 @@ const problems = [
         <path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" />
       </svg>
     ),
-    title: "My site is painfully slow",
+    title: "Your site is painfully slow",
     desc: "Every extra second costs you customers. I dig into your server config, database, and code — not just install a caching plugin.",
   },
   {
@@ -33,7 +43,7 @@ const problems = [
         <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
       </svg>
     ),
-    title: "I've been hacked or suspended",
+    title: "You've been hacked or suspended",
     desc: "Malware, blacklisted IPs, host suspensions. I clean the infection, remove the backdoors, and harden your site so it doesn't happen again.",
   },
   {
@@ -43,19 +53,10 @@ const problems = [
         <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
       </svg>
     ),
-    title: "No one can find me on Google",
-    desc: "Poor rankings, missing meta, slow Core Web Vitals. I audit what's hurting your visibility and give you a clear plan — or just fix it.",
+    title: "No one can find you on Google or AI search",
+    desc: "Not showing up where customers search? I fix the SEO and AEO issues holding your visibility back.",
   },
-  {
-    id: "outdated",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="#C4A35A" strokeWidth="1.5" strokeLinecap="round" className="w-5 h-5">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" />
-      </svg>
-    ),
-    title: "My site looks outdated",
-    desc: "Old themes, broken layouts, mobile that embarrasses you. I can rebuild or refresh without losing your content or SEO.",
-  },
+  
   {
     id: "no-contact",
     icon: (
@@ -64,7 +65,7 @@ const problems = [
         <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
     ),
-    title: "I have no one I can just call",
+    title: "You have no one you can just call",
     desc: "Agencies disappear, freelancers ghost, and support tickets take weeks. I offer direct access — you reach me, not a helpdesk.",
   },
 ];
@@ -89,7 +90,7 @@ export default function Problems() {
           transition={{ duration: 0.4, delay: 0.05 }}
           className="font-serif font-bold text-[clamp(28px,4vw,40px)] tracking-[-0.01em] leading-[1.1] text-white mb-5"
         >
-          The problems I fix every day
+           Problems I fix for you
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 16 }}
