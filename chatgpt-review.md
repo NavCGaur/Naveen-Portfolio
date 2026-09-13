@@ -741,3 +741,75 @@ I locked down her site immediately, audited every line of leftover code, and I'm
 Worried about your clients' data? Find out before a client finds it for you.
 
 [Book Your $29 Security Audit →]
+
+Title: My WordPress Site Suddenly Crashed After an Update — Here's What Was Actually Wrong
+
+If your website suddenly showed a message like "There has been a critical error on this website" right after a routine update, here's the good news first: your content, your database, and your design are completely safe. This isn't data loss — it's a compatibility clash between two pieces of software that just happened to break at the same time, and it's fixable, usually within the hour.
+
+What actually happened, in plain terms:
+WordPress released a core update. One of the plugins your site depends on for speed (a caching plugin) hadn't been updated to expect a small internal change WordPress made. The two pieces of software started "speaking different languages" to each other, and rather than quietly failing, the site locked up entirely — including the admin login, which is why it probably felt like everything was gone.
+
+Why this matters for your business, not just your website:
+Every hour a site is down is an hour of lost inquiries, lost bookings, and — if you're mid-way through Google ranking for anything — a ding to your search visibility if it happens during a crawl. It also happened without warning, which is the real problem: a plugin conflict like this can hit any WordPress site running that combination of tools, at any time, with zero notice.
+
+What we did to fix it:
+We identified the exact plugin causing the conflict, safely disabled just that one piece (not your whole site) to restore access immediately, applied a small compatibility fix, and then updated to the version of the plugin that resolves it permanently. Total downtime: under an hour. No content lost, no rebuild needed.
+
+The part worth thinking about:
+This kind of thing is invisible until it happens — and by definition, you don't find out you're vulnerable to it until your site is already down. That's exactly the gap a maintenance plan closes: someone watching for these conflicts before they take your site offline, not fixing it in a panic after the fact.
+
+If your site just went down and you're staring at a similar error message right now — message me on WhatsApp with a screenshot of what you're seeing, and I'll tell you plainly what's wrong and how fast it can be fixed.
+
+**Suggested title:** Will AI Recommend Your Business? Here's How to Check
+**Suggested meta description:** More customers are asking ChatGPT and Google's AI to recommend a business instead of searching. Here's a 30-second way to check if your website is even in the running — and what to do if it isn't.
+**Suggested URL slug:** /blog/will-ai-recommend-your-business
+
+---
+
+# Will AI Recommend Your Business? Here's How to Check
+
+Think about the last time you needed to find a service — a plumber, a coach, a local shop. A few years ago, you'd Google it and scroll through a list of links. Increasingly, people are skipping that step entirely: they ask ChatGPT, or they use Google's new AI search, and they get a direct answer — "here are three good options" — with no scrolling at all.
+
+That's a real shift, not a trend piece. AI-driven traffic to business websites grew **393% year-over-year** in early 2026, according to Adobe's own analytics data. Whatever that number looks like a year from now, the direction is clear: a growing share of your future customers won't find you by clicking a search result. They'll find you because an AI tool recommended you — or they won't find you at all, because it recommended someone else.
+
+## Here's the uncomfortable part
+
+AI tools like ChatGPT and Google's AI search don't "know" your business the way a person does. They can only recommend what they can clearly read and understand from your website. If your site is hard for these tools to make sense of — even if it looks perfectly normal to a human visitor — you can be quietly left out of these recommendations while a competitor with a clearer, simpler site gets mentioned instead.
+
+The frustrating part is that this has nothing to do with how good your business actually is. It's purely about whether your website hands AI tools a clear, honest summary of what you do — or makes them guess.
+
+## A 30-second way to check your own site
+
+You can actually check this yourself, right now, without any technical knowledge:
+
+1. Open a new browser tab.
+2. Type in your website address, followed by `/llms.txt` — for example, `yourbusiness.com/llms.txt`.
+3. Press enter.
+
+**If you see a page of plain text** describing your business, your services, and your key pages — good, you have the file AI tools look for.
+
+**If you see an error page, a "page not found," or your homepage loads instead** — that means AI tools currently have to guess what your business does by piecing together your navigation menu, your images, and your marketing copy. Some do a decent job of that. Many don't, especially if your site leans on flashy design over plain text.
+
+## Why this one small thing matters so much
+
+There's now an actual, official signal for this. Google quietly added a new score to its website-checking tool (PageSpeed Insights) in mid-2026 called "Agentic Browsing" — essentially, a grade for how easy your site is for AI tools to read and act on. One of the three things it checks for directly is the exact file you just tested above.
+
+Google isn't alone in caring about this. Every AI tool that answers "recommend me a good X" is doing the same basic thing behind the scenes: trying to read your site quickly and pull out a trustworthy summary. A missing or messy version of that summary is one of the simplest reasons a genuinely great business gets skipped over in favor of a website that just made it easier for the AI to say something confident.
+
+## The fix is small — smaller than most website problems
+
+This isn't a redesign, a rebuild, or anything that touches how your site looks to human visitors. It's a short, separate text file that sits quietly on your website and gives AI tools a clear, accurate one-page summary: what you do, who you serve, your key pages, and how to contact or book you. Nothing about your actual site changes — you're just handing AI tools a cheat sheet instead of making them guess.
+
+Done-for-you, this typically takes under 48 hours to write, upload, and verify — I offer it as a flat $10 service, specifically because it's a small, well-defined fix, not a project.
+
+👉 **[Get Your Website Set Up for AI Search — $10 →](https://naveengaur.com/llms-txt)**
+
+## If you're technically curious
+
+If you'd like to understand exactly what this file contains, how Google's new scoring works under the hood, or how to set it up yourself, I've written a full technical walkthrough here: [What Is llms.txt? Why It Matters, and How to Set One Up](https://naveengaur.com/blog/what-is-llms-txt). It's a more detailed read, aimed at anyone comfortable poking around their website's files — otherwise, the $10 service above takes care of all of it for you.
+
+---
+
+_Naveen Gaur helps small businesses and founders make sure their websites are easy to find — by people and, increasingly, by the AI tools people are starting to ask instead._
+
+**[Not sure if your site needs this? Message me on WhatsApp with your website link and I'll check it for you →]**

@@ -16,6 +16,7 @@ import LinkedInCTA from "@/components/LinkedInCTA";
 import CommentsList from "@/components/CommentsList";
 import CommentForm from "@/components/CommentForm";
 import CopyCodeButton from "@/components/CopyCodeButton";
+import LlmsTxtChecker from "@/components/LlmsTxtChecker";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -142,6 +143,7 @@ const mdxComponents = {
   pre: CopyCodeButton,
   ArticleCTALink: ArticleCTALink,
   LinkedInCTA: LinkedInCTA,
+  LlmsTxtChecker: LlmsTxtChecker,
   table: (props: any) => (
     <div className="table-wrapper">
       <table {...props} />
