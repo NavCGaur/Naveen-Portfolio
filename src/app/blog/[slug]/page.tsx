@@ -242,6 +242,11 @@ export default async function BlogPost({ params }: Props) {
         <section className="pb-16 px-6 md:px-10 hd:px-14">
           <div className="max-w-[760px] hd:max-w-[1200px] mx-auto">
 
+            {/* Package card — auto-injected for all WhatsApp & Automation posts */}
+            {post.category === "WhatsApp & Automation" && (
+              <WhatsAppPackageCard articleSlug={post.slug} />
+            )}
+
             {/* Share buttons */}
             <ArticleShareButtons slug={post.slug} title={post.title} />
 
@@ -268,10 +273,6 @@ export default async function BlogPost({ params }: Props) {
         {/* CTA Footer */}
         <section className="pb-24 px-6 md:px-10 hd:px-14">
           <div className="max-w-[760px] hd:max-w-[1200px] mx-auto">
-            {/* Package card — auto-injected for all WhatsApp & Automation posts */}
-            {post.category === "WhatsApp & Automation" && (
-              <WhatsAppPackageCard articleSlug={post.slug} />
-            )}
             <DynamicArticleCTA post={post} />
           </div>
         </section>

@@ -15,7 +15,7 @@ const PACKAGE = {
   careRate: 9,
   packageWhatsAppNumber: "916396137981",
   // Set demoEnabled to true once the demo bot has run stably
-  demoEnabled: false,
+  demoEnabled: true,
   demoWhatsAppNumber: "916396137981",
 };
 

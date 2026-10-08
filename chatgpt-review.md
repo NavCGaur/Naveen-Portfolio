@@ -2151,3 +2151,70 @@ OUT OF SCOPE / DON'T
 When finished, give me: a list of files changed, a short summary of each
 change, anything you couldn't verify, and the exact steps to turn on the demo
 button later.
+
+One correction first: it isn't a web API. The button is a plain click-to-chat link (wa.me/<demo number>?text=DEMO). WhatsApp opens with "DEMO" already typed, and the visitor has to press send. That's actually what you want, because the bot only ever replies to someone who messaged first, which keeps the demo number safe from spam flags.
+
+What the demo should prove
+
+A business owner watching the demo has four questions: Is it fast? Is it easy for my customers? What do I receive? Can a human take over? So the flow should answer those in under two minutes, with the visitor playing the customer of a fictional business.
+
+Flow
+
+Fictional business: a generic one like a salon or clinic, so any small-business owner can picture their own. Call it "Bloom Studio".
+
+1. Welcome (instant reply)
+
+👋 Welcome to Bloom Studio! (This is a live demo of a WhatsApp bot by Naveen Gaur. Nothing here is a real business. Only your name and messages in this chat are stored, and you can send STOP anytime to delete them.)
+
+Reply with a number:
+1️⃣ Opening hours & location
+2️⃣ Services & prices
+3️⃣ Make an enquiry
+4️⃣ Talk to a human
+5️⃣ About this demo & package
+
+Use a numbered text menu, not WhatsApp buttons or lists. Buttons are unreliable on the unofficial API and can break on some devices, while numbers always work. It's also what your clients will get, so the demo should show the real thing.
+
+2. Options 1 and 2 (FAQ replies): short, formatted answers (hours, address with a map link, 3-4 services with prices), each ending with "Reply MENU to go back." This shows the 24/7 auto-answer value.
+
+3. Option 3, Make an enquiry (lead capture, the most important part):
+
+Happy to help! What's your name?
+→ (visitor replies)
+Thanks, Priya. What would you like help with?
+→ (visitor replies)
+Got it! We'll get back to you shortly. ✅
+
+Then the key moment, a few seconds later:
+
+📥 This is what the business owner receives:
+New enquiry
+Name: Priya
+Request: "Haircut next Saturday"
+From: +91 XXXXX XXXXX · 4:12 PM
+
+It can also go to their email or a Google Sheet.
+
+Most demos only show the customer side. Showing the owner's view is what sells it.
+
+4. Option 4, Talk to a human:
+
+Would you like Naveen to contact you personally about this? Reply YES and I'll pass your number on. Reply MENU to go back.
+
+Only forward if they say YES. That's your consent record, and it filters out people just poking around. When forwarded, send yourself a message with their name, number, and which options they tried.
+
+5. Option 5, About this demo & package: one short message: what the package includes, the founding price, and the "not for high volume" honesty line, plus a link back to the card on the article. This closes the loop for people who tried the demo and now want the package.
+
+Behavior rules
+Reply fast, with a tiny delay (1-2 seconds, with a typing indicator). Too instant looks robotic; too slow defeats the demo.
+Fallback: anything unexpected gets "I didn't catch that. Reply MENU to see the options." Never go silent.
+Keywords that always work: MENU, HUMAN, STOP, DEMO.
+Idle reset: after about 10 minutes of silence, the next message restarts at the welcome. This keeps each visitor's experience clean.
+Rate limit per sender and ignore groups, media, and repeated spam.
+Data: store only name, enquiry text, and timestamp. Delete after 24-48 hours unless they chose YES to be contacted.
+No AI replies. A scripted bot is cheaper, abuse-proof, and it's exactly what the $99 package delivers.
+One thing to watch
+
+The demo is also your reliability proof. If a visitor sends DEMO and gets no reply, that's worse than having no demo, so the disconnect alert and auto-reconnect aren't optional. Keep the button hidden until it's been stable for a week.
+
+I can turn this into the Part 4 prompt for your agent, with the exact message scripts and state machine, whenever you're ready for it.
