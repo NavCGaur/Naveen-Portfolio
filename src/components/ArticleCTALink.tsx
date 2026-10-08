@@ -3,7 +3,22 @@
 import Link from "next/link";
 import { trackOutboundClick } from "@/lib/ga";
 
-export default function ArticleCTALink({ slug }: { slug: string }) {
+interface Props {
+  slug: string;
+  /** Pass the post category so WhatsApp & Automation posts can suppress this link
+   *  (they get the WhatsAppPackageCard instead). */
+  category?: string;
+}
+
+export default function ArticleCTALink({ slug, category }: Props) {
+  // WhatsApp & Automation posts use the package card — don't stack a second CTA.
+  // Match by explicit category prop OR by slug pattern (for older MDX files without category prop).
+  const isWhatsApp =
+    category === "WhatsApp & Automation" ||
+    /whatsapp|baileys/i.test(slug);
+
+  if (isWhatsApp) return null;
+
   return (
     <div className="flex justify-center my-10">
       <Link
@@ -16,3 +31,4 @@ export default function ArticleCTALink({ slug }: { slug: string }) {
     </div>
   );
 }
+

@@ -813,3 +813,1341 @@ If you'd like to understand exactly what this file contains, how Google's new sc
 _Naveen Gaur helps small businesses and founders make sure their websites are easy to find — by people and, increasingly, by the AI tools people are starting to ask instead._
 
 **[Not sure if your site needs this? Message me on WhatsApp with your website link and I'll check it for you →]**
+
+Ask your agent to collect this for every video
+Category Data to collect Priority
+Identity Video ID, URL 🔴
+Title 🔴
+Published date/time 🔴
+Video type: Long-form / Short 🔴
+Duration 🔴
+Current metadata Full description 🔴
+Tags 🟠
+Hashtags 🟠
+Chapters/timestamps 🟠
+Thumbnail URL / thumbnail 🟠
+Performance Views 🔴
+Watch time 🔴
+Average view duration 🔴
+Average percentage viewed 🔴
+Subscribers gained 🔴
+Impressions 🔴
+Impressions CTR 🔴
+Engagement Likes 🟠
+Comments 🟠
+Shares 🟡
+Discovery Traffic sources 🔴
+YouTube Search views 🔴
+Browse views 🔴
+Suggested views 🔴
+External views 🟠
+Audience New vs returning viewers, if available 🟠
+Audience retention/key retention metrics, if available 🔴
+Conversion Subscribers gained 🔴
+End-screen clicks, if available 🟠
+Cards clicks, if applicable 🟡
+Content classification Main topic 🔴
+Secondary topics 🔴
+Search intent 🔴
+Potential website article 🔴
+Relevant existing article URL 🔴
+Relevant service page 🔴
+Suggested playlist 🔴
+Recommended action 🔴
+One particularly important addition
+
+Ask the agent to pull YouTube search terms / search queries where available.
+
+That's much more valuable for us than generic keyword research because it tells us:
+
+What people are actually finding Kat's videos through.
+
+We can then compare that against the title and description.
+
+For example, if a video titled:
+
+“What 15 Years as a Dominatrix Taught Me About Trauma”
+
+is actually receiving searches around:
+
+trauma and sexuality
+sexual shame
+power dynamics
+trauma and intimacy
+
+then we have evidence for how to reposition the metadata.
+
+We shouldn't guess.
+
+I would also add a column called SEO/Strategic Opportunity
+
+The agent should not decide the final optimization, but it can flag candidates.
+
+For every video, have it classify:
+
+PROTECT
+
+Already performing strongly.
+
+Don't unnecessarily change title/thumbnail.
+
+OPTIMIZE
+
+Good topic but weak metadata/performance relative to impressions.
+
+Potential title/description improvement.
+
+REPURPOSE
+
+Interesting subject that could become:
+
+YouTube → blog → playlist → service page
+
+CONNECT
+
+Video is already good but isn't connected to the website/content ecosystem.
+
+LEAVE
+
+Little evidence of opportunity.
+
+And I want one more thing: comments
+
+Yes, collect comments, but not just the count.
+
+Comments can tell us what the audience is actually asking for.
+
+For each video, ideally pull:
+
+total comments
+top comments by likes
+recent comments
+recurring questions/themes
+requests for follow-up videos
+phrases viewers use to describe their problem
+
+For example:
+
+“I finally understand why I feel guilty every time I say no to my mother.”
+
+That's potentially much more valuable for our content strategy than a generic keyword tool.
+
+It could lead to:
+
+“Why Daughters of Narcissistic Mothers Feel Guilty Setting Boundaries”
+
+That becomes another video and potentially a blog.
+
+Don't make the agent give us a giant unstructured report
+
+This is important.
+
+Tell it to produce a CSV/Google Sheet-style table, with one row per video.
+
+Something like:
+
+Video Date Type Duration Views Watch hrs AVD Subs Impressions CTR Search Browse Suggested Title Topic Search terms Website article Service Playlist Action
+Daughter Narcissistic Mothers... Mar 21 Long 15:xx 15,082 841.8 3:21 341 152,689 4.69% ... ... ... ... Narcissistic mothers ... ... Integration Narcissistic Abuse PROTECT
+Truth About Dominance... Apr 20 Long ... 11,308 304.0 1:37 134 204,560 3.18% ... ... ... ... Power/dominance ... ... Integration Power & Human Nature OPTIMIZE
+
+Then we can actually sort and analyze it quantitatively.
+
+I checked the current official YouTube Analytics API documentation.
+
+Gemini's statement:
+
+"Per-video organic search terms / search queries — not exposed at individual video API query endpoints"
+
+is incorrect.
+
+Google's own API documentation explicitly gives an example for retrieving the top 10 YouTube Search terms for a specific video. The API uses the video's ID as the filter.
+
+So we absolutely should ask Gemini to try this again.
+
+For example, the API supports a report equivalent to:
+
+video = VIDEO_ID
+traffic source = YouTube Search
+traffic source detail = search term
+
+and can return the top search terms generating views for that video.
+
+That is very valuable for our SEO work.
+
+6. Per-video traffic sources are also obtainable
+
+Gemini said:
+
+"Per-Video Traffic Sources ... N/A ... per-video split requires Studio GUI export."
+
+Again, that's too broad.
+
+The YouTube Analytics API supports filtering reports by a specific video and breaking traffic down by traffic-source dimensions. Google's documentation explicitly describes traffic-source reporting and video-specific filters.
+
+And YouTube Studio itself exposes, at video level:
+
+Browse
+Suggested
+Search
+External
+Channel pages
+Playlists
+etc.
+
+The current YouTube Help documentation explicitly says the Reach tab is available at the video level and includes "How viewers find this video" and YouTube Search terms.
+
+So this one should be retried programmatically before resorting to manual exports.
+
+7. Audience retention is also NOT API-impossible
+
+This is the biggest correction.
+
+Gemini said:
+
+"Audience Retention Curves — N/A ... requires downloading retention graph CSVs from YouTube Studio GUI."
+
+That's not entirely correct.
+
+The official YouTube Analytics API has an audience retention report.
+
+It can return:
+
+audienceWatchRatio
+relativeRetentionPerformance
+startedWatching
+stoppedWatching
+
+and uses elapsedVideoTimeRatio to give retention throughout the video.
+
+There is one important limitation:
+
+The retention query has to be done one video at a time.
+
+Google explicitly says the retention report doesn't support a comma-separated list of video IDs.
+
+That's actually fine for our strategy.
+
+We're not going to analyze 298 retention curves.
+
+We'll analyze the important ones.
+
+8. New vs returning viewers needs more nuance
+
+Gemini said:
+
+"New vs Returning Viewers per Video — not exposed via YouTube Analytics API v2 report dimensions."
+
+I would not completely trust that conclusion either.
+
+YouTube Studio currently exposes audience information at video level, including new/casual/regular audience concepts, and the API has audience-related dimensions and metrics.
+
+However, the exact report you want may not map cleanly to the standard video-level API query, so this is one where I would tell Gemini:
+
+Attempt API retrieval first. If unavailable for the exact desired breakdown, document precisely which dimension/metric combination is unavailable and fall back to Studio Advanced Mode.
+
+Don't simply mark it N/A.
+
+9. Shares are also available in the API ecosystem
+
+Gemini grouped:
+
+Shares, End-Screen Clicks, Cards Clicks
+
+together as unavailable.
+
+That's too broad.
+
+YouTube's API documentation explicitly includes sharing metrics.
+
+So:
+
+Shares
+
+Try API.
+
+End screens
+
+May require a different reporting route / Studio data depending on the exact metric.
+
+Cards
+
+Likewise, verify availability rather than assuming unavailable.
+
+We should make Gemini distinguish:
+
+API-supported
+
+vs.
+
+Studio-only
+
+vs.
+
+not available to this account/query
+
+rather than putting everything into N/A.
+
+----0
+Views
+Traffic source
+Thumbnail impressions
+Thumbnail click-through rate
+Views
+Average view duration
+Watch time (hours)
+Total
+1,52,863
+4.7%
+15,116
+4:59
+844.1
+Browse features
+90,458
+4.9%
+10,604
+4:17
+410.7
+Suggested videos
+58,447
+4.3%
+3,465
+5:56
+337.2
+Other YouTube features
+—
+—
+299
+6:27
+30.7
+Direct or unknown
+—
+—
+277
+5:06
+22.6
+Playlists
+2,344
+3.7%
+177
+7:13
+20.2
+External
+—
+—
+154
+4:59
+12.8
+Channel pages
+1,222
+4.3%
+81
+4:12
+5.2
+YouTube search
+392
+11.2%
+58
+5:15
+4.4
+Notifications
+—
+—
+1
+16:04
+0.3-----------Traffic source
+Views
+Average view duration
+Average percentage viewed
+Watch time (hours)
+Total
+15,127
+4:59
+30.9%
+844.2
+Browse features
+10,576
+69.9%
+4:17
+26.6%
+411.0
+48.7%
+Suggested videos
+3,469
+22.9%
+5:56
+36.7%
+337.4
+40.0%
+Other YouTube features
+298
+2.0%
+6:27
+39.9%
+30.6
+3.6%
+Direct or unknown
+259
+1.7%
+5:08
+31.8%
+21.7
+2.6%
+Playlists
+177
+1.2%
+7:14
+44.8%
+20.2
+2.4%
+External
+154
+1.0%
+4:59
+30.9%
+12.8
+1.5%
+Channel pages
+82
+0.5%
+4:08
+25.6%
+5.2
+0.6%
+YouTube search
+56
+0.4%
+5:15
+32.5%
+4.3
+0.5%
+Notifications
+1
+0.0%
+16:04
+99.5%
+0.3
+0.0%-----------Traffic source
+External
+Views
+Average view duration
+Average percentage viewed
+Watch time (hours)
+Total
+154
+4:59
+30.9%
+12.8
+WhatsApp
+25
+16.2%
+11:49
+73.2%
+4.9
+38.5%
+com.google.android.apps.messaging
+23
+14.9%
+6:42
+41.5%
+2.6
+20.1%
+Google Search
+13
+8.4%
+3:44
+23.2%
+0.8
+6.3%
+whatsapp.com
+11
+7.1%
+6:05
+37.7%
+1.1
+8.7%
+Facebook
+4
+2.6%
+4:20
+26.8%
+0.3
+2.3%
+Samsung Email
+4
+2.6%
+2:17
+14.1%
+0.2
+1.2%
+m
+3
+2.0%
+0:04
+0.4%
+0.0
+0.0%
+Gmail
+3
+2.0%
+8:18
+51.4%
+0.4
+3.2%
+Yahoo Search
+2
+1.3%
+1:11
+7.4%
+0.0
+0.3%
+Facebook Messenger
+2
+1.3%
+8:16
+51.1%
+0.3
+2.2%
+X
+2
+1.3%
+1:00
+6.3%
+0.0
+0.3%
+Viber
+2
+1.3%
+2:38
+16.3%
+0.1
+0.7%
+YouTube
+2
+1.3%
+9:35
+59.4%
+0.3
+2.5%
+Naver
+1
+0.7%
+0:13
+1.4%
+0.0
+0.0%
+org.thunderdog.challegram
+1
+0.7%
+16:13
+100.3%
+0.3
+2.1%
+org.telegram.messenger
+1
+0.7%
+2:21
+14.6%
+0.0
+0.3%
+deviantart.com
+1
+0.7%
+6:42
+41.5%
+0.1
+0.9%
+Google
+1
+0.7%
+1:12
+7.5%
+0.0
+0.2%
+instagram.com
+1
+0.7%
+0:06
+0.7%
+0.0
+0.0%----------Traffic source
+Suggested videos
+Views
+Average view duration
+Average percentage viewed
+Watch time (hours)
+Total
+3,469
+5:56
+36.7%
+337.4
+Narcissistic Parents: Ways They Left You to Raise Yourself
+122
+3.5%
+5:44
+35.5%
+11.6
+3.4%
+Why Dysfunctional Families Protect the Most Difficult Person
+110
+3.2%
+5:05
+31.5%
+9.3
+2.8%
+What Happens When Narcissistic Parents Lose Their Scapegoat
+101
+2.9%
+5:22
+33.3%
+9.1
+2.7%
+Why Narcissistic Mothers Hate Their Daughters? | How Narcissistic Mothers Show Hate (SABOTAGE!)
+100
+2.9%
+6:14
+38.6%
+10.3
+3.1%
+What narcissistic mothers do to their daughters (& how to heal)
+89
+2.6%
+6:04
+37.6%
+9.0
+2.7%
+Why Dysfunctional Families Turn Against the Person Who Tells the Truth
+73
+2.1%
+4:14
+26.3%
+5.2
+1.5%
+Narcissistic Family: What Happens When They Break the Empath
+71
+2.1%
+6:03
+37.5%
+7.2
+2.1%
+Give Me 12 Minutes, I'll Show You How To Get Your Whole Life Back
+51
+1.5%
+7:12
+44.6%
+6.1
+1.8%
+10 Unusual Traits Every Child of a Narcissistic Parent Has
+50
+1.4%
+6:36
+40.9%
+5.4
+1.6%
+The Lifelong Impact of Narcissistic Parents on Daughters
+49
+1.4%
+5:54
+36.5%
+4.7
+1.4%
+8 Signs You Were Raised by a Narcissistic Mother
+48
+1.4%
+5:50
+36.2%
+4.7
+1.4%
+Narcissistic Parents: How to Protect Yourself as They Grow Older
+47
+1.4%
+7:15
+44.9%
+5.7
+1.7%
+Narcissistic Parents: Life Delays They Cause in Their Adult Children
+46
+1.3%
+7:37
+47.2%
+5.9
+1.7%
+Signs You Grew Up in a Damaging Family (even if it looked normal from the outside)
+44
+1.3%
+5:48
+35.9%
+4.0
+1.2%
+Narcissistic Mothers and Their Adult Daughters
+41
+1.2%
+6:00
+37.2%
+4.1
+1.2%
+When Narcissistic Parents Die: What Happens to the Scapegoat?
+36
+1.0%
+6:01
+37.3%
+3.6
+1.1%
+You're Not CRAZY - Your Mother is a Narcissist (10 Signs)
+32
+0.9%
+5:31
+34.1%
+2.9
+0.9%
+If You Attract Narcissists, I Can Predict Your Childhood in 16 Minutes
+32
+0.9%
+7:40
+47.5%
+4.0
+1.2%
+When a Narcissistic Sibling Hates You: Smear Campaigns, Scapegoating & Going No Contact
+30
+0.9%
+5:12
+32.2%
+2.5
+0.8%
+The Lifetime Shield Every Empath Needs Against Jealous Energy - Carl Jung
+28
+0.8%
+5:38
+34.9%
+2.5
+0.8%
+I'm 72... It Took Me 45 Years to Learn This (Don't Waste Your Life)
+26
+0.8%
+5:31
+34.2%
+2.4
+0.7%
+Cluster B Personalities: Why Nothing You Do Is Ever Enough
+26
+0.8%
+5:53
+36.5%
+2.6
+0.8%
+How Narcissistic Parents Create Sibling Rivalry
+26
+0.8%
+6:19
+39.1%
+2.7
+0.8%
+This Test Exposes the Narcissist (and their demons)
+24
+0.7%
+3:38
+22.6%
+1.4
+0.4%
+Say This and a Narcissist Can't Gaslight You Anymore
+22
+0.6%
+3:24
+21.1%
+1.2
+0.4%
+8 Signs Your Parent Gave You a Job, Not a Childhood
+22
+0.6%
+5:17
+32.7%
+1.9
+0.6%
+The Weird Mannerisms of Adult Children Raised by Narcissists
+21
+0.6%
+8:15
+51.1%
+2.9
+0.9%
+20 Insults You commonly Hear in a Narcissistic Family (Subtle to Extreme)
+20
+0.6%
+6:46
+41.9%
+2.3
+0.7%
+Narcissistic Father or Mother: Why They Can’t Stand You
+19
+0.6%
+7:48
+48.3%
+2.5
+0.7%
+I’m a Narcissist and This Is How I Think About My Wife
+19
+0.6%
+4:22
+27.0%
+1.3
+0.4%
+How Narcissists Break Empaths (⚠️Watch Alone)
+17
+0.5%
+4:33
+28.2%
+1.1
+0.3%
+10 Signs of the Covertly Narcissistic Mother That She TRAINED You To Overlook
+17
+0.5%
+4:26
+27.5%
+1.3
+0.4%
+When your own child treats you like the enemy
+17
+0.5%
+3:04
+19.0%
+0.9
+0.3%
+What Estrangement REALLY Does to a Parent (No One Talks About This)
+17
+0.5%
+5:41
+35.2%
+1.5
+0.5%
+Jezebel, Leviathan & Python: How to Fight Back
+16
+0.5%
+2:14
+13.9%
+0.6
+0.2%
+Being the daughter of a narcissistic mother took away everything from you.
+16
+0.5%
+4:17
+26.6%
+1.1
+0.3%
+Narcissistic Adult Children: The Betrayal & Deep Pain They Cause
+16
+0.5%
+2:50
+17.6%
+0.8
+0.2%
+The narcissistic mother's strange behaviours #narcissisticmother
+15
+0.4%
+4:27
+27.6%
+1.1
+0.3%
+Was your mother a PICK ME?
+15
+0.4%
+10:10
+63.0%
+2.5
+0.8%
+Your narcissistic mother lied to you: You weren't difficult to love.
+15
+0.4%
+6:13
+38.5%
+1.6
+0.5%
+The real reason daughters of narcissistic mothers can't love themselves.
+14
+0.4%
+6:57
+43.0%
+1.6
+0.5%
+Why Do Narcissistic Mothers Hate Their Daughters?
+14
+0.4%
+8:00
+49.5%
+1.9
+0.6%
+You're Not Crazy, You're Being Manipulated
+14
+0.4%
+3:38
+22.6%
+0.9
+0.3%
+Are narcissistic parents mentally ill or are they just evil?
+14
+0.4%
+3:58
+24.6%
+0.9
+0.3%
+Why People From Normal Families Will Never Understand You
+13
+0.4%
+8:51
+54.8%
+1.9
+0.6%
+Your Narcissistic Family Doesn't Want You to Watch THIS Video
+13
+0.4%
+6:15
+38.7%
+1.4
+0.4%
+45 Years of Therapy in 16 Minutes
+13
+0.4%
+5:54
+36.5%
+1.3
+0.4%
+The Trauma of Being The Good Child
+13
+0.4%
+8:53
+55.0%
+1.9
+0.6%
+10 Differences Between Healthy and Narcissistic Families
+13
+0.4%
+4:52
+30.2%
+1.1
+0.3%
+Narcissistic Family : 9 Signs It's Time to Go No Contact
+13
+0.4%
+6:37
+41.0%
+1.4
+0.4%---------------Traffic source
+Browse features
+Views
+Average view duration
+Average percentage viewed
+Watch time (hours)
+Total
+10,576
+4:17
+26.6%
+411.0
+Home
+10,402
+98.4%
+4:11
+26.0%
+390.1
+94.9%
+Watch Later
+97
+0.9%
+8:06
+50.1%
+12.7
+3.1%
+Watch History
+56
+0.5%
+6:47
+42.0%
+6.2
+1.5%
+Personalized playlists
+13
+0.1%
+7:17
+45.1%
+1.6
+0.4%
+Subscriptions
+4
+0.0%
+0:10
+1.1%
+0.0----------Traffic source
+Channel pages
+Views
+Average view duration
+Average percentage viewed
+Watch time (hours)
+Total
+82
+4:08
+25.6%
+5.2
+Kat Grace
+77
+93.9%
+3:48
+23.6%
+4.4
+85.8%
+duracell does
+2
+2.4%
+6:11
+38.3%
+0.2
+4.0%
+TheWhyteRabbit🐇
+2
+2.4%
+7:48
+48.3%
+0.3
+5.0%
+Emilyinthesouth
+1
+1.2%
+16:09
+100%
+0.3
+5.2%-----------Traffic source
+YouTube search
+Views
+Average view duration
+Average percentage viewed
+Watch time (hours)
+Total
+56
+5:15
+32.5%
+4.3
+nancy grace
+2
+3.6%
+7:38
+47.2%
+0.3
+5.9%
+scapegoat narcissistic family
+1
+1.8%
+5:05
+31.5%
+0.1
+2.0%
+narcissistic mother
+1
+1.8%
+0:37
+3.9%
+0.0
+0.2%----------
+0.0%-----------Traffic source
+Other YouTube features
+Views
+Average view duration
+Average percentage viewed
+Watch time (hours)
+Total
+298
+6:27
+39.9%
+30.6
+Offline
+43
+14.4%
+6:21
+39.4%
+4.6
+14.9%
+YouTube Remote
+34
+11.4%
+9:27
+58.5%
+5.4
+17.5%----------Traffic source
+Playlists
+Views
+Average view duration
+Average percentage viewed
+Watch time (hours)
+Total
+177
+7:14
+44.8%
+20.2
+The Mother Wound
+11
+6.2%
+11:22
+70.4%
+1.9
+9.4%
+Do sluchania
+1
+0.6%
+16:39
+103.0%
+0.3
+1.4%
+Narc healing
+1
+0.6%
+9:40
+59.8%
+0.2
+0.8%
+
+Content
+Likes (vs. dislikes)
+Likes
+Dislikes
+The Daughter Narcissistic Mothers Can’t Control (What Changes When You Stop Playing the Role)
+99.3%
+738
+5
+
+Audience retention
+Since uploaded (lifetime)
+Average view duration
+4:59
+Average percentage viewed
+30.9%
+End screen element click rate
+Since uploaded (lifetime)
+The Daughter Narcissistic Mothers Can’t Control (What Changes When You Stop Playing the Role)
+0.0%
+Channel average
+0.0%
+Device type
+Watch time (hours)
+Views
+Average percentage viewed
+Estimated revenue
+RPM
+Total
+844.2
+15,127
+30.9%
+—
+—
+Mobile phone
+546.1
+64.7%
+10,290
+68.0%
+30.7%
+—
+—
+—
+TV
+144.3
+17.1%
+2,282
+15.1%
+32.2%
+—
+—
+—
+Computer
+95.3
+11.3%
+1,854
+12.3%
+29.0%
+—
+—
+—
+Tablet
+57.6
+6.8%
+639
+4.2%
+33.7%
+—
+Age and gender
+Views · Since uploaded (lifetime)
+Female
+100%
+Male
+0%
+User-specified
+0%
+13–17 years
+0%
+18–24 years
+0%
+25–34 years
+0%
+35–44 years
+14.9%
+45–54 years
+32.5%
+55–64 years
+35.0%
+65+ years
+17.7%
+Geography
+Views
+Average view duration
+Watch time (hours)
+Total
+15,127
+4:59
+844.2
+United States
+7,412
+49.0%
+5:04
+439.6
+52.1%
+United Kingdom
+999
+6.6%
+4:38
+44.1
+5.2%
+Canada
+733
+4.9%
+4:37
+36.9
+4.4%
+India
+357
+2.4%
+3:31
+10.1
+1.2%
+Australia
+348
+2.3%
+4:19
+18.8
+2.2%
+South Africa
+14
+0.1%
+0:31
+0.1
+0.0%
+Germany
+11
+0.1%
+1:45
+0.3
+0.0%
+Denmark
+10
+0.1%
+3:39
+0.6
+0.1%
+
+TASK: Add a WhatsApp bot package card + (later) a live-demo button to the
+"WhatsApp & Automation" blog posts on naveengaur.com, and fix three related
+CTA/tracking issues on those same pages.
+
+IMPORTANT: Inspect the codebase first and tell me your
+plan before changing anything. Match existing patterns. Do not guess file
+locations.
+
+SCOPE
+
+- Applies ONLY to all blog posts in the category "WhatsApp & Automation"
+  plus any future post in that category.
+- Do NOT touch the homepage, the services section, other blog categories,
+  or article body content.
+
+BACKGROUND (why)
+Visitors reach these articles, click WhatsApp, and ask for a simple WhatsApp
+bot, then go silent after hearing the price. The fix is showing a fixed-price
+package and a live demo BEFORE they message. Each article currently may have multiple
+competing CTAs (inline "Get in Touch →", a bottom consulting block, floating
+Book Call/WhatsApp buttons). Consolidate, don't stack.
+
+PART 1 — PACKAGE CARD COMPONENT (build now)
+Create ONE reusable component, WhatsAppPackageCard, rendered on all posts in
+the category. It REPLACES the inline "Get in Touch →" link at the end of those
+posts (other categories keep their existing link).
+
+All editable values live in a single config object/file (not hardcoded in JSX):
+packageName, price (29), regularPrice (99), currency ("$"),
+deliveryText ("3-5 days"),
+supportText ("30 days of support included"),
+packageWhatsAppNumber (916396137981),
+demoWhatsAppNumber ("916396137981" — empty for now),
+
+Card content (plain business language; NEVER use the words "Baileys", "JID",
+"webhook" or "enterprise" in the card), Make sure design matches our current blog system:
+
+Heading: Need a simple WhatsApp bot for your business?
+Sub: Answers your customers' common questions automatically, 24/7, and
+passes real enquiries to you.
+Included:
+
+- Menu and keyword replies (hours, location, services, FAQs)
+- Collects customer name and need, sent straight to you
+- "Talk to a human" option when someone needs you
+- Set up and tested in {deliveryText}
+- {supportText}
+  Price: {currency}{price} one-time (strikethrough {regularPrice} and the
+  Care plan line: Optional care plan: {currency}{careRate}/month (hosting,
+  monitoring, small edits)
+  Good for: small businesses with steady, low-to-moderate message volume.
+
+  Buttons: [Get this package] (primary) [Try the live demo] (secondary)
+  Text link below: Something more complex? Talk to me about a custom build
+
+Design: match the site's existing card styling and theme tokens (cream/gold
+palette, existing fonts, existing dark/light handling). Mobile first: buttons
+stack full-width on small screens, no horizontal scroll, no layout shift.
+Accessible: semantic headings, visible focus states, sufficient contrast,
+meaningful link text.
+
+PART 2 — FIX EXISTING CTAs ON THESE POSTS
+a) Bottom consulting block (currently "Building a Production WhatsApp Bot or
+Scaling Baileys?" / "...enterprise WhatsApp automations..."). Keep the
+block and both buttons, but make it the secondary path:
+Heading: Need something more custom?
+Text: Multiple numbers, integrations, AI replies, or fixing an existing
+bot? Talk to me directly. Direct access, zero agency overhead.
+Remove the word "enterprise". Keep the existing article-aware prefilled
+WhatsApp message and email subject logic.
+
+b) UTM bug: the "Get in Touch" link on
+/blog/baileys-whatsapp-privacy-lid-postgrest-debugging uses
+utm_campaign=production-whatsapp-automation-baileys (copied from a different
+post). Audit all CTA links on the three posts and make utm_campaign equal
+to each post's own slug. Any remaining links that point to the homepage
+#contact from these posts should be removed or replaced by the card.
+
+PART 4 — LIVE DEMO BOT (DO NOT START until I explicitly say so)
+This is a separate service. Only the website flag in Part 1 is in scope now.
+When I ask for it, requirements are:
+
+- Separate WhatsApp number from my main/business number 916396137981.
+
+- Scripted menu only, no open-ended AI: (1) See how lead capture works,
+  (2) See FAQ replies, (3) Ask about the package, (4) Talk to Naveen
+  (forwards to my real number with context).
+- Mirror exactly the package scope so the demo shows what the price buys.
+- Per-sender rate limiting, ignore/block list, session reset between visitors,
+  first message states it is a demo and what is stored.
+- Exponential-backoff reconnect, health check, and an alert to me when it
+  disconnects; log disconnects.
+- Only respond to people who messaged first.
+  Do not set demoEnabled to true until I confirm the bot has run stably.
+
+OUT OF SCOPE / DON'T
+
+- No changes to the homepage or services section, no new pricing UI there.
+- No fabricated testimonials, counters, or claims.
+- No new dependencies unless necessary; tell me if you add one.
+- Don't change article text or SEO metadata.
+
+When finished, give me: a list of files changed, a short summary of each
+change, anything you couldn't verify, and the exact steps to turn on the demo
+button later.

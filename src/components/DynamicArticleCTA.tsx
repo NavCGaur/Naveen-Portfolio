@@ -27,11 +27,11 @@ export default function DynamicArticleCTA({ post }: Props) {
   let emailSubject = `Project Inquiry - ${post.title}`;
 
   if (isWhatsApp) {
-    heading = "Building a Production WhatsApp Bot or Scaling Baileys?";
+    heading = "Need something more custom?";
     description =
-      "I build, debug, and scale enterprise WhatsApp automations, multi-device bots, and custom CRM integrations. Direct access, zero agency overhead.";
-    whatsappMessage = `Hi Naveen, I read your article "${post.title}" and need help with my WhatsApp automation project.`;
-    emailSubject = `WhatsApp Automation Inquiry - ${post.title}`;
+      "Multiple numbers, integrations, AI replies, or fixing an existing bot? Talk to me directly. Direct access, zero agency overhead.";
+    whatsappMessage = `Hi Naveen, I read your article "${post.title}" and need help with a custom WhatsApp automation project.`;
+    emailSubject = `Custom WhatsApp Automation Inquiry - ${post.title}`;
   } else if (isWordPress) {
     heading = "Need help with your WordPress site?";
     description =
@@ -49,7 +49,7 @@ export default function DynamicArticleCTA({ post }: Props) {
   return (
     <div className="blog-card border blog-border rounded-xl p-8 md:p-10 text-center shadow-lg relative">
       <span className="inline-block text-[12px] font-bold tracking-[0.08em] uppercase text-[#C4A35A] px-3 py-1 rounded-sm bg-[#C4A35A]/10 border border-[#C4A35A]/20 mb-4">
-        {isWhatsApp ? "WhatsApp & Automation Consulting" : isWordPress ? "WordPress Specialist" : "Full-Stack & Cloud Architecture"}
+        {isWhatsApp ? "Custom WhatsApp Automation" : isWordPress ? "WordPress Specialist" : "Full-Stack & Cloud Architecture"}
       </span>
       <h2 className="font-serif text-[clamp(22px,3vw,32px)] blog-heading mb-4 leading-[1.2]">
         {heading}
