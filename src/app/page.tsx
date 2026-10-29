@@ -5,6 +5,7 @@ import Services from "@/components/sections/Services";
 import ProcessBanner from "@/components/sections/ProcessBanner";
 import WhyMe from "@/components/sections/WhyMe";
 import Projects from "@/components/sections/Projects";
+import SeoResults from "@/components/sections/SeoResults";
 import Testimonials from "@/components/sections/Testimonials";
 import UpworkStats from "@/components/sections/UpworkStats";
 import Contact from "@/components/sections/Contact";
@@ -19,6 +20,7 @@ export default function Home() {
         <UpworkStats />
         <Problems />
         <Projects />
+        <SeoResults />
         <Testimonials />
         <WhyMe />
         <Services />
