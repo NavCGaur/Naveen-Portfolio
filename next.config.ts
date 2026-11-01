@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
         destination: '/blog/google-analytics-ai-agent',
         permanent: true,
       },
+      {
+        source: '/services/freelance-wordpress-developer',
+        destination: '/freelance-wordpress-developer',
+        permanent: true,
+      },
     ]
   },
 };

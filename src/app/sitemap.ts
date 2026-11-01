@@ -82,6 +82,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: "https://naveengaur.com/freelance-wordpress-developer",
+      lastModified: latestSiteDate,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
       url: "https://naveengaur.com/llms-txt",
       lastModified: latestSiteDate,
       changeFrequency: "weekly",
