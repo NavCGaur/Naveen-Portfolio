@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import * as ga from "@/lib/ga";
 
 const navLinks = [
+  { label: "About", href: "/about" },
   { label: "Problems I Solve", href: "/#problems" },
   { label: "Services", href: "/#services" },
   { label: "Why Me", href: "/#why" },
@@ -17,11 +18,12 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  const isAboutPage = pathname ? pathname.startsWith("/about") : false;
   const isBlogPage = pathname ? pathname.startsWith("/blog") : false;
   const isAuditsPage = pathname ? pathname.startsWith("/audits") : false;
   const isFreeAuditPage = pathname ? pathname.startsWith("/free-audit") : false;
   const isSecurityAuditPage = pathname ? pathname.startsWith("/security-audit") : false;
-  const isDarkPage = pathname ? (pathname !== "/" && !isBlogPage && !isAuditsPage && !isFreeAuditPage && !isSecurityAuditPage) : true;
+  const isDarkPage = pathname ? (pathname !== "/" && !isAboutPage && !isBlogPage && !isAuditsPage && !isFreeAuditPage && !isSecurityAuditPage) : true;
   const isTextLight = isDarkPage && !scrolled;
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function Nav() {
     setMenuOpen(false);
   };
 
-  const navBackground = (scrolled || isBlogPage || isAuditsPage)
+  const navBackground = (scrolled || isBlogPage || isAuditsPage || isAboutPage)
     ? "bg-surface/95 backdrop-blur-md border-b border-black/[0.08] shadow-sm"
     : "bg-transparent";
 

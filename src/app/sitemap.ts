@@ -40,6 +40,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: "https://naveengaur.com/about",
+      lastModified: latestSiteDate,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: "https://naveengaur.com/blog",
       lastModified: latestSiteDate,
       changeFrequency: "weekly",
