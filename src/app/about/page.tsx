@@ -108,27 +108,9 @@ export default function AboutPage() {
 
                 <div className="w-12 h-[3px] bg-[#0F766E] mb-6"></div>
 
-                <p className="text-[17px] md:text-[19px] text-[#374151] leading-[1.7] font-normal max-w-[580px] mb-8">
+                <p className="text-[17px] md:text-[19px] text-[#374151] leading-[1.7] font-normal max-w-[580px]">
                   I build websites, solve real business problems, and help businesses grow online. I'm also passionate about education and using technology to create a positive impact, especially for underprivileged children.
                 </p>
-
-                <div className="flex flex-wrap items-center gap-4 pt-2">
-                  <Link
-                    href="/freelance-wordpress-developer"
-                    className="inline-flex items-center gap-2 bg-[#0D0D0D] text-white px-6 py-3.5 rounded-md text-[14px] font-medium hover:bg-[#2A2A2A] transition-colors"
-                  >
-                    View Services &amp; Work →
-                  </Link>
-                  <a
-                    href="https://wa.me/919910260426?text=Hi%20Naveen,%20I%20visited%20your%20about%20page"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 border border-black/[0.12] bg-white text-[#0D0D0D] px-6 py-3.5 rounded-md text-[14px] font-medium hover:border-[#0F766E] hover:text-[#0F766E] transition-colors shadow-sm"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-[#25D366]"></span>
-                    Say Hello on WhatsApp
-                  </a>
-                </div>
               </div>
 
               {/* Right Column: Mountain Valley River Selfie */}
@@ -305,25 +287,21 @@ export default function AboutPage() {
         <section className="py-20 md:py-28 px-6 md:px-10 hd:px-14 bg-[#F5F7F5] border-b border-black/[0.06]">
           <div className="max-w-[1100px] hd:max-w-[1280px] mx-auto">
             
-            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.1fr_0.8fr] gap-10 lg:gap-12 items-center">
-              
-              {/* Left Column: Photo with Students */}
-              <div className="relative">
-                <div className="relative rounded-2xl overflow-hidden border border-black/[0.08] shadow-[0_12px_32px_rgba(0,0,0,0.06)] bg-white aspect-[16/10]">
-                  <Image
-                    src="/images/about/class.jpg"
-                    alt="Naveen Gaur with 40+ village students in Uttarakhand"
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 480px"
-                    className="object-cover hover:scale-[1.02] transition-transform duration-500"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent p-4 text-white">
-                    <span className="text-[13px] font-medium">Daily Class Circle · Rural Uttarakhand</span>
-                  </div>
-                </div>
-              </div>
+            {/* Full Width Banner Image */}
+            <div className="relative rounded-2xl overflow-hidden border border-black/[0.08] shadow-[0_12px_32px_rgba(0,0,0,0.06)] bg-white aspect-[16/9] sm:aspect-[21/9] lg:aspect-[2.35/1] w-full mb-12">
+              <Image
+                src="/images/about/class.webp"
+                alt="Naveen Gaur with 40+ village students in Uttarakhand"
+                fill
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                className="object-cover object-center hover:scale-[1.01] transition-transform duration-500"
+              />
+            </div>
 
-              {/* Middle Column: Education Narrative */}
+            {/* Content Below Banner */}
+            <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_0.85fr] gap-10 lg:gap-14 items-center">
+              
+              {/* Left Column: Education Narrative */}
               <div>
                 <h2 className="font-serif text-[clamp(28px,3.8vw,42px)] leading-[1.2] font-bold text-[#0D0D0D] mb-5">
                   Giving Back Through Education
@@ -345,7 +323,7 @@ export default function AboutPage() {
 
               {/* Right Column: Handwritten Heart Callout Card */}
               <div>
-                <div className="p-8 rounded-2xl bg-[#E6F4EA] border border-[#A7D7B5] shadow-sm text-center flex flex-col items-center justify-center relative">
+                <div className="p-8 md:p-10 rounded-2xl bg-[#E6F4EA] border border-[#A7D7B5] shadow-sm text-center flex flex-col items-center justify-center relative">
                   <div className="w-12 h-12 rounded-full bg-white text-[#137333] flex items-center justify-center text-[22px] mb-4 shadow-xs">
                     💚
                   </div>
@@ -392,9 +370,6 @@ export default function AboutPage() {
                     sizes="(max-width: 768px) 100vw, 340px"
                     className="object-cover object-center hover:scale-[1.02] transition-transform duration-500"
                   />
-                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-3 text-white text-[12px] font-medium text-center">
-                    Family Life in Uttarakhand
-                  </div>
                 </div>
               </div>
 
