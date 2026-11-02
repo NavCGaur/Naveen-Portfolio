@@ -37,7 +37,7 @@ export default async function FreelanceWordPressDeveloperPage({ searchParams }: 
         "image": "https://naveengaur.com/images/projects/Naveen_profile_pic.jpg",
         "description": "Senior freelance WordPress developer and technical SEO specialist providing custom theme development, Core Web Vitals optimization, WooCommerce engineering, and search ranking architecture.",
         "priceRange": "$$",
-        "telephone": "+91-9910260426",
+        "telephone": "+91-9920899845",
         "email": "hello@naveengaur.com",
         "address": {
           "@type": "PostalAddress",
@@ -188,7 +188,7 @@ export default async function FreelanceWordPressDeveloperPage({ searchParams }: 
                 Book a Scoping Call
               </a>
               <a
-                href="https://wa.me/919910260426?text=Hi%20Naveen,%20I'm%20looking%20to%20hire%20a%20freelance%20WordPress%20developer"
+                href="https://wa.me/919920899845?text=Hi%20Naveen,%20I'm%20looking%20to%20hire%20a%20freelance%20WordPress%20developer"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 border border-[#25D366]/40 bg-[#25D366]/10 text-white px-6 py-4 rounded-sm text-[15px] font-medium hover:bg-[#25D366]/20 transition-all duration-200"
@@ -803,21 +803,21 @@ export default async function FreelanceWordPressDeveloperPage({ searchParams }: 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4 text-[13px] text-white/50 border-t border-white/[0.06]">
                 <span>Prefer direct messaging?</span>
                 <a
-                  href="https://wa.me/919910260426?text=Hi%20Naveen,%20I'm%20looking%20to%20hire%20a%20freelance%20WordPress%20developer"
+                  href="https://wa.me/919920899845?text=Hi%20Naveen,%20I'm%20looking%20to%20hire%20a%20freelance%20WordPress%20developer"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#25D366] hover:underline font-medium inline-flex items-center gap-1"
                 >
-                  WhatsApp: +91 99102 60426 →
+                  WhatsApp: +91 99208 99845 →
                 </a>
                 <span>or</span>
                 <a
-                  href="https://calendly.com/naveengaur"
+                  href="https://cal.com/naveengaur"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#C4A35A] hover:underline font-medium"
                 >
-                  Schedule 20-min Video Call →
+                  Schedule 20-min Video Call on Cal.com →
                 </a>
               </div>
             </form>

@@ -434,7 +434,7 @@ export default function AboutPage() {
                 Explore WordPress Services
               </Link>
               <a
-                href="https://wa.me/919910260426?text=Hi%20Naveen,%20I'm%20reaching%20out%20after%20reading%20your%20About%20page"
+                href="https://wa.me/919920899845?text=Hi%20Naveen,%20I'm%20reaching%20out%20after%20reading%20your%20About%20page"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 border border-white/20 text-white px-7 py-4 rounded-sm text-[15px] font-medium hover:bg-white/5 transition-colors"
@@ -443,7 +443,7 @@ export default function AboutPage() {
                 Message on WhatsApp
               </a>
               <a
-                href="https://calendly.com/naveengaur"
+                href="https://cal.com/naveengaur"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border border-white/20 text-white/80 px-7 py-4 rounded-sm text-[15px] font-medium hover:bg-white/5 transition-colors"
