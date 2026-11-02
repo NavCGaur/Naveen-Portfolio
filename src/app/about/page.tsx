@@ -133,20 +133,20 @@ export default function AboutPage() {
 
               {/* Right Column: Mountain Valley River Selfie */}
               <div className="relative">
-                <div className="relative mx-auto max-w-[440px] lg:max-w-none">
+                <div className="relative mx-auto max-w-[420px] lg:max-w-[460px]">
                   {/* Backdrop accent shape */}
                   <div className="absolute -inset-3 bg-gradient-to-tr from-[#0F766E]/10 via-[#C4A35A]/15 to-transparent rounded-3xl -rotate-1 filter blur-sm"></div>
 
-                  <div className="relative rounded-2xl overflow-hidden border-2 border-white shadow-[0_16px_40px_rgba(0,0,0,0.08)] bg-white aspect-[4/5] sm:aspect-[3/4]">
+                  <div className="relative rounded-2xl overflow-hidden border-2 border-white shadow-[0_16px_40px_rgba(0,0,0,0.08)] bg-white aspect-[2/3]">
                     <Image
-                      src="/images/about/mountain-valley-selfie.webp"
+                      src="/images/about/mountain-valley-selfie.jpg"
                       alt="Naveen Gaur in Uttarakhand Himalayas with mountain valley and river"
                       fill
                       priority
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 500px"
-                      className="object-cover object-top hover:scale-[1.02] transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 460px"
+                      className="object-cover object-[center_35%] hover:scale-[1.02] transition-transform duration-500"
                     />
-                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-5 text-white">
+                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent p-4 text-white">
                       <div className="text-[14px] font-medium tracking-wide">Naveen Gaur</div>
                       <div className="text-[12px] text-white/80">Uttarakhand, Himalayas · India</div>
                     </div>
@@ -384,13 +384,13 @@ export default function AboutPage() {
 
               {/* Middle Column: Family Photo */}
               <div className="relative">
-                <div className="rounded-2xl overflow-hidden border border-black/[0.08] shadow-[0_10px_30px_rgba(0,0,0,0.06)] bg-white aspect-[4/3] relative">
+                <div className="rounded-2xl overflow-hidden border border-black/[0.08] shadow-[0_10px_30px_rgba(0,0,0,0.06)] bg-white aspect-[3/4] max-w-[340px] mx-auto relative">
                   <Image
                     src="/images/about/family-mountains.jpg"
-                    alt="Naveen Gaur with wife and daughter in the Uttarakhand mountains"
+                    alt="Naveen Gaur with family in the Uttarakhand mountains"
                     fill
-                    sizes="(max-width: 768px) 100vw, 360px"
-                    className="object-cover hover:scale-[1.02] transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 340px"
+                    className="object-cover object-center hover:scale-[1.02] transition-transform duration-500"
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-3 text-white text-[12px] font-medium text-center">
                     Family Life in Uttarakhand
