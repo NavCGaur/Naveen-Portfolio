@@ -312,13 +312,27 @@ export default function AboutPage() {
                 </p>
 
                 <p className="text-[16px] text-[#374151] leading-[1.75] mb-6">
-                  To make learning more engaging and effective, I created <strong className="text-[#0D0D0D]">LoopLearnX</strong> — a simple learning app with lessons, practice exercises and progress tracking. It has made a real difference in how the children learn, stay motivated, and perform in their studies.
+                  To make learning more engaging and effective, I created{" "}
+                  <a
+                    href="https://looplearnx.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#0F766E] hover:underline font-bold transition-colors"
+                  >
+                    LoopLearnX
+                  </a>{" "}
+                  — a simple learning app with lessons, practice exercises and progress tracking. It has made a real difference in how the children learn, stay motivated, and perform in their studies.
                 </p>
 
-                <div className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#00695C] bg-[#E0F2F1] px-4 py-2 rounded-full">
+                <a
+                  href="https://looplearnx.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#00695C] bg-[#E0F2F1] hover:bg-[#b2dfdb] px-4 py-2 rounded-full transition-colors"
+                >
                   <span>📱</span>
-                  <span>LoopLearnX — Self-developed learning platform</span>
-                </div>
+                  <span>LoopLearnX — Self-developed learning platform ↗</span>
+                </a>
               </div>
 
               {/* Right Column: Handwritten Heart Callout Card */}

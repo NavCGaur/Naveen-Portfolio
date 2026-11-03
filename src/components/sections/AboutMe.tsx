@@ -66,7 +66,16 @@ export default function AboutMe() {
           </p>
 
           <p>
-            That experience inspired me to build <strong className="text-white font-semibold">LoopLearnX</strong>, a learning application designed around their needs, helping them practise, learn at their own pace, and become more confident in their studies.
+            That experience inspired me to build{" "}
+            <a
+              href="https://looplearnx.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold hover:text-gold-light underline underline-offset-4 decoration-gold/60 hover:decoration-gold font-semibold transition-colors"
+            >
+              LoopLearnX
+            </a>
+            , a learning application designed around their needs, helping them practise, learn at their own pace, and become more confident in their studies.
           </p>
 
           <p>
