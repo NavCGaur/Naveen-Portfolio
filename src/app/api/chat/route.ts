@@ -1,0 +1,328 @@
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import crypto from "crypto";
+import fs from "fs";
+import path from "path";
+import { Resend } from "resend";
+import {
+  getOrCreateConversation,
+  getConversationById,
+  appendMessageToConversation,
+  linkConversationToLead,
+} from "@/lib/conversations";
+import { upsertLead, findLeadByEmail, findLeadByConversationId } from "@/lib/leads";
+import { computeLeadScore, LeadScoringSignals } from "@/lib/lead-scoring";
+
+const resend = new Resend(process.env.RESEND_API_KEY || "dummy_key");
+const GEMINI_API_KEY = process.env.GOOGLE_GEMINI_API_KEY;
+const GEMINI_ENDPOINT =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+
+const chatRequestSchema = z.object({
+  conversationId: z.string().optional(),
+  message: z.string().min(1, "Message cannot be empty"),
+  sessionToken: z.string().min(1, "Session token is required"),
+});
+
+// Load knowledge base markdown
+function getKnowledgeBase(): string {
+  try {
+    const kbPath = path.join(process.cwd(), "src", "data", "knowledge-base.md");
+    if (fs.existsSync(kbPath)) {
+      return fs.readFileSync(kbPath, "utf-8");
+    }
+  } catch (e) {
+    console.warn("Could not read knowledge-base.md from disk, using fallback.", e);
+  }
+  return `You are Naveen Gaur's AI Assistant on naveengaur.com. Naveen is a senior WordPress & full-stack developer with 10+ years experience specializing in high-performance WordPress, custom Next.js/React development, Core Web Vitals, and WooCommerce architectures. Be polite, concise, consultative, and helpful.`;
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const conversationId = searchParams.get("conversationId");
+    const sessionToken = searchParams.get("sessionToken");
+
+    if (!conversationId || !sessionToken) {
+      return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
+    }
+
+    const conversation = await getConversationById(conversationId);
+    if (!conversation || conversation.sessionToken !== sessionToken) {
+      return NextResponse.json({ messages: [] }, { status: 200 });
+    }
+
+    return NextResponse.json({
+      conversationId: conversation._id,
+      messages: conversation.messages,
+    });
+  } catch (error) {
+    console.error("GET /api/chat error:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const parsed = chatRequestSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: "Invalid request payload", details: parsed.error.flatten() },
+        { status: 400 }
+      );
+    }
+
+    const { message, sessionToken } = parsed.data;
+    const conversationId = parsed.data.conversationId || crypto.randomUUID();
+
+    // 1. Get or create conversation in MongoDB
+    const conversation = await getOrCreateConversation(conversationId, sessionToken, "chat");
+
+    // Check if human takeover or AI paused
+    let existingLead = conversation.leadId
+      ? await findLeadByConversationId(conversationId)
+      : null;
+
+    if (existingLead && (existingLead.humanTakeover || existingLead.aiPaused)) {
+      const pausedReply = "Naveen will be in touch with you directly shortly.";
+      await appendMessageToConversation(conversationId, {
+        role: "user",
+        content: message,
+        timestamp: new Date(),
+      });
+      await appendMessageToConversation(conversationId, {
+        role: "assistant",
+        content: pausedReply,
+        timestamp: new Date(),
+      });
+      return NextResponse.json({
+        conversationId,
+        sessionToken,
+        reply: pausedReply,
+      });
+    }
+
+    // 2. Build history for Gemini
+    const kb = getKnowledgeBase();
+    const systemPrompt = `You are the AI Sales and Technical Assistant for Naveen Gaur (naveengaur.com).
+Refer to this knowledge base for information about Naveen's background, services, and policies:
+---
+${kb}
+---
+
+Your role:
+1. Converse warmly, professionally, and concisely. Keep responses direct and digestible (2-4 sentences or short bullet points).
+2. Answer questions accurately based on the knowledge base. Never invent metrics, guarantees, or certifications.
+3. If asked about pricing: mention realistic starting ranges (e.g. custom WordPress starts around $1,500 - $5,000+; consulting at $75/hr) but explain that Naveen evaluates exact scope to give an accurate quote.
+4. If the visitor wants to talk or book a call: do NOT give a raw scheduling link. Ask for their preferred days/times and timezone so Naveen can confirm the meeting.
+5. If the visitor provides their contact info (name, email, website), acknowledge it politely.
+
+IMPORTANT OUTPUT FORMAT:
+You MUST respond with a single JSON object with the following schema:
+{
+  "reply": "Your markdown-formatted message to the visitor",
+  "extractedContact": {
+    "name": "extracted full name or null",
+    "email": "extracted email or null",
+    "company": "extracted company or null",
+    "website": "extracted URL or null",
+    "budget": "extracted budget or null"
+  },
+  "signals": {
+    "hasDefinedScope": boolean,
+    "hasBudget": boolean,
+    "timelineUnder30Days": boolean,
+    "isAgencyRecurring": boolean,
+    "isDecisionMaker": boolean,
+    "requestsDiscoveryCall": boolean,
+    "longTermPotential": boolean
+  },
+  "bookingIntent": boolean,
+  "preferredDates": ["list of mentioned date/time slots if any"]
+}`;
+
+    // Format Gemini history
+    const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [
+      {
+        role: "user",
+        parts: [{ text: systemPrompt }],
+      },
+      {
+        role: "model",
+        parts: [{ text: "Understood. I will act as Naveen Gaur's AI Sales & Technical Assistant and always return the requested JSON object format." }],
+      },
+    ];
+
+    // Add previous messages (last 8 messages for context)
+    const recentMessages = conversation.messages.slice(-8);
+    for (const msg of recentMessages) {
+      contents.push({
+        role: msg.role === "assistant" ? "model" : "user",
+        parts: [{ text: msg.content }],
+      });
+    }
+
+    // Add current user message
+    contents.push({
+      role: "user",
+      parts: [{ text: message }],
+    });
+
+    let assistantReply = "Thanks for your message! How can I help you with your WordPress or web project?";
+    let extractedContact: { name?: string | null; email?: string | null; company?: string | null; website?: string | null; budget?: string | null } = {};
+    let signals: LeadScoringSignals = {};
+    let bookingIntent = false;
+    let preferredDates: string[] = [];
+
+    if (GEMINI_API_KEY) {
+      try {
+        const res = await fetch(`${GEMINI_ENDPOINT}?key=${GEMINI_API_KEY}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents,
+            generationConfig: {
+              temperature: 0.3,
+              maxOutputTokens: 1000,
+            },
+          }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            try {
+              const parsedAI = JSON.parse(jsonMatch[0]);
+              if (parsedAI.reply) {
+                assistantReply = parsedAI.reply;
+              }
+              if (parsedAI.extractedContact) {
+                extractedContact = parsedAI.extractedContact;
+              }
+              if (parsedAI.signals) {
+                signals = parsedAI.signals;
+              }
+              if (parsedAI.bookingIntent !== undefined) {
+                bookingIntent = Boolean(parsedAI.bookingIntent);
+              }
+              if (Array.isArray(parsedAI.preferredDates)) {
+                preferredDates = parsedAI.preferredDates;
+              }
+            } catch (parseErr) {
+              console.warn("Failed to parse Gemini JSON output, using raw text", parseErr);
+              if (rawText) assistantReply = rawText;
+            }
+          } else if (rawText) {
+            assistantReply = rawText;
+          }
+        } else {
+          const errText = await res.text().catch(() => "");
+          console.error("Gemini API call failed:", res.status, errText);
+        }
+      } catch (geminiErr) {
+        console.error("Gemini API invocation error:", geminiErr);
+      }
+    }
+
+    // 3. Persist messages to conversation
+    const userTimestamp = new Date();
+    await appendMessageToConversation(conversationId, {
+      role: "user",
+      content: message,
+      timestamp: userTimestamp,
+    });
+
+    const assistantTimestamp = new Date();
+    await appendMessageToConversation(conversationId, {
+      role: "assistant",
+      content: assistantReply,
+      timestamp: assistantTimestamp,
+    });
+
+    // 4. Also check regex for email in the message if not extracted by AI
+    if (!extractedContact.email) {
+      const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/;
+      const match = message.match(emailRegex);
+      if (match) {
+        extractedContact.email = match[1];
+      }
+    }
+
+    // 5. If email identified, create/update lead in MongoDB
+    if (extractedContact.email) {
+      const scoreResult = computeLeadScore(signals);
+      const lead = await upsertLead({
+        conversationId,
+        source: "chat_widget",
+        email: extractedContact.email,
+        name: extractedContact.name || undefined,
+        company: extractedContact.company || undefined,
+        website: extractedContact.website || undefined,
+        budget: extractedContact.budget || undefined,
+        leadType: signals.isAgencyRecurring ? "agency" : "direct",
+        leadScore: scoreResult,
+        status: bookingIntent ? "booking_requested" : "ai_engaging",
+        bookingRequest: bookingIntent
+          ? {
+              status: "requested",
+              preferredDates,
+              requestedAt: new Date(),
+            }
+          : undefined,
+      });
+
+      if (lead._id) {
+        await linkConversationToLead(conversationId, lead._id);
+      }
+
+      // Notify Naveen if hot lead or booking request
+      if (scoreResult.label === "hot" || bookingIntent) {
+        try {
+          const subject = bookingIntent
+            ? `📅 Meeting Requested via Chat: ${lead.name || lead.email}`
+            : `🔥 Hot Lead from Chat (${scoreResult.numeric} pts): ${lead.name || lead.email}`;
+
+          await resend.emails.send({
+            from: "Naveen Assistant <onboarding@resend.dev>",
+            to: process.env.CONTACT_EMAIL || "naveencg070@gmail.com",
+            replyTo: lead.email,
+            subject,
+            html: `
+              <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #0D0D0D; color: #FFFFFF; border-radius: 8px;">
+                <h2 style="color: #C4A35A; margin-top: 0;">${subject}</h2>
+                <p><strong>Name:</strong> ${lead.name || "Not provided"}</p>
+                <p><strong>Email:</strong> <a href="mailto:${lead.email}" style="color: #C4A35A;">${lead.email}</a></p>
+                ${lead.website ? `<p><strong>Website:</strong> ${lead.website}</p>` : ""}
+                ${lead.budget ? `<p><strong>Budget:</strong> ${lead.budget}</p>` : ""}
+                <p><strong>Score:</strong> ${scoreResult.numeric} points (${scoreResult.label.toUpperCase()})</p>
+                ${scoreResult.reasons.length ? `<p><strong>Signals:</strong> ${scoreResult.reasons.join(", ")}</p>` : ""}
+                ${preferredDates.length ? `<p><strong>Preferred Times:</strong> ${preferredDates.join(", ")}</p>` : ""}
+                <hr style="border: 0; border-top: 1px solid #333333; margin: 20px 0;" />
+                <h3 style="color: #C4A35A;">Latest Chat Excerpt:</h3>
+                <div style="background: #1A1A1A; padding: 12px; border-radius: 6px; font-size: 14px; line-height: 1.5;">
+                  <p><strong>User:</strong> ${message}</p>
+                  <p><strong>AI Assistant:</strong> ${assistantReply}</p>
+                </div>
+              </div>
+            `,
+          });
+        } catch (emailErr) {
+          console.error("Failed to send hot lead email notification:", emailErr);
+        }
+      }
+    }
+
+    return NextResponse.json({
+      conversationId,
+      sessionToken,
+      reply: assistantReply,
+    });
+  } catch (error) {
+    console.error("POST /api/chat error:", error);
+    return NextResponse.json({ error: "Failed to process chat message" }, { status: 500 });
+  }
+}
