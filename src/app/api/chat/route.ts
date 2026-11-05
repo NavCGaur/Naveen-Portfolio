@@ -207,48 +207,58 @@ You MUST respond with a single JSON object with the following schema:
           const data = await res.json();
           const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 
-          // Strip markdown code fences Gemini sometimes wraps around JSON
-          const stripped = rawText
-            .replace(/^```(?:json)?\s*/i, "")
-            .replace(/```\s*$/i, "")
-            .trim();
-
-          // Find the outermost JSON object
-          const jsonMatch = stripped.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            try {
-              const parsedAI = JSON.parse(jsonMatch[0]);
-              if (parsedAI.reply && typeof parsedAI.reply === "string") {
-                assistantReply = parsedAI.reply;
-              }
-              if (parsedAI.extractedContact) {
-                extractedContact = parsedAI.extractedContact;
-              }
-              if (parsedAI.signals) {
-                signals = parsedAI.signals;
-              }
-              if (parsedAI.bookingIntent !== undefined) {
-                bookingIntent = Boolean(parsedAI.bookingIntent);
-              }
-              if (Array.isArray(parsedAI.preferredDates)) {
-                preferredDates = parsedAI.preferredDates;
-              }
-            } catch (parseErr) {
-              console.warn("Failed to parse Gemini JSON output:", parseErr);
-              // If JSON parse failed, check if the raw text itself looks like a plain reply
-              // (Gemini occasionally returns plain text instead of JSON)
-              if (stripped && !stripped.startsWith("{")) {
-                assistantReply = stripped;
-              }
-              // Otherwise keep the hardcoded fallback — do NOT show raw JSON
-            }
-          } else if (stripped && !stripped.startsWith("{")) {
-            // Plain text response (no JSON object at all)
-            assistantReply = stripped;
+          // Robust JSON extraction — Gemini sometimes wraps response in code fences
+          // Try 4 methods in sequence until one succeeds
+          function tryParseJSON(text: string): Record<string, unknown> | null {
+            try { return JSON.parse(text.trim()); } catch { return null; }
           }
-          // If we still have the default fallback, log it for debugging
-          if (assistantReply === "Thanks for your message! How can I help you with your WordPress or web project?") {
-            console.warn("Gemini returned unparseable response. Raw:", rawText.slice(0, 300));
+
+          let parsedAI: Record<string, unknown> | null = null;
+
+          // Attempt 1: direct parse (Gemini returns pure JSON)
+          parsedAI = tryParseJSON(rawText);
+
+          // Attempt 2: strip ALL code fences (handles ```json...``` and ```...```)
+          if (!parsedAI) {
+            const fenceStripped = rawText.replace(/```(?:json)?\s*([\s\S]*?)```/g, "$1").trim();
+            parsedAI = tryParseJSON(fenceStripped);
+            // Attempt 3: extract first {...} block from fence-stripped text
+            if (!parsedAI) {
+              const m = fenceStripped.match(/\{[\s\S]*\}/);
+              if (m) parsedAI = tryParseJSON(m[0]);
+            }
+          }
+
+          // Attempt 4: extract first {...} block from raw text directly
+          if (!parsedAI) {
+            const rawMatch = rawText.match(/\{[\s\S]*\}/);
+            if (rawMatch) parsedAI = tryParseJSON(rawMatch[0]);
+          }
+
+          if (parsedAI) {
+            if (parsedAI.reply && typeof parsedAI.reply === "string") {
+              assistantReply = parsedAI.reply;
+            }
+            if (parsedAI.extractedContact) {
+              extractedContact = parsedAI.extractedContact as typeof extractedContact;
+            }
+            if (parsedAI.signals) {
+              signals = parsedAI.signals as typeof signals;
+            }
+            if (parsedAI.bookingIntent !== undefined) {
+              bookingIntent = Boolean(parsedAI.bookingIntent);
+            }
+            if (Array.isArray(parsedAI.preferredDates)) {
+              preferredDates = parsedAI.preferredDates as string[];
+            }
+          } else {
+            // All JSON parse attempts failed — check if plain text reply
+            const plainText = rawText.replace(/```(?:json)?/g, "").replace(/```/g, "").trim();
+            if (plainText && !plainText.startsWith("{")) {
+              assistantReply = plainText;
+            } else {
+              console.warn("Gemini returned unparseable response. Raw:", rawText.slice(0, 400));
+            }
           }
         } else {
           const errText = await res.text().catch(() => "");
