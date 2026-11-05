@@ -168,8 +168,8 @@ You MUST respond with a single JSON object with the following schema:
       },
     ];
 
-    // Add previous messages (last 8 messages for context)
-    const recentMessages = conversation.messages.slice(-8);
+    // Add previous messages (last 6 messages for context — keeps prompt under token limit)
+    const recentMessages = conversation.messages.slice(-6);
     for (const msg of recentMessages) {
       contents.push({
         role: msg.role === "assistant" ? "model" : "user",
@@ -183,7 +183,7 @@ You MUST respond with a single JSON object with the following schema:
       parts: [{ text: message }],
     });
 
-    let assistantReply = "Thanks for your message! How can I help you with your WordPress or web project?";
+    let assistantReply = "I'm having a brief moment of trouble — please try sending your message again, or reach out directly at hello@naveengaur.com and Naveen will get back to you.";
     let extractedContact: { name?: string | null; email?: string | null; company?: string | null; website?: string | null; budget?: string | null } = {};
     let signals: LeadScoringSignals = {};
     let bookingIntent = false;
@@ -198,7 +198,7 @@ You MUST respond with a single JSON object with the following schema:
             contents,
             generationConfig: {
               temperature: 0.3,
-              maxOutputTokens: 1000,
+              maxOutputTokens: 1500,
             },
           }),
         });
@@ -206,11 +206,19 @@ You MUST respond with a single JSON object with the following schema:
         if (res.ok) {
           const data = await res.json();
           const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+
+          // Strip markdown code fences Gemini sometimes wraps around JSON
+          const stripped = rawText
+            .replace(/^```(?:json)?\s*/i, "")
+            .replace(/```\s*$/i, "")
+            .trim();
+
+          // Find the outermost JSON object
+          const jsonMatch = stripped.match(/\{[\s\S]*\}/);
           if (jsonMatch) {
             try {
               const parsedAI = JSON.parse(jsonMatch[0]);
-              if (parsedAI.reply) {
+              if (parsedAI.reply && typeof parsedAI.reply === "string") {
                 assistantReply = parsedAI.reply;
               }
               if (parsedAI.extractedContact) {
@@ -226,11 +234,21 @@ You MUST respond with a single JSON object with the following schema:
                 preferredDates = parsedAI.preferredDates;
               }
             } catch (parseErr) {
-              console.warn("Failed to parse Gemini JSON output, using raw text", parseErr);
-              if (rawText) assistantReply = rawText;
+              console.warn("Failed to parse Gemini JSON output:", parseErr);
+              // If JSON parse failed, check if the raw text itself looks like a plain reply
+              // (Gemini occasionally returns plain text instead of JSON)
+              if (stripped && !stripped.startsWith("{")) {
+                assistantReply = stripped;
+              }
+              // Otherwise keep the hardcoded fallback — do NOT show raw JSON
             }
-          } else if (rawText) {
-            assistantReply = rawText;
+          } else if (stripped && !stripped.startsWith("{")) {
+            // Plain text response (no JSON object at all)
+            assistantReply = stripped;
+          }
+          // If we still have the default fallback, log it for debugging
+          if (assistantReply === "Thanks for your message! How can I help you with your WordPress or web project?") {
+            console.warn("Gemini returned unparseable response. Raw:", rawText.slice(0, 300));
           }
         } else {
           const errText = await res.text().catch(() => "");
