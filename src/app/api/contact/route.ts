@@ -6,8 +6,7 @@ import { computeLeadScore } from "@/lib/lead-scoring";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "dummy_key");
 const GEMINI_API_KEY = process.env.GOOGLE_GEMINI_API_KEY;
-const GEMINI_ENDPOINT =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+const GEMINI_MODELS = ["gemini-2.5-flash-lite", "gemini-2.5-flash"];
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -43,20 +42,30 @@ naveengaur.com
 
 Output plain text email body only (no Markdown formatting like asterisks or hashtags, no subject line).`;
 
-    const res = await fetch(`${GEMINI_ENDPOINT}?key=${GEMINI_API_KEY}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.3, maxOutputTokens: 500 },
-      }),
-    });
+    for (const model of GEMINI_MODELS) {
+      try {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: AbortSignal.timeout(8000),
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.3, maxOutputTokens: 500 },
+          }),
+        });
 
-    if (res.ok) {
-      const data = await res.json();
-      const generated = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (generated && generated.trim().length > 50) {
-        return generated.trim();
+        if (res.ok) {
+          const data = await res.json();
+          const generated = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (generated && generated.trim().length > 50) {
+            return generated.trim();
+          }
+        } else {
+          console.warn(`Gemini (${model}) ack generation failed with status ${res.status}`);
+        }
+      } catch (err) {
+        console.warn(`Gemini (${model}) ack generation error:`, err);
       }
     }
   } catch (err) {

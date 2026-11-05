@@ -15,8 +15,7 @@ import { computeLeadScore, LeadScoringSignals } from "@/lib/lead-scoring";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "dummy_key");
 const GEMINI_API_KEY = process.env.GOOGLE_GEMINI_API_KEY;
-const GEMINI_ENDPOINT =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+const GEMINI_MODELS = ["gemini-2.5-flash-lite", "gemini-2.5-flash"];
 
 const chatRequestSchema = z.object({
   conversationId: z.string().optional(),
@@ -191,83 +190,89 @@ You MUST respond with a single JSON object with the following schema:
     let preferredDates: string[] = [];
 
     if (GEMINI_API_KEY) {
-      try {
-        const res = await fetch(`${GEMINI_ENDPOINT}?key=${GEMINI_API_KEY}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          signal: AbortSignal.timeout(8000),
-          body: JSON.stringify({
-            contents,
-            generationConfig: {
-              temperature: 0.3,
-              maxOutputTokens: 1500,
-            },
-          }),
-        });
+      for (const model of GEMINI_MODELS) {
+        try {
+          const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+          const res = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            signal: AbortSignal.timeout(8000),
+            body: JSON.stringify({
+              contents,
+              generationConfig: {
+                temperature: 0.3,
+                maxOutputTokens: 1500,
+              },
+            }),
+          });
 
-        if (res.ok) {
-          const data = await res.json();
-          const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+          if (res.ok) {
+            const data = await res.json();
+            const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 
-          // Robust JSON extraction — Gemini sometimes wraps response in code fences
-          // Try 4 methods in sequence until one succeeds
-          function tryParseJSON(text: string): Record<string, unknown> | null {
-            try { return JSON.parse(text.trim()); } catch { return null; }
-          }
+            // Robust JSON extraction — Gemini sometimes wraps response in code fences
+            // Try 4 methods in sequence until one succeeds
+            function tryParseJSON(text: string): Record<string, unknown> | null {
+              try { return JSON.parse(text.trim()); } catch { return null; }
+            }
 
-          let parsedAI: Record<string, unknown> | null = null;
+            let parsedAI: Record<string, unknown> | null = null;
 
-          // Attempt 1: direct parse (Gemini returns pure JSON)
-          parsedAI = tryParseJSON(rawText);
+            // Attempt 1: direct parse (Gemini returns pure JSON)
+            parsedAI = tryParseJSON(rawText);
 
-          // Attempt 2: strip ALL code fences (handles ```json...``` and ```...```)
-          if (!parsedAI) {
-            const fenceStripped = rawText.replace(/```(?:json)?\s*([\s\S]*?)```/g, "$1").trim();
-            parsedAI = tryParseJSON(fenceStripped);
-            // Attempt 3: extract first {...} block from fence-stripped text
+            // Attempt 2: strip ALL code fences (handles ```json...``` and ```...```)
             if (!parsedAI) {
-              const m = fenceStripped.match(/\{[\s\S]*\}/);
-              if (m) parsedAI = tryParseJSON(m[0]);
+              const fenceStripped = rawText.replace(/```(?:json)?\s*([\s\S]*?)```/g, "$1").trim();
+              parsedAI = tryParseJSON(fenceStripped);
+              // Attempt 3: extract first {...} block from fence-stripped text
+              if (!parsedAI) {
+                const m = fenceStripped.match(/\{[\s\S]*\}/);
+                if (m) parsedAI = tryParseJSON(m[0]);
+              }
             }
-          }
 
-          // Attempt 4: extract first {...} block from raw text directly
-          if (!parsedAI) {
-            const rawMatch = rawText.match(/\{[\s\S]*\}/);
-            if (rawMatch) parsedAI = tryParseJSON(rawMatch[0]);
-          }
+            // Attempt 4: extract first {...} block from raw text directly
+            if (!parsedAI) {
+              const rawMatch = rawText.match(/\{[\s\S]*\}/);
+              if (rawMatch) parsedAI = tryParseJSON(rawMatch[0]);
+            }
 
-          if (parsedAI) {
-            if (parsedAI.reply && typeof parsedAI.reply === "string") {
-              assistantReply = parsedAI.reply;
-            }
-            if (parsedAI.extractedContact) {
-              extractedContact = parsedAI.extractedContact as typeof extractedContact;
-            }
-            if (parsedAI.signals) {
-              signals = parsedAI.signals as typeof signals;
-            }
-            if (parsedAI.bookingIntent !== undefined) {
-              bookingIntent = Boolean(parsedAI.bookingIntent);
-            }
-            if (Array.isArray(parsedAI.preferredDates)) {
-              preferredDates = parsedAI.preferredDates as string[];
+            if (parsedAI) {
+              if (parsedAI.reply && typeof parsedAI.reply === "string") {
+                assistantReply = parsedAI.reply;
+              }
+              if (parsedAI.extractedContact) {
+                extractedContact = parsedAI.extractedContact as typeof extractedContact;
+              }
+              if (parsedAI.signals) {
+                signals = parsedAI.signals as typeof signals;
+              }
+              if (parsedAI.bookingIntent !== undefined) {
+                bookingIntent = Boolean(parsedAI.bookingIntent);
+              }
+              if (Array.isArray(parsedAI.preferredDates)) {
+                preferredDates = parsedAI.preferredDates as string[];
+              }
+              break; // Successfully got response, stop model loop!
+            } else {
+              // All JSON parse attempts failed — check if plain text reply
+              const plainText = rawText.replace(/```(?:json)?/g, "").replace(/```/g, "").trim();
+              if (plainText && !plainText.startsWith("{")) {
+                assistantReply = plainText;
+                break;
+              } else {
+                console.warn(`Gemini (${model}) returned unparseable response. Raw:`, rawText.slice(0, 400));
+              }
             }
           } else {
-            // All JSON parse attempts failed — check if plain text reply
-            const plainText = rawText.replace(/```(?:json)?/g, "").replace(/```/g, "").trim();
-            if (plainText && !plainText.startsWith("{")) {
-              assistantReply = plainText;
-            } else {
-              console.warn("Gemini returned unparseable response. Raw:", rawText.slice(0, 400));
-            }
+            const errText = await res.text().catch(() => "");
+            console.warn(`Gemini (${model}) call failed with status ${res.status}:`, errText.slice(0, 200));
+            // Loop continues to next model on 429 or other error
           }
-        } else {
-          const errText = await res.text().catch(() => "");
-          console.error("Gemini API call failed:", res.status, errText);
+        } catch (geminiErr) {
+          console.warn(`Gemini (${model}) invocation error:`, geminiErr);
         }
-      } catch (geminiErr) {
-        console.error("Gemini API invocation error:", geminiErr);
       }
     }
 
