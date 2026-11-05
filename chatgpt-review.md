@@ -3776,3 +3776,340 @@ One more strategic point: Start with your Agency page, where the value of a qual
 That way, you can measure actual commercial value before expanding the system across your portfolio.
 
 Bring me Antigravity's revised plan before authorising it to write code.
+
+# Task: Kat Grace Website – Existing WordPress Inventory
+
+We are preparing to implement a revised website architecture for katgrace.com.
+
+You have access to the WordPress hosting environment through the existing SSH connection.
+
+For this task, perform a READ-ONLY technical and structural audit. Do not modify website files, database records, WordPress settings, pages, posts, plugins, menus, SEO settings or redirects.
+
+## 1. WordPress Environment
+
+Identify:
+
+- WordPress version
+- PHP version
+- Active theme and child theme, if applicable
+- Active plugins and versions
+- Elementor and Elementor Pro status, if installed
+- LiteSpeed Cache configuration
+- SEO plugin (Yoast, Rank Math or other)
+- Active caching mechanisms
+- Available WordPress CLI access
+- Database configuration and table prefix (do not expose credentials)
+
+## 2. Page Inventory
+
+Retrieve all published pages, including:
+
+- Page title
+- Page ID
+- URL/permalink
+- Publication status
+- Parent page
+- Last modified date
+
+Include drafts separately if they appear relevant to the planned website structure.
+
+## 3. Blog Inventory
+
+Retrieve:
+
+- Published posts
+- Permalinks
+- Categories
+- Tags
+- Publication dates
+- Last modified dates
+
+Do not retrieve or expose private user information.
+
+## 4. Navigation
+
+Identify:
+
+- All registered navigation menus
+- Menu locations
+- Menu items
+- Dropdown relationships
+- Links to existing service pages
+
+## 5. Forms and Booking
+
+Identify existing:
+
+- Contact forms
+- Booking integrations
+- Form plugins
+- Form submission storage mechanisms
+- Relevant form-related pages
+
+Do not retrieve actual customer submissions or personal data.
+
+## 6. SEO Configuration
+
+Identify:
+
+- SEO plugin and global settings
+- Sitemap URL
+- Robots.txt configuration
+- Existing noindex pages
+- Canonical configuration
+- Existing redirect mechanisms and rules
+- Structured data configuration, where identifiable
+
+Do not change any settings.
+
+## 7. Technical Checks
+
+Inspect:
+
+- HTTPS and preferred hostname configuration
+- Existing staging references on production
+- Cache configuration
+- Backup plugin status
+- Relevant security plugins
+- Existing image optimisation configuration
+
+Do not expose secrets, API keys, passwords, tokens or database credentials.
+
+## 8. Final Report
+
+Produce a structured report with:
+
+A. WordPress environment
+
+B. Published page inventory
+
+C. Blog and category inventory
+
+D. Navigation structure
+
+E. Forms and booking integrations
+
+F. SEO configuration
+
+G. Technical observations
+
+H. Potential risks and dependencies
+
+I. Questions requiring Naveen's confirmation
+
+IMPORTANT:
+
+This is an inspection-only task.
+
+Do not make any modifications.
+
+Do not delete, rename, redirect, update or publish anything.
+
+Do not assume that an existing page is obsolete simply because it is absent from the new architecture.
+
+Present the findings clearly so they can be compared against Kat's approved November 2026 website brief.
+
+I recommend turning this work into three separate, search-intent-driven articles, rather than one generic case study about website cleanup.
+
+The target reader is not simply someone learning SEO. It is a WordPress business owner, agency owner, or project manager who has a website migration, messy URL structure, indexing problem, or technical SEO task and is evaluating whether a developer can handle it safely.
+
+The content should answer the question behind their search:
+
+“Has this developer actually handled this kind of WordPress technical work, and can I trust them with my client's live website?”
+
+Use the Kat Grace project as the practical evidence across all three articles, while keeping client-identifying or commercially sensitive details out unless Kat has approved their publication.
+
+## Recommended 3 articles
+
+### 1. WordPress URL Redirects: How to Change Page URLs Without Losing SEO Rankings
+
+Highest hiring intent
+
+Primary keyword: WordPress 301 redirects
+
+Related search phrases:
+
+- WordPress URL redirect setup
+- WordPress permalink change SEO
+- How to redirect old URLs to new URLs
+- WordPress 301 redirect expert
+- Fix broken URLs after website migration
+- WordPress redirect mapping
+
+What potential clients want to know
+
+A business or agency has changed its website structure, renamed pages, migrated content, or discovered hundreds of old URLs. They need someone who can implement redirects without damaging existing search visibility.
+
+Article angle: A real implementation case study
+
+Use the Kat Grace project to demonstrate:
+
+- Identifying obsolete and duplicate URLs.
+- Mapping old URLs to relevant live pages.
+- Implementing 301 redirects through Rank Math.
+- Preserving `/sessions/` as the established service URL.
+- Redirecting `/private-integration-session/` to `/sessions/`.
+- Redirecting duplicate pages to their relevant canonical counterparts.
+- Verifying HTTP 301 responses and destination URLs.
+
+Suggested structure
+
+1. Why changing WordPress URLs can affect SEO.
+2. What is a 301 redirect, and when should you use it?
+3. How to create a URL redirect mapping spreadsheet.
+4. How to identify duplicate, obsolete and valuable URLs.
+5. Implementing 301 redirects in WordPress.
+6. How to avoid redirect chains, loops and irrelevant redirects.
+7. Real-world case study: Kat Grace URL restructuring.
+8. How to verify redirects after implementation.
+9. When should you hire a WordPress developer?
+
+Conversion opportunity: WordPress URL restructuring and redirect implementation service.
+
+### 2. WordPress Sitemap Cleanup: How to Remove Old Pages Without Harming SEO
+
+Strong technical SEO intent
+
+Primary keyword: WordPress XML sitemap optimization
+
+Related search phrases:
+
+- WordPress sitemap not updating
+- Remove URLs from XML sitemap WordPress
+- Rank Math sitemap settings
+- WordPress pages not indexing
+- Remove unwanted pages from Google
+- WordPress noindex vs 301 redirect
+- Fix sitemap errors in Google Search Console
+
+What potential clients want to know
+
+Their WordPress website contains old landing pages, theme demo content, duplicate pages, outdated URLs and unnecessary sitemap entries. They need a developer who understands the difference between deleting a page, drafting it, noindexing it, redirecting it and excluding it from a sitemap.
+
+Article angle: The Kat Grace sitemap and indexation cleanup
+
+Use the actual implementation:
+
+- Identifying 85 obsolete theme demo and duplicate pages.
+- Moving pages to Draft instead of permanently deleting them.
+- Identifying pages that deserved 301 redirects.
+- Preserving active lead-generation pages.
+- Removing the obsolete Blossom Portfolio sitemap from Rank Math.
+- Reducing `page-sitemap.xml` from 123 URLs to 38.
+- Purging Rank Math and LiteSpeed caches.
+- Verifying the updated sitemap output.
+
+Suggested structure
+
+1. Why WordPress websites accumulate unnecessary sitemap URLs.
+2. What should and should not appear in an XML sitemap?
+3. Published vs Draft vs Noindex vs Redirect vs 404.
+4. How to clean up a Rank Math XML sitemap.
+5. How to handle old theme demo pages.
+6. How to preserve important landing pages and lead-generation assets.
+7. Submitting the updated sitemap in Google Search Console.
+8. Case study: Cleaning up Kat Grace's WordPress sitemap.
+9. Common sitemap optimization mistakes.
+
+Conversion opportunity: WordPress technical SEO cleanup and sitemap optimization.
+
+### 3. WordPress Technical SEO Cleanup: Fix Duplicate Pages, Indexing Issues and Website Structure
+
+Best agency-owner positioning
+
+Primary keyword: WordPress technical SEO services
+
+Related search phrases:
+
+- WordPress technical SEO expert
+- WordPress SEO developer
+- WordPress website SEO audit and fixes
+- WordPress duplicate content issues
+- WordPress website structure optimization
+- WordPress SEO migration specialist
+- Hire WordPress developer for technical SEO
+
+What potential clients want to know
+
+They already understand that their website has technical SEO problems. They need a developer who can investigate the existing WordPress installation, understand its dependencies, plan the changes and implement them without disrupting the live website.
+
+This article should position you as someone who can handle implementation, not just produce an audit PDF.
+
+Article angle: The complete Kat Grace cleanup case study
+
+Present the project as an end-to-end technical implementation:
+
+| Before                               | After                                         |
+| ------------------------------------ | --------------------------------------------- |
+| 124 published pages                  | 39 published pages                            |
+| 85 obsolete pages publicly published | 85 moved to Draft                             |
+| Duplicate and obsolete URLs          | Relevant 301 redirect mapping                 |
+| Legacy portfolio sitemap             | Removed from Rank Math sitemap index          |
+| 123 URLs in page sitemap             | 38 URLs                                       |
+| 2 reported redirect rules            | 24 reported redirect rules                    |
+| Conflicting services navigation      | Distinct `/offerings/` and `/sessions/` roles |
+
+Suggested structure
+
+1. Why WordPress websites develop technical SEO problems.
+2. Auditing an existing WordPress installation before making changes.
+3. Identifying duplicate pages and obsolete theme content.
+4. Planning a safe URL architecture.
+5. Implementing redirects and handling removed pages.
+6. Optimizing XML sitemaps and indexation signals.
+7. Preserving important pages, forms and lead-generation assets.
+8. Production verification using WP-CLI, HTTP responses and Google Search Console.
+9. Kat Grace: Before-and-after technical SEO case study.
+10. What to look for when hiring a WordPress technical SEO developer.
+
+Conversion opportunity: WordPress technical SEO implementation for businesses and white-label agency partnerships.
+
+## 7. How I would connect these articles
+
+Don't publish three disconnected blog posts. Build a small technical SEO authority cluster on your portfolio.
+
+Pillar article
+
+WordPress Technical SEO Cleanup
+
+The complete implementation case study
+
+301 Redirects & URL Restructuring
+
+Focused technical implementation guide
+
+XML Sitemap & Indexation Cleanup
+
+Focused technical implementation guide
+
+All three articles should link to your relevant WordPress development and technical SEO service pages, as well as to one another where contextually relevant.
+
+## 8. How to make the case study convincing to agency owners
+
+The differentiator is not simply saying you know Rank Math, WP-CLI or 301 redirects. Many developers can claim that.
+
+You need to demonstrate that you understand the risks involved in making changes to an established website.
+
+Include these pieces of evidence:
+
+- Before-and-after page inventory.
+- A sample URL mapping table showing old URL, action and destination.
+- Actual HTTP response verification.
+- Sitemap before-and-after figures.
+- Examples of pages deliberately preserved because they support lead generation.
+- A clear explanation of why certain URLs were redirected and others were moved to Draft.
+- Screenshots of the WordPress and Rank Math configuration, with sensitive information removed.
+
+One important positioning distinction: this Kat Grace project demonstrates WordPress URL restructuring and technical SEO cleanup, not a complete domain or hosting migration. We can discuss migration expertise in the broader articles, but should not present this particular project as proof of a full domain migration.
+
+## My publishing recommendation
+
+| Order | Article                         | Primary objective                                 |
+| ----- | ------------------------------- | ------------------------------------------------- |
+| 1     | WordPress Technical SEO Cleanup | Establish implementation authority                |
+| 2     | WordPress URL Redirects         | Attract clients with a specific technical problem |
+| 3     | WordPress Sitemap Cleanup       | Capture Rank Math and indexing-related searches   |
+
+I would publish Article 1 first, then the two supporting guides. The complete case study gives readers a reason to trust your expertise; the other two capture more specific searches.
+
+One strategic recommendation: Include a dedicated section in each article titled something like “Need a WordPress developer to implement this?” Explain that you work with business owners and agencies, including white-label implementation support. That addresses the hiring decision directly rather than treating the articles as purely educational SEO content.

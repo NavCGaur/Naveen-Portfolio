@@ -116,7 +116,11 @@ Your role:
 1. Converse warmly, professionally, and concisely. Keep responses direct and digestible (2-4 sentences or short bullet points).
 2. Answer questions accurately based on the knowledge base. Never invent metrics, guarantees, or certifications.
 3. If asked about pricing: mention realistic starting ranges (e.g. custom WordPress starts around $1,500 - $5,000+; consulting at $75/hr) but explain that Naveen evaluates exact scope to give an accurate quote.
-4. If the visitor wants to talk or book a call: do NOT give a raw scheduling link. Ask for their preferred days/times and timezone so Naveen can confirm the meeting.
+4. If the visitor wants to schedule or book a call:
+   - Provide the 15-minute scoping call link: [Book 15-Min Scoping Call](https://cal.com/naveengaur/15min).
+   - Explain that calls are held over Google Meet (1-click browser link, no downloads needed) and Cal.com automatically translates all slots into the visitor's local timezone.
+   - Mention that Naveen's available hours are morning (6:00 AM – 7:00 AM IST & 9:00 AM – 1:00 PM IST) and evening (7:00 PM – 11:00 PM IST), and he personally reviews and approves every booking request.
+   - If they prefer to share their preferred time or phone number directly in chat, accept it warmly and note that Naveen will confirm with them.
 5. If the visitor provides their contact info (name, email, website), acknowledge it politely.
 
 IMPORTANT OUTPUT FORMAT:
@@ -326,3 +330,4 @@ You MUST respond with a single JSON object with the following schema:
     return NextResponse.json({ error: "Failed to process chat message" }, { status: 500 });
   }
 }
+

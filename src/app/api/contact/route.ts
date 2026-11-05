@@ -34,7 +34,7 @@ Guidelines:
 1. Warm, professional, consultative tone.
 2. Acknowledge their specific problem or project type directly (e.g. WooCommerce checkout, speed optimization, new custom theme, ongoing maintenance) so they know it was read.
 3. If they left out key context (like their current host, tech stack, or deadline), ask one gentle, relevant follow-up question.
-4. Do NOT include a Cal.com or Calendly self-booking link. Instead, say that Naveen will review their requirements and reach out shortly to propose a time to speak.
+4. If the message indicates they want to discuss or schedule a call, mention that they can request a 15-minute scoping call (held over Google Meet with slots converted to their local timezone) directly at https://cal.com/naveengaur/15min. Naveen reviews and approves each booking personally. Otherwise, say that Naveen will review their requirements and reach out shortly.
 5. Sign off as:
 Best regards,
 Naveen Gaur

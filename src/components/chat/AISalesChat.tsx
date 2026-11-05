@@ -20,6 +20,92 @@ const STARTER_PROMPTS = [
   "How can I book a call with Naveen?",
 ];
 
+function FormattedMessage({ content, isUser }: { content: string; isUser: boolean }) {
+  if (isUser) {
+    return <span className="whitespace-pre-wrap">{content}</span>;
+  }
+
+  // Regex to match markdown links: [text](url) or standalone URLs
+  const linkRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s]+)/g;
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let hasCalLink = false;
+
+  while ((match = linkRegex.exec(content)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(content.slice(lastIndex, match.index));
+    }
+
+    if (match[1] && match[2]) {
+      // Markdown link [text](url)
+      const label = match[1];
+      const url = match[2];
+      const isCal = url.includes("cal.com");
+      if (isCal) hasCalLink = true;
+
+      parts.push(
+        <a
+          key={match.index}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cal-link={isCal ? "naveengaur/15min" : undefined}
+          data-cal-config={isCal ? '{"layout":"month_view","theme":"dark"}' : undefined}
+          className="inline-flex items-center gap-1 text-[#C4A35A] underline hover:text-[#d4b46a] font-semibold break-all"
+        >
+          {label}
+        </a>
+      );
+    } else if (match[3]) {
+      // Raw URL
+      const url = match[3];
+      const isCal = url.includes("cal.com");
+      if (isCal) hasCalLink = true;
+
+      parts.push(
+        <a
+          key={match.index}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cal-link={isCal ? "naveengaur/15min" : undefined}
+          data-cal-config={isCal ? '{"layout":"month_view","theme":"dark"}' : undefined}
+          className="inline-flex items-center gap-1 text-[#C4A35A] underline hover:text-[#d4b46a] font-semibold break-all"
+        >
+          {url}
+        </a>
+      );
+    }
+    lastIndex = linkRegex.lastIndex;
+  }
+
+  if (lastIndex < content.length) {
+    parts.push(content.slice(lastIndex));
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="whitespace-pre-wrap">{parts.length > 0 ? parts : content}</span>
+      {hasCalLink && (
+        <a
+          href="https://cal.com/naveengaur/15min"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cal-link="naveengaur/15min"
+          data-cal-config='{"layout":"month_view","theme":"dark"}'
+          className="mt-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C4A35A] text-[#0D0D0D] font-bold text-[11px] hover:bg-[#d4b46a] transition-colors shadow cursor-pointer w-fit"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Select Time Slot on Cal.com
+        </a>
+      )}
+    </div>
+  );
+}
+
 export default function AISalesChat({ isOpen, onClose }: AISalesChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -199,10 +285,10 @@ export default function AISalesChat({ isOpen, onClose }: AISalesChatProps) {
               className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
                 msg.role === "user"
                   ? "bg-[#C4A35A] text-[#0D0D0D] font-medium rounded-tr-sm"
-                  : "bg-[#181818] text-white/90 border border-white/10 rounded-tl-sm whitespace-pre-wrap"
+                  : "bg-[#181818] text-white/90 border border-white/10 rounded-tl-sm"
               }`}
             >
-              {msg.content}
+              <FormattedMessage content={msg.content} isUser={msg.role === "user"} />
             </div>
           </div>
         ))}
@@ -257,3 +343,4 @@ export default function AISalesChat({ isOpen, onClose }: AISalesChatProps) {
     </div>
   );
 }
+
