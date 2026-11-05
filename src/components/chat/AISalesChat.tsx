@@ -42,21 +42,39 @@ function FormattedMessage({ content, isUser }: { content: string; isUser: boolea
       const label = match[1];
       const url = match[2];
       const isCal = url.includes("cal.com");
-      if (isCal) hasCalLink = true;
 
-      parts.push(
-        <a
-          key={match.index}
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-cal-link={isCal ? "naveen-gaur/15min" : undefined}
-          data-cal-config={isCal ? '{"layout":"month_view","theme":"dark"}' : undefined}
-          className="inline-flex items-center gap-1 text-[#C4A35A] underline hover:text-[#d4b46a] font-semibold break-all"
-        >
-          {label}
-        </a>
-      );
+      if (isCal) {
+        // Render Cal.com links as inline buttons — no separate bottom button needed
+        hasCalLink = true;
+        parts.push(
+          <a
+            key={match.index}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cal-link="naveen-gaur/15min"
+            data-cal-config='{"layout":"month_view","theme":"dark"}'
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C4A35A] text-[#0D0D0D] font-bold text-[11px] hover:bg-[#d4b46a] transition-colors shadow cursor-pointer"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            {label}
+          </a>
+        );
+      } else {
+        parts.push(
+          <a
+            key={match.index}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-[#C4A35A] underline hover:text-[#d4b46a] font-semibold break-all"
+          >
+            {label}
+          </a>
+        );
+      }
     } else if (match[3]) {
       // Raw URL
       const url = match[3];
@@ -87,21 +105,6 @@ function FormattedMessage({ content, isUser }: { content: string; isUser: boolea
   return (
     <div className="flex flex-col gap-2">
       <span className="whitespace-pre-wrap">{parts.length > 0 ? parts : content}</span>
-      {hasCalLink && (
-        <a
-          href="https://cal.com/naveen-gaur/15min"
-          target="_blank"
-          rel="noopener noreferrer"
-          data-cal-link="naveen-gaur/15min"
-          data-cal-config='{"layout":"month_view","theme":"dark"}'
-          className="mt-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C4A35A] text-[#0D0D0D] font-bold text-[11px] hover:bg-[#d4b46a] transition-colors shadow cursor-pointer w-fit"
-        >
-          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          Select Time Slot on Cal.com
-        </a>
-      )}
     </div>
   );
 }
