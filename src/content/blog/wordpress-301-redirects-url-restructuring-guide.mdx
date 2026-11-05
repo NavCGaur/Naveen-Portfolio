@@ -73,7 +73,9 @@ Before implementing a single redirect, you must understand two widespread mistak
 ### Mistake A: Redirect Chains and Loops
 A redirect chain occurs when an incoming request is passed through multiple intermediate hops before arriving at its final destination:
 
-$$\text{URL A} \xrightarrow{\text{301}} \text{URL B} \xrightarrow{\text{301}} \text{URL C} \xrightarrow{\text{301}} \text{URL D}$$
+```txt
+URL A  ──(301)──>  URL B  ──(301)──>  URL C  ──(301)──>  URL D (Final Destination)
+```
 
 Every hop in a chain:
 - Adds **200ms to 500ms** of server latency.
