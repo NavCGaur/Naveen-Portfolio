@@ -42,3 +42,4 @@ export async function getDb(): Promise<Db> {
   const client = await getMongoClient();
   return client.db(dbName);
 }
+

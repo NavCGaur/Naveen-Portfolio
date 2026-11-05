@@ -56,3 +56,4 @@ export function computeLeadScore(signals: LeadScoringSignals): LeadScoreResult {
 
   return { numeric: score, label, reasons };
 }
+

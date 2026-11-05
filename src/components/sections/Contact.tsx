@@ -105,7 +105,7 @@ export default function Contact() {
 
             {/* Book a Call Button */}
             <a
-              href="https://cal.com/naveengaur"
+              href="https://cal.com/naveen-gaur/15min"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => ga.event({ action: "click", category: "conversion", label: "Book a Call" })}

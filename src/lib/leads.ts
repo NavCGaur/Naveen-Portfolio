@@ -122,3 +122,4 @@ export async function upsertLead(data: Partial<LeadDocument> & { email: string }
     return { ...newDoc, _id: result.insertedId };
   }
 }
+

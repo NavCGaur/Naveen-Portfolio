@@ -443,7 +443,7 @@ export default function AboutPage() {
                 Message on WhatsApp
               </a>
               <a
-                href="https://cal.com/naveengaur"
+                href="https://cal.com/naveen-gaur/15min"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border border-white/20 text-white/80 px-7 py-4 rounded-sm text-[15px] font-medium hover:bg-white/5 transition-colors"

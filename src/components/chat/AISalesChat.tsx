@@ -50,7 +50,7 @@ function FormattedMessage({ content, isUser }: { content: string; isUser: boolea
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          data-cal-link={isCal ? "naveengaur/15min" : undefined}
+          data-cal-link={isCal ? "naveen-gaur/15min" : undefined}
           data-cal-config={isCal ? '{"layout":"month_view","theme":"dark"}' : undefined}
           className="inline-flex items-center gap-1 text-[#C4A35A] underline hover:text-[#d4b46a] font-semibold break-all"
         >
@@ -69,7 +69,7 @@ function FormattedMessage({ content, isUser }: { content: string; isUser: boolea
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          data-cal-link={isCal ? "naveengaur/15min" : undefined}
+          data-cal-link={isCal ? "naveen-gaur/15min" : undefined}
           data-cal-config={isCal ? '{"layout":"month_view","theme":"dark"}' : undefined}
           className="inline-flex items-center gap-1 text-[#C4A35A] underline hover:text-[#d4b46a] font-semibold break-all"
         >
@@ -89,10 +89,10 @@ function FormattedMessage({ content, isUser }: { content: string; isUser: boolea
       <span className="whitespace-pre-wrap">{parts.length > 0 ? parts : content}</span>
       {hasCalLink && (
         <a
-          href="https://cal.com/naveengaur/15min"
+          href="https://cal.com/naveen-gaur/15min"
           target="_blank"
           rel="noopener noreferrer"
-          data-cal-link="naveengaur/15min"
+          data-cal-link="naveen-gaur/15min"
           data-cal-config='{"layout":"month_view","theme":"dark"}'
           className="mt-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C4A35A] text-[#0D0D0D] font-bold text-[11px] hover:bg-[#d4b46a] transition-colors shadow cursor-pointer w-fit"
         >

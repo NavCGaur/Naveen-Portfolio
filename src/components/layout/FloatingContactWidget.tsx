@@ -66,7 +66,7 @@ export default function FloatingContactWidget() {
             {/* Option 1: Book 15-Min Call */}
             <button
               data-cal-namespace=""
-              data-cal-link="naveengaur/15min"
+              data-cal-link="naveen-gaur/15min"
               data-cal-config='{"layout":"month_view","theme":"dark"}'
               className="flex items-center gap-2.5 bg-[#1F2937] hover:bg-[#C4A35A] text-white hover:text-black text-xs font-medium py-2 px-3.5 rounded-full shadow-lg border border-white/10 transition-all duration-200 group text-left cursor-pointer"
             >
@@ -173,7 +173,7 @@ export default function FloatingContactWidget() {
           {/* Book Call Button (Cal.com Modal Embed) */}
           <button
             data-cal-namespace=""
-            data-cal-link="naveengaur/15min"
+            data-cal-link="naveen-gaur/15min"
             data-cal-config='{"layout":"month_view","theme":"dark"}'
             className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-[#C4A35A] text-[#0D0D0D] hover:bg-[#d4b46a] transition-all duration-200 shadow-sm cursor-pointer"
             title="Book 15-Min Call"
