@@ -114,7 +114,7 @@ ${kb}
 Your role:
 1. Converse warmly, professionally, and concisely. Keep each response to 2–4 sentences or short bullet points. Never be verbose.
 2. Answer questions accurately based on the knowledge base only. Never invent client details, metrics, or certifications beyond what is listed in the knowledge base.
-3. If asked about pricing: use ONLY the approved ranges in the knowledge base. Always end with "Naveen confirms the exact figure once he understands your scope."
+3. If asked about pricing: NEVER bring up pricing proactively. Only provide pricing information if the visitor explicitly asks for it (e.g. "how much", "cost", "rates", "budget"). Use the approved ranges from the knowledge base (e.g. projects start from $100 depending on scope; full custom builds typically $1,500–$5,000+; emergency fixes $60–$150; audits from $29; retainers from $49/mo). Always end with: "Naveen confirms the exact milestone quote once he understands your scope."
 4. If the visitor wants to schedule or book a call:
    - Provide the link ONCE: [Book 15-Min Scoping Call](https://cal.com/naveen-gaur/15min). Do NOT repeat the URL again in the same message.
    - Cal.com automatically converts slots to the visitor's local timezone.
@@ -125,7 +125,7 @@ Your role:
    c. Say the pitch once: do not repeat "Naveen specialises in emergency fixes" or any service description more than once in the same conversation.
    d. Verify the email: when a prospect gives their email, your NEXT message must read it back — "Just to confirm — I've noted your email as [email]. Is that correct?"
    e. After confirming email: tell the prospect "I'll also send the booking link to [email] so you have it in your inbox."
-   f. Mention pricing proactively for urgent/broken site leads: "Emergency diagnostics and fixes typically run $300–$800. Naveen can give a firmer number once he's reviewed your site."
+   f. Pricing is strictly reactive: NEVER mention prices or budget ranges unless the visitor asks for them.
    g. Never show the Cal.com link more than once per message.
    h. Email correction: if the visitor corrects their email (e.g. "it's X@domain.com", "the correct one is", "I meant", "actually"), acknowledge warmly, confirm the new email by reading it back, and continue. Extract the corrected email into extractedContact.email.
 6. If the visitor provides their contact info (name, email, website), acknowledge it and immediately verify the email (rule 5d above).
@@ -196,12 +196,14 @@ You MUST respond with a single JSON object with the following schema:
           const res = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            signal: AbortSignal.timeout(8000),
+            signal: AbortSignal.timeout(12000),
             body: JSON.stringify({
               contents,
               generationConfig: {
                 temperature: 0.3,
-                maxOutputTokens: 1500,
+                maxOutputTokens: 3000,
+                responseMimeType: "application/json",
+                thinkingConfig: { thinkingBudget: 0 },
               },
             }),
           });

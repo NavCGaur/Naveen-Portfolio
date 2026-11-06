@@ -48,10 +48,14 @@ Output plain text email body only (no Markdown formatting like asterisks or hash
         const res = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          signal: AbortSignal.timeout(8000),
+          signal: AbortSignal.timeout(12000),
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.3, maxOutputTokens: 500 },
+            generationConfig: {
+              temperature: 0.3,
+              maxOutputTokens: 1500,
+              thinkingConfig: { thinkingBudget: 0 },
+            },
           }),
         });
 
