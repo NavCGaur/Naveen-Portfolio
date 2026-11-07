@@ -73,7 +73,7 @@ export default function WhyMe() {
           transition={{ duration: 0.4, delay: 0.05 }}
           className="font-serif font-bold text-[clamp(28px,4vw,40px)] tracking-[-0.01em] leading-[1.1] text-ink mb-12"
         >
-          Not another plugin-pusher
+          Engineering depth, not quick fixes
         </motion.h2>
 
         <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
