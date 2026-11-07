@@ -259,7 +259,7 @@ export default function Contact() {
                   <div className="text-[12px] tracking-[0.08em] uppercase text-gold mb-1.5 font-medium">Current Status</div>
                   <div className="text-[15px] text-white font-medium flex items-center gap-2.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#25D366] shadow-[0_0_10px_rgba(37,211,102,0.8)] animate-pulse" />
-                    Available for Q3 projects
+                    Available for Q4 projects
                   </div>
                 </div>
               </div>

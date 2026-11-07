@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
+import AgencyInquirySection from "@/components/agency/AgencyInquirySection";
 
 export const metadata: Metadata = {
   title: "White-Label WordPress Developer for Agencies | Naveen Gaur",
@@ -153,85 +154,7 @@ export default function AgencyPage() {
         </section>
 
         {/* Application Form */}
-        <section id="apply" className="py-24 px-6 md:px-10">
-          <div className="max-w-[700px] mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="font-serif text-[clamp(28px,4vw,42px)] text-white mb-4">Partner Inquiry</h2>
-              <p className="text-white/50 text-[16px] max-w-[500px] mx-auto">
-                I take on a maximum of 3-5 active agency partners at a time to ensure SLA compliance. Fill out the form below to initiate an exploratory call.
-              </p>
-            </div>
-
-            <form
-              action="/api/contact"
-              method="POST"
-              className="bg-[#141414] border border-white/[0.06] p-8 md:p-10 rounded-xl space-y-6"
-            >
-              <input type="hidden" name="type" value="agency_inquiry" />
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-[13px] text-white/60 mb-2 uppercase tracking-wide">Agency Name</label>
-                  <input
-                    type="text"
-                    name="agency"
-                    required
-                    className="w-full bg-[#0D0D0D] border border-white/[0.08] rounded-sm px-4 py-3 text-white focus:outline-none focus:border-[#C4A35A] transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[13px] text-white/60 mb-2 uppercase tracking-wide">Your Name & Role</label>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    className="w-full bg-[#0D0D0D] border border-white/[0.08] rounded-sm px-4 py-3 text-white focus:outline-none focus:border-[#C4A35A] transition-colors"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[13px] text-white/60 mb-2 uppercase tracking-wide">Work Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="w-full bg-[#0D0D0D] border border-white/[0.08] rounded-sm px-4 py-3 text-white focus:outline-none focus:border-[#C4A35A] transition-colors"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[13px] text-white/60 mb-2 uppercase tracking-wide">Average Monthly WordPress Volume</label>
-                <select 
-                  name="volume"
-                  className="w-full bg-[#0D0D0D] border border-white/[0.08] rounded-sm px-4 py-3 text-white focus:outline-none focus:border-[#C4A35A] transition-colors appearance-none"
-                >
-                  <option value="1-2 projects/mo">1-2 projects/mo</option>
-                  <option value="3-5 projects/mo">3-5 projects/mo</option>
-                  <option value="5+ projects/mo">5+ projects/mo</option>
-                  <option value="Just looking for emergency overflow">Just looking for emergency overflow</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-[13px] text-white/60 mb-2 uppercase tracking-wide">Biggest Current Technical Bottleneck</label>
-                <textarea
-                  name="message"
-                  required
-                  rows={4}
-                  className="w-full bg-[#0D0D0D] border border-white/[0.08] rounded-sm px-4 py-3 text-white focus:outline-none focus:border-[#C4A35A] transition-colors resize-none"
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#C4A35A] text-[#0D0D0D] py-4 rounded-sm text-[15px] font-medium tracking-[0.02em] hover:bg-[#d4b46a] transition-colors duration-200 mt-4"
-              >
-                Submit Inquiry
-              </button>
-            </form>
-          </div>
-        </section>
+        <AgencyInquirySection />
       </main>
       <Footer />
     </>

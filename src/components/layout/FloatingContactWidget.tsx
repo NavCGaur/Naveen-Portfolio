@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { getCalApi } from "@calcom/embed-react";
-import AISalesChat from "@/components/chat/AISalesChat";
+// import AISalesChat from "@/components/chat/AISalesChat"; // Temporarily disabled
 
 export default function FloatingContactWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -29,8 +28,6 @@ export default function FloatingContactWidget() {
 
   return (
     <>
-      <AISalesChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
-
       <aside
         aria-label="Quick Contact Options"
         className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3 select-none pointer-events-auto"
@@ -38,31 +35,6 @@ export default function FloatingContactWidget() {
         {/* Expanded Quick Contact Options */}
         {isOpen && (
           <div className="flex flex-col gap-2 mb-1 animate-in fade-in slide-in-from-bottom-3 duration-200 ease-out">
-            {/* Option 0: AI Assistant Chat */}
-            <button
-              onClick={() => {
-                setIsChatOpen(true);
-                setIsOpen(false);
-              }}
-              className="flex items-center gap-2.5 bg-[#1F2937] hover:bg-[#C4A35A] text-white hover:text-black text-xs font-medium py-2 px-3.5 rounded-full shadow-lg border border-white/10 transition-all duration-200 group text-left cursor-pointer"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#C4A35A] group-hover:bg-black transition-colors" />
-              <span>Ask AI Assistant</span>
-              <svg
-                className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-                />
-              </svg>
-            </button>
-
             {/* Option 1: Book 15-Min Call */}
             <button
               data-cal-namespace=""
@@ -153,23 +125,6 @@ export default function FloatingContactWidget() {
 
         {/* Main Pill Bar */}
         <div className="flex items-center bg-[#0D0D0D]/90 backdrop-blur-md text-white rounded-full p-1.5 border border-white/15 shadow-xl transition-all duration-300 hover:border-[#C4A35A]/50 gap-1.5">
-          {/* AI Chat Button */}
-          <button
-            onClick={() => {
-              setIsChatOpen(!isChatOpen);
-              setIsOpen(false);
-            }}
-            className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full transition-all duration-200 shadow-sm cursor-pointer ${
-              isChatOpen
-                ? "bg-[#C4A35A] text-[#0D0D0D]"
-                : "bg-white/10 text-white hover:bg-white/20"
-            }`}
-            title="Chat with Naveen's AI Assistant"
-          >
-            <span className="w-2 h-2 rounded-full bg-[#C4A35A] animate-pulse" />
-            <span>AI Chat</span>
-          </button>
-
           {/* Book Call Button (Cal.com Modal Embed) */}
           <button
             data-cal-namespace=""
