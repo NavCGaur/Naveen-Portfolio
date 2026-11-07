@@ -21,15 +21,15 @@ const videoTestimonials: VideoTestimonial[] = [
   {
     id: "kat-grace",
     youtubeId: "QRADwVth1XY",
-    client: "Katie Grace",
-    role: "Founder & Trauma-Informed Practitioner",
-    company: "Kat Grace Healing",
+    client: "Katie Wheat",
+    role: "Holistic Practitioner & Energy Healer",
+    company: "KatGrace.com",
     companyUrl: "https://katgrace.com",
-    project: "WordPress Redesign, Performance Tuning & Ongoing Retainer",
+    project: "Full Website Revision, SEO & Ongoing Retainer",
     quote:
-      "Naveen was absolutely incredible to work with. He took my vision and transformed it into a website that is not only beautiful and fast, but truly supports my clients. His communication and ongoing support have been exceptional.",
+      "I met Naveen nine months ago and I feel so blessed to work with him. He has revised my entire website, increased my SEO, helped with YouTube and client relations. As my business has grown, he is implementing revisions to a second website. He goes above and beyond — professional, precise, knowledgeable, kind, and ethical. I can't say enough great things about him, and I hope that you are fortunate enough to work with him.",
     rating: 5,
-    tag: "WordPress Redesign & Ongoing Retainer",
+    tag: "Website Revision, SEO & Ongoing Retainer",
   },
 ];
 
@@ -193,7 +193,7 @@ export default function Testimonials() {
                     <div>
                       <StarRating count={videoTestimonials[0].rating} />
                       
-                      <blockquote className="font-serif italic text-white/95 text-[18px] md:text-[20px] leading-[1.6] mb-6">
+                      <blockquote className="font-serif italic text-white/95 text-[15px] sm:text-[16px] lg:text-[17px] leading-[1.7] mb-6">
                         &ldquo;{videoTestimonials[0].quote}&rdquo;
                       </blockquote>
                     </div>
